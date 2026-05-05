@@ -1,30 +1,18 @@
 """
-Extract best video URL per gloss from WLASL_v0.3.json
-and merge with Vietnamese translations.
-Output: sign_videos.json for frontend consumption.
+Create a comprehensive gloss → videos mapping from WLASL_v0.3.json.
+Each gloss maps to ALL available video URLs + local video fallback.
+Output format: dictionary keyed by gloss for fast lookup.
 """
 import json
+import os
 from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 WLASL_PATH = DATA_DIR / "archive" / "WLASL_v0.3.json"
 GLOSS_TO_VI_PATH = DATA_DIR / "processed" / "gloss_to_vi.json"
+VIDEOS_DIR = DATA_DIR / "archive" / "videos"
 OUTPUT_PATH = DATA_DIR / "processed" / "sign_videos.json"
 
-# Source priority (higher = better for direct playback)
-SOURCE_PRIORITY = {
-    "aslbrick": 10,
-    "handspeak": 9,
-    "signingsavvy": 8,
-    "startasl": 7,
-    "signschool": 6,
-    "aslsignbank": 5,
-    "asldeafined": 4,
-    "aslsearch": 3,
-    "asllex": 2,
-}
-
-# Categories for organizing words
 CATEGORIES = {
     "greetings": ["hello", "goodbye", "thank you", "please", "sorry", "welcome", "nice", "meet"],
     "family": ["mother", "father", "brother", "sister", "son", "daughter", "baby", "family",
@@ -60,114 +48,148 @@ CATEGORIES = {
 }
 
 
-def pick_best_url(instances):
-    """Pick the best direct .mp4 URL from instances."""
-    candidates = []
-    for inst in instances:
-        url = inst.get("url", "")
-        if not url:
-            continue
-        # Skip non-playable formats
-        if ".swf" in url:
-            continue
-        # Check if it's a direct mp4 link (not YouTube)
-        is_direct_mp4 = url.endswith(".mp4")
-        is_youtube = "youtube.com" in url or "youtu.be" in url
-        source = inst.get("source", "")
-        priority = SOURCE_PRIORITY.get(source, 1)
-
-        if is_direct_mp4:
-            priority += 20  # Strongly prefer direct mp4
-        elif is_youtube:
-            priority -= 10  # Deprioritize YouTube
-
-        candidates.append({
-            "url": url,
-            "priority": priority,
-            "source": source,
-            "video_id": inst.get("video_id", ""),
-            "is_direct": is_direct_mp4,
-        })
-
-    if not candidates:
-        return None
-
-    candidates.sort(key=lambda x: x["priority"], reverse=True)
-    best = candidates[0]
-    return {
-        "url": best["url"],
-        "source": best["source"],
-        "video_id": best["video_id"],
-    }
-
-
-def categorize_gloss(gloss):
-    """Find categories for a gloss."""
+def get_categories(gloss):
     cats = []
-    gloss_lower = gloss.lower()
-    for cat_name, words in CATEGORIES.items():
-        if gloss_lower in words:
-            cats.append(cat_name)
+    g = gloss.lower()
+    for cat, words in CATEGORIES.items():
+        if g in words:
+            cats.append(cat)
     return cats if cats else ["other"]
+
+
+def classify_url(url):
+    """Classify URL type for the frontend."""
+    if not url:
+        return "unknown"
+    if url.endswith(".swf"):
+        return "swf"
+    if "youtube.com" in url or "youtu.be" in url:
+        return "youtube"
+    if url.endswith(".mp4"):
+        return "mp4"
+    return "other"
 
 
 def main():
     print("Loading WLASL data...")
     with open(WLASL_PATH, "r", encoding="utf-8") as f:
         wlasl = json.load(f)
-    print(f"  Found {len(wlasl)} glosses")
+    print(f"  {len(wlasl)} glosses")
 
     print("Loading Vietnamese translations...")
     with open(GLOSS_TO_VI_PATH, "r", encoding="utf-8") as f:
         gloss_to_vi = json.load(f)
-    print(f"  Found {len(gloss_to_vi)} translations")
+    print(f"  {len(gloss_to_vi)} translations")
 
-    results = []
-    skipped = 0
-    no_video = 0
+    # Scan local video files
+    print("Scanning local videos...")
+    local_videos = set()
+    if VIDEOS_DIR.exists():
+        for f in VIDEOS_DIR.iterdir():
+            if f.suffix == ".mp4":
+                local_videos.add(f.stem)  # e.g., "00335"
+    print(f"  {len(local_videos)} local video files")
+
+    # Build the mapping
+    result = {}
+    stats = {"total": 0, "with_mp4": 0, "with_local": 0, "with_youtube": 0}
 
     for entry in wlasl:
-        gloss = entry["gloss"]
+        gloss = entry["gloss"].lower()
         instances = entry.get("instances", [])
+        vi = gloss_to_vi.get(gloss, "")
+        categories = get_categories(gloss)
 
-        video_info = pick_best_url(instances)
-        if not video_info:
-            no_video += 1
+        videos = []
+        local_paths = []
+
+        for inst in instances:
+            url = inst.get("url", "")
+            video_id = inst.get("video_id", "")
+            source = inst.get("source", "")
+            url_type = classify_url(url)
+
+            # Skip .swf files entirely
+            if url_type == "swf":
+                continue
+
+            video_entry = {
+                "url": url,
+                "source": source,
+                "type": url_type,
+                "video_id": video_id,
+            }
+            videos.append(video_entry)
+
+            # Check if this video_id has a local file
+            if video_id and video_id in local_videos:
+                local_path = f"/videos/{video_id}.mp4"
+                if local_path not in [lp["url"] for lp in local_paths]:
+                    local_paths.append({
+                        "url": local_path,
+                        "source": "local",
+                        "type": "local",
+                        "video_id": video_id,
+                    })
+
+        # Sort videos: mp4 first, then youtube, then others
+        type_order = {"mp4": 0, "local": 1, "youtube": 2, "other": 3}
+        videos.sort(key=lambda v: type_order.get(v["type"], 99))
+
+        # Add local videos at the end
+        videos.extend(local_paths)
+
+        if not videos:
             continue
 
-        vi_word = gloss_to_vi.get(gloss.lower(), "")
-        categories = categorize_gloss(gloss)
-
-        results.append({
-            "gloss": gloss.lower(),
-            "vi": vi_word,
-            "url": video_info["url"],
-            "source": video_info["source"],
-            "video_id": video_info["video_id"],
+        result[gloss] = {
+            "gloss": gloss,
+            "vi": vi,
             "categories": categories,
-            "instance_count": len(instances),
-        })
+            "videos": videos,
+            "video_count": len(videos),
+        }
 
-    # Sort: words with Vietnamese translations first, then alphabetically
-    results.sort(key=lambda x: (0 if x["vi"] else 1, x["gloss"]))
+        stats["total"] += 1
+        if any(v["type"] == "mp4" for v in videos):
+            stats["with_mp4"] += 1
+        if any(v["type"] == "local" for v in videos):
+            stats["with_local"] += 1
+        if any(v["type"] == "youtube" for v in videos):
+            stats["with_youtube"] += 1
 
-    print(f"\nResults:")
-    print(f"  Total glosses with video: {len(results)}")
-    print(f"  With Vietnamese: {sum(1 for r in results if r['vi'])}")
-    print(f"  Skipped (no video): {no_video}")
+    print(f"\n=== Results ===")
+    print(f"Total glosses: {stats['total']}")
+    print(f"With direct .mp4: {stats['with_mp4']}")
+    print(f"With local video: {stats['with_local']}")
+    print(f"With YouTube: {stats['with_youtube']}")
+    print(f"With Vietnamese: {sum(1 for v in result.values() if v['vi'])}")
 
-    # Category stats
-    cat_counts = {}
-    for r in results:
-        for c in r["categories"]:
-            cat_counts[c] = cat_counts.get(c, 0) + 1
-    print(f"\nCategories:")
-    for cat, count in sorted(cat_counts.items(), key=lambda x: -x[1]):
-        print(f"  {cat}: {count}")
+    # Also create a flat array version for easy listing
+    flat_list = sorted(result.values(), key=lambda x: (0 if x["vi"] else 1, x["gloss"]))
+
+    output = {
+        "glosses": result,       # dict keyed by gloss for fast lookup
+        "list": flat_list,       # sorted array for listing/pagination
+        "stats": {
+            "total": stats["total"],
+            "with_vi": sum(1 for v in result.values() if v["vi"]),
+            "with_mp4": stats["with_mp4"],
+            "with_local": stats["with_local"],
+            "categories": {},
+        }
+    }
+
+    # Category counts
+    for item in flat_list:
+        for c in item["categories"]:
+            output["stats"]["categories"][c] = output["stats"]["categories"].get(c, 0) + 1
 
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(results, f, ensure_ascii=False, indent=2)
-    print(f"\nSaved to {OUTPUT_PATH}")
+        json.dump(output, f, ensure_ascii=False, indent=2)
+
+    size_mb = os.path.getsize(OUTPUT_PATH) / (1024 * 1024)
+    print(f"\nSaved to {OUTPUT_PATH} ({size_mb:.1f} MB)")
 
 
 if __name__ == "__main__":

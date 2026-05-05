@@ -50,3 +50,6 @@ dev-notes/
 # Logs
 *.log
 npm-debug.log*
+#docs
+HANDOVER.md
+

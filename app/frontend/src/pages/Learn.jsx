@@ -1,12 +1,19 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, Filter, Grid, List, Play, Volume2, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { Search, Grid, List, Play, Volume2, ChevronLeft, ChevronRight, X, ExternalLink, MonitorPlay, Globe, HardDrive } from 'lucide-react';
 import GlassCard from '../components/ui/GlassCard';
 import { useSignVideos } from '../hooks/useSignVideos';
 import { CATEGORIES } from '../data/categories';
 import './Learn.css';
 
 const ITEMS_PER_PAGE = 24;
+
+const TYPE_LABELS = {
+    mp4: { label: 'MP4', icon: '🎬', color: '#10b981' },
+    youtube: { label: 'YouTube', icon: '▶️', color: '#ef4444' },
+    local: { label: 'Local', icon: '💾', color: '#3b82f6' },
+    other: { label: 'Link', icon: '🔗', color: '#8b5cf6' },
+};
 
 export default function Learn() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -15,6 +22,7 @@ export default function Learn() {
     const [category, setCategory] = useState(initialCategory);
     const [search, setSearch] = useState('');
     const [selectedWord, setSelectedWord] = useState(null);
+    const [activeVideoIdx, setActiveVideoIdx] = useState(0);
     const [page, setPage] = useState(1);
     const [viewMode, setViewMode] = useState('grid');
 
@@ -36,6 +44,23 @@ export default function Learn() {
         setSearch(value);
         setPage(1);
     }, []);
+
+    const openWord = (word) => {
+        setSelectedWord(word);
+        setActiveVideoIdx(0);
+    };
+
+    const closeModal = () => {
+        setSelectedWord(null);
+        setActiveVideoIdx(0);
+    };
+
+    // Get playable videos (exclude swf)
+    const playableVideos = selectedWord
+        ? selectedWord.videos.filter(v => v.type !== 'swf')
+        : [];
+
+    const activeVideo = playableVideos[activeVideoIdx] || null;
 
     return (
         <div className="learn animate-fade-in">
@@ -121,7 +146,7 @@ export default function Learn() {
                             key={word.gloss}
                             padding="none"
                             className={`learn__word-card ${selectedWord?.gloss === word.gloss ? 'learn__word-card--selected' : ''}`}
-                            onClick={() => setSelectedWord(selectedWord?.gloss === word.gloss ? null : word)}
+                            onClick={() => openWord(word)}
                         >
                             {viewMode === 'grid' ? (
                                 <>
@@ -129,7 +154,9 @@ export default function Learn() {
                                         <div className="learn__word-play-icon">
                                             <Play size={20} fill="white" />
                                         </div>
-                                        <div className="learn__word-source">{word.source}</div>
+                                        <div className="learn__word-badge-row">
+                                            <span className="learn__word-video-count">{word.video_count} video</span>
+                                        </div>
                                     </div>
                                     <div className="learn__word-info">
                                         <div className="learn__word-vi">{word.vi || word.gloss}</div>
@@ -143,7 +170,7 @@ export default function Learn() {
                                     </div>
                                     <div className="learn__word-list-vi">{word.vi || word.gloss}</div>
                                     <div className="learn__word-list-gloss">{word.gloss.toUpperCase()}</div>
-                                    <div className="learn__word-list-source">{word.source}</div>
+                                    <div className="learn__word-list-count">{word.video_count} video</div>
                                 </div>
                             )}
                         </GlassCard>
@@ -176,37 +203,47 @@ export default function Learn() {
                 </div>
             )}
 
-            {/* Video Player Modal */}
+            {/* === VIDEO PLAYER MODAL === */}
             {selectedWord && (
-                <div className="learn__modal-overlay" onClick={() => setSelectedWord(null)}>
+                <div className="learn__modal-overlay" onClick={closeModal}>
                     <div className="learn__modal glass-heavy animate-fade-in-scale" onClick={e => e.stopPropagation()}>
-                        <button className="learn__modal-close" onClick={() => setSelectedWord(null)}>
+                        <button className="learn__modal-close" onClick={closeModal}>
                             <X size={20} />
                         </button>
 
+                        {/* Video Player */}
                         <div className="learn__modal-video">
-                            <video
-                                key={selectedWord.url}
-                                controls
-                                autoPlay
-                                loop
-                                playsInline
-                                className="learn__video-player"
-                            >
-                                <source src={selectedWord.url} type="video/mp4" />
-                                Video không hỗ trợ
-                            </video>
+                            {activeVideo?.type === 'youtube' ? (
+                                <iframe
+                                    key={activeVideo.url}
+                                    src={`https://www.youtube.com/embed/${extractYouTubeId(activeVideo.url)}?autoplay=1`}
+                                    className="learn__video-iframe"
+                                    allow="autoplay; encrypted-media"
+                                    allowFullScreen
+                                    title={selectedWord.gloss}
+                                />
+                            ) : activeVideo ? (
+                                <video
+                                    key={activeVideo.url}
+                                    controls
+                                    autoPlay
+                                    loop
+                                    playsInline
+                                    className="learn__video-player"
+                                >
+                                    <source src={activeVideo.url} type="video/mp4" />
+                                    Video không hỗ trợ
+                                </video>
+                            ) : (
+                                <div className="learn__video-empty">Không có video</div>
+                            )}
                         </div>
 
+                        {/* Word Info */}
                         <div className="learn__modal-info">
                             <h2 className="learn__modal-word">{selectedWord.vi || selectedWord.gloss}</h2>
                             <div className="learn__modal-gloss">{selectedWord.gloss.toUpperCase()}</div>
-                            <div className="learn__modal-meta">
-                                <span className="learn__modal-source">📹 {selectedWord.source}</span>
-                                <span className="learn__modal-categories">
-                                    {selectedWord.categories.map(c => CATEGORIES[c]?.icon || '📦').join(' ')}
-                                </span>
-                            </div>
+
                             {selectedWord.vi && (
                                 <div className="learn__modal-translation">
                                     <Volume2 size={14} />
@@ -215,13 +252,43 @@ export default function Learn() {
                             )}
                         </div>
 
-                        {/* Navigation buttons */}
+                        {/* Video List - ALL available videos */}
+                        <div className="learn__modal-videos">
+                            <div className="learn__modal-videos-header">
+                                <span className="learn__modal-videos-title">📹 Danh sách video ({playableVideos.length})</span>
+                            </div>
+                            <div className="learn__modal-videos-list">
+                                {playableVideos.map((v, idx) => {
+                                    const typeInfo = TYPE_LABELS[v.type] || TYPE_LABELS.other;
+                                    return (
+                                        <button
+                                            key={`${v.url}-${idx}`}
+                                            className={`learn__video-item ${idx === activeVideoIdx ? 'learn__video-item--active' : ''}`}
+                                            onClick={() => setActiveVideoIdx(idx)}
+                                        >
+                                            <span className="learn__video-item-icon">{typeInfo.icon}</span>
+                                            <div className="learn__video-item-info">
+                                                <span className="learn__video-item-source">{v.source}</span>
+                                                <span className="learn__video-item-type" style={{ color: typeInfo.color }}>
+                                                    {typeInfo.label}
+                                                </span>
+                                            </div>
+                                            {idx === activeVideoIdx && (
+                                                <span className="learn__video-item-playing">▶ Đang phát</span>
+                                            )}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Word navigation */}
                         <div className="learn__modal-nav">
                             <button
                                 className="learn__modal-nav-btn glass"
                                 onClick={() => {
                                     const idx = videos.findIndex(v => v.gloss === selectedWord.gloss);
-                                    if (idx > 0) setSelectedWord(videos[idx - 1]);
+                                    if (idx > 0) openWord(videos[idx - 1]);
                                 }}
                             >
                                 <ChevronLeft size={16} /> Trước
@@ -230,7 +297,7 @@ export default function Learn() {
                                 className="learn__modal-nav-btn glass"
                                 onClick={() => {
                                     const idx = videos.findIndex(v => v.gloss === selectedWord.gloss);
-                                    if (idx < videos.length - 1) setSelectedWord(videos[idx + 1]);
+                                    if (idx < videos.length - 1) openWord(videos[idx + 1]);
                                 }}
                             >
                                 Tiếp <ChevronRight size={16} />
@@ -241,4 +308,10 @@ export default function Learn() {
             )}
         </div>
     );
+}
+
+function extractYouTubeId(url) {
+    if (!url) return '';
+    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+    return match ? match[1] : '';
 }

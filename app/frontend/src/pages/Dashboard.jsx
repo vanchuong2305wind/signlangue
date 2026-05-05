@@ -94,7 +94,7 @@ export default function Dashboard() {
                         <TrendingUp size={18} color="white" />
                     </div>
                     <div>
-                        <div className="dashboard__stat-value">{stats.withVietnamese.toLocaleString()}</div>
+                        <div className="dashboard__stat-value">{(stats.with_vi || 0).toLocaleString()}</div>
                         <div className="dashboard__stat-label">Có bản dịch Việt</div>
                     </div>
                 </GlassCard>

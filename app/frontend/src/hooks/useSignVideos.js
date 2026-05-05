@@ -1,24 +1,24 @@
 import { useState, useEffect, useMemo } from 'react';
 
-let _videosCache = null;
+let _dataCache = null;
 
-async function loadVideos() {
-    if (_videosCache) return _videosCache;
+async function loadData() {
+    if (_dataCache) return _dataCache;
     const resp = await fetch('/data/sign_videos.json');
-    _videosCache = await resp.json();
-    return _videosCache;
+    _dataCache = await resp.json();
+    return _dataCache;
 }
 
 export function useSignVideos(category = 'all', searchQuery = '') {
-    const [videos, setVideos] = useState([]);
+    const [data, setData] = useState({ glosses: {}, list: [], stats: { total: 0, with_vi: 0, categories: {} } });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         setLoading(true);
-        loadVideos()
-            .then(data => {
-                setVideos(data);
+        loadData()
+            .then(d => {
+                setData(d);
                 setLoading(false);
             })
             .catch(err => {
@@ -28,7 +28,7 @@ export function useSignVideos(category = 'all', searchQuery = '') {
     }, []);
 
     const filtered = useMemo(() => {
-        let result = videos;
+        let result = data.list;
 
         if (category && category !== 'all') {
             result = result.filter(v => v.categories.includes(category));
@@ -38,26 +38,23 @@ export function useSignVideos(category = 'all', searchQuery = '') {
             const q = searchQuery.toLowerCase().trim();
             result = result.filter(v =>
                 v.gloss.includes(q) ||
-                v.vi.includes(q)
+                (v.vi && v.vi.includes(q))
             );
         }
 
         return result;
-    }, [videos, category, searchQuery]);
+    }, [data.list, category, searchQuery]);
 
-    const stats = useMemo(() => {
-        const catCounts = {};
-        for (const v of videos) {
-            for (const c of v.categories) {
-                catCounts[c] = (catCounts[c] || 0) + 1;
-            }
-        }
-        return {
-            total: videos.length,
-            withVietnamese: videos.filter(v => v.vi).length,
-            categories: catCounts,
-        };
-    }, [videos]);
+    // Fast lookup by gloss
+    const getByGloss = (gloss) => data.glosses[gloss.toLowerCase()] || null;
 
-    return { videos: filtered, allVideos: videos, loading, error, stats };
+    return {
+        videos: filtered,
+        allVideos: data.list,
+        glosses: data.glosses,
+        loading,
+        error,
+        stats: data.stats,
+        getByGloss,
+    };
 }
