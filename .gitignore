@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Agent config
+.agent/
+
+# Gemini workspace
+.gemini/
+
+# Temp analysis files
+analyze_*.py
+test_*.py
+
+# Node.js
+node_modules/
+dist/
+.cache/
+
+# Data files (videos + large JSON - too big for git)
+data/archive/
+data/WLASL_v0.3.json/
+data/processed/sign_dictionary_landmarks.json
+data/processed/sign_dictionary_landmarks_vi.json
+
+# Large model files
+app/models/*.glb
+app/models/*.gltf
+
+# Dev notes
+dev-notes/
+
+# Logs
+*.log
+npm-debug.log*

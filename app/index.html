@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech to Sign Language</title>
+    <meta name="description" content="Chuyen giong noi thanh ngon ngu ky hieu - Web app ho tro giao tiep cho nguoi khiem thinh">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="bg-[#0F1117] text-[#F8FAFC] min-h-screen p-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-4">
+            <h1 class="text-2xl font-bold mb-1">Speech to Sign Language</h1>
+            <p class="text-gray-400 text-xs">Pipeline: Giong noi -> Van ban -> Ky hieu -> Avatar 3D</p>
+            <p id="pipelineStatus" class="text-xs text-amber-400 mt-1 h-4"></p>
+        </header>
+
+        <!-- Main 3-panel layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
+
+            <!-- LEFT: Step 2 - Speech to Text -->
+            <div class="lg:col-span-3 bg-[#1a1d24] rounded-lg shadow-xl p-4">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="step-badge done">2</span>
+                    <h2 class="text-xs font-semibold text-gray-300 uppercase tracking-wide">Giong noi -> Van ban</h2>
+                </div>
+
+                <!-- Mic Button -->
+                <div class="text-center mb-4">
+                    <button id="micButton"
+                        class="mic-button idle w-16 h-16 rounded-full mx-auto mb-2 flex items-center justify-center text-2xl transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-[#10B981]"
+                        aria-label="Bat dau thu am">
+                        <span id="micIcon">🎤</span>
+                    </button>
+                    <button id="toggleButton"
+                        class="px-5 py-1.5 bg-[#1E293B] hover:bg-[#334155] rounded-lg font-semibold text-xs transition-colors duration-200">
+                        BAT DAU
+                    </button>
+                    <p id="statusText" class="mt-2 text-xs text-gray-400">Nhan de bat dau</p>
+                </div>
+
+                <!-- Interim Text -->
+                <div class="mb-3">
+                    <div class="bg-[#0F1117] rounded-lg p-2.5 min-h-[50px] border border-[#1E293B]">
+                        <p class="text-[10px] text-gray-500 mb-1">Dang nhan:</p>
+                        <p id="interimText" class="text-sm italic opacity-40" aria-live="polite"></p>
+                    </div>
+                </div>
+
+                <!-- History -->
+                <div>
+                    <h3 class="text-[10px] font-semibold mb-1.5 text-gray-400">📝 Lich su:</h3>
+                    <div class="bg-[#0F1117] rounded-lg p-2.5 max-h-[120px] overflow-y-auto" id="historyContainer">
+                        <p class="text-xs text-gray-500 text-center" id="emptyHistoryMessage">Chua co van ban nao</p>
+                        <div id="historyList" class="space-y-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CENTER: Step 4 - Avatar 3D -->
+            <div class="lg:col-span-6 bg-[#1a1d24] rounded-lg shadow-xl p-4">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="step-badge active">4</span>
+                        <h2 class="text-xs font-semibold text-gray-300 uppercase tracking-wide">Avatar 3D</h2>
+                    </div>
+                    <span id="avatarStatus" class="text-xs text-emerald-400">Khoi tao avatar...</span>
+                </div>
+
+                <!-- 3D Viewport -->
+                <div id="avatarViewport" class="avatar-viewport rounded-lg overflow-hidden" style="height: 520px; background: radial-gradient(circle at 30% 30%, #e6eff8 0%, #dae4f0 46%, #d0dced 100%);">
+                    <!-- Three.js canvas renders here -->
+                </div>
+
+                <!-- Currently signing indicator -->
+                <div class="mt-2 flex items-center justify-between">
+                    <div id="currentlySigningLabel" class="text-xs text-gray-500">Dang cho du lieu ky hieu...</div>
+                    <div class="flex gap-2">
+                        <button id="resetPoseBtn" class="px-3 py-1 bg-[#1E293B] hover:bg-[#334155] rounded text-xs transition-colors">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Step 3 - Text to Sign Symbols -->
+            <div class="lg:col-span-3 bg-[#1a1d24] rounded-lg shadow-xl p-4">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="step-badge done">3</span>
+                    <h2 class="text-xs font-semibold text-gray-300 uppercase tracking-wide">Van ban -> Ky hieu</h2>
+                </div>
+
+                <div class="flex items-center gap-2 mb-2">
+                    <span id="signMethod" class="text-[10px] px-1.5 py-0.5 rounded bg-gray-700 text-gray-300">📖 Rule-based</span>
+                    <span id="signStats" class="text-[10px] text-gray-500">—</span>
+                </div>
+
+                <!-- Loading -->
+                <div id="signLoading" class="hidden">
+                    <div class="flex items-center justify-center py-2 gap-2">
+                        <div class="loading-spinner"></div>
+                        <span class="text-xs text-gray-400">Dang phan tich...</span>
+                    </div>
+                </div>
+
+                <!-- Sign Sequence -->
+                <div class="bg-[#0F1117] rounded-lg p-3 min-h-[80px] border border-[#1E293B] mb-3">
+                    <p class="text-[10px] text-gray-500 mb-1.5">Chuoi ky hieu:</p>
+                    <div id="signSequenceOutput" class="flex flex-wrap gap-1.5 items-center">
+                        <p class="text-[10px] text-gray-600 italic">Noi gi do...</p>
+                    </div>
+                </div>
+
+                <!-- Manual Input -->
+                <div class="mb-3">
+                    <div class="flex gap-1.5">
+                        <input id="manualInput" type="text" placeholder="Nhap van ban..."
+                            class="flex-1 bg-[#0F1117] border border-[#1E293B] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:border-[#10B981] transition-colors">
+                        <button id="manualConvertBtn"
+                            class="px-3 py-1.5 bg-[#10B981] hover:bg-[#059669] rounded-lg text-xs font-semibold text-black transition-colors">
+                            Go
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sign JSON Output -->
+                <details class="bg-[#0F1117] rounded-lg p-2.5">
+                    <summary class="cursor-pointer text-[10px] font-semibold flex items-center text-gray-400">
+                        📤 Output JSON
+                    </summary>
+                    <pre id="signJsonOutput" class="text-[10px] text-[#10B981] overflow-x-auto mt-1.5 p-1.5 bg-black rounded max-h-[150px] overflow-y-auto">{ }</pre>
+                </details>
+            </div>
+        </div>
+
+        <!-- Pipeline Visualization -->
+        <div class="mt-3 bg-[#1a1d24] rounded-lg shadow-xl p-3">
+            <div class="flex items-center justify-center gap-2 flex-wrap">
+                <span class="pipeline-node done">🎤 Giong noi</span>
+                <span class="pipeline-arrow">→</span>
+                <span class="pipeline-node done">📝 Van ban</span>
+                <span class="pipeline-arrow">→</span>
+                <span class="pipeline-node done">🤟 Ky hieu</span>
+                <span class="pipeline-arrow">→</span>
+                <span class="pipeline-node active">🧑 Avatar 3D</span>
+                <span class="pipeline-arrow dim">→</span>
+                <span class="pipeline-node dim">🚀 Deploy</span>
+            </div>
+        </div>
+
+        <!-- Warnings -->
+        <div id="compatibilityWarning" class="hidden mt-3 bg-yellow-900/30 border border-yellow-600 rounded-lg p-3">
+            <p class="text-yellow-400 text-xs">⚠️ Trinh duyet khong ho tro Web Speech API. Dung Chrome hoac Edge.</p>
+        </div>
+        <div id="permissionError" class="hidden mt-3 bg-red-900/30 border border-red-600 rounded-lg p-3">
+            <p class="text-red-400 text-xs">❌ Khong the truy cap microphone.</p>
+        </div>
+    </div>
+
+    <!-- Main App Script -->
+    <script type="module" src="js/app.js"></script>
+
+    <!-- Avatar 3D Init -->
+    <script type="module">
+        import AvatarScene from './js/avatar/scene.js';
+        import HandModel from './js/avatar/hand-model.js';
+        import SignAnimator from './js/avatar/sign-animator.js';
+        import eventBus from './js/event-bus.js';
+        import textToSign from './js/text-to-sign.js';
+
+        const avatarStatusEl = document.getElementById('avatarStatus');
+        const signingLabelEl = document.getElementById('currentlySigningLabel');
+        const viewportEl = document.getElementById('avatarViewport');
+
+        let animator = null;
+
+        function setAvatarStatus(text, isError = false) {
+            if (!avatarStatusEl) return;
+            avatarStatusEl.textContent = text;
+            avatarStatusEl.className = isError
+                ? 'text-xs text-red-400'
+                : 'text-xs text-emerald-400';
+        }
+
+        async function initAvatar3D() {
+            try {
+                setAvatarStatus('Khởi tạo scene 3D...');
+
+                const avatarScene = new AvatarScene('avatarViewport');
+                if (!avatarScene?.isReady || !avatarScene.scene) {
+                    throw new Error('Không tạo được scene 3D');
+                }
+
+                // Load rigged hand model (.glb)
+                setAvatarStatus('Đang tải mô hình tay 3D...');
+                const handModel = new HandModel(avatarScene.scene);
+                await handModel.load('/models/rigged_hand.glb');
+
+                // Create animator to drive hand model
+                animator = new SignAnimator(handModel);
+                animator.init();
+
+                // Hook animator into render loop
+                avatarScene.onUpdate((delta) => {
+                    animator.update(delta);
+                });
+
+                setAvatarStatus('Mô hình tay sẵn sàng');
+                if (signingLabelEl) {
+                    signingLabelEl.textContent = 'Đang chờ dữ liệu ký hiệu...';
+                }
+
+                // Expose for debugging
+                window.avatar3D = { avatarScene, handModel, animator };
+            } catch (error) {
+                console.error('[Avatar3D] Init failed:', error);
+                setAvatarStatus('Lỗi tải mô hình tay', true);
+                if (viewportEl) {
+                    viewportEl.innerHTML = `
+                        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+                            background:#0a0e17;border:1px solid #641a1a;border-radius:8px;padding:16px;text-align:center">
+                            <div>
+                                <p style="color:#f87171;font-size:14px;margin-bottom:8px">Không tải được mô hình tay 3D</p>
+                                <p style="color:#94a3b8;font-size:12px">Kiểm tra file: app/models/rigged_hand.glb</p>
+                                <p style="color:#64748b;font-size:11px;margin-top:4px">${error.message}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        initAvatar3D();
+
+        // Avatar status display
+        eventBus.on('avatar:status', ({ text }) => {
+            setAvatarStatus(text || 'Mô hình tay sẵn sàng');
+        });
+
+        eventBus.on('avatar:playing', ({ gloss, vi }) => {
+            if (!signingLabelEl) return;
+            signingLabelEl.textContent = `Đang ký: ${vi} (${gloss.toUpperCase()})`;
+        });
+
+        eventBus.on('avatar:idle', () => {
+            if (signingLabelEl) {
+                signingLabelEl.textContent = 'Đang chờ dữ liệu ký hiệu...';
+            }
+        });
+
+        // Reset button
+        document.getElementById('resetPoseBtn')?.addEventListener('click', () => {
+            if (animator) {
+                animator.stop();
+            }
+            if (signingLabelEl) {
+                signingLabelEl.textContent = 'Đang chờ dữ liệu ký hiệu...';
+            }
+        });
+
+        // Manual input
+        const input = document.getElementById('manualInput');
+        const btn = document.getElementById('manualConvertBtn');
+
+        async function handleManualConvert() {
+            const text = input.value.trim();
+            if (!text) return;
+            await textToSign.convert(text);
+        }
+
+        btn?.addEventListener('click', handleManualConvert);
+        input?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') handleManualConvert();
+        });
+    </script>
+</body>
+</html>

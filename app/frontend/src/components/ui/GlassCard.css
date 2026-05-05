@@ -1,0 +1,56 @@
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md), var(--shadow-inner);
+    transition: all var(--transition-normal);
+}
+
+.glass-card--hover:hover {
+    background: var(--glass-bg-hover);
+    box-shadow: var(--shadow-lg), var(--shadow-inner);
+    transform: translateY(-2px);
+}
+
+.glass-card--hover:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+.glass-card--strong {
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid var(--glass-border-strong);
+    box-shadow: var(--shadow-lg), var(--shadow-inner);
+}
+
+.glass-card--subtle {
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow-sm);
+}
+
+.glass-card--dark {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #f8fafc;
+}
+
+.glass-card--accent-teal {
+    border-color: rgba(45, 212, 191, 0.3);
+}
+
+.glass-card--accent-teal:hover {
+    border-color: rgba(45, 212, 191, 0.5);
+    box-shadow: var(--shadow-glow-teal), var(--shadow-inner);
+}
+
+.glass-card--accent-coral {
+    border-color: rgba(249, 112, 102, 0.3);
+}
+
+.glass-card--accent-coral:hover {
+    border-color: rgba(249, 112, 102, 0.5);
+    box-shadow: var(--shadow-glow-coral), var(--shadow-inner);
+}

@@ -1,0 +1,233 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+/* Welcome Banner */
+.dashboard__welcome {
+    background: linear-gradient(135deg, rgba(45, 212, 191, 0.08), rgba(56, 189, 248, 0.06)) !important;
+    border-color: rgba(45, 212, 191, 0.15) !important;
+}
+
+.dashboard__welcome-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dashboard__welcome-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.dashboard__wave {
+    display: inline-block;
+    animation: wave 2s ease-in-out infinite;
+    transform-origin: 70% 70%;
+}
+
+@keyframes wave {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    10% {
+        transform: rotate(14deg);
+    }
+
+    20% {
+        transform: rotate(-8deg);
+    }
+
+    30% {
+        transform: rotate(14deg);
+    }
+
+    40% {
+        transform: rotate(-4deg);
+    }
+
+    50% {
+        transform: rotate(10deg);
+    }
+
+    60% {
+        transform: rotate(0deg);
+    }
+}
+
+.dashboard__welcome-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 500px;
+}
+
+.dashboard__big-emoji {
+    font-size: 72px;
+    display: block;
+}
+
+/* Quick Actions */
+.dashboard__actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+}
+
+.dashboard__action-card {
+    text-align: center;
+}
+
+.dashboard__action-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--space-md);
+    font-size: 26px;
+    transition: transform var(--transition-spring);
+}
+
+.dashboard__action-card:hover .dashboard__action-icon {
+    transform: scale(1.1) rotate(-3deg);
+}
+
+.dashboard__action-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.dashboard__action-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* Stats */
+.dashboard__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md);
+}
+
+.dashboard__stat {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.dashboard__stat-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.dashboard__stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+.dashboard__stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Section */
+.dashboard__section {
+    margin-top: var(--space-sm);
+}
+
+.dashboard__section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+
+/* Categories */
+.dashboard__categories {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-sm);
+}
+
+.dashboard__category-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.dashboard__category-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.dashboard__category-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.dashboard__category-count {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .dashboard__actions {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .dashboard__stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard__categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .dashboard__actions {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard__stats {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard__categories {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard__welcome-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}

@@ -1,0 +1,336 @@
+🎯 I. Tổng quan hệ thống
+
+Web/app gồm 3 module chính:
+
+Học ngôn ngữ ký hiệu (Video-based learning)
+Dịch âm thanh → ký hiệu (Speech → Sign)
+Camera → nhận diện ký hiệu → chuyển thành âm thanh (Sign → Speech)
+Các chức năng phụ:
+Lưu lịch sử hội thoại
+Gợi ý từ/câu
+Tài khoản người dùng
+Cá nhân hóa học tập
+🧠 II. Prompt tổng để generate full project
+
+Dùng prompt này với AI để tạo skeleton hệ thống:
+
+Act as a senior full-stack architect.
+
+Build a web application that translates between spoken language and sign language.
+
+Main features:
+1. Learning module using pre-recorded sign language videos
+2. Speech-to-sign translation (input: audio, output: sign animation/video)
+3. Sign-to-speech translation using webcam (computer vision)
+4. Conversation history storage and retrieval
+5. User authentication and personalization
+
+Tech stack:
+- Frontend: React + TailwindCSS
+- Backend: Node.js (Express) or Python (FastAPI)
+- AI:
+  - Speech recognition: Whisper or Google Speech API
+  - Computer vision: MediaPipe / OpenCV
+  - NLP: Transformer model
+
+
+
+Requirements:
+- Clean UI/UX for accessibility
+- Real-time processing (WebSocket)
+- Modular architecture
+- Scalable APIs
+
+Output:
+- Folder structure
+- API design
+
+- Key components code
+🎥 III. Prompt cho module học bằng video
+Design a learning module for sign language using a video dataset.
+
+Features:
+- Search vocabulary
+- Categories (daily life, emotions, business, etc.)
+- Show video + meaning + phonetic + usage example
+- Quiz mode (multiple choice + gesture recognition)
+- Progress tracking
+
+UI:
+- Clean, minimal, accessible
+- Large video display
+- Subtitle support
+
+Bonus:
+- Recommend next lessons using user behavior
+
+👉 Ý tưởng nâng cấp:
+
+AI gợi ý học giống Duolingo
+Gamification (level, streak)
+🎙️ IV. Prompt cho Speech → Sign
+Build a speech-to-sign translation module.
+
+Input:
+- Microphone audio
+
+Process:
+1. Convert speech to text
+2. NLP processing to simplify sentence
+3. Map words/phrases to sign language video clips
+4. Render sequence of sign videos or avatar animation
+
+Output:
+- Smooth sequence of sign gestures
+
+Challenges:
+- Grammar differences between spoken and sign language
+- Latency optimization
+
+👉 Nâng cấp:
+
+Dùng avatar 3D thay video (giống NVIDIA AI avatar tech)
+📷 V. Prompt cho Camera → Sign → Speech
+Build a real-time sign language recognition system using webcam.
+
+Features:
+- Detect hand gestures
+- Recognize sign language alphabet and words
+- Convert to text and speech output
+
+Tech:
+- MediaPipe Hands
+- TensorFlow or PyTorch model
+
+Output:
+- Real-time text display
+- Text-to-speech playback
+
+👉 Nâng cấp:
+
+Nhận diện full sentence (khó nhưng giá trị cao)
+Offline mode
+💾 VI. Prompt cho hệ thống lưu lịch sử
+Design a conversation history system.
+
+Features:
+- Save conversations (speech ↔ sign)
+- Timestamp
+- Search history
+- Replay conversation
+
+Database:
+- user_id
+- input_type (speech/sign)
+- output_type
+- content
+- created_at
+
+👉 Nâng cấp:
+
+Phân tích hành vi người dùng
+Gợi ý cải thiện giao tiếp
+🧩 VII. Kiến trúc hệ thống
+1. Frontend
+React + Tailwind
+WebRTC (camera)
+WebSocket (real-time)
+2. Backend
+API Gateway
+AI service riêng:
+Speech Service
+Vision Service
+NLP Service
+
+5. Deployment
+Docker
+Kubernetes
+CI/CD pipeline
+🎯 VIII. Prompt cho từng phần
+1. Prompt tạo full project skeleton
+Act as a senior full-stack architect.
+
+Build a web application that translates between spoken language and sign language.
+
+Main features:
+1. Learning module using pre-recorded sign language videos
+2. Speech-to-sign translation (input: audio, output: sign animation/video)
+3. Sign-to-speech translation using webcam (computer vision)
+4. Conversation history storage and retrieval
+5. User authentication and personalization
+
+Tech stack:
+- Frontend: React + TailwindCSS
+- Backend: Node.js (Express) or Python (FastAPI)
+- AI:
+  - Speech recognition: Whisper or Google Speech API
+  - Computer vision: MediaPipe / OpenCV
+  - NLP: Transformer model
+
+Requirements:
+- Clean UI/UX for accessibility
+- Real-time processing (WebSocket)
+- Modular architecture
+- Scalable APIs
+
+Output:
+- Folder structure
+- API design
+- Key components code
+2. Prompt cho module học bằng video
+Design a learning module for sign language using a video dataset.
+
+Features:
+- Search vocabulary
+- Categories (daily life, emotions, business, etc.)
+- Show video + meaning + phonetic + usage example
+- Quiz mode (multiple choice + gesture recognition)
+- Progress tracking
+
+UI:
+- Clean, minimal, accessible
+- Large video display
+- Subtitle support
+
+Bonus:
+- Recommend next lessons using user behavior
+3. Prompt cho Speech → Sign
+Build a speech-to-sign translation module.
+
+Input:
+- Microphone audio
+
+Process:
+1. Convert speech to text
+2. NLP processing to simplify sentence
+3. Map words/phrases to sign language video clips
+4. Render sequence of sign videos or avatar animation
+
+Output:
+- Smooth sequence of sign gestures
+
+Challenges:
+- Grammar differences between spoken and sign language
+- Latency optimization
+
+👉 Nâng cấp:
+
+Dùng avatar 3D thay video (giống NVIDIA AI avatar tech)
+4. Prompt cho Camera → Sign → Speech
+Build a real-time sign language recognition system using webcam.
+
+Features:
+- Detect hand gestures
+- Recognize sign language alphabet and words
+- Convert to text and speech output
+
+Tech:
+- MediaPipe Hands
+- TensorFlow or PyTorch model
+
+Output:
+- Real-time text display
+- Text-to-speech playback
+
+👉 Nâng cấp:
+
+Nhận diện full sentence (khó nhưng giá trị cao)
+Offline mode
+5. Prompt cho hệ thống lưu lịch sử
+Design a conversation history system.
+
+Features:
+- Save conversations (speech ↔ sign)
+- Timestamp
+- Search history
+- Replay conversation
+
+Database:
+- user_id
+- input_type (speech/sign)
+- output_type
+- content
+- created_at
+
+👉 Nâng cấp:
+
+Phân tích hành vi người dùng
+Gợi ý cải thiện giao tiếp
+🎯 IX. Các prompt nâng cao (nếu muốn)
+1. Prompt tạo avatar 3D
+Create a 3D avatar that can perform sign language animations.
+
+Features:
+- Realistic human model
+- Smooth hand and body movements
+- Lip sync with speech
+- Customizable appearance
+
+Tech:
+- Three.js or Babylon.js
+- Blender for model creation
+- AI animation generation
+
+Output:
+- 3D avatar model
+- Animation system
+- Integration with speech-to-sign module
+2. Prompt cho real-time translation
+Build a real-time speech-to-sign translation system with latency < 500ms.
+
+Requirements:
+- Use WebSockets for communication
+- Optimize NLP pipeline
+- Use pre-compiled models
+- Implement streaming
+
+Output:
+- Real-time translation demo
+- Performance metrics
+3. Prompt cho offline mode
+Build an offline version of the sign language translator.
+
+Requirements:
+- All models run locally
+- No internet required
+- Compact model sizes
+- Fast inference on consumer hardware
+
+Output:
+- Offline-capable application
+- Performance benchmarks
+🎯 X. Các tài nguyên hữu ích
+1. Dataset
+ASL-LEX: https://www.asl-lex.org/
+SignBank: https://www.signbank.org/
+2. API
+Google Cloud Speech-to-Text
+OpenAI Whisper
+MediaPipe Hands
+3. Thư viện
+TensorFlow.js
+PyTorch Mobile
+Three.js
+4. Mô hình
+Transformer-based NLP models
+CNN/RNN for gesture recognition
+🎯 XI. Lời khuyên
+Bắt đầu từ nhỏ:
+Module học bằng video → Speech → Sign → Camera → Sign → Speech
+Tối ưu từng phần:
+Đảm bảo latency < 500ms cho real-time
+Sử dụng WebSockets
+Áp dụng AI để cải thiện trải nghiệm
+Thu thập feedback:
+Thường xuyên hỏi người dùng khiếm thính để cải thiện
+Lặp lại và cải tiến liên tục
+🎯 XII. Kết luận
+Bạn có thể dùng các prompt trên để:
+
+✅ Tạo full project skeleton
+✅ Build từng module riêng lẻ
+✅ Thêm tính năng nâng cao
+✅ Tối ưu hiệu năng
+✅ Tạo sản phẩm hoàn chỉnh
+
+Chúc bạn thành công với dự án ý nghĩa này! 🎉

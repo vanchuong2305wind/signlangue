@@ -1,0 +1,117 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-lg);
+    margin-bottom: var(--space-lg);
+}
+
+.header__title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+.header__subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-top: 2px;
+}
+
+.header__right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.header__search {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 8px 14px;
+    border-radius: var(--radius-full);
+    min-width: 240px;
+}
+
+.header__search-icon {
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.header__search-input {
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 13px;
+    color: var(--text-primary);
+    font-family: inherit;
+    width: 100%;
+}
+
+.header__search-input::placeholder {
+    color: var(--text-light);
+}
+
+.header__notification {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    position: relative;
+    border: none;
+    font-family: inherit;
+    transition: all var(--transition-fast);
+}
+
+.header__notification:hover {
+    background: var(--glass-bg-hover);
+    color: var(--text-primary);
+}
+
+.header__notification-dot {
+    position: absolute;
+    top: 8px;
+    right: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-coral);
+    border: 2px solid white;
+}
+
+.header__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.header__avatar:hover {
+    transform: scale(1.05);
+}
+
+.header__avatar-emoji {
+    font-size: 22px;
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-md);
+    }
+
+    .header__search {
+        min-width: 100%;
+    }
+}

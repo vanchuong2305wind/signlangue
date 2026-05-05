@@ -1,0 +1,50 @@
+Ý tưởng chung của dự án
+Xây dựng một web app chuyển giọng nói thành ngôn ngữ ký hiệu — giúp người nghe nói chuyện được với người khiếm thính mà không cần biết ký hiệu.
+
+Pipeline 5 bước
+Giọng nói  →  Text  →  Chuỗi ký hiệu  →  Animation data  →  Avatar 3D ký
+Bước 1 — Giọng nói → Text: Dùng Web Speech API có sẵn trên Chrome, miễn phí, hỗ trợ tiếng Việt.
+Bước 2 — Text → Chuỗi ký hiệu: LLM API gộp cụm từ có nghĩa, sau đó tra Sign Dictionary JSON để lấy ký hiệu tương ứng. Đây là bước cốt lõi và khó nhất.
+Bước 3 — Sign Dictionary: Xây từ dataset WLASL (12,000 video ASL) — chạy MediaPipe để trích 42 landmarks bàn tay từ mỗi video, lưu thành JSON. Map ASL sang tiếng Việt bằng bảng từ điển.
+Bước 4 — Animation: 42 landmarks (21 điểm × 2 tay) mỗi frame được chuyển thành góc xoay bone của avatar 3D. Avatar dùng Ready Player Me — có sẵn rig tay, không cần tự model.
+Bước 5 — Render: Three.js chạy trên browser, avatar thực hiện chuỗi ký hiệu mượt mà với lerp giữa các frame.
+
+
+
+các bước cần làm 
+OK, mình rút gọn lại thành một danh sách công việc thuần túy để bạn tiện theo dõi nhé:
+
+### **1. Chuẩn bị dữ liệu**
+* Tải tập dữ liệu WLASL từ Kaggle.
+* Cài đặt môi trường Python, MediaPipe và OpenCV.
+* Viết script trích xuất 42 tọa độ xương tay (landmarks) từ video.
+* Lọc bỏ dữ liệu mặt và thân, chỉ giữ lại tay.
+* Chuẩn hóa tọa độ tay về khoảng $[0, 1]$.
+* Xuất file dữ liệu từ điển ký hiệu (`.json`).
+* Tạo file ánh xạ từ tiếng Việt sang mã ký hiệu tương ứng.
+
+### **2. Chuyển đổi Giọng nói thành Văn bản**
+* Tạo trang giao diện có nút bấm thu âm.
+* Tích hợp Web Speech API hỗ trợ tiếng Việt.
+* Xử lý lọc nhiễu và các đoạn im lặng khi nói.
+* Thiết lập cơ chế bắt sự kiện khi có văn bản mới được nhận diện.
+
+### **3. Chuyển đổi Văn bản thành Chuỗi ký hiệu**
+* Viết bộ tách từ (tokenizer) cho câu tiếng Việt.
+* Xây dựng hàm tra cứu từ văn bản sang chuỗi khung hình động tác.
+* Sử dụng API (Claude/GPT) để xử lý ngữ nghĩa và gộp cụm từ.
+* Xử lý các từ không có trong từ điển (tìm từ gần nghĩa hoặc đánh vần từng chữ cái).
+
+### **4. Xây dựng Avatar 3D (Three.js)**
+* Thiết lập môi trường 3D (camera, ánh sáng, renderer).
+* Nhúng mô hình nhân vật (Ready Player Me) vào web.
+* Ánh xạ xương nhân vật với tọa độ từ MediaPipe.
+* Viết hàm chuyển đổi tọa độ sang góc xoay cho các khớp xương.
+* Xây dựng hệ thống hàng đợi để các động tác diễn ra liên tục, mượt mà.
+
+### **5. Hoàn thiện và Triển khai**
+* Kết nối toàn bộ quy trình từ Mic đến Avatar.
+* Thiết kế giao diện hiển thị văn bản và trạng thái xử lý.
+* Kiểm thử thực tế với các câu giao tiếp thông dụng.
+* Tối ưu tốc độ phản hồi của hệ thống.
+* Đưa sản phẩm lên môi trường web (GitHub Pages hoặc Vercel).
