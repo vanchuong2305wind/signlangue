@@ -46,7 +46,9 @@ class SignDictionary:
               f"{len(self.available_glosses)} glosses available")
 
     def lookup_vietnamese(self, word: str) -> dict | None:
-        """Look up a Vietnamese word/phrase and return its gloss info."""
+        """Look up a Vietnamese word/phrase and return its gloss info.
+        Also tries matching as an English gloss if Vietnamese lookup fails.
+        """
         word_lower = word.lower().strip()
         gloss = self.vi_to_gloss.get(word_lower)
         if gloss:
@@ -55,6 +57,16 @@ class SignDictionary:
                 "gloss": gloss,
                 "found": True,
             }
+
+        # Fallback: try matching as English gloss directly
+        if word_lower in self.available_glosses:
+            vi = self.gloss_to_vi.get(word_lower, word_lower)
+            return {
+                "vi": vi,
+                "gloss": word_lower,
+                "found": True,
+            }
+
         return None
 
     def lookup_gloss(self, gloss: str) -> bool:
