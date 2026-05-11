@@ -1,3 +1,5 @@
+/* === SIDEBAR — Pen Drawing + Watercolor === */
+
 .sidebar {
     position: fixed;
     left: 0;
@@ -9,8 +11,26 @@
     padding: var(--space-md);
     z-index: 100;
     transition: width var(--transition-normal);
-    border-right: 1px solid var(--glass-border);
-    border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+    background: rgba(255, 252, 245, 0.88);
+    border-right: 2px solid var(--card-border);
+    border-radius: 0;
+
+    /* Subtle watercolor wash on sidebar */
+    background-image:
+        linear-gradient(180deg, rgba(96, 180, 168, 0.06) 0%, transparent 40%),
+        linear-gradient(0deg, rgba(208, 175, 97, 0.06) 0%, transparent 30%);
+}
+
+/* Sketch double-border on right edge */
+.sidebar::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: 10%;
+    bottom: 10%;
+    width: 1px;
+    background: var(--pencil-soft);
+    opacity: 0.25;
 }
 
 .sidebar--collapsed {
@@ -29,14 +49,16 @@
 .sidebar__logo-icon {
     width: 42px;
     height: 42px;
-    border-radius: var(--radius-md);
+    border-radius: 12px 16px 14px 10px;
     background: var(--gradient-teal);
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     flex-shrink: 0;
-    box-shadow: var(--shadow-glow-teal);
+    font-size: 18px;
+    box-shadow: 2px 3px 10px rgba(96, 180, 168, 0.25);
+    transform: rotate(-1deg);
 }
 
 .sidebar__logo-text {
@@ -48,13 +70,13 @@
 .sidebar__logo-title {
     font-size: 18px;
     font-weight: 800;
-    color: var(--text-primary);
+    color: var(--ink-dark);
     letter-spacing: -0.5px;
 }
 
 .sidebar__logo-subtitle {
     font-size: 11px;
-    color: var(--text-muted);
+    color: var(--ink-faint);
     font-weight: 500;
 }
 
@@ -71,38 +93,45 @@
     align-items: center;
     gap: var(--space-sm);
     padding: 10px 12px;
-    border-radius: var(--radius-md);
+    border-radius: 10px 14px 12px 8px;
     text-decoration: none;
-    color: var(--text-secondary);
+    color: var(--ink-light);
     font-size: 14px;
     font-weight: 500;
     transition: all var(--transition-fast);
     position: relative;
     overflow: hidden;
+    border: 1.5px solid transparent;
 }
 
 .sidebar__link:hover {
-    background: rgba(255, 255, 255, 0.45);
-    color: var(--text-primary);
+    background: rgba(96, 180, 168, 0.08);
+    color: var(--ink-medium);
     transform: translateX(2px);
+    border-color: rgba(96, 180, 168, 0.15);
 }
 
 .sidebar__link--active {
-    background: rgba(45, 212, 191, 0.12);
-    color: var(--color-teal-dark);
+    background: var(--wash-teal);
+    color: var(--wc-teal-dark);
     font-weight: 600;
-    box-shadow: inset 0 0 0 1px rgba(45, 212, 191, 0.2);
+    border: 1.5px solid rgba(96, 180, 168, 0.3);
 }
 
 .sidebar__link--active:hover {
-    background: rgba(45, 212, 191, 0.18);
+    background: var(--wash-teal-strong);
 }
 
 .sidebar__link-icon {
-    font-size: 18px;
+    font-size: 15px;
     flex-shrink: 0;
     width: 24px;
     text-align: center;
+    opacity: 0.85;
+}
+
+.sidebar__link--active .sidebar__link-icon {
+    opacity: 1;
 }
 
 .sidebar__link-label {
@@ -117,8 +146,8 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--color-teal);
-    box-shadow: 0 0 8px rgba(45, 212, 191, 0.4);
+    background: var(--wc-teal);
+    box-shadow: 0 0 8px rgba(96, 180, 168, 0.4);
 }
 
 /* Toggle */
@@ -130,48 +159,49 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: white;
-    border: 1px solid var(--glass-border);
+    background: var(--bg-paper);
+    border: 1.5px solid var(--card-border);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: var(--shadow-md);
-    color: var(--text-muted);
+    box-shadow: var(--card-shadow);
+    color: var(--ink-faint);
     transition: all var(--transition-fast);
     z-index: 10;
 }
 
 .sidebar__toggle:hover {
-    color: var(--text-primary);
-    box-shadow: var(--shadow-lg);
+    color: var(--ink-medium);
+    box-shadow: var(--card-shadow-hover);
     transform: translateY(-50%) scale(1.1);
 }
 
 /* Footer progress */
 .sidebar__footer {
     padding-top: var(--space-md);
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    border-top: 1.5px dashed var(--pencil-soft);
 }
 
 .sidebar__progress-card {
-    background: rgba(45, 212, 191, 0.08);
-    border-radius: var(--radius-md);
+    background: var(--wash-teal);
+    border-radius: 10px 14px 12px 8px;
     padding: var(--space-sm) var(--space-md);
+    border: 1px solid rgba(96, 180, 168, 0.2);
 }
 
 .sidebar__progress-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ink-faint);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     margin-bottom: 6px;
 }
 
 .sidebar__progress-bar {
     height: 6px;
-    background: rgba(0, 0, 0, 0.06);
+    background: rgba(44, 24, 16, 0.06);
     border-radius: 3px;
     overflow: hidden;
     margin-bottom: 4px;
@@ -187,7 +217,7 @@
 .sidebar__progress-text {
     font-size: 12px;
     font-weight: 600;
-    color: var(--color-teal-dark);
+    color: var(--wc-teal-dark);
 }
 
 /* Mobile */

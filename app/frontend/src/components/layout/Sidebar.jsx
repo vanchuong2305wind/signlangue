@@ -1,13 +1,12 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { BookOpen, Mic, Camera, BarChart3, Settings, Hand, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import './Sidebar.css';
 
 const NAV_ITEMS = [
-    { path: '/', icon: BarChart3, label: 'Tổng quan', emoji: '📊' },
-    { path: '/learn', icon: BookOpen, label: 'Học ký hiệu', emoji: '📚' },
-    { path: '/translate', icon: Mic, label: 'Dịch giọng nói', emoji: '🎤' },
-    { path: '/camera', icon: Camera, label: 'Nhận diện', emoji: '📷' },
+    { path: '/', icon: 'fa-chart-pie', label: 'Tổng quan' },
+    { path: '/learn', icon: 'fa-book-open', label: 'Học ký hiệu' },
+    { path: '/translate', icon: 'fa-microphone', label: 'Dịch giọng nói' },
+    { path: '/camera', icon: 'fa-camera', label: 'Nhận diện' },
 ];
 
 export default function Sidebar() {
@@ -15,11 +14,11 @@ export default function Sidebar() {
     const location = useLocation();
 
     return (
-        <aside className={`sidebar glass-heavy ${collapsed ? 'sidebar--collapsed' : ''}`}>
+        <aside className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}>
             {/* Logo */}
             <div className="sidebar__logo">
                 <div className="sidebar__logo-icon">
-                    <Hand size={24} strokeWidth={2.5} />
+                    <i className="fa-solid fa-hands" />
                 </div>
                 {!collapsed && (
                     <div className="sidebar__logo-text">
@@ -40,7 +39,9 @@ export default function Sidebar() {
                         }
                         title={collapsed ? item.label : undefined}
                     >
-                        <span className="sidebar__link-icon">{item.emoji}</span>
+                        <span className="sidebar__link-icon">
+                            <i className={`fa-solid ${item.icon}`} />
+                        </span>
                         {!collapsed && <span className="sidebar__link-label">{item.label}</span>}
                         {!collapsed && location.pathname === item.path && (
                             <span className="sidebar__link-indicator" />
@@ -55,7 +56,7 @@ export default function Sidebar() {
                 onClick={() => setCollapsed(!collapsed)}
                 aria-label={collapsed ? 'Mở rộng sidebar' : 'Thu gọn sidebar'}
             >
-                {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+                <i className={`fa-solid ${collapsed ? 'fa-chevron-right' : 'fa-chevron-left'}`} style={{ fontSize: '11px' }} />
             </button>
 
             {/* Bottom section */}

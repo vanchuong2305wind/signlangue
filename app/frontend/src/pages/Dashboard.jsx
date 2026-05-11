@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Mic, Camera, TrendingUp, Clock, Award } from 'lucide-react';
 import GlassCard from '../components/ui/GlassCard';
 import { useSignVideos } from '../hooks/useSignVideos';
 import { CATEGORIES } from '../data/categories';
@@ -9,26 +8,26 @@ const QUICK_ACTIONS = [
     {
         title: 'Học ký hiệu',
         subtitle: '2000+ từ vựng video',
-        icon: '📚',
+        icon: 'fa-book-open',
         path: '/learn',
-        gradient: 'linear-gradient(135deg, #2dd4bf, #14b8a6)',
-        glow: 'rgba(45, 212, 191, 0.3)',
+        gradient: 'linear-gradient(135deg, #78c4b6, #5faa9e)',
+        glow: 'rgba(96, 180, 168, 0.2)',
     },
     {
         title: 'Dịch giọng nói',
         subtitle: 'Giọng nói → Ký hiệu',
-        icon: '🎤',
+        icon: 'fa-microphone',
         path: '/translate',
-        gradient: 'linear-gradient(135deg, #fb923c, #f97066)',
-        glow: 'rgba(249, 112, 102, 0.3)',
+        gradient: 'linear-gradient(135deg, #d89890, #c87a72)',
+        glow: 'rgba(204, 120, 110, 0.2)',
     },
     {
         title: 'Nhận diện',
         subtitle: 'Camera → Văn bản',
-        icon: '📷',
+        icon: 'fa-camera',
         path: '/camera',
-        gradient: 'linear-gradient(135deg, #38bdf8, #0ea5e9)',
-        glow: 'rgba(56, 189, 248, 0.3)',
+        gradient: 'linear-gradient(135deg, #8ab4cc, #6a9bba)',
+        glow: 'rgba(125, 170, 200, 0.2)',
     },
 ];
 
@@ -43,7 +42,7 @@ export default function Dashboard() {
                 <div className="dashboard__welcome-content">
                     <div className="dashboard__welcome-text">
                         <h2 className="dashboard__welcome-title">
-                            Xin chào! <span className="dashboard__wave">👋</span>
+                            Xin chào! <i className="fa-solid fa-feather-pointed dashboard__wave" />
                         </h2>
                         <p className="dashboard__welcome-desc">
                             Hãy bắt đầu học ngôn ngữ ký hiệu ngay hôm nay. Hệ thống có hơn{' '}
@@ -51,7 +50,7 @@ export default function Dashboard() {
                         </p>
                     </div>
                     <div className="dashboard__welcome-illustration">
-                        <span className="dashboard__big-emoji animate-float">🤟</span>
+                        <i className="fa-solid fa-hands animate-float dashboard__big-icon" />
                     </div>
                 </div>
             </GlassCard>
@@ -67,9 +66,9 @@ export default function Dashboard() {
                     >
                         <div
                             className="dashboard__action-icon"
-                            style={{ background: action.gradient, boxShadow: `0 8px 24px ${action.glow}` }}
+                            style={{ background: action.gradient, boxShadow: `0 6px 20px ${action.glow}` }}
                         >
-                            <span>{action.icon}</span>
+                            <i className={`fa-solid ${action.icon}`} />
                         </div>
                         <h3 className="dashboard__action-title">{action.title}</h3>
                         <p className="dashboard__action-subtitle">{action.subtitle}</p>
@@ -81,7 +80,7 @@ export default function Dashboard() {
             <div className="dashboard__stats stagger-children">
                 <GlassCard padding="lg" hover={false} className="dashboard__stat">
                     <div className="dashboard__stat-icon" style={{ background: 'var(--gradient-teal)' }}>
-                        <BookOpen size={18} color="white" />
+                        <i className="fa-solid fa-book-open" />
                     </div>
                     <div>
                         <div className="dashboard__stat-value">{stats.total.toLocaleString()}</div>
@@ -90,8 +89,8 @@ export default function Dashboard() {
                 </GlassCard>
 
                 <GlassCard padding="lg" hover={false} className="dashboard__stat">
-                    <div className="dashboard__stat-icon" style={{ background: 'var(--gradient-coral)' }}>
-                        <TrendingUp size={18} color="white" />
+                    <div className="dashboard__stat-icon" style={{ background: 'var(--gradient-rose)' }}>
+                        <i className="fa-solid fa-chart-line" />
                     </div>
                     <div>
                         <div className="dashboard__stat-value">{(stats.with_vi || 0).toLocaleString()}</div>
@@ -101,7 +100,7 @@ export default function Dashboard() {
 
                 <GlassCard padding="lg" hover={false} className="dashboard__stat">
                     <div className="dashboard__stat-icon" style={{ background: 'var(--gradient-sky)' }}>
-                        <Clock size={18} color="white" />
+                        <i className="fa-solid fa-folder-open" />
                     </div>
                     <div>
                         <div className="dashboard__stat-value">{Object.keys(stats.categories).length}</div>
@@ -110,8 +109,8 @@ export default function Dashboard() {
                 </GlassCard>
 
                 <GlassCard padding="lg" hover={false} className="dashboard__stat">
-                    <div className="dashboard__stat-icon" style={{ background: 'var(--gradient-warm)' }}>
-                        <Award size={18} color="white" />
+                    <div className="dashboard__stat-icon" style={{ background: 'var(--gradient-gold)' }}>
+                        <i className="fa-solid fa-award" />
                     </div>
                     <div>
                         <div className="dashboard__stat-value">0</div>
@@ -122,7 +121,10 @@ export default function Dashboard() {
 
             {/* Categories Preview */}
             <div className="dashboard__section">
-                <h3 className="dashboard__section-title">Chủ đề phổ biến</h3>
+                <h3 className="dashboard__section-title">
+                    <i className="fa-solid fa-palette" style={{ marginRight: '8px', opacity: 0.6 }} />
+                    Chủ đề phổ biến
+                </h3>
                 <div className="dashboard__categories stagger-children">
                     {Object.entries(CATEGORIES)
                         .filter(([key]) => key !== 'all' && key !== 'other')
@@ -138,7 +140,7 @@ export default function Dashboard() {
                                     className="dashboard__category-badge"
                                     style={{ background: cat.gradient }}
                                 >
-                                    <span>{cat.icon}</span>
+                                    <i className={`fa-solid ${cat.icon}`} />
                                 </div>
                                 <span className="dashboard__category-name">{cat.label}</span>
                                 <span className="dashboard__category-count">

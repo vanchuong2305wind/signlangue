@@ -1,4 +1,3 @@
-import { Search, Bell } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import './Header.css';
 
@@ -22,8 +21,8 @@ export default function Header({ onSearch }) {
 
             <div className="header__right">
                 {/* Search */}
-                <div className="header__search glass">
-                    <Search size={16} className="header__search-icon" />
+                <div className="header__search">
+                    <i className="fa-solid fa-magnifying-glass header__search-icon" />
                     <input
                         type="text"
                         placeholder="Tìm kiếm từ vựng..."
@@ -33,14 +32,14 @@ export default function Header({ onSearch }) {
                 </div>
 
                 {/* Notifications */}
-                <button className="header__notification glass" aria-label="Thông báo">
-                    <Bell size={18} />
+                <button className="header__notification" aria-label="Thông báo">
+                    <i className="fa-solid fa-bell" />
                     <span className="header__notification-dot" />
                 </button>
 
                 {/* Avatar */}
-                <div className="header__avatar glass">
-                    <span className="header__avatar-emoji">🧑‍🎓</span>
+                <div className="header__avatar">
+                    <i className="fa-solid fa-user-graduate" />
                 </div>
             </div>
         </header>

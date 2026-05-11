@@ -1,6 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Search, Grid, List, Play, Volume2, ChevronLeft, ChevronRight, X, ExternalLink, MonitorPlay, Globe, HardDrive } from 'lucide-react';
 import GlassCard from '../components/ui/GlassCard';
 import { useSignVideos } from '../hooks/useSignVideos';
 import { CATEGORIES } from '../data/categories';
@@ -9,10 +8,10 @@ import './Learn.css';
 const ITEMS_PER_PAGE = 24;
 
 const TYPE_LABELS = {
-    mp4: { label: 'MP4', icon: '🎬', color: '#10b981' },
-    youtube: { label: 'YouTube', icon: '▶️', color: '#ef4444' },
-    local: { label: 'Local', icon: '💾', color: '#3b82f6' },
-    other: { label: 'Link', icon: '🔗', color: '#8b5cf6' },
+    mp4: { label: 'MP4', icon: 'fa-film', color: '#6aaa7a' },
+    youtube: { label: 'YouTube', icon: 'fa-play', color: '#c87a72' },
+    local: { label: 'Local', icon: 'fa-hard-drive', color: '#6a9bba' },
+    other: { label: 'Link', icon: 'fa-link', color: '#9a7aa5' },
 };
 
 export default function Learn() {
@@ -55,7 +54,6 @@ export default function Learn() {
         setActiveVideoIdx(0);
     };
 
-    // Get playable videos (exclude swf)
     const playableVideos = selectedWord
         ? selectedWord.videos.filter(v => v.type !== 'swf')
         : [];
@@ -74,7 +72,9 @@ export default function Learn() {
                             onClick={() => handleCategoryChange(key)}
                             style={category === key ? { background: cat.gradient, color: 'white' } : {}}
                         >
-                            <span className="learn__category-tab-icon">{cat.icon}</span>
+                            <span className="learn__category-tab-icon">
+                                <i className={`fa-solid ${cat.icon}`} />
+                            </span>
                             <span className="learn__category-tab-label">{cat.label}</span>
                             {stats.categories[key] && (
                                 <span className="learn__category-tab-count">
@@ -88,8 +88,8 @@ export default function Learn() {
 
             {/* Search and controls */}
             <div className="learn__toolbar">
-                <div className="learn__search glass">
-                    <Search size={16} className="learn__search-icon" />
+                <div className="learn__search">
+                    <i className="fa-solid fa-magnifying-glass learn__search-icon" />
                     <input
                         type="text"
                         placeholder="Tìm từ vựng (VD: xin chào, hello)..."
@@ -99,7 +99,7 @@ export default function Learn() {
                     />
                     {search && (
                         <button className="learn__search-clear" onClick={() => handleSearch('')}>
-                            <X size={14} />
+                            <i className="fa-solid fa-xmark" style={{ fontSize: '11px' }} />
                         </button>
                     )}
                 </div>
@@ -108,18 +108,18 @@ export default function Learn() {
                     <span className="learn__results-count">
                         {videos.length} kết quả
                     </span>
-                    <div className="learn__view-toggle glass">
+                    <div className="learn__view-toggle">
                         <button
                             className={`learn__view-btn ${viewMode === 'grid' ? 'learn__view-btn--active' : ''}`}
                             onClick={() => setViewMode('grid')}
                         >
-                            <Grid size={14} />
+                            <i className="fa-solid fa-table-cells-large" style={{ fontSize: '12px' }} />
                         </button>
                         <button
                             className={`learn__view-btn ${viewMode === 'list' ? 'learn__view-btn--active' : ''}`}
                             onClick={() => setViewMode('list')}
                         >
-                            <List size={14} />
+                            <i className="fa-solid fa-list" style={{ fontSize: '12px' }} />
                         </button>
                     </div>
                 </div>
@@ -133,7 +133,7 @@ export default function Learn() {
                 </div>
             ) : paginatedVideos.length === 0 ? (
                 <GlassCard padding="xl" hover={false} className="learn__empty">
-                    <span className="learn__empty-icon">🔍</span>
+                    <i className="fa-solid fa-magnifying-glass learn__empty-icon" />
                     <p className="learn__empty-text">Không tìm thấy từ vựng phù hợp</p>
                     <button className="learn__empty-reset" onClick={() => { handleSearch(''); handleCategoryChange('all'); }}>
                         Xóa bộ lọc
@@ -152,7 +152,7 @@ export default function Learn() {
                                 <>
                                     <div className="learn__word-preview">
                                         <div className="learn__word-play-icon">
-                                            <Play size={20} fill="white" />
+                                            <i className="fa-solid fa-play" />
                                         </div>
                                         <div className="learn__word-badge-row">
                                             <span className="learn__word-video-count">{word.video_count} video</span>
@@ -166,7 +166,7 @@ export default function Learn() {
                             ) : (
                                 <div className="learn__word-list-item">
                                     <div className="learn__word-list-play">
-                                        <Play size={14} fill="currentColor" />
+                                        <i className="fa-solid fa-play" style={{ fontSize: '10px' }} />
                                     </div>
                                     <div className="learn__word-list-vi">{word.vi || word.gloss}</div>
                                     <div className="learn__word-list-gloss">{word.gloss.toUpperCase()}</div>
@@ -182,11 +182,11 @@ export default function Learn() {
             {totalPages > 1 && (
                 <div className="learn__pagination">
                     <button
-                        className="learn__page-btn glass"
+                        className="learn__page-btn"
                         disabled={page <= 1}
                         onClick={() => setPage(p => Math.max(1, p - 1))}
                     >
-                        <ChevronLeft size={16} />
+                        <i className="fa-solid fa-chevron-left" style={{ fontSize: '12px' }} />
                     </button>
                     <div className="learn__page-info">
                         <span className="learn__page-current">{page}</span>
@@ -194,11 +194,11 @@ export default function Learn() {
                         <span className="learn__page-total">{totalPages}</span>
                     </div>
                     <button
-                        className="learn__page-btn glass"
+                        className="learn__page-btn"
                         disabled={page >= totalPages}
                         onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                     >
-                        <ChevronRight size={16} />
+                        <i className="fa-solid fa-chevron-right" style={{ fontSize: '12px' }} />
                     </button>
                 </div>
             )}
@@ -206,9 +206,9 @@ export default function Learn() {
             {/* === VIDEO PLAYER MODAL === */}
             {selectedWord && (
                 <div className="learn__modal-overlay" onClick={closeModal}>
-                    <div className="learn__modal glass-heavy animate-fade-in-scale" onClick={e => e.stopPropagation()}>
+                    <div className="learn__modal animate-fade-in-scale" onClick={e => e.stopPropagation()}>
                         <button className="learn__modal-close" onClick={closeModal}>
-                            <X size={20} />
+                            <i className="fa-solid fa-xmark" />
                         </button>
 
                         {/* Video Player */}
@@ -246,16 +246,19 @@ export default function Learn() {
 
                             {selectedWord.vi && (
                                 <div className="learn__modal-translation">
-                                    <Volume2 size={14} />
+                                    <i className="fa-solid fa-language" style={{ fontSize: '13px' }} />
                                     <span>Tiếng Việt: <strong>{selectedWord.vi}</strong></span>
                                 </div>
                             )}
                         </div>
 
-                        {/* Video List - ALL available videos */}
+                        {/* Video List */}
                         <div className="learn__modal-videos">
                             <div className="learn__modal-videos-header">
-                                <span className="learn__modal-videos-title">📹 Danh sách video ({playableVideos.length})</span>
+                                <span className="learn__modal-videos-title">
+                                    <i className="fa-solid fa-video" style={{ marginRight: '6px', opacity: 0.6 }} />
+                                    Danh sách video ({playableVideos.length})
+                                </span>
                             </div>
                             <div className="learn__modal-videos-list">
                                 {playableVideos.map((v, idx) => {
@@ -266,7 +269,9 @@ export default function Learn() {
                                             className={`learn__video-item ${idx === activeVideoIdx ? 'learn__video-item--active' : ''}`}
                                             onClick={() => setActiveVideoIdx(idx)}
                                         >
-                                            <span className="learn__video-item-icon">{typeInfo.icon}</span>
+                                            <span className="learn__video-item-icon">
+                                                <i className={`fa-solid ${typeInfo.icon}`} />
+                                            </span>
                                             <div className="learn__video-item-info">
                                                 <span className="learn__video-item-source">{v.source}</span>
                                                 <span className="learn__video-item-type" style={{ color: typeInfo.color }}>
@@ -274,7 +279,10 @@ export default function Learn() {
                                                 </span>
                                             </div>
                                             {idx === activeVideoIdx && (
-                                                <span className="learn__video-item-playing">▶ Đang phát</span>
+                                                <span className="learn__video-item-playing">
+                                                    <i className="fa-solid fa-play" style={{ fontSize: '8px', marginRight: '4px' }} />
+                                                    Đang phát
+                                                </span>
                                             )}
                                         </button>
                                     );
@@ -285,22 +293,22 @@ export default function Learn() {
                         {/* Word navigation */}
                         <div className="learn__modal-nav">
                             <button
-                                className="learn__modal-nav-btn glass"
+                                className="learn__modal-nav-btn"
                                 onClick={() => {
                                     const idx = videos.findIndex(v => v.gloss === selectedWord.gloss);
                                     if (idx > 0) openWord(videos[idx - 1]);
                                 }}
                             >
-                                <ChevronLeft size={16} /> Trước
+                                <i className="fa-solid fa-chevron-left" style={{ fontSize: '11px', marginRight: '4px' }} /> Trước
                             </button>
                             <button
-                                className="learn__modal-nav-btn glass"
+                                className="learn__modal-nav-btn"
                                 onClick={() => {
                                     const idx = videos.findIndex(v => v.gloss === selectedWord.gloss);
                                     if (idx < videos.length - 1) openWord(videos[idx + 1]);
                                 }}
                             >
-                                Tiếp <ChevronRight size={16} />
+                                Tiếp <i className="fa-solid fa-chevron-right" style={{ fontSize: '11px', marginLeft: '4px' }} />
                             </button>
                         </div>
                     </div>

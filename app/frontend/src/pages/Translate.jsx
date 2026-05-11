@@ -1,5 +1,4 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { Mic, MicOff, Send, RotateCcw, Play, Pause, ChevronLeft, ChevronRight, Volume2, Hand } from 'lucide-react';
 import GlassCard from '../components/ui/GlassCard';
 import AvatarScene3D from '../components/avatar/AvatarScene3D';
 import useSpeechRecognition from '../hooks/useSpeechRecognition';
@@ -69,7 +68,6 @@ export default function Translate() {
 
     useEffect(() => {
         if (mode === '3d' && result?.signs) {
-            // Small delay to ensure avatar is ready after mode switch
             const timer = setTimeout(() => {
                 if (avatarRef.current?.isModelLoaded) {
                     avatarRef.current.playSignSequence(result.signs);
@@ -152,7 +150,9 @@ export default function Translate() {
             {/* Top bar */}
             <div className="translate-top-bar">
                 <div className="translate-title-group">
-                    <div className="translate-icon">🎤</div>
+                    <div className="translate-icon">
+                        <i className="fa-solid fa-microphone" />
+                    </div>
                     <div>
                         <h1 className="translate-title">Giọng nói → Ký hiệu</h1>
                         <p className="translate-subtitle">Nói hoặc nhập text, xem ngôn ngữ ký hiệu</p>
@@ -160,10 +160,10 @@ export default function Translate() {
                 </div>
                 <div className="translate-mode-toggle">
                     <button className={`mode-btn ${mode === 'video' ? 'active' : ''}`} onClick={() => setMode('video')}>
-                        <Volume2 size={14} /> Video
+                        <i className="fa-solid fa-video" style={{ fontSize: '12px' }} /> Video
                     </button>
                     <button className={`mode-btn ${mode === '3d' ? 'active' : ''}`} onClick={() => setMode('3d')}>
-                        <Hand size={14} /> 3D Avatar
+                        <i className="fa-solid fa-hand" style={{ fontSize: '12px' }} /> 3D Avatar
                     </button>
                 </div>
             </div>
@@ -186,7 +186,10 @@ export default function Translate() {
                                     onClick={toggleSpeech}
                                     id="mic-toggle-btn"
                                 >
-                                    {speechState === 'listening' ? <MicOff size={32} /> : <Mic size={32} />}
+                                    {speechState === 'listening'
+                                        ? <i className="fa-solid fa-microphone-slash" style={{ fontSize: '28px' }} />
+                                        : <i className="fa-solid fa-microphone" style={{ fontSize: '28px' }} />
+                                    }
                                 </button>
                             </div>
                             <div className="mic-status">
@@ -202,7 +205,8 @@ export default function Translate() {
                         </>
                     ) : (
                         <div className="mic-not-supported">
-                            ⚠️ Trình duyệt không hỗ trợ Web Speech API. Dùng Chrome hoặc Edge.
+                            <i className="fa-solid fa-triangle-exclamation" style={{ marginRight: '6px' }} />
+                            Trình duyệt không hỗ trợ Web Speech API. Dùng Chrome hoặc Edge.
                         </div>
                     )}
                 </div>
@@ -219,7 +223,7 @@ export default function Translate() {
                             id="text-input-field"
                         />
                         <button type="submit" className="text-send-btn" disabled={!textInput.trim() || isLoading} id="text-submit-btn">
-                            <Send size={14} /> Dịch
+                            <i className="fa-solid fa-paper-plane" style={{ fontSize: '12px' }} /> Dịch
                         </button>
                     </form>
                 </div>
@@ -229,7 +233,7 @@ export default function Translate() {
                         <span className="transcript-label">Lịch sử nhận dạng</span>
                         {transcripts.length > 0 && (
                             <button onClick={handleClear} className="transcript-clear-btn">
-                                <RotateCcw size={10} /> Xóa
+                                <i className="fa-solid fa-rotate-left" style={{ fontSize: '10px' }} /> Xóa
                             </button>
                         )}
                     </div>
@@ -250,7 +254,7 @@ export default function Translate() {
 
             {/* Right panel — Output */}
             <GlassCard variant="strong" className="translate-output-panel">
-                {/* 3D Avatar — always mounted, hidden when not active to preserve WebGL context */}
+                {/* 3D Avatar */}
                 <div style={{ display: mode === '3d' ? 'block' : 'none' }}>
                     <AvatarScene3D
                         ref={avatarRef}
@@ -273,7 +277,9 @@ export default function Translate() {
                                 <span className="loading-text">Đang dịch...</span>
                             </div>
                         ) : error ? (
-                            <div className="translate-error">❌ {error}</div>
+                            <div className="translate-error">
+                                <i className="fa-solid fa-circle-exclamation" style={{ marginRight: '6px' }} /> {error}
+                            </div>
                         ) : activeVideo ? (
                             <div className="sign-video-player">
                                 {activeVideo.type === 'youtube' ? (
@@ -299,11 +305,11 @@ export default function Translate() {
                                     </div>
                                     <div className="sign-video-nav">
                                         <button className="sign-video-nav-btn" onClick={() => setActiveSignIdx(Math.max(0, activeSignIdx - 1))} disabled={activeSignIdx === 0}>
-                                            <ChevronLeft size={14} />
+                                            <i className="fa-solid fa-chevron-left" style={{ fontSize: '11px' }} />
                                         </button>
                                         <span className="sign-video-counter">{activeSignIdx + 1}/{result?.signs?.length || 0}</span>
                                         <button className="sign-video-nav-btn" onClick={() => setActiveSignIdx(Math.min((result?.signs?.length || 1) - 1, activeSignIdx + 1))} disabled={activeSignIdx >= (result?.signs?.length || 1) - 1}>
-                                            <ChevronRight size={14} />
+                                            <i className="fa-solid fa-chevron-right" style={{ fontSize: '11px' }} />
                                         </button>
                                     </div>
                                 </div>
@@ -314,7 +320,7 @@ export default function Translate() {
                                     <span>Không có video cho từ này. Chọn từ khác.</span>
                                 ) : (
                                     <>
-                                        <span style={{ fontSize: '48px', display: 'block', marginBottom: '12px' }} className="animate-float">🤟</span>
+                                        <i className="fa-solid fa-hands animate-float" style={{ fontSize: '48px', display: 'block', marginBottom: '12px', color: 'var(--wc-teal)', opacity: 0.4 }} />
                                         <span>Nói hoặc nhập văn bản để xem ký hiệu</span>
                                     </>
                                 )}
@@ -331,7 +337,10 @@ export default function Translate() {
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 {mode === 'video' && result.signs.filter(s => s.found).length > 1 && (
                                     <button onClick={handleAutoPlay} className={`auto-play-btn ${isAutoPlaying ? 'playing' : ''}`}>
-                                        {isAutoPlaying ? <><Pause size={12} /> Dừng</> : <><Play size={12} /> Phát tự động</>}
+                                        {isAutoPlaying
+                                            ? <><i className="fa-solid fa-pause" style={{ fontSize: '10px' }} /> Dừng</>
+                                            : <><i className="fa-solid fa-play" style={{ fontSize: '10px' }} /> Phát tự động</>
+                                        }
                                     </button>
                                 )}
                                 <span className="video-output-stats">{foundCount}/{totalCount} từ</span>
@@ -348,7 +357,9 @@ export default function Translate() {
                                         {sign.found && sign.gloss ? (
                                             <span className="sign-chip-gloss">{sign.gloss}</span>
                                         ) : (
-                                            <span className="sign-chip-miss">✗ không có</span>
+                                            <span className="sign-chip-miss">
+                                                <i className="fa-solid fa-xmark" style={{ fontSize: '9px', marginRight: '2px' }} /> không có
+                                            </span>
                                         )}
                                     </div>
                                     {idx < result.signs.length - 1 && <span className="sign-arrow">→</span>}
@@ -361,7 +372,10 @@ export default function Translate() {
                 {/* Fingerspell */}
                 {result?.fingerspell_fallback?.length > 0 && (
                     <div className="fingerspell-section">
-                        <p className="fingerspell-label">🤟 Đánh vần cho từ không tìm thấy:</p>
+                        <p className="fingerspell-label">
+                            <i className="fa-solid fa-hand-point-up" style={{ marginRight: '6px' }} />
+                            Đánh vần cho từ không tìm thấy:
+                        </p>
                         <div className="fingerspell-chips">
                             {result.fingerspell_fallback.map((letter, i) => (
                                 <span key={i} className={`fingerspell-chip ${letter.found ? 'found' : 'not-found'}`}>
@@ -375,9 +389,12 @@ export default function Translate() {
 
             {/* Bottom stats */}
             {result && (
-                <div className="translate-bottom-bar glass-light" style={{ borderRadius: 'var(--radius-md)' }}>
+                <div className="translate-bottom-bar" style={{ borderRadius: 'var(--radius-md)' }}>
                     <span className={`method-badge ${result.method === 'gemini' ? 'gemini' : 'rule-based'}`}>
-                        {result.method === 'gemini' ? '🤖 Gemini AI' : '📖 Rule-based'}
+                        {result.method === 'gemini'
+                            ? <><i className="fa-solid fa-robot" style={{ marginRight: '4px' }} /> Gemini AI</>
+                            : <><i className="fa-solid fa-book" style={{ marginRight: '4px' }} /> Rule-based</>
+                        }
                     </span>
                     <div className="result-stats">
                         <div className="stat-item">
@@ -388,7 +405,7 @@ export default function Translate() {
                         </div>
                         <div className="stat-item">
                             <span>Câu gốc:</span>
-                            <span style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>"{result.input_text}"</span>
+                            <span style={{ color: 'var(--ink-light)', fontWeight: 600 }}>"{result.input_text}"</span>
                         </div>
                     </div>
                 </div>
