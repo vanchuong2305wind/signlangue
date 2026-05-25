@@ -736,10 +736,11 @@
     border: 1.5px solid var(--card-border);
 }
 
-/* Responsive */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
     .translate-page {
         grid-template-columns: 1fr;
+        min-height: auto;
     }
 
     .translate-speech-panel {
@@ -748,12 +749,202 @@
 
     .translate-output-panel {
         order: 2;
+        min-height: 300px;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+    .translate-page {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+    }
+
     .translate-top-bar {
         flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-sm);
+    }
+
+    .translate-title-group {
+        gap: var(--space-sm);
+    }
+
+    .translate-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+
+    .translate-title {
+        font-size: 17px;
+    }
+
+    .translate-subtitle {
+        font-size: 11px;
+    }
+
+    .translate-mode-toggle {
+        align-self: flex-start;
+    }
+
+    .mode-btn {
+        padding: 5px 10px;
+        font-size: 11px;
+    }
+
+    /* Mic section compact */
+    .translate-speech-panel {
+        padding: var(--space-md) !important;
+        gap: var(--space-sm);
+    }
+
+    .mic-section {
+        padding: var(--space-sm) 0;
+        gap: var(--space-sm);
+    }
+
+    .mic-button {
+        width: 60px;
+        height: 60px;
+    }
+
+    .mic-button i {
+        font-size: 22px !important;
+    }
+
+    .mic-pulse-ring {
+        width: 60px;
+        height: 60px;
+    }
+
+    .mic-status-text {
+        font-size: 13px;
+    }
+
+    .mic-status-sub {
+        font-size: 10px;
+    }
+
+    /* Text input compact */
+    .text-input-form {
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+
+    .text-input {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    .text-send-btn {
+        padding: 10px;
+        justify-content: center;
+    }
+
+    /* Transcript */
+    .transcript-list {
+        max-height: 120px;
+    }
+
+    /* Output panel */
+    .translate-output-panel {
+        padding: var(--space-md) !important;
+        min-height: 260px;
+    }
+
+    .sign-video-player video,
+    .sign-video-player iframe {
+        min-height: 200px;
+    }
+
+    .sign-video-empty {
+        min-height: 180px;
+        font-size: 13px;
+    }
+
+    .sign-video-empty i {
+        font-size: 36px !important;
+    }
+
+    .sign-video-info {
+        flex-direction: column;
+        gap: var(--space-xs);
         align-items: flex-start;
+        padding: 8px 12px;
+    }
+
+    .sign-video-label {
+        font-size: 13px;
+    }
+
+    /* Sign chips */
+    .sign-sequence {
+        gap: 4px;
+    }
+
+    .sign-chip {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+
+    .sign-arrow {
+        font-size: 11px;
+    }
+
+    /* Bottom bar */
+    .translate-bottom-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+        padding: var(--space-sm);
+    }
+
+    .result-stats {
+        gap: var(--space-sm);
+        flex-direction: column;
+    }
+
+    .stat-item {
+        font-size: 11px;
+    }
+
+    /* Video output header */
+    .video-output-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-xs);
+    }
+
+    .auto-play-btn {
+        font-size: 10px;
+        padding: 3px 10px;
+    }
+
+    /* Avatar */
+    .avatar-container {
+        min-height: 250px;
+    }
+
+    /* Fingerspell */
+    .fingerspell-chip {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 400px) {
+    .translate-title {
+        font-size: 15px;
+    }
+
+    .mic-button {
+        width: 52px;
+        height: 52px;
+    }
+
+    .mic-pulse-ring {
+        width: 52px;
+        height: 52px;
     }
 }

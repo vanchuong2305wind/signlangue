@@ -17,9 +17,20 @@
     max-width: 1400px;
 }
 
+/* ===== MOBILE ===== */
 @media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
     .layout__main {
         margin-left: 0;
-        padding: var(--space-md);
+        padding: var(--space-sm) var(--space-sm) 80px;
+        /* space for bottom nav */
+        min-height: calc(100vh - 60px);
+    }
+
+    .layout__content {
+        width: 100%;
     }
 }

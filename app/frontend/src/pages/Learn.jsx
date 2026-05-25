@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 import GlassCard from '../components/ui/GlassCard';
 import { useSignVideos } from '../hooks/useSignVideos';
@@ -204,7 +205,8 @@ export default function Learn() {
             )}
 
             {/* === VIDEO PLAYER MODAL === */}
-            {selectedWord && (
+            {/* === VIDEO PLAYER MODAL (Portal to body) === */}
+            {selectedWord && createPortal(
                 <div className="learn__modal-overlay" onClick={closeModal}>
                     <div className="learn__modal animate-fade-in-scale" onClick={e => e.stopPropagation()}>
                         <button className="learn__modal-close" onClick={closeModal}>
@@ -312,7 +314,8 @@ export default function Learn() {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );

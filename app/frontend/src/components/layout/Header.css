@@ -9,7 +9,6 @@
     position: relative;
 }
 
-/* Sketch underline beneath header area */
 .header::after {
     content: '';
     position: absolute;
@@ -30,7 +29,6 @@
     position: relative;
 }
 
-/* Watercolor wash under title */
 .header__title::after {
     content: '';
     position: absolute;
@@ -110,6 +108,7 @@
     font-family: inherit;
     font-size: 15px;
     transition: all var(--transition-fast);
+    flex-shrink: 0;
 }
 
 .header__notification:hover {
@@ -142,6 +141,7 @@
     color: white;
     font-size: 16px;
     border: 2px solid rgba(96, 180, 168, 0.3);
+    flex-shrink: 0;
 }
 
 .header__avatar:hover {
@@ -149,14 +149,91 @@
     box-shadow: 0 3px 12px rgba(96, 180, 168, 0.2);
 }
 
+/* ===== MOBILE (20:9, 19.5:9 tall screens) ===== */
 @media (max-width: 768px) {
     .header {
         flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-md);
+        align-items: stretch;
+        gap: 6px;
+        padding: 8px var(--space-md);
+        margin-bottom: 6px;
+    }
+
+    .header::after {
+        left: var(--space-md);
+        right: var(--space-md);
+    }
+
+    .header__left {
+        width: 100%;
+    }
+
+    .header__title {
+        font-size: 20px;
+        line-height: 1.2;
+    }
+
+    .header__subtitle {
+        font-size: 11px;
+        margin-top: 2px;
+        display: block;
+    }
+
+    .header__right {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
     }
 
     .header__search {
-        min-width: 100%;
+        min-width: 0;
+        flex: 1;
+        padding: 7px 12px;
+    }
+
+    .header__notification {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+
+    .header__avatar {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+}
+
+/* Very narrow phones (< 360px width, e.g. Galaxy S series in portrait) */
+@media (max-width: 400px) {
+    .header {
+        padding: 6px 10px;
+        gap: 4px;
+    }
+
+    .header__title {
+        font-size: 16px;
+    }
+
+    .header__subtitle {
+        font-size: 10px;
+        display: none;
+    }
+
+    .header__notification {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .header__avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .header__search {
+        padding: 6px 10px;
     }
 }

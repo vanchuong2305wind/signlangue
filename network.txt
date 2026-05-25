@@ -1,0 +1,80 @@
+================================================================
+  HƯỚNG DẪN TRUY CẬP TỪ ĐIỆN THOẠI QUA MẠNG LAN
+================================================================
+
+Điện thoại và máy tính phải kết nối CÙNG 1 WiFi.
+mở port - nhấn yes
+ Start-Process powershell -Verb RunAs -ArgumentList '-Command', 'netsh advfirewall firewall add rule name=\"Vite Dev Server\" dir=in action=allow protocol=TCP localport=5173; netsh advfirewall firewall add rule name=\"FastAPI Backend\" dir=in action=allow protocol=TCP localport=8000; pause'
+ check ip
+  ipconfig | Select-String -Pattern "IPv4|Wi-Fi|Wireless" -Context 0,1
+  ipconfig | findstr /i "IPv4"
+────────────────────────────────────────────────────────────────
+1. CHẠY DEV SERVER (mỗi lần làm việc)
+────────────────────────────────────────────────────────────────
+
+  # Frontend (Vite)
+  cd d:\CLB_AI\Duan\app\frontend
+  npm run dev
+
+  # Backend (FastAPI) — mở terminal khác
+  cd d:\CLB_AI\Duan
+  python -c "import uvicorn; uvicorn.run('app.api.server:app', host='0.0.0.0', port=8000, reload=True)"
+
+  → Vite sẽ hiện IP dạng: http://192.168.x.x:5173/
+  → Nhập IP đó trên điện thoại để truy cập.
+
+────────────────────────────────────────────────────────────────
+2. KHI ĐỔI WIFI MỚI (chỉ cần 2 bước)
+────────────────────────────────────────────────────────────────
+
+  Bước 1: Chuyển WiFi sang Private (mở PowerShell ADMIN):
+
+    Set-NetConnectionProfile -InterfaceAlias 'Wi-Fi 2' -NetworkCategory Private
+    kiểm tra 
+    Get-NetConnectionProfile | Format-Table Name, InterfaceAlias, NetworkCategory -AutoSize
+    chueyen sang private
+    Start-Process powershell -Verb RunAs -ArgumentList '-Command', "Set-NetConnectionProfile -InterfaceAlias 'Wi-Fi 2' -NetworkCategory Private; echo 'Changed to Private'; Get-NetConnectionProfile | Format-Table Name, InterfaceAlias, NetworkCategory; pause"
+
+
+    Get-Process -Name node -ErrorAction SilentlyContinue | Stop-Process -Force; Start-Sleep -Seconds 1; echo "All node processes killed"
+  Bước 2: Xem IP mới:
+
+    ipconfig | findstr "IPv4"
+
+  → Lấy IP dạng 192.168.x.x rồi nhập trên điện thoại:
+    http://<IP>:5173
+
+────────────────────────────────────────────────────────────────
+3. CÁC LỆNH ĐÃ THIẾT LẬP (CHỈ CẦN LÀM 1 LẦN)
+────────────────────────────────────────────────────────────────
+
+  Đã xong, KHÔNG cần chạy lại:
+
+  ✅ vite.config.js đã thêm: host: true
+  ✅ Firewall đã mở port 5173 (Vite)
+  ✅ Firewall đã mở port 5174 (Vite backup)
+  ✅ Firewall đã mở port 8000 (FastAPI backend)
+
+  Lệnh đã chạy (chỉ để tham khảo):
+    netsh advfirewall firewall add rule name="Vite Dev Server" dir=in action=allow protocol=TCP localport=5173
+    netsh advfirewall firewall add rule name="Vite Dev Server 5174" dir=in action=allow protocol=TCP localport=5174
+    netsh advfirewall firewall add rule name="FastAPI Backend" dir=in action=allow protocol=TCP localport=8000
+
+────────────────────────────────────────────────────────────────
+4. KHẮC PHỤC SỰ CỐ
+────────────────────────────────────────────────────────────────
+
+  Không truy cập được? Kiểm tra theo thứ tự:
+
+  1. Điện thoại + PC cùng WiFi chưa?
+  2. WiFi đang Public hay Private?
+     → Kiểm tra: Get-NetConnectionProfile
+     → Nếu Public → chạy lệnh ở Bước 1 (mục 2)
+  3. IP có đúng không?
+     → Chạy: ipconfig | findstr "IPv4"
+  4. Antivirus chặn? (Kaspersky, Avast...)
+     → Tạm tắt firewall của antivirus
+  5. Port bị chiếm?
+     → Kiểm tra: netstat -an | findstr "5173"
+
+================================================================

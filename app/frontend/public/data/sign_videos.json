@@ -25552,18 +25552,7 @@
         "food_drink"
       ],
       "videos": [
-        {
-          "url": "http://www.aslsearch.com/signs/videos/coffee.mp4",
-          "source": "aslsearch",
-          "type": "mp4",
-          "video_id": "11566"
-        },
-        {
-          "url": "https://aslsignbank.haskins.yale.edu/dictionary/protected_media/glossvideo/ASL/CO/COFFEE-2035.mp4",
-          "source": "aslsignbank",
-          "type": "mp4",
-          "video_id": "65375"
-        },
+
         {
           "url": "https://media.spreadthesign.com/video/mp4/13/74941.mp4",
           "source": "spreadthesign",
@@ -60604,18 +60593,6 @@
       ],
       "videos": [
         {
-          "url": "http://www.aslsearch.com/signs/videos/greet.mp4",
-          "source": "aslsearch",
-          "type": "mp4",
-          "video_id": "27184"
-        },
-        {
-          "url": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Hello-6kvCOzxP9_A.mp4",
-          "source": "signschool",
-          "type": "mp4",
-          "video_id": "27172"
-        },
-        {
           "url": "https://media.asldeafined.com/vocabulary/1468580623.2588.mp4",
           "source": "asldeafined",
           "type": "mp4",
@@ -78931,12 +78908,7 @@
         "food_drink"
       ],
       "videos": [
-        {
-          "url": "http://www.aslsearch.com/signs/videos/hunger.mp4",
-          "source": "aslsearch",
-          "type": "mp4",
-          "video_id": "28385"
-        },
+
         {
           "url": "https://media.spreadthesign.com/video/mp4/13/58529.mp4",
           "source": "spreadthesign",
@@ -405209,12 +405181,7 @@
         "actions"
       ],
       "videos": [
-        {
-          "url": "http://www.aslsearch.com/signs/videos/stall.mp4",
-          "source": "aslsearch",
-          "type": "mp4",
-          "video_id": "62113"
-        },
+
         {
           "url": "https://s3-us-west-1.amazonaws.com/files.startasl.com/asldictionary/wait.mp4",
           "source": "startasl",

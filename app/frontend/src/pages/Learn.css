@@ -413,7 +413,12 @@
 /* === MODAL === */
 .learn__modal-overlay {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    /* dynamic viewport height for mobile address bar */
     background: rgba(44, 24, 16, 0.45);
     display: flex;
     align-items: center;
@@ -421,6 +426,8 @@
     z-index: 1000;
     padding: var(--space-lg);
     backdrop-filter: blur(4px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .learn__modal {
@@ -637,8 +644,33 @@
     border-color: rgba(96, 180, 168, 0.3);
 }
 
-/* Responsive */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
+    .learn {
+        gap: var(--space-sm);
+    }
+
+    /* Category tabs: compact */
+    .learn__category-tab {
+        padding: 5px 10px;
+        font-size: 12px;
+        gap: 4px;
+    }
+
+    .learn__category-tab-icon {
+        font-size: 11px;
+    }
+
+    .learn__category-tab-label {
+        font-size: 12px;
+    }
+
+    .learn__category-tab-count {
+        font-size: 9px;
+        padding: 0 4px;
+    }
+
+    /* Toolbar */
     .learn__toolbar {
         flex-direction: column;
         gap: var(--space-sm);
@@ -646,20 +678,135 @@
 
     .learn__search {
         width: 100%;
+        padding: 7px 12px;
     }
 
-    .learn__grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    .learn__controls {
+        width: 100%;
+        justify-content: space-between;
     }
-}
 
-@media (max-width: 480px) {
+    /* Grid */
     .learn__grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-sm);
+    }
+
+    .learn__word-preview {
+        height: 90px;
+    }
+
+    .learn__word-play-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+        opacity: 1;
+        /* always visible on touch */
+        transform: scale(1);
+    }
+
+    .learn__word-info {
+        padding: 8px 10px;
+    }
+
+    .learn__word-vi {
+        font-size: 13px;
+    }
+
+    .learn__word-gloss {
+        font-size: 10px;
+    }
+
+    /* List view */
+    .learn__word-list-item {
+        padding: 8px 10px;
+        gap: 6px;
+    }
+
+    .learn__word-list-play {
+        width: 24px;
+        height: 24px;
+    }
+
+    .learn__word-list-vi {
+        font-size: 13px;
+    }
+
+    /* Pagination compact */
+    .learn__pagination {
+        gap: var(--space-sm);
+    }
+
+    .learn__page-btn {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* Modal: centered full-screen sheet on mobile */
+    .learn__modal-overlay {
+        padding: 8px;
+        align-items: center;
+        justify-content: center;
     }
 
     .learn__modal {
         max-width: 100%;
+        max-height: 88vh;
+        max-height: 88dvh;
         border-radius: var(--radius-lg);
+        padding: var(--space-md);
+        margin: auto;
+    }
+
+    .learn__modal-video {
+        border-radius: var(--radius-md);
+    }
+
+    .learn__modal-word {
+        font-size: 18px;
+    }
+
+    .learn__modal-gloss {
+        font-size: 12px;
+    }
+
+    .learn__modal-nav-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .learn__modal-videos-list {
+        max-height: 110px;
+    }
+
+    .learn__video-item {
+        padding: 6px 10px;
+    }
+
+    /* Empty */
+    .learn__empty {
+        padding: var(--space-lg) !important;
+    }
+
+    .learn__empty-icon {
+        font-size: 32px;
+    }
+
+    .learn__empty-text {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 400px) {
+    .learn__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .learn__word-preview {
+        height: 100px;
+    }
+
+    .learn__modal {
+        padding: var(--space-sm);
     }
 }

@@ -44,3 +44,4 @@ scripts/          # Data processing scripts
 ## License
 
 MIT
+ python -c "import uvicorn; uvicorn.run('app.api.server:app', host='0.0.0.0', port=8000, reload=False)"
