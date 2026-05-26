@@ -56,10 +56,17 @@ export default function Learn() {
     };
 
     const playableVideos = selectedWord
-        ? selectedWord.videos.filter(v => v.type !== 'swf')
+        ? selectedWord.videos.filter(v => v.type !== 'swf' && v.type !== 'local' && v.url?.startsWith('http'))
         : [];
 
     const activeVideo = playableVideos[activeVideoIdx] || null;
+
+    // Auto-skip to next video when current one fails to load
+    const handleVideoError = useCallback(() => {
+        if (activeVideoIdx < playableVideos.length - 1) {
+            setActiveVideoIdx(prev => prev + 1);
+        }
+    }, [activeVideoIdx, playableVideos.length]);
 
     return (
         <div className="learn animate-fade-in">
@@ -232,9 +239,10 @@ export default function Learn() {
                                     loop
                                     playsInline
                                     className="learn__video-player"
+                                    onError={handleVideoError}
                                 >
                                     <source src={activeVideo.url} type="video/mp4" />
-                                    Video không hỗ trợ
+                                    Video khong ho tro
                                 </video>
                             ) : (
                                 <div className="learn__video-empty">Không có video</div>

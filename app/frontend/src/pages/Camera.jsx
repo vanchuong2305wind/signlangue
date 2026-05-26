@@ -182,9 +182,9 @@ export default function CameraPage() {
                 <div className="camera__tips">
                     <div className="camera__tips-title">
                         <i className="fa-solid fa-lightbulb" style={{ color: 'var(--wc-gold)' }} />
-                        Mẹo sử dụng
+                        Xin Chào
                     </div>
-                    <ul className="camera__tips-list">
+                    {/* <ul className="camera__tips-list">
                         <li className="camera__tip">
                             <i className="fa-solid fa-check camera__tip-icon" />
                             Đảm bảo ánh sáng đủ, tránh ngược sáng
@@ -201,7 +201,7 @@ export default function CameraPage() {
                             <i className="fa-solid fa-check camera__tip-icon" />
                             Thực hiện ký hiệu rõ ràng, chậm rãi
                         </li>
-                    </ul>
+                    </ul> */}
                 </div>
             </GlassCard>
         </div>

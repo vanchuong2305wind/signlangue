@@ -1,27 +1,22 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import GlassCard from '../components/ui/GlassCard';
 import AvatarScene3D from '../components/avatar/AvatarScene3D';
 import useSpeechRecognition from '../hooks/useSpeechRecognition';
 import useSignTranslation from '../hooks/useSignTranslation';
+import { useVideoRace } from '../hooks/useVideoRace';
 import './Translate.css';
 
-function getVideoUrl(sign, signVideosData) {
-    if (!sign?.found || !sign?.gloss || !signVideosData?.glosses) return null;
+function extractYouTubeId(url) {
+    if (!url) return '';
+    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+    return match ? match[1] : '';
+}
+
+function getSignVideos(sign, signVideosData) {
+    if (!sign?.found || !sign?.gloss || !signVideosData?.glosses) return [];
     const entry = signVideosData.glosses[sign.gloss.toLowerCase()];
-    if (!entry?.videos?.length) return null;
-
-    const mp4 = entry.videos.find(v => v.type === 'mp4');
-    if (mp4) return { url: mp4.url, type: 'mp4' };
-
-    const local = entry.videos.find(v => v.type === 'local');
-    if (local) return { url: local.url, type: 'local' };
-
-    const yt = entry.videos.find(v => v.type === 'youtube');
-    if (yt) {
-        const id = yt.url.match(/[?&]v=([^&]+)/)?.[1] || yt.url.split('/').pop();
-        return { url: `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`, type: 'youtube' };
-    }
-    return null;
+    if (!entry?.videos?.length) return [];
+    return entry.videos.filter(v => v.url && v.url.startsWith('http') && v.type !== 'swf');
 }
 
 export default function Translate() {
@@ -140,7 +135,11 @@ export default function Translate() {
     }
 
     const activeSign = result?.signs?.[activeSignIdx];
-    const activeVideo = activeSign ? getVideoUrl(activeSign, signVideosData) : null;
+    const signVideoList = useMemo(
+        () => getSignVideos(activeSign, signVideosData),
+        [activeSign?.gloss, signVideosData]
+    );
+    const { activeVideo, isLoading: videoLoading, tryNext } = useVideoRace(signVideoList);
     const foundCount = result?.found_count || 0;
     const totalCount = result?.total_count || 0;
     const matchPct = totalCount > 0 ? Math.round((foundCount / totalCount) * 100) : 0;
@@ -280,11 +279,16 @@ export default function Translate() {
                             <div className="translate-error">
                                 <i className="fa-solid fa-circle-exclamation" style={{ marginRight: '6px' }} /> {error}
                             </div>
+                        ) : videoLoading ? (
+                            <div className="translate-loading">
+                                <div className="loading-spinner" />
+                                <span className="loading-text">Dang tim video...</span>
+                            </div>
                         ) : activeVideo ? (
                             <div className="sign-video-player">
-                                {activeVideo.type === 'youtube' ? (
+                                {activeVideo.racedType === 'youtube' ? (
                                     <iframe
-                                        src={activeVideo.url}
+                                        src={activeVideo.embedUrl}
                                         allow="autoplay; encrypted-media"
                                         allowFullScreen
                                         title={activeSign?.gloss || ''}
@@ -296,6 +300,7 @@ export default function Translate() {
                                         autoPlay
                                         controls
                                         key={activeVideo.url}
+                                        onError={tryNext}
                                     />
                                 )}
                                 <div className="sign-video-info">
