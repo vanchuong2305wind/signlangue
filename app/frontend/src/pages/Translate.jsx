@@ -137,7 +137,7 @@ export default function Translate() {
     const activeSign = result?.signs?.[activeSignIdx];
     const signVideoList = useMemo(
         () => getSignVideos(activeSign, signVideosData),
-        [activeSign?.gloss, signVideosData]
+        [activeSign, activeSignIdx, signVideosData]
     );
     const { activeVideo, isLoading: videoLoading, tryNext } = useVideoRace(signVideoList);
     const foundCount = result?.found_count || 0;

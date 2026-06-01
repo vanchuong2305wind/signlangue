@@ -12,6 +12,7 @@ export function useVideoRace(videos = []) {
     const [isLoading, setIsLoading] = useState(false);
     const [activeIndex, setActiveIndex] = useState(-1);
     const abortRef = useRef(null);
+    const prevVideosRef = useRef(videos);
 
     // Filter to only http links (skip local, swf, etc.)
     const candidates = videos.filter(v =>
@@ -167,6 +168,20 @@ export function useVideoRace(videos = []) {
         });
     }, [JSON.stringify(candidates.map(c => c.url))]);
 
+    // Reset immediately when videos array reference changes
+    useEffect(() => {
+        if (prevVideosRef.current !== videos) {
+            prevVideosRef.current = videos;
+            // Abort any in-progress race
+            if (abortRef.current) {
+                abortRef.current.abort = true;
+            }
+            // Clear stale video immediately
+            setActiveVideo(null);
+            setActiveIndex(-1);
+        }
+    }, [videos]);
+
     useEffect(() => {
         raceVideos();
 
@@ -175,7 +190,7 @@ export function useVideoRace(videos = []) {
                 abortRef.current.abort = true;
             }
         };
-    }, [raceVideos]);
+    }, [raceVideos, videos]);
 
     // Manual fallback: skip to next candidate
     const tryNext = useCallback(() => {
