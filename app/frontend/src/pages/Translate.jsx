@@ -6,12 +6,6 @@ import useSignTranslation from '../hooks/useSignTranslation';
 import { useVideoRace } from '../hooks/useVideoRace';
 import './Translate.css';
 
-function extractYouTubeId(url) {
-    if (!url) return '';
-    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
-    return match ? match[1] : '';
-}
-
 function getSignVideos(sign, signVideosData) {
     if (!sign?.found || !sign?.gloss || !signVideosData?.glosses) return [];
     const entry = signVideosData.glosses[sign.gloss.toLowerCase()];
@@ -36,6 +30,8 @@ export default function Translate() {
     const handleFinal = useCallback(({ text }) => {
         setTranscripts(prev => [...prev, text]);
         setInterimText('');
+        setActiveSignIdx(0);
+        setIsAutoPlaying(false);
         translate(text);
     }, [translate]);
 
@@ -72,39 +68,52 @@ export default function Translate() {
         }
     }, [result, mode]);
 
+    const advanceToNextSign = useCallback(() => {
+        if (!result?.signs?.length) return;
+        const nextFoundIdx = result.signs.findIndex((s, i) => i > activeSignIdx && s.found);
+        if (nextFoundIdx >= 0) {
+            setActiveSignIdx(nextFoundIdx);
+        } else {
+            setIsAutoPlaying(false);
+        }
+    }, [activeSignIdx, result]);
+
+    const activeSign = result?.signs?.[activeSignIdx];
+    const signVideoList = useMemo(
+        () => getSignVideos(activeSign, signVideosData),
+        [activeSign, signVideosData]
+    );
+    const { activeVideo, isLoading: videoLoading, tryNext } = useVideoRace(signVideoList);
+
     useEffect(() => {
         if (!isAutoPlaying || !result?.signs?.length || mode !== 'video') return;
 
         const currentSign = result.signs[activeSignIdx];
         if (!currentSign?.found) {
-            const nextFoundIdx = result.signs.findIndex((s, i) => i > activeSignIdx && s.found);
-            if (nextFoundIdx >= 0) {
-                setActiveSignIdx(nextFoundIdx);
-            } else {
-                setIsAutoPlaying(false);
-            }
-            return;
+            autoPlayTimerRef.current = setTimeout(advanceToNextSign, 0);
+            return () => clearTimeout(autoPlayTimerRef.current);
         }
 
-        if (videoRef.current) {
-            videoRef.current.onended = () => {
-                const nextFoundIdx = result.signs.findIndex((s, i) => i > activeSignIdx && s.found);
-                if (nextFoundIdx >= 0) setActiveSignIdx(nextFoundIdx);
-                else setIsAutoPlaying(false);
-            };
-        } else {
+        // MP4 advances through its onEnded handler. YouTube embeds do not expose
+        // a native ended event here, so keep a conservative timed fallback.
+        if (!videoLoading && (!activeVideo || activeVideo.racedType === 'youtube')) {
             autoPlayTimerRef.current = setTimeout(() => {
-                const nextFoundIdx = result.signs.findIndex((s, i) => i > activeSignIdx && s.found);
-                if (nextFoundIdx >= 0) setActiveSignIdx(nextFoundIdx);
-                else setIsAutoPlaying(false);
-            }, 3000);
+                advanceToNextSign();
+            }, activeVideo?.racedType === 'youtube' ? 5000 : 1000);
         }
 
         return () => {
             clearTimeout(autoPlayTimerRef.current);
-            if (videoRef.current) videoRef.current.onended = null;
         };
-    }, [isAutoPlaying, activeSignIdx, result, mode]);
+    }, [
+        isAutoPlaying,
+        activeSignIdx,
+        result,
+        mode,
+        videoLoading,
+        activeVideo,
+        advanceToNextSign,
+    ]);
 
     function handleTextSubmit(e) {
         e.preventDefault();
@@ -134,12 +143,6 @@ export default function Translate() {
         }
     }
 
-    const activeSign = result?.signs?.[activeSignIdx];
-    const signVideoList = useMemo(
-        () => getSignVideos(activeSign, signVideosData),
-        [activeSign, activeSignIdx, signVideosData]
-    );
-    const { activeVideo, isLoading: videoLoading, tryNext } = useVideoRace(signVideoList);
     const foundCount = result?.found_count || 0;
     const totalCount = result?.total_count || 0;
     const matchPct = totalCount > 0 ? Math.round((foundCount / totalCount) * 100) : 0;
@@ -289,7 +292,7 @@ export default function Translate() {
                                 {activeVideo.racedType === 'youtube' ? (
                                     <iframe
                                         src={activeVideo.embedUrl}
-                                        allow="autoplay; encrypted-media"
+                                        allow="autoplay; encrypted-media; picture-in-picture"
                                         allowFullScreen
                                         title={activeSign?.gloss || ''}
                                     />
@@ -299,8 +302,10 @@ export default function Translate() {
                                         src={activeVideo.url}
                                         autoPlay
                                         controls
+                                        playsInline
                                         key={activeVideo.url}
                                         onError={tryNext}
+                                        onEnded={isAutoPlaying ? advanceToNextSign : undefined}
                                     />
                                 )}
                                 <div className="sign-video-info">

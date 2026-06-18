@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 
 /**
  * Race multiple video URLs: try loading all at once, return the first one that actually loads.
@@ -13,12 +13,15 @@ export function useVideoRace(videos = []) {
     const [activeIndex, setActiveIndex] = useState(-1);
     const abortRef = useRef(null);
     const prevVideosRef = useRef(videos);
+    const failedIndexesRef = useRef(new Set());
 
     // Filter to only http links (skip local, swf, etc.)
-    const candidates = videos.filter(v =>
-        v.url && v.url.startsWith('http') && v.type !== 'swf'
+    const candidates = useMemo(
+        () => videos.filter(v =>
+            v.url && v.url.startsWith('http') && v.type !== 'swf'
+        ),
+        [videos]
     );
-
     const raceVideos = useCallback(() => {
         if (candidates.length === 0) {
             setActiveVideo(null);
@@ -32,8 +35,9 @@ export function useVideoRace(videos = []) {
             abortRef.current.abort = true;
         }
 
-        const raceState = { abort: false };
+        const raceState = { abort: false, failedIndexes: new Set() };
         abortRef.current = raceState;
+        failedIndexesRef.current = raceState.failedIndexes;
         setIsLoading(true);
         setActiveVideo(null);
         setActiveIndex(-1);
@@ -58,11 +62,14 @@ export function useVideoRace(videos = []) {
                 video.muted = true;
 
                 const cleanup = () => {
+                    video.onloadeddata = null;
+                    video.onerror = null;
                     video.removeAttribute('src');
                     video.load();
                 };
 
                 const timeout = setTimeout(() => {
+                    raceState.failedIndexes.add(v._idx);
                     cleanup();
                     resolve(null);
                 }, 8000);
@@ -70,6 +77,7 @@ export function useVideoRace(videos = []) {
                 video.onloadeddata = () => {
                     clearTimeout(timeout);
                     if (!raceState.abort) {
+                        cleanup();
                         resolve({ ...v, racedType: 'mp4' });
                     } else {
                         cleanup();
@@ -79,6 +87,7 @@ export function useVideoRace(videos = []) {
 
                 video.onerror = () => {
                     clearTimeout(timeout);
+                    raceState.failedIndexes.add(v._idx);
                     cleanup();
                     resolve(null);
                 };
@@ -92,12 +101,14 @@ export function useVideoRace(videos = []) {
             return new Promise((resolve) => {
                 const id = extractYouTubeId(v.url);
                 if (!id) {
+                    raceState.failedIndexes.add(v._idx);
                     resolve(null);
                     return;
                 }
 
                 const img = new Image();
                 const timeout = setTimeout(() => {
+                    raceState.failedIndexes.add(v._idx);
                     resolve(null);
                 }, 5000);
 
@@ -105,19 +116,21 @@ export function useVideoRace(videos = []) {
                     clearTimeout(timeout);
                     // YouTube returns a small default image (120x90) even for missing videos
                     // but the actual thumbnail is larger. Width 0 or very small = missing
-                    if (img.width > 1 && img.naturalWidth > 1) {
+                    if (img.naturalWidth > 120) {
                         resolve({
                             ...v,
                             racedType: 'youtube',
                             embedUrl: `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`,
                         });
                     } else {
+                        raceState.failedIndexes.add(v._idx);
                         resolve(null);
                     }
                 };
 
                 img.onerror = () => {
                     clearTimeout(timeout);
+                    raceState.failedIndexes.add(v._idx);
                     resolve(null);
                 };
 
@@ -126,16 +139,16 @@ export function useVideoRace(videos = []) {
             });
         });
 
-        // Race all promises - first non-null wins
-        const allPromises = [...mp4Promises, ...ytPromises];
-
-        // Use Promise.any-like behavior: resolve with the first successful one
+        // Prefer direct videos. A valid YouTube thumbnail does not guarantee
+        // that the video allows embedding, and iframe failures cannot be
+        // observed reliably through the native onError event.
         let resolved = false;
 
-        allPromises.forEach((p) => {
+        mp4Promises.forEach((p) => {
             p.then((result) => {
                 if (result && !resolved && !raceState.abort) {
                     resolved = true;
+                    raceState.failedIndexes.delete(result._idx);
                     setActiveVideo(result);
                     setActiveIndex(result._idx);
                     setIsLoading(false);
@@ -143,8 +156,25 @@ export function useVideoRace(videos = []) {
             });
         });
 
-        // Fallback: if all fail, set null
-        Promise.all(allPromises).then((results) => {
+        // Only consider YouTube after every direct video has failed.
+        Promise.all(mp4Promises).then(() => {
+            if (resolved || raceState.abort) return;
+
+            ytPromises.forEach((p) => {
+                p.then((result) => {
+                    if (result && !resolved && !raceState.abort) {
+                        resolved = true;
+                        raceState.failedIndexes.delete(result._idx);
+                        setActiveVideo(result);
+                        setActiveIndex(result._idx);
+                        setIsLoading(false);
+                    }
+                });
+            });
+        });
+
+        // Fallback: if every candidate fails, set null.
+        Promise.all([...mp4Promises, ...ytPromises]).then(() => {
             if (!resolved && !raceState.abort) {
                 // Try the first YouTube link as a last resort (they might still work via embed)
                 const firstYt = youtubeLinks[0];
@@ -156,6 +186,7 @@ export function useVideoRace(videos = []) {
                             racedType: 'youtube',
                             embedUrl: `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`,
                         });
+                        raceState.failedIndexes.delete(firstYt._idx);
                         setActiveIndex(firstYt._idx);
                         setIsLoading(false);
                         return;
@@ -166,7 +197,7 @@ export function useVideoRace(videos = []) {
                 setIsLoading(false);
             }
         });
-    }, [JSON.stringify(candidates.map(c => c.url))]);
+    }, [candidates]);
 
     // Reset immediately when videos array reference changes
     useEffect(() => {
@@ -177,15 +208,17 @@ export function useVideoRace(videos = []) {
                 abortRef.current.abort = true;
             }
             // Clear stale video immediately
+            failedIndexesRef.current = new Set();
             setActiveVideo(null);
             setActiveIndex(-1);
         }
     }, [videos]);
 
     useEffect(() => {
-        raceVideos();
+        const startTimer = setTimeout(raceVideos, 0);
 
         return () => {
+            clearTimeout(startTimer);
             if (abortRef.current) {
                 abortRef.current.abort = true;
             }
@@ -194,15 +227,39 @@ export function useVideoRace(videos = []) {
 
     // Manual fallback: skip to next candidate
     const tryNext = useCallback(() => {
-        if (activeIndex < 0 || candidates.length <= 1) return;
+        if (activeIndex < 0) return;
 
-        const remaining = candidates.filter((_, i) => i !== activeIndex);
-        if (remaining.length === 0) return;
+        failedIndexesRef.current.add(activeIndex);
+        if (candidates.length <= 1) {
+            setActiveVideo(null);
+            setActiveIndex(-1);
+            return;
+        }
 
-        // Try the next one directly
-        const next = remaining[0];
+        let nextIndex = -1;
+        for (let offset = 1; offset < candidates.length; offset += 1) {
+            const candidateIndex = (activeIndex + offset) % candidates.length;
+            if (!failedIndexesRef.current.has(candidateIndex)) {
+                nextIndex = candidateIndex;
+                break;
+            }
+        }
+
+        if (nextIndex < 0) {
+            setActiveVideo(null);
+            setActiveIndex(-1);
+            return;
+        }
+
+        const next = candidates[nextIndex];
         if (next.type === 'youtube') {
             const id = extractYouTubeId(next.url);
+            if (!id) {
+                failedIndexesRef.current.add(nextIndex);
+                setActiveVideo(null);
+                setActiveIndex(-1);
+                return;
+            }
             setActiveVideo({
                 ...next,
                 racedType: 'youtube',
@@ -211,7 +268,7 @@ export function useVideoRace(videos = []) {
         } else {
             setActiveVideo({ ...next, racedType: 'mp4' });
         }
-        setActiveIndex(candidates.indexOf(next));
+        setActiveIndex(nextIndex);
     }, [activeIndex, candidates]);
 
     return {
