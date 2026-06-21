@@ -1,10 +1,11 @@
-import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
+import { lazy, Suspense, useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import GlassCard from '../components/ui/GlassCard';
-import AvatarScene3D from '../components/avatar/AvatarScene3D';
 import useSpeechRecognition from '../hooks/useSpeechRecognition';
 import useSignTranslation from '../hooks/useSignTranslation';
 import { useVideoRace } from '../hooks/useVideoRace';
 import './Translate.css';
+
+const AvatarScene3D = lazy(() => import('../components/avatar/AvatarScene3D'));
 
 function getSignVideos(sign, signVideosData) {
     if (!sign?.found || !sign?.gloss || !signVideosData?.glosses) return [];
@@ -59,12 +60,17 @@ export default function Translate() {
 
     useEffect(() => {
         if (mode === '3d' && result?.signs) {
-            const timer = setTimeout(() => {
+            let attempts = 0;
+            const timer = setInterval(() => {
+                attempts += 1;
                 if (avatarRef.current?.isModelLoaded) {
                     avatarRef.current.playSignSequence(result.signs);
+                    clearInterval(timer);
+                } else if (attempts >= 100) {
+                    clearInterval(timer);
                 }
             }, 100);
-            return () => clearTimeout(timer);
+            return () => clearInterval(timer);
         }
     }, [result, mode]);
 
@@ -257,18 +263,25 @@ export default function Translate() {
             {/* Right panel — Output */}
             <GlassCard variant="strong" className="translate-output-panel">
                 {/* 3D Avatar */}
-                <div style={{ display: mode === '3d' ? 'block' : 'none' }}>
-                    <AvatarScene3D
-                        ref={avatarRef}
-                        className="avatar-container"
-                        onPlayingSign={(sign) => {
-                            if (result?.signs) {
-                                const idx = result.signs.findIndex(s => s.gloss === sign.gloss);
-                                if (idx >= 0) setActiveSignIdx(idx);
-                            }
-                        }}
-                    />
-                </div>
+                {mode === '3d' && (
+                    <Suspense fallback={(
+                        <div className="translate-loading avatar-container">
+                            <div className="loading-spinner" />
+                            <span className="loading-text">Đang tải bộ dựng 3D...</span>
+                        </div>
+                    )}>
+                        <AvatarScene3D
+                            ref={avatarRef}
+                            className="avatar-container"
+                            onPlayingSign={(sign) => {
+                                if (result?.signs) {
+                                    const idx = result.signs.findIndex(s => s.gloss === sign.gloss);
+                                    if (idx >= 0) setActiveSignIdx(idx);
+                                }
+                            }}
+                        />
+                    </Suspense>
+                )}
 
                 {/* Video mode */}
                 {mode === 'video' && (

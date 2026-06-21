@@ -17,6 +17,7 @@ class SignDictionary:
         self.gloss_to_vi: dict[str, str] = {}
         self.available_glosses: set[str] = set()
         self._landmarks_path = DATA_DIR / "sign_dictionary_landmarks.json"
+        self._landmarks_v2_dir = DATA_DIR / "landmarks_v2"
         self._loaded = False
 
     def load(self):

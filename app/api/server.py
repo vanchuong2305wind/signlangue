@@ -8,6 +8,7 @@ Or:  uvicorn app.api.server:app --reload --port 8000
 
 import json
 import os
+import re
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -19,6 +20,7 @@ from pydantic import BaseModel
 
 from .sign_lookup import sign_dict
 from .text_parser import parse_text
+from .landmark_processing import process_landmark_entry
 
 # Load environment variables
 load_dotenv(Path(__file__).resolve().parent.parent.parent / ".env")
@@ -145,6 +147,21 @@ async def get_landmarks(gloss: str):
     Get landmark frames for a specific sign gloss.
     Streams from the large JSON file without loading entirely.
     """
+    gloss_lower = gloss.lower().strip()
+    if not re.fullmatch(r"[a-z0-9_' -]+", gloss_lower):
+        raise HTTPException(status_code=400, detail="Invalid gloss")
+
+    cache_path = sign_dict._landmarks_v2_dir / f"{gloss_lower}.json"
+    if cache_path.exists():
+        try:
+            with cache_path.open("r", encoding="utf-8") as source:
+                return JSONResponse(content={
+                    "gloss": gloss_lower,
+                    "data": json.load(source),
+                })
+        except (OSError, json.JSONDecodeError):
+            cache_path.unlink(missing_ok=True)
+
     landmarks_path = sign_dict._landmarks_path
 
     if not landmarks_path.exists():
@@ -159,9 +176,13 @@ async def get_landmarks(gloss: str):
                 sign_dict._landmarks_cache = json.load(f)
             print(f"[Server] Landmarks loaded: {len(sign_dict._landmarks_cache)} entries")
 
-        gloss_lower = gloss.lower()
         if gloss_lower in sign_dict._landmarks_cache:
-            data = sign_dict._landmarks_cache[gloss_lower]
+            data = process_landmark_entry(sign_dict._landmarks_cache[gloss_lower])
+            sign_dict._landmarks_v2_dir.mkdir(parents=True, exist_ok=True)
+            temporary_path = cache_path.with_suffix(".tmp")
+            with temporary_path.open("w", encoding="utf-8") as destination:
+                json.dump(data, destination, ensure_ascii=False, separators=(",", ":"))
+            temporary_path.replace(cache_path)
             return JSONResponse(content={
                 "gloss": gloss_lower,
                 "data": data,

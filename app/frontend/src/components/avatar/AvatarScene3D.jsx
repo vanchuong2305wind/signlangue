@@ -16,6 +16,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import * as SkeletonUtils from 'three/addons/utils/SkeletonUtils.js';
+import { VRMLoaderPlugin, VRMUtils } from '@pixiv/three-vrm';
+import { VrmHolisticRetargeter } from './vrm-holistic-retargeter';
 
 /* ==================== CONSTANTS ==================== */
 
@@ -171,6 +173,10 @@ function applyHandLandmarks(bones, restQuats, landmarks) {
 
 function resetPose(sd) {
     if (!sd) return;
+    if (sd.vrmRetargeter) {
+        sd.vrmRetargeter.reset();
+        return;
+    }
     const restore = (bones, quats) => {
         if (!bones || !quats) return;
         for (const [key, quat] of Object.entries(quats)) {
@@ -202,6 +208,24 @@ function disposeObject(obj) {
             }
         }
     });
+}
+
+function removeNonHumanAccessories(root) {
+    const accessoryName = /(^|[_.-])(robo|robot|mecha)([_.-]|$)/i;
+    const accessories = [];
+
+    root.traverse(node => {
+        if ((node.isMesh || node.isSkinnedMesh) && accessoryName.test(node.name || '')) {
+            accessories.push(node);
+        }
+    });
+
+    for (const accessory of accessories) {
+        accessory.removeFromParent();
+        disposeObject(accessory);
+    }
+
+    return accessories.map(accessory => accessory.name);
 }
 
 /* ==================== COMPONENT ==================== */
@@ -271,7 +295,7 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             renderer.setSize(w, h);
             container.appendChild(renderer.domElement);
             rendererRef.current = renderer;
-        } catch (err) {
+        } catch {
             setLoadError('WebGL không khởi tạo được. Dùng Chrome/Edge.');
             return;
         }
@@ -370,9 +394,9 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
         grid.material.opacity = 0.3;
         scene.add(grid);
 
-        // Load hand model
-        const loader = new GLTFLoader();
-        loader.loadAsync('/models/rigged_hand.glb').then(gltf => {
+        async function loadFallbackHands() {
+            const loader = new GLTFLoader();
+            const gltf = await loader.loadAsync('/models/rigged_hand.glb');
             if (disposed) return;
 
             const original = gltf.scene;
@@ -447,11 +471,67 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             };
 
             setIsModelLoaded(true);
-            updateStatus('Mô hình tay sẵn sàng');
-        }).catch(err => {
-            console.error('[AvatarScene3D] Model load failed:', err);
-            setLoadError('Không tải được mô hình 3D.');
-        });
+            updateStatus('Mô hình tay sẵn sàng — thêm avatar.vrm để bật toàn thân');
+        }
+
+        async function loadVrmAvatar() {
+            const response = await fetch('/models/avatar.vrm', { method: 'HEAD' });
+            const contentType = response.headers.get('content-type') || '';
+            if (!response.ok || contentType.includes('text/html')) return false;
+
+            const loader = new GLTFLoader();
+            loader.register(parser => new VRMLoaderPlugin(parser));
+            const gltf = await loader.loadAsync('/models/avatar.vrm');
+            if (disposed) return true;
+
+            const vrm = gltf.userData.vrm;
+            if (!vrm) throw new Error('avatar.vrm does not contain VRM metadata');
+
+            VRMUtils.removeUnnecessaryVertices(gltf.scene);
+            VRMUtils.combineSkeletons(gltf.scene);
+            VRMUtils.rotateVRM0(vrm);
+
+            // Seed-san includes a separate mechanical arm mounted behind the
+            // character. It is not part of the humanoid rig used for signing,
+            // so remove it before framing and rendering the avatar.
+            const removedAccessories = removeNonHumanAccessories(vrm.scene);
+            if (removedAccessories.length > 0) {
+                console.info(
+                    `[AvatarScene3D] Removed non-human accessories: ${removedAccessories.join(', ')}`,
+                );
+            }
+
+            const box = new THREE.Box3().setFromObject(vrm.scene);
+            const size = box.getSize(new THREE.Vector3());
+            vrm.scene.scale.setScalar(1.35 / Math.max(size.y, 0.01));
+            vrm.scene.position.set(0, 0, 0);
+            vrm.scene.traverse(node => {
+                if (!node.isMesh) return;
+                node.castShadow = true;
+                node.receiveShadow = true;
+                node.frustumCulled = false;
+            });
+            scene.add(vrm.scene);
+            vrm.scene.updateMatrixWorld(true);
+
+            sceneDataRef.current = {
+                vrm,
+                vrmRetargeter: new VrmHolisticRetargeter(vrm),
+            };
+            setIsModelLoaded(true);
+            updateStatus('Avatar VRM toàn thân sẵn sàng');
+            return true;
+        }
+
+        loadVrmAvatar()
+            .then(loaded => loaded || loadFallbackHands())
+            .catch(err => {
+                console.warn('[AvatarScene3D] VRM unavailable, using hand fallback:', err);
+                loadFallbackHands().catch(fallbackError => {
+                    console.error('[AvatarScene3D] Model load failed:', fallbackError);
+                    setLoadError('Không tải được mô hình 3D.');
+                });
+            });
 
         /* ---------- Animation loop ---------- */
         function playNextInQueue() {
@@ -500,11 +580,13 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
                 if (anim.currentFrames.length > 0) {
                     const firstFrame = anim.currentFrames[0];
                     const t = easeInOutCubic(Math.min(anim.transitionProgress, 1));
-                    if (firstFrame.left_hand) {
+                    if (sd.vrmRetargeter) {
+                        sd.vrmRetargeter.apply(firstFrame, delta);
+                    } else if (firstFrame.left_hand) {
                         const from = anim.prevLeftLandmarks || firstFrame.left_hand;
                         applyHandLandmarks(sd.leftBones, sd.leftRestQuats, lerpLandmarks(from, firstFrame.left_hand, t));
                     }
-                    if (firstFrame.right_hand) {
+                    if (!sd.vrmRetargeter && firstFrame.right_hand) {
                         const from = anim.prevRightLandmarks || firstFrame.right_hand;
                         applyHandLandmarks(sd.rightBones, sd.rightRestQuats, lerpLandmarks(from, firstFrame.right_hand, t));
                     }
@@ -535,11 +617,31 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             const nextFrame = anim.currentFrames[nextIdx];
             const t = anim.frameTimer / frameDuration;
 
-            if (frame.left_hand) {
+            if (sd.vrmRetargeter) {
+                sd.vrmRetargeter.apply({
+                    ...frame,
+                    pose: lerpLandmarks(frame.pose, nextFrame?.pose || frame.pose, t),
+                    pose_world: lerpLandmarks(
+                        frame.pose_world,
+                        nextFrame?.pose_world || frame.pose_world,
+                        t,
+                    ),
+                    left_hand: lerpLandmarks(
+                        frame.left_hand,
+                        nextFrame?.left_hand || frame.left_hand,
+                        t,
+                    ),
+                    right_hand: lerpLandmarks(
+                        frame.right_hand,
+                        nextFrame?.right_hand || frame.right_hand,
+                        t,
+                    ),
+                }, delta);
+            } else if (frame.left_hand) {
                 applyHandLandmarks(sd.leftBones, sd.leftRestQuats,
                     lerpLandmarks(frame.left_hand, nextFrame?.left_hand || frame.left_hand, t));
             }
-            if (frame.right_hand) {
+            if (!sd.vrmRetargeter && frame.right_hand) {
                 applyHandLandmarks(sd.rightBones, sd.rightRestQuats,
                     lerpLandmarks(frame.right_hand, nextFrame?.right_hand || frame.right_hand, t));
             }
