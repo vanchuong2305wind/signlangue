@@ -16,11 +16,12 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from .sign_lookup import sign_dict
 from .text_parser import parse_text
 from .landmark_processing import process_landmark_entry
+from .profile_store import profile_store
 
 # Load environment variables
 load_dotenv(Path(__file__).resolve().parent.parent.parent / ".env")
@@ -76,6 +77,29 @@ class TextToSignResponse(BaseModel):
     total_count: int
     method: str  # "gemini" | "rule_based"
     fingerspell_fallback: list[SignToken] = []
+
+
+class ProfileDetails(BaseModel):
+    name: str | None = None
+    role: str | None = None
+    daily_goal: int | None = None
+
+
+class ProfileSettings(BaseModel):
+    autoplay: bool | None = None
+    notifications: bool | None = None
+
+
+class ProfileUpdateRequest(BaseModel):
+    profile: ProfileDetails | None = None
+    settings: ProfileSettings | None = None
+
+
+class ActivityRequest(BaseModel):
+    type: str
+    label: str = ""
+    value: int = 1
+    metadata: dict = Field(default_factory=dict)
 
 
 @app.post("/api/text-to-signs", response_model=TextToSignResponse)
@@ -139,6 +163,50 @@ async def search_dictionary(q: str = ""):
                 break
 
     return {"query": q, "results": results}
+
+
+def profile_total_words():
+    return len(sign_dict.available_glosses)
+
+
+@app.get("/api/profile")
+async def get_profile():
+    return profile_store.get(profile_total_words())
+
+
+@app.patch("/api/profile")
+async def update_profile(req: ProfileUpdateRequest):
+    profile = req.profile.model_dump(exclude_none=True) if req.profile else None
+    settings = req.settings.model_dump(exclude_none=True) if req.settings else None
+    if profile:
+        if "name" in profile:
+            profile["name"] = profile["name"].strip()[:80]
+            if not profile["name"]:
+                raise HTTPException(status_code=400, detail="Tên không được để trống")
+        if "role" in profile:
+            profile["role"] = profile["role"].strip()[:120]
+        if "daily_goal" in profile:
+            profile["daily_goal"] = min(max(profile["daily_goal"], 1), 200)
+    return profile_store.update(profile, settings, profile_total_words())
+
+
+@app.post("/api/profile/activities")
+async def add_profile_activity(req: ActivityRequest):
+    try:
+        return profile_store.add_activity(
+            req.type,
+            req.label,
+            req.value,
+            req.metadata,
+            profile_total_words(),
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error)) from error
+
+
+@app.delete("/api/profile/activities")
+async def reset_profile_activity():
+    return profile_store.reset(profile_total_words())
 
 
 @app.get("/api/landmarks/{gloss}")

@@ -5,6 +5,7 @@
  */
 
 import { useState, useCallback, useRef } from 'react';
+import { recordActivity } from '../api/profile';
 
 export default function useSignTranslation() {
     const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +34,11 @@ export default function useSignTranslation() {
 
             const data = await response.json();
             setResult(data);
+            recordActivity(
+                'translation',
+                text.trim(),
+                { found_count: data.found_count, total_count: data.total_count },
+            ).catch(() => {});
             return data;
         } catch (err) {
             const msg = err.message || 'Lỗi kết nối server';

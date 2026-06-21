@@ -1,8 +1,10 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import GlassCard from '../components/ui/GlassCard';
 import './Camera.css';
+import useStudyTimer from '../hooks/useStudyTimer';
 
 export default function CameraPage() {
+    useStudyTimer('Nhận diện camera');
     const videoRef = useRef(null);
     const streamRef = useRef(null);
     const [cameraOn, setCameraOn] = useState(false);

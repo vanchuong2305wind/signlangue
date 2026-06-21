@@ -196,24 +196,67 @@
 /* Grid view preview */
 .learn__word-preview {
     height: 120px;
-    background: linear-gradient(135deg, var(--wash-teal) 0%, var(--wash-sky) 100%);
+    background: var(--word-gradient, linear-gradient(135deg, #78c4b6, #5faa9e));
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    isolation: isolate;
+    overflow: hidden;
     border-bottom: 1.5px dashed var(--pencil-soft);
 }
 
+.learn__word-preview::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 18% 25%, rgba(255, 255, 255, 0.28) 0 3px, transparent 4px),
+        radial-gradient(circle at 82% 72%, rgba(255, 255, 255, 0.18) 0 4px, transparent 5px);
+    background-size: 34px 34px, 46px 46px;
+}
+
+.learn__word-symbol {
+    width: 66px;
+    height: 66px;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    border-radius: 22px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 24px rgba(44, 24, 16, 0.14);
+    color: white;
+    font-size: 30px;
+    transform: rotate(-3deg);
+    transition: transform var(--transition-normal);
+    backdrop-filter: blur(4px);
+}
+
+.learn__word-card:hover .learn__word-symbol {
+    transform: rotate(0) scale(1.06);
+}
+
+.learn__word-decoration {
+    position: absolute;
+    right: -15px;
+    bottom: -28px;
+    color: rgba(255, 255, 255, 0.13);
+    font-size: 92px;
+    transform: rotate(-14deg);
+}
+
 .learn__word-play-icon {
-    width: 40px;
-    height: 40px;
+    position: absolute;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    background: rgba(44, 24, 16, 0.5);
+    background: rgba(44, 24, 16, 0.72);
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 11px;
     opacity: 0;
     transition: all var(--transition-fast);
     transform: scale(0.8);

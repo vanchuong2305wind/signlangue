@@ -4,6 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import GlassCard from '../components/ui/GlassCard';
 import { useSignVideos } from '../hooks/useSignVideos';
 import { CATEGORIES } from '../data/categories';
+import { recordActivity } from '../api/profile';
+import useStudyTimer from '../hooks/useStudyTimer';
 import './Learn.css';
 
 const ITEMS_PER_PAGE = 24;
@@ -15,7 +17,62 @@ const TYPE_LABELS = {
     other: { label: 'Link', icon: 'fa-link', color: '#9a7aa5' },
 };
 
+const WORD_ICONS = {
+    hello: 'fa-hand',
+    goodbye: 'fa-hand',
+    love: 'fa-heart',
+    like: 'fa-thumbs-up',
+    book: 'fa-book-open',
+    read: 'fa-book-reader',
+    write: 'fa-pen',
+    school: 'fa-school',
+    teacher: 'fa-chalkboard-user',
+    student: 'fa-user-graduate',
+    home: 'fa-house',
+    house: 'fa-house',
+    family: 'fa-people-roof',
+    mother: 'fa-person-dress',
+    father: 'fa-person',
+    friend: 'fa-user-group',
+    eat: 'fa-utensils',
+    drink: 'fa-glass-water',
+    water: 'fa-droplet',
+    coffee: 'fa-mug-hot',
+    apple: 'fa-apple-whole',
+    dog: 'fa-dog',
+    cat: 'fa-cat',
+    bird: 'fa-dove',
+    fish: 'fa-fish',
+    happy: 'fa-face-smile',
+    sad: 'fa-face-sad-tear',
+    angry: 'fa-face-angry',
+    doctor: 'fa-user-doctor',
+    hospital: 'fa-hospital',
+    time: 'fa-clock',
+    rain: 'fa-cloud-rain',
+    sun: 'fa-sun',
+    moon: 'fa-moon',
+    car: 'fa-car',
+    computer: 'fa-computer',
+    phone: 'fa-mobile-screen',
+    music: 'fa-music',
+    help: 'fa-handshake-angle',
+    run: 'fa-person-running',
+    walk: 'fa-person-walking',
+    sleep: 'fa-bed',
+};
+
+function getWordVisual(word) {
+    const categoryKey = word.categories?.find(key => CATEGORIES[key]) || 'other';
+    const category = CATEGORIES[categoryKey] || CATEGORIES.other;
+    return {
+        icon: WORD_ICONS[word.gloss?.toLowerCase()] || category.icon,
+        gradient: category.gradient,
+    };
+}
+
 export default function Learn() {
+    useStudyTimer('Học ký hiệu');
     const [searchParams, setSearchParams] = useSearchParams();
     const initialCategory = searchParams.get('category') || 'all';
 
@@ -48,6 +105,16 @@ export default function Learn() {
     const openWord = (word) => {
         setSelectedWord(word);
         setActiveVideoIdx(0);
+        recordActivity(
+            'learned_word',
+            word.vi || word.gloss,
+            { gloss: word.gloss },
+        ).catch(() => {});
+        recordActivity(
+            'video_view',
+            word.vi || word.gloss,
+            { gloss: word.gloss },
+        ).catch(() => {});
     };
 
     const closeModal = () => {
@@ -62,11 +129,11 @@ export default function Learn() {
     const activeVideo = playableVideos[activeVideoIdx] || null;
 
     // Auto-skip to next video when current one fails to load
-    const handleVideoError = useCallback(() => {
+    const handleVideoError = () => {
         if (activeVideoIdx < playableVideos.length - 1) {
             setActiveVideoIdx(prev => prev + 1);
         }
-    }, [activeVideoIdx, playableVideos.length]);
+    };
 
     return (
         <div className="learn animate-fade-in">
@@ -149,16 +216,27 @@ export default function Learn() {
                 </GlassCard>
             ) : (
                 <div className={`learn__grid ${viewMode === 'list' ? 'learn__grid--list' : ''} stagger-children`}>
-                    {paginatedVideos.map((word) => (
-                        <GlassCard
-                            key={word.gloss}
-                            padding="none"
-                            className={`learn__word-card ${selectedWord?.gloss === word.gloss ? 'learn__word-card--selected' : ''}`}
-                            onClick={() => openWord(word)}
-                        >
-                            {viewMode === 'grid' ? (
-                                <>
-                                    <div className="learn__word-preview">
+                    {paginatedVideos.map((word) => {
+                        const visual = getWordVisual(word);
+                        return (
+                            <GlassCard
+                                key={word.gloss}
+                                padding="none"
+                                className={`learn__word-card ${selectedWord?.gloss === word.gloss ? 'learn__word-card--selected' : ''}`}
+                                onClick={() => openWord(word)}
+                            >
+                                {viewMode === 'grid' ? (
+                                    <>
+                                    <div
+                                        className="learn__word-preview"
+                                        style={{ '--word-gradient': visual.gradient }}
+                                    >
+                                        <div className="learn__word-decoration" aria-hidden="true">
+                                            <i className={`fa-solid ${visual.icon}`} />
+                                        </div>
+                                        <div className="learn__word-symbol">
+                                            <i className={`fa-solid ${visual.icon}`} />
+                                        </div>
                                         <div className="learn__word-play-icon">
                                             <i className="fa-solid fa-play" />
                                         </div>
@@ -170,19 +248,20 @@ export default function Learn() {
                                         <div className="learn__word-vi">{word.vi || word.gloss}</div>
                                         <div className="learn__word-gloss">{word.gloss.toUpperCase()}</div>
                                     </div>
-                                </>
-                            ) : (
-                                <div className="learn__word-list-item">
-                                    <div className="learn__word-list-play">
-                                        <i className="fa-solid fa-play" style={{ fontSize: '10px' }} />
+                                    </>
+                                ) : (
+                                    <div className="learn__word-list-item">
+                                    <div className="learn__word-list-play" style={{ background: visual.gradient, color: 'white' }}>
+                                        <i className={`fa-solid ${visual.icon}`} style={{ fontSize: '11px' }} />
                                     </div>
                                     <div className="learn__word-list-vi">{word.vi || word.gloss}</div>
                                     <div className="learn__word-list-gloss">{word.gloss.toUpperCase()}</div>
                                     <div className="learn__word-list-count">{word.video_count} video</div>
                                 </div>
-                            )}
-                        </GlassCard>
-                    ))}
+                                )}
+                            </GlassCard>
+                        );
+                    })}
                 </div>
             )}
 

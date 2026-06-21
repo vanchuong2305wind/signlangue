@@ -1,7 +1,9 @@
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import GlassCard from '../components/ui/GlassCard';
 import { useSignVideos } from '../hooks/useSignVideos';
 import { CATEGORIES } from '../data/categories';
+import { getProfile } from '../api/profile';
 import './Dashboard.css';
 
 const QUICK_ACTIONS = [
@@ -33,7 +35,23 @@ const QUICK_ACTIONS = [
 
 export default function Dashboard() {
     const navigate = useNavigate();
-    const { stats, loading } = useSignVideos();
+    const { stats } = useSignVideos();
+    const [learnedWords, setLearnedWords] = useState(0);
+
+    const refreshProfile = useCallback(() => {
+        getProfile()
+            .then(data => setLearnedWords(data.stats.learned_words))
+            .catch(() => {});
+    }, []);
+
+    useEffect(() => {
+        const timer = window.setTimeout(refreshProfile, 0);
+        window.addEventListener('profile:updated', refreshProfile);
+        return () => {
+            window.clearTimeout(timer);
+            window.removeEventListener('profile:updated', refreshProfile);
+        };
+    }, [refreshProfile]);
 
     return (
         <div className="dashboard animate-fade-in">
@@ -113,7 +131,7 @@ export default function Dashboard() {
                         <i className="fa-solid fa-award" />
                     </div>
                     <div>
-                        <div className="dashboard__stat-value">0</div>
+                        <div className="dashboard__stat-value">{learnedWords}</div>
                         <div className="dashboard__stat-label">Đã học</div>
                     </div>
                 </GlassCard>

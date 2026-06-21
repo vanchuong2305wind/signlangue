@@ -1,0 +1,95 @@
+{
+  "profile": {
+    "name": "Nguyễn Văn Chương",
+    "role": "Học viên ngôn ngữ ký hiệu",
+    "daily_goal": 10
+  },
+  "settings": {
+    "autoplay": true,
+    "notifications": true
+  },
+  "activities": [
+    {
+      "id": "1782066845255-0",
+      "type": "study_time",
+      "label": "Học ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Học ký hiệu"
+      },
+      "created_at": "2026-06-22T01:34:05.255418+07:00"
+    },
+    {
+      "id": "1782066974579-1",
+      "type": "study_time",
+      "label": "Học ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Học ký hiệu"
+      },
+      "created_at": "2026-06-22T01:36:14.579117+07:00"
+    },
+    {
+      "id": "1782067034584-2",
+      "type": "study_time",
+      "label": "Học ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Học ký hiệu"
+      },
+      "created_at": "2026-06-22T01:37:14.584992+07:00"
+    },
+    {
+      "id": "1782067094591-3",
+      "type": "study_time",
+      "label": "Học ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Học ký hiệu"
+      },
+      "created_at": "2026-06-22T01:38:14.591349+07:00"
+    },
+    {
+      "id": "1782067212293-4",
+      "type": "learned_word",
+      "label": "nhiều",
+      "value": 1,
+      "metadata": {
+        "gloss": "a lot"
+      },
+      "created_at": "2026-06-22T01:40:12.293377+07:00"
+    },
+    {
+      "id": "1782067212316-5",
+      "type": "video_view",
+      "label": "nhiều",
+      "value": 1,
+      "metadata": {
+        "gloss": "a lot"
+      },
+      "created_at": "2026-06-22T01:40:12.316457+07:00"
+    },
+    {
+      "id": "1782067243227-6",
+      "type": "translation",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "found_count": 1,
+        "total_count": 1
+      },
+      "created_at": "2026-06-22T01:40:43.227560+07:00"
+    },
+    {
+      "id": "1782067258240-7",
+      "type": "translation",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "found_count": 1,
+        "total_count": 1
+      },
+      "created_at": "2026-06-22T01:40:58.240958+07:00"
+    }
+  ]
+}

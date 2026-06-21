@@ -4,6 +4,8 @@ import useSpeechRecognition from '../hooks/useSpeechRecognition';
 import useSignTranslation from '../hooks/useSignTranslation';
 import { useVideoRace } from '../hooks/useVideoRace';
 import './Translate.css';
+import { getProfile } from '../api/profile';
+import useStudyTimer from '../hooks/useStudyTimer';
 
 const AvatarScene3D = lazy(() => import('../components/avatar/AvatarScene3D'));
 
@@ -15,6 +17,7 @@ function getSignVideos(sign, signVideosData) {
 }
 
 export default function Translate() {
+    useStudyTimer('Dịch ký hiệu');
     const [mode, setMode] = useState('video');
     const [transcripts, setTranscripts] = useState([]);
     const [interimText, setInterimText] = useState('');
@@ -56,6 +59,12 @@ export default function Translate() {
             .then(r => r.json())
             .then(setSignVideosData)
             .catch(err => console.warn('Could not load sign_videos.json:', err));
+    }, []);
+
+    useEffect(() => {
+        getProfile()
+            .then(profile => setIsAutoPlaying(profile.settings.autoplay))
+            .catch(() => {});
     }, []);
 
     useEffect(() => {
