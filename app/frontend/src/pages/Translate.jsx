@@ -21,7 +21,7 @@ export default function Translate() {
     const [textInput, setTextInput] = useState('');
     const [activeSignIdx, setActiveSignIdx] = useState(0);
     const [signVideosData, setSignVideosData] = useState(null);
-    const [isAutoPlaying, setIsAutoPlaying] = useState(false);
+    const [isAutoPlaying, setIsAutoPlaying] = useState(true);
     const autoPlayTimerRef = useRef(null);
     const videoRef = useRef(null);
     const avatarRef = useRef(null);
@@ -32,7 +32,7 @@ export default function Translate() {
         setTranscripts(prev => [...prev, text]);
         setInterimText('');
         setActiveSignIdx(0);
-        setIsAutoPlaying(false);
+        setIsAutoPlaying(true);
         translate(text);
     }, [translate]);
 
@@ -128,7 +128,7 @@ export default function Translate() {
         translate(textInput.trim());
         setTextInput('');
         setActiveSignIdx(0);
-        setIsAutoPlaying(false);
+        setIsAutoPlaying(true);
     }
 
     function handleClear() {
