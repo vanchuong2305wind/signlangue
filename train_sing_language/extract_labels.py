@@ -13,7 +13,7 @@ if not os.path.exists(CACHE):
     print(f"Saved to {CACHE}")
 
 # Parse
-with open(CACHE, 'r') as f:
+with open(CACHE, 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 glosses = [entry['gloss'] for entry in data]
@@ -36,16 +36,29 @@ with open("wlasl_labels.py", "w", encoding="utf-8") as f:
         f.write(f'    "{g}",  # {i}\n')
     f.write(']\n\n')
 
-    # Subsets
-    f.write('# Convenience subsets\n')
-    f.write(f'WLASL100_LABELS = WLASL_LABELS[:100]\n')
-    f.write(f'WLASL300_LABELS = WLASL_LABELS[:300]\n')
-    f.write(f'WLASL1000_LABELS = WLASL_LABELS[:1000]\n')
-    f.write(f'WLASL2000_LABELS = WLASL_LABELS[:2000]\n\n')
+    # The original TGCN loader fits sklearn.LabelEncoder on each top-K
+    # subset, so output class indices follow alphabetical order.
+    f.write('# LabelEncoder-compatible subsets used by TGCN\n')
+    f.write('WLASL100_LABELS = sorted(WLASL_LABELS[:100])\n')
+    f.write('WLASL300_LABELS = sorted(WLASL_LABELS[:300])\n')
+    f.write('WLASL1000_LABELS = sorted(WLASL_LABELS[:1000])\n')
+    f.write('WLASL2000_LABELS = sorted(WLASL_LABELS[:2000])\n\n')
+    f.write('LABELS_BY_SIZE = {\n')
+    f.write('    100: WLASL100_LABELS,\n')
+    f.write('    300: WLASL300_LABELS,\n')
+    f.write('    1000: WLASL1000_LABELS,\n')
+    f.write('    2000: WLASL2000_LABELS,\n')
+    f.write('}\n\n')
 
     f.write('\ndef get_label(class_index: int, num_classes: int = 2000) -> str:\n')
     f.write('    """Get the ASL word for a given class index."""\n')
-    f.write('    labels = WLASL_LABELS[:num_classes]\n')
+    f.write('    try:\n')
+    f.write('        labels = LABELS_BY_SIZE[num_classes]\n')
+    f.write('    except KeyError as exc:\n')
+    f.write('        raise ValueError(\n')
+    f.write('            f"Unsupported WLASL class count: {num_classes}. "\n')
+    f.write('            f"Expected one of {sorted(LABELS_BY_SIZE)}"\n')
+    f.write('        ) from exc\n')
     f.write('    if 0 <= class_index < len(labels):\n')
     f.write('        return labels[class_index]\n')
     f.write('    return f"unknown_{class_index}"\n\n')

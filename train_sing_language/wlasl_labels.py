@@ -2009,16 +2009,30 @@ WLASL_LABELS = [
     "whistle",  # 1999
 ]
 
-# Convenience subsets
-WLASL100_LABELS = WLASL_LABELS[:100]
-WLASL300_LABELS = WLASL_LABELS[:300]
-WLASL1000_LABELS = WLASL_LABELS[:1000]
-WLASL2000_LABELS = WLASL_LABELS[:2000]
+# The official TGCN loader selects the top-K JSON entries and then uses
+# sklearn.LabelEncoder, which sorts those glosses alphabetically.
+WLASL100_LABELS = sorted(WLASL_LABELS[:100])
+WLASL300_LABELS = sorted(WLASL_LABELS[:300])
+WLASL1000_LABELS = sorted(WLASL_LABELS[:1000])
+WLASL2000_LABELS = sorted(WLASL_LABELS[:2000])
+
+LABELS_BY_SIZE = {
+    100: WLASL100_LABELS,
+    300: WLASL300_LABELS,
+    1000: WLASL1000_LABELS,
+    2000: WLASL2000_LABELS,
+}
 
 
 def get_label(class_index: int, num_classes: int = 2000) -> str:
     """Get the ASL word for a given class index."""
-    labels = WLASL_LABELS[:num_classes]
+    try:
+        labels = LABELS_BY_SIZE[num_classes]
+    except KeyError as exc:
+        raise ValueError(
+            f"Unsupported WLASL class count: {num_classes}. "
+            f"Expected one of {sorted(LABELS_BY_SIZE)}"
+        ) from exc
     if 0 <= class_index < len(labels):
         return labels[class_index]
     return f"unknown_{class_index}"

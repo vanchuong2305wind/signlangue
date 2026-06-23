@@ -90,6 +90,276 @@
         "total_count": 1
       },
       "created_at": "2026-06-22T01:40:58.240958+07:00"
+    },
+    {
+      "id": "1782218362681-8",
+      "type": "translation",
+      "label": "xin  chào , tôi yêu bạn",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 6
+      },
+      "created_at": "2026-06-23T19:39:22.681967+07:00"
+    },
+    {
+      "id": "1782218384128-9",
+      "type": "translation",
+      "label": "xin chà",
+      "value": 1,
+      "metadata": {
+        "found_count": 0,
+        "total_count": 2
+      },
+      "created_at": "2026-06-23T19:39:44.128494+07:00"
+    },
+    {
+      "id": "1782218392857-10",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-06-23T19:39:52.857981+07:00"
+    },
+    {
+      "id": "1782218393137-11",
+      "type": "translation",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "found_count": 1,
+        "total_count": 1
+      },
+      "created_at": "2026-06-23T19:39:53.137597+07:00"
+    },
+    {
+      "id": "1782218414366-12",
+      "type": "translation",
+      "label": "hello i love you",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 4
+      },
+      "created_at": "2026-06-23T19:40:14.366687+07:00"
+    },
+    {
+      "id": "1782218431385-13",
+      "type": "translation",
+      "label": "hello i miss you",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 4
+      },
+      "created_at": "2026-06-23T19:40:31.385829+07:00"
+    },
+    {
+      "id": "1782218452872-14",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-06-23T19:40:52.872550+07:00"
+    },
+    {
+      "id": "1782218480356-15",
+      "type": "translation",
+      "label": "hello i hungry",
+      "value": 1,
+      "metadata": {
+        "found_count": 3,
+        "total_count": 3
+      },
+      "created_at": "2026-06-23T19:41:20.356832+07:00"
+    },
+    {
+      "id": "1782218512882-16",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-06-23T19:41:52.882374+07:00"
+    },
+    {
+      "id": "1782218517501-17",
+      "type": "translation",
+      "label": "hello i love yeu",
+      "value": 1,
+      "metadata": {
+        "found_count": 3,
+        "total_count": 4
+      },
+      "created_at": "2026-06-23T19:41:57.501596+07:00"
+    },
+    {
+      "id": "1782218552902-18",
+      "type": "translation",
+      "label": "hello i love you",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 4
+      },
+      "created_at": "2026-06-23T19:42:32.902175+07:00"
+    },
+    {
+      "id": "1782218572233-19",
+      "type": "translation",
+      "label": "hello i love you",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 4
+      },
+      "created_at": "2026-06-23T19:42:52.233067+07:00"
+    },
+    {
+      "id": "1782218572853-20",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-06-23T19:42:52.853239+07:00"
+    },
+    {
+      "id": "1782218585715-21",
+      "type": "translation",
+      "label": "hello i love you",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 4
+      },
+      "created_at": "2026-06-23T19:43:05.715459+07:00"
+    },
+    {
+      "id": "1782219291829-22",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-06-23T19:54:51.829916+07:00"
+    },
+    {
+      "id": "1782219482728-23",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-06-23T19:58:02.728396+07:00"
+    },
+    {
+      "id": "1782219542694-24",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-06-23T19:59:02.694777+07:00"
+    },
+    {
+      "id": "1782219626982-25",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-06-23T20:00:26.982204+07:00"
+    },
+    {
+      "id": "1782219688443-26",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-06-23T20:01:28.443586+07:00"
+    },
+    {
+      "id": "1782220021280-27",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-06-23T20:07:01.280706+07:00"
+    },
+    {
+      "id": "1782220083607-28",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-06-23T20:08:03.607670+07:00"
+    },
+    {
+      "id": "1782220143626-29",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-06-23T20:09:03.626878+07:00"
+    },
+    {
+      "id": "1782222704308-30",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-06-23T20:51:44.308478+07:00"
+    },
+    {
+      "id": "1782222785387-31",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-06-23T20:53:05.387389+07:00"
+    },
+    {
+      "id": "1782223082233-32",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-06-23T20:58:02.233759+07:00"
+    },
+    {
+      "id": "1782223142235-33",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-06-23T20:59:02.235131+07:00"
     }
   ]
 }

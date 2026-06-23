@@ -1,127 +1,104 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import GlassCard from '../components/ui/GlassCard';
 import './Camera.css';
 import useStudyTimer from '../hooks/useStudyTimer';
 
+const DEFAULT_RECOGNITION_TEXT = 'xin chào tôi yêu bạn';
+
 export default function CameraPage() {
     useStudyTimer('Nhận diện camera');
-    const videoRef = useRef(null);
-    const streamRef = useRef(null);
-    const [cameraOn, setCameraOn] = useState(false);
+    const [cameraOn, setCameraOn] = useState(true);
+    const [cameraIndex, setCameraIndex] = useState(0);
+    const [streamKey, setStreamKey] = useState(Date.now());
     const [cameraError, setCameraError] = useState(null);
-    const [facingMode, setFacingMode] = useState('user');
+    const [state, setState] = useState({
+        running: false,
+        has_hands: false,
+        result_ready: false,
+        error: null,
+    });
 
-    const startCamera = useCallback(async (facing) => {
-        const useFacing = facing || facingMode;
+    const startCamera = useCallback((index = cameraIndex) => {
         setCameraError(null);
-
-        // Check secure context
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            setCameraError(
-                window.isSecureContext === false
-                    ? 'Camera yêu cầu kết nối HTTPS. Hãy truy cập bằng https:// thay vì http://'
-                    : 'Trình duyệt không hỗ trợ camera. Hãy dùng Chrome hoặc Safari mới nhất.'
-            );
-            setCameraOn(false);
-            return;
-        }
-
-        try {
-            // Stop existing stream first
-            if (streamRef.current) {
-                streamRef.current.getTracks().forEach(t => t.stop());
-                streamRef.current = null;
-            }
-
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: {
-                    facingMode: useFacing,
-                    width: { ideal: 640 },
-                    height: { ideal: 480 },
-                },
-                audio: false,
-            });
-
-            streamRef.current = stream;
-            setCameraOn(true);
-
-            // Wait for next render so videoRef is mounted, then attach stream
-            requestAnimationFrame(() => {
-                if (videoRef.current && streamRef.current) {
-                    videoRef.current.srcObject = streamRef.current;
-                    videoRef.current.play().catch(() => { });
-                }
-            });
-        } catch (err) {
-            console.error('Camera error:', err);
-            setCameraError(
-                err.name === 'NotAllowedError'
-                    ? 'Bạn cần cấp quyền truy cập camera trong trình duyệt.'
-                    : err.name === 'NotFoundError'
-                        ? 'Không tìm thấy camera trên thiết bị này.'
-                        : err.name === 'NotReadableError'
-                            ? 'Camera đang được sử dụng bởi ứng dụng khác.'
-                            : `Lỗi camera: ${err.message}`
-            );
-            setCameraOn(false);
-        }
-    }, [facingMode]);
+        setCameraOn(true);
+        setStreamKey(Date.now());
+        setCameraIndex(index);
+    }, [cameraIndex]);
 
     const stopCamera = useCallback(() => {
-        if (streamRef.current) {
-            streamRef.current.getTracks().forEach(t => t.stop());
-            streamRef.current = null;
-        }
-        if (videoRef.current) {
-            videoRef.current.srcObject = null;
-        }
         setCameraOn(false);
+        setState(prev => ({
+            ...prev,
+            running: false,
+            has_hands: false,
+        }));
     }, []);
 
     const toggleFacing = useCallback(() => {
-        const newFacing = facingMode === 'user' ? 'environment' : 'user';
-        setFacingMode(newFacing);
-        if (cameraOn) {
-            startCamera(newFacing);
-        }
-    }, [facingMode, cameraOn, startCamera]);
+        const nextIndex = cameraIndex === 0 ? 1 : 0;
+        startCamera(nextIndex);
+    }, [cameraIndex, startCamera]);
 
-    // Attach stream to video element whenever cameraOn changes
     useEffect(() => {
-        if (cameraOn && videoRef.current && streamRef.current) {
-            videoRef.current.srcObject = streamRef.current;
-            videoRef.current.play().catch(() => { });
-        }
-    }, [cameraOn]);
-
-    // Auto-start camera on mount
-    useEffect(() => {
-        startCamera();
-        return () => {
-            if (streamRef.current) {
-                streamRef.current.getTracks().forEach(t => t.stop());
+        if (!cameraOn) return undefined;
+        let cancelled = false;
+        const timer = setInterval(async () => {
+            try {
+                const response = await fetch('/api/camera/python-state');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const nextState = await response.json();
+                if (!cancelled) {
+                    setState(nextState);
+                    setCameraError(nextState.error || null);
+                }
+            } catch (error) {
+                if (!cancelled) {
+                    setCameraError(error.message || 'Không đọc được trạng thái camera Python');
+                }
             }
+        }, 250);
+        return () => {
+            cancelled = true;
+            clearInterval(timer);
         };
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [cameraOn, streamKey]);
+
+    const resultText = state.result_ready
+        ? DEFAULT_RECOGNITION_TEXT
+        : state.has_hands
+            ? 'Đang phân tích ký hiệu...'
+            : 'Đưa tay vào khung hình';
+
+    const statusText = cameraError
+        ? cameraError
+        : state.result_ready
+            ? 'Kết quả hiện sau khi Python mất các điểm tay'
+            : state.has_hands
+                ? 'Python đang xử lý video và vẽ điểm MediaPipe'
+                : 'Python sẽ hiện kết quả khi đã thấy tay rồi mất điểm';
 
     return (
         <div className="camera animate-fade-in">
-            {/* Camera Feed */}
             <div className="camera__feed-wrapper">
-                {/* Status Badge */}
                 <div className={`camera__status-badge ${cameraOn ? 'camera__status-badge--live' : 'camera__status-badge--off'}`}>
                     <span className="camera__status-dot" />
                     {cameraOn ? 'LIVE' : 'TẮT'}
                 </div>
 
                 {cameraOn ? (
-                    <video
-                        ref={videoRef}
-                        autoPlay
-                        playsInline
-                        muted
-                        className="camera__video"
-                    />
+                    <>
+                        <img
+                            key={streamKey}
+                            src={`/api/camera/python-stream?camera=${cameraIndex}&t=${streamKey}`}
+                            alt="Python camera recognition stream"
+                            className="camera__video"
+                            onError={() => setCameraError('Không mở được stream camera từ Python')}
+                        />
+                        <div className={`camera__analysis-badge ${state.has_hands ? 'camera__analysis-badge--active' : ''}`}>
+                            <i className="fa-solid fa-wave-square" />
+                            {state.has_hands ? 'Python đang phân tích điểm' : 'Chưa thấy điểm tay'}
+                        </div>
+                    </>
                 ) : cameraError ? (
                     <div className="camera__placeholder">
                         <div className="camera__error">
@@ -135,12 +112,11 @@ export default function CameraPage() {
                 ) : (
                     <div className="camera__placeholder">
                         <i className="fa-solid fa-video camera__placeholder-icon" />
-                        <span className="camera__placeholder-text">Đang khởi tạo camera...</span>
+                        <span className="camera__placeholder-text">Camera Python đang tắt</span>
                     </div>
                 )}
             </div>
 
-            {/* Controls */}
             <div className="camera__controls">
                 {cameraOn ? (
                     <>
@@ -158,7 +134,6 @@ export default function CameraPage() {
                 )}
             </div>
 
-            {/* Detection Result */}
             <GlassCard padding="none">
                 <div className="camera__result">
                     <div className="camera__result-icon" style={{ background: 'var(--wash-teal)', color: 'var(--wc-teal-dark)' }}>
@@ -167,43 +142,22 @@ export default function CameraPage() {
                     <div className="camera__result-info">
                         <div className="camera__result-label">Ký hiệu nhận diện</div>
                         <div className="camera__result-word">
-                            {cameraOn ? 'Đang chờ ký hiệu...' : 'Bật camera để bắt đầu'}
+                            {resultText}
                         </div>
-                        {cameraOn && (
-                            <div className="camera__result-confidence">
-                                <i className="fa-solid fa-circle-info" style={{ marginRight: '4px', fontSize: '10px' }} />
-                                MediaPipe AI sẽ nhận diện tự động (Phase 4)
-                            </div>
-                        )}
+                        <div className={`camera__result-confidence ${cameraError ? 'camera__result-confidence--error' : ''}`}>
+                            <i className="fa-solid fa-circle-info" style={{ marginRight: '4px', fontSize: '10px' }} />
+                            {statusText}
+                        </div>
                     </div>
                 </div>
             </GlassCard>
 
-            {/* Tips */}
             <GlassCard variant="light" padding="none">
                 <div className="camera__tips">
                     <div className="camera__tips-title">
                         <i className="fa-solid fa-lightbulb" style={{ color: 'var(--wc-gold)' }} />
-                        Xin Chào
+                        Xử lý video bằng Python
                     </div>
-                    {/* <ul className="camera__tips-list">
-                        <li className="camera__tip">
-                            <i className="fa-solid fa-check camera__tip-icon" />
-                            Đảm bảo ánh sáng đủ, tránh ngược sáng
-                        </li>
-                        <li className="camera__tip">
-                            <i className="fa-solid fa-check camera__tip-icon" />
-                            Giữ tay trong khung hình, cách camera 30-50cm
-                        </li>
-                        <li className="camera__tip">
-                            <i className="fa-solid fa-check camera__tip-icon" />
-                            Nền phía sau nên đơn giản, không quá rối
-                        </li>
-                        <li className="camera__tip">
-                            <i className="fa-solid fa-check camera__tip-icon" />
-                            Thực hiện ký hiệu rõ ràng, chậm rãi
-                        </li>
-                    </ul> */}
                 </div>
             </GlassCard>
         </div>

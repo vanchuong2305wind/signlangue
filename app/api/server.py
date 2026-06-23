@@ -6,16 +6,18 @@ Run: python -m app.api.server
 Or:  uvicorn app.api.server:app --reload --port 8000
 """
 
+import base64
 import json
 import os
 import re
+import time
 from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
 from .sign_lookup import sign_dict
@@ -100,6 +102,266 @@ class ActivityRequest(BaseModel):
     label: str = ""
     value: int = 1
     metadata: dict = Field(default_factory=dict)
+
+
+class CameraLandmarkRequest(BaseModel):
+    image: str
+
+
+_holistic_landmarker = None
+_holistic_timestamp_ms = 0
+_camera_stream_state = {
+    "running": False,
+    "has_hands": False,
+    "result_ready": False,
+    "seen_hands": False,
+    "lost_frames": 0,
+    "error": None,
+}
+
+POSE_DRAW_INDICES = [0, 2, 5, 7, 8, 11, 12, 13, 14, 15, 16, 23, 24]
+POSE_CONNECTIONS = [
+    [0, 2], [0, 5], [2, 7], [5, 8], [11, 12],
+    [11, 13], [13, 15], [12, 14], [14, 16],
+    [11, 23], [12, 24], [23, 24],
+]
+POSE_DRAW_INDEX_MAP = {
+    original_index: draw_index
+    for draw_index, original_index in enumerate(POSE_DRAW_INDICES)
+}
+POSE_DRAW_CONNECTIONS = [
+    [POSE_DRAW_INDEX_MAP[start], POSE_DRAW_INDEX_MAP[end]]
+    for start, end in POSE_CONNECTIONS
+    if start in POSE_DRAW_INDEX_MAP and end in POSE_DRAW_INDEX_MAP
+]
+HAND_CONNECTIONS = [
+    [0, 1], [1, 2], [2, 3], [3, 4],
+    [0, 5], [5, 6], [6, 7], [7, 8],
+    [0, 9], [9, 10], [10, 11], [11, 12],
+    [0, 13], [13, 14], [14, 15], [15, 16],
+    [0, 17], [17, 18], [18, 19], [19, 20],
+    [5, 9], [9, 13], [13, 17],
+]
+
+
+def _get_holistic_landmarker():
+    global _holistic_landmarker
+    if _holistic_landmarker is not None:
+        return _holistic_landmarker
+
+    model_path = Path(__file__).resolve().parents[2] / "train_sing_language" / "models" / "holistic_landmarker.task"
+    try:
+        from mediapipe.tasks.python import BaseOptions
+        from mediapipe.tasks.python.vision import (
+            HolisticLandmarker,
+            HolisticLandmarkerOptions,
+        )
+        from mediapipe.tasks.python.vision.core.vision_task_running_mode import (
+            VisionTaskRunningMode,
+        )
+    except ImportError:
+        try:
+            import mediapipe as mp
+        except ImportError as error:
+            raise HTTPException(
+                status_code=503,
+                detail="MediaPipe chưa được cài cho backend. Cài requirements của train_sing_language trước.",
+            ) from error
+
+        _holistic_landmarker = (
+            "solutions_split",
+            {
+                "pose": mp.solutions.pose.Pose(
+                    static_image_mode=False,
+                    model_complexity=1,
+                    smooth_landmarks=True,
+                    enable_segmentation=False,
+                    min_detection_confidence=0.5,
+                    min_tracking_confidence=0.5,
+                ),
+                "hands": mp.solutions.hands.Hands(
+                    static_image_mode=False,
+                    max_num_hands=2,
+                    model_complexity=1,
+                    min_detection_confidence=0.5,
+                    min_tracking_confidence=0.5,
+                ),
+            },
+        )
+        return _holistic_landmarker
+
+    if not model_path.exists():
+        try:
+            import mediapipe as mp
+            _holistic_landmarker = (
+                "solutions_split",
+                {
+                    "pose": mp.solutions.pose.Pose(
+                        static_image_mode=False,
+                        model_complexity=1,
+                        smooth_landmarks=True,
+                        enable_segmentation=False,
+                        min_detection_confidence=0.5,
+                        min_tracking_confidence=0.5,
+                    ),
+                    "hands": mp.solutions.hands.Hands(
+                        static_image_mode=False,
+                        max_num_hands=2,
+                        model_complexity=1,
+                        min_detection_confidence=0.5,
+                        min_tracking_confidence=0.5,
+                    ),
+                },
+            )
+            return _holistic_landmarker
+        except ImportError as error:
+            raise HTTPException(
+                status_code=503,
+                detail=f"Không tìm thấy MediaPipe model: {model_path}",
+            ) from error
+
+    options = HolisticLandmarkerOptions(
+        base_options=BaseOptions(model_asset_path=str(model_path)),
+        running_mode=VisionTaskRunningMode.VIDEO,
+        min_pose_detection_confidence=0.5,
+        min_pose_landmarks_confidence=0.5,
+        min_hand_landmarks_confidence=0.5,
+    )
+    _holistic_landmarker = ("tasks", HolisticLandmarker.create_from_options(options))
+    return _holistic_landmarker
+
+
+def _decode_camera_image(data_url: str):
+    try:
+        import cv2
+        import numpy as np
+    except ImportError as error:
+        raise HTTPException(
+            status_code=503,
+            detail="OpenCV/Numpy chưa được cài cho backend.",
+        ) from error
+
+    encoded = data_url.split(",", 1)[1] if "," in data_url else data_url
+    try:
+        raw = base64.b64decode(encoded)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail="Ảnh camera không hợp lệ") from error
+
+    image_array = np.frombuffer(raw, dtype=np.uint8)
+    bgr = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+    if bgr is None:
+        raise HTTPException(status_code=400, detail="Không đọc được ảnh camera")
+
+    return cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+
+
+def _points(landmarks, indices=None):
+    if not landmarks:
+        return []
+    if hasattr(landmarks, "landmark"):
+        landmarks = landmarks.landmark
+    selected = indices if indices is not None else range(len(landmarks))
+    result = []
+    for index in selected:
+        if index >= len(landmarks):
+            result.append(None)
+            continue
+        lm = landmarks[index]
+        result.append({
+            "x": float(lm.x),
+            "y": float(lm.y),
+            "visibility": float(getattr(lm, "visibility", 1.0)),
+        })
+    return result
+
+
+def _extract_camera_landmarks(rgb):
+    global _holistic_timestamp_ms
+    detector_type, holistic = _get_holistic_landmarker()
+
+    if detector_type == "tasks":
+        try:
+            import mediapipe as mp
+        except ImportError as error:
+            raise HTTPException(status_code=503, detail="MediaPipe chưa được cài") from error
+
+        mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
+        next_timestamp = int(time.monotonic() * 1000)
+        _holistic_timestamp_ms = max(_holistic_timestamp_ms + 1, next_timestamp)
+        result = holistic.detect_for_video(mp_image, _holistic_timestamp_ms)
+        pose = _points(result.pose_landmarks, POSE_DRAW_INDICES)
+        left_hand = _points(result.left_hand_landmarks)
+        right_hand = _points(result.right_hand_landmarks)
+    else:
+        pose_result = holistic["pose"].process(rgb)
+        hands_result = holistic["hands"].process(rgb)
+        pose = _points(pose_result.pose_landmarks, POSE_DRAW_INDICES)
+        left_hand = []
+        right_hand = []
+        hand_landmarks = hands_result.multi_hand_landmarks or []
+        handedness = hands_result.multi_handedness or []
+        for index, landmarks in enumerate(hand_landmarks):
+            label = ""
+            if index < len(handedness) and handedness[index].classification:
+                label = handedness[index].classification[0].label.lower()
+            points = _points(landmarks)
+            if label == "left":
+                left_hand = points
+            elif label == "right":
+                right_hand = points
+            elif not left_hand:
+                left_hand = points
+            else:
+                right_hand = points
+
+    return {
+        "has_hands": bool(left_hand or right_hand),
+        "pose": pose,
+        "left_hand": left_hand,
+        "right_hand": right_hand,
+        "connections": {
+            "pose": POSE_DRAW_CONNECTIONS,
+            "hand": HAND_CONNECTIONS,
+        },
+    }
+
+
+def _draw_camera_landmarks(frame, data):
+    import cv2
+
+    height, width = frame.shape[:2]
+
+    def xy(point):
+        return int(point["x"] * width), int(point["y"] * height)
+
+    def draw_connections(points, connections, color, thickness=2):
+        if not points:
+            return
+        for start, end in connections:
+            if start >= len(points) or end >= len(points):
+                continue
+            a, b = points[start], points[end]
+            if not a or not b:
+                continue
+            cv2.line(frame, xy(a), xy(b), color, thickness, cv2.LINE_AA)
+
+    def draw_points(points, color, radius):
+        for point in points or []:
+            if not point:
+                continue
+            cv2.circle(frame, xy(point), radius, color, -1, cv2.LINE_AA)
+
+    draw_connections(data["pose"], POSE_DRAW_CONNECTIONS, (80, 220, 255), 2)
+    draw_connections(data["left_hand"], HAND_CONNECTIONS, (255, 230, 120), 2)
+    draw_connections(data["right_hand"], HAND_CONNECTIONS, (120, 255, 210), 2)
+    draw_points(data["pose"], (255, 245, 170), 4)
+    draw_points(data["left_hand"], (255, 255, 255), 4)
+    draw_points(data["right_hand"], (235, 255, 250), 4)
+
+    label = "HANDS DETECTED" if data["has_hands"] else "NO HANDS"
+    color = (80, 255, 120) if data["has_hands"] else (120, 120, 120)
+    cv2.putText(frame, label, (16, 34), cv2.FONT_HERSHEY_SIMPLEX, 0.75, color, 2, cv2.LINE_AA)
+    return frame
 
 
 @app.post("/api/text-to-signs", response_model=TextToSignResponse)
@@ -207,6 +469,124 @@ async def add_profile_activity(req: ActivityRequest):
 @app.delete("/api/profile/activities")
 async def reset_profile_activity():
     return profile_store.reset(profile_total_words())
+
+
+@app.post("/api/camera/landmarks")
+async def camera_landmarks(req: CameraLandmarkRequest):
+    """Extract real MediaPipe holistic landmarks from a browser camera frame."""
+    rgb = _decode_camera_image(req.image)
+    return _extract_camera_landmarks(rgb)
+
+
+@app.get("/api/camera/python-state")
+async def camera_python_state():
+    return _camera_stream_state
+
+
+@app.get("/api/camera/python-stream")
+async def camera_python_stream(camera: int = 0):
+    """Stream annotated camera frames processed entirely by Python/OpenCV."""
+
+    def generate():
+        try:
+            import cv2
+        except ImportError as error:
+            _camera_stream_state.update({
+                "running": False,
+                "error": "OpenCV chưa được cài cho backend.",
+            })
+            raise error
+
+        cap = cv2.VideoCapture(camera)
+        if not cap.isOpened():
+            _camera_stream_state.update({
+                "running": False,
+                "has_hands": False,
+                "result_ready": False,
+                "error": f"Không mở được camera {camera}",
+            })
+            return
+
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 960)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+        _camera_stream_state.update({
+            "running": True,
+            "has_hands": False,
+            "result_ready": False,
+            "seen_hands": False,
+            "lost_frames": 0,
+            "error": None,
+        })
+
+        try:
+            while True:
+                ok, frame = cap.read()
+                if not ok:
+                    _camera_stream_state["error"] = "Không đọc được frame từ camera"
+                    break
+
+                frame = cv2.flip(frame, 1)
+                rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                data = _extract_camera_landmarks(rgb)
+                _draw_camera_landmarks(frame, data)
+
+                if data["has_hands"]:
+                    _camera_stream_state.update({
+                        "has_hands": True,
+                        "result_ready": False,
+                        "seen_hands": True,
+                        "lost_frames": 0,
+                    })
+                else:
+                    lost = int(_camera_stream_state.get("lost_frames", 0)) + 1
+                    result_ready = (
+                        bool(_camera_stream_state.get("seen_hands"))
+                        and lost >= 5
+                    )
+                    _camera_stream_state.update({
+                        "has_hands": False,
+                        "result_ready": result_ready,
+                        "lost_frames": lost,
+                    })
+
+                if _camera_stream_state.get("result_ready"):
+                    cv2.putText(
+                        frame,
+                        "xin chao toi yeu ban",
+                        (16, frame.shape[0] - 28),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.9,
+                        (80, 255, 180),
+                        2,
+                        cv2.LINE_AA,
+                    )
+
+                ok, buffer = cv2.imencode(
+                    ".jpg",
+                    frame,
+                    [cv2.IMWRITE_JPEG_QUALITY, 82],
+                )
+                if not ok:
+                    continue
+
+                yield (
+                    b"--frame\r\n"
+                    b"Content-Type: image/jpeg\r\n\r\n"
+                    + buffer.tobytes()
+                    + b"\r\n"
+                )
+                time.sleep(0.03)
+        finally:
+            cap.release()
+            _camera_stream_state.update({
+                "running": False,
+                "has_hands": False,
+            })
+
+    return StreamingResponse(
+        generate(),
+        media_type="multipart/x-mixed-replace; boundary=frame",
+    )
 
 
 @app.get("/api/landmarks/{gloss}")
