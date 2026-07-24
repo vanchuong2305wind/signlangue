@@ -1,8 +1,8 @@
 fastapi
 uvicorn
-mediapipe
 opencv-python
 numpy
+torch
 pydantic
 python-dotenv
 google-generativeai

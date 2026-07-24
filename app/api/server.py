@@ -15,11 +15,13 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
+from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
+from .camera_recognition import is_available, recognize
 from .sign_lookup import sign_dict
 from .text_parser import parse_text
 from .landmark_processing import process_landmark_entry
@@ -106,6 +108,11 @@ class ActivityRequest(BaseModel):
 
 class CameraLandmarkRequest(BaseModel):
     image: str
+
+
+class CameraRecognitionRequest(BaseModel):
+    frames: list[str] = Field(min_length=12, max_length=48)
+    top_k: int = Field(default=3, ge=1, le=5)
 
 
 _holistic_landmarker = None
@@ -471,19 +478,30 @@ async def reset_profile_activity():
     return profile_store.reset(profile_total_words())
 
 
-@app.post("/api/camera/landmarks")
-async def camera_landmarks(req: CameraLandmarkRequest):
-    """Extract real MediaPipe holistic landmarks from a browser camera frame."""
-    rgb = _decode_camera_image(req.image)
-    return _extract_camera_landmarks(rgb)
+@app.get("/api/camera/model-status")
+async def camera_model_status():
+    return {
+        "available": is_available(),
+        "model": "WLASL100-I3D-Transformer",
+        "classes": 100,
+    }
 
 
-@app.get("/api/camera/python-state")
+@app.post("/api/camera/recognize")
+async def camera_recognize(req: CameraRecognitionRequest):
+    """Classify a short sign sequence captured by the browser."""
+    try:
+        return await run_in_threadpool(recognize, req.frames, req.top_k)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error)) from error
+    except RuntimeError as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error
+
+
 async def camera_python_state():
     return _camera_stream_state
 
 
-@app.get("/api/camera/python-stream")
 async def camera_python_stream(camera: int = 0):
     """Stream annotated camera frames processed entirely by Python/OpenCV."""
 

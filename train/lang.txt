@@ -1,0 +1,109 @@
+DANH SÁCH 100 TỪ CỦA MODEL WLASL100
+
+ID   English       Tiếng Việt
+---  ------------  ------------------------------
+0    book          sách
+1    drink         uống / đồ uống
+2    computer      máy tính
+3    before        trước / trước đây
+4    chair         ghế
+5    go            đi
+6    clothes       quần áo
+7    who           ai
+8    candy         kẹo
+9    cousin        anh/chị/em họ
+10   deaf          điếc / người Điếc
+11   fine          ổn / tốt
+12   help          giúp đỡ
+13   no            không
+14   thin          gầy / mỏng
+15   walk          đi bộ
+16   year          năm
+17   yes           có / vâng
+18   all           tất cả
+19   black         màu đen
+20   cool          mát / ngầu
+21   finish        hoàn thành / kết thúc
+22   hot           nóng
+23   like          thích
+24   many          nhiều
+25   mother        mẹ
+26   now           bây giờ
+27   orange        màu cam / quả cam
+28   table         cái bàn
+29   thanksgiving  Lễ Tạ ơn
+30   what          cái gì / gì
+31   woman         phụ nữ
+32   bed           giường
+33   blue          màu xanh dương
+34   bowling       bowling / môn ném bóng
+35   can           có thể
+36   dog           chó
+37   family        gia đình
+38   fish          cá
+39   graduate      tốt nghiệp
+40   hat           mũ
+41   hearing       nghe / thính giác
+42   kiss          hôn / nụ hôn
+43   language      ngôn ngữ
+44   later         sau / lát nữa
+45   man           đàn ông
+46   shirt         áo sơ mi / áo
+47   study         học / nghiên cứu
+48   tall          cao
+49   white         màu trắng
+50   wrong         sai
+51   accident      tai nạn
+52   apple         táo
+53   bird          chim
+54   change        thay đổi
+55   color         màu sắc
+56   corn          ngô / bắp
+57   cow           bò
+58   dance         nhảy / khiêu vũ
+59   dark          tối / sẫm màu
+60   doctor        bác sĩ
+61   eat           ăn
+62   enjoy         tận hưởng / yêu thích
+63   forget        quên
+64   give          cho / đưa
+65   last          cuối cùng / lần trước
+66   meet          gặp
+67   pink          màu hồng
+68   pizza         bánh pizza
+69   play          chơi
+70   school        trường học
+71   secretary     thư ký
+72   short         ngắn / thấp
+73   time          thời gian
+74   want          muốn
+75   work          làm việc / công việc
+76   africa        châu Phi
+77   basketball    bóng rổ
+78   birthday      sinh nhật
+79   brown         màu nâu
+80   but           nhưng
+81   cheat         gian lận / lừa dối
+82   city          thành phố
+83   cook          nấu ăn
+84   decide        quyết định
+85   full          đầy / no
+86   how           như thế nào
+87   jacket        áo khoác
+88   letter        thư / chữ cái
+89   medicine      thuốc
+90   need          cần
+91   paint         sơn / vẽ
+92   paper         giấy
+93   pull          kéo
+94   purple        màu tím
+95   right         đúng / bên phải
+96   same          giống nhau
+97   son           con trai
+98   tell          nói / kể
+99   thursday      thứ Năm
+
+Ghi chú:
+- Đây là đúng thứ tự nhãn (class ID) mà checkpoint WLASL100 sử dụng.
+- Một số từ tiếng Anh có nhiều nghĩa; bản dịch liệt kê các nghĩa thông dụng
+  phù hợp nhất, nhưng động tác ASL cụ thể phụ thuộc vào ngữ cảnh của dataset.
