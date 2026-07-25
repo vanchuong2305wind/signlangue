@@ -15,6 +15,9 @@ export default function CameraPage() {
     const videoRef = useRef(null);
     const streamRef = useRef(null);
     const captureAbortRef = useRef(false);
+    const liveFramesRef = useRef([]);
+    const inferenceBusyRef = useRef(false);
+    const lastPredictionRef = useRef({ label: '', time: 0 });
     const [cameraOn, setCameraOn] = useState(false);
     const [facingMode, setFacingMode] = useState('user');
     const [phase, setPhase] = useState('idle');
@@ -22,6 +25,9 @@ export default function CameraPage() {
     const [error, setError] = useState('');
     const [result, setResult] = useState(null);
     const [sentence, setSentence] = useState([]);
+    const [aiSentence, setAiSentence] = useState('');
+    const [buildingSentence, setBuildingSentence] = useState(false);
+    const [liveTranslation, setLiveTranslation] = useState(false);
     const [modelReady, setModelReady] = useState(true);
 
     const stopStream = useCallback(() => {
@@ -30,6 +36,7 @@ export default function CameraPage() {
         streamRef.current = null;
         if (videoRef.current) videoRef.current.srcObject = null;
         setCameraOn(false);
+        setLiveTranslation(false);
         setPhase('idle');
         setProgress(0);
     }, []);
@@ -81,27 +88,9 @@ export default function CameraPage() {
         await startCamera(facingMode === 'user' ? 'environment' : 'user');
     };
 
-    const recognize = async () => {
-        if (!videoRef.current || !cameraOn || phase !== 'idle') return;
-        captureAbortRef.current = false;
-        setError('');
-        setPhase('capturing');
-        setProgress(0);
-
-        const canvas = document.createElement('canvas');
-        canvas.width = 320;
-        canvas.height = 240;
-        const context = canvas.getContext('2d', { alpha: false });
-        const frames = [];
-
-        for (let index = 0; index < CAPTURE_FRAMES; index += 1) {
-            if (captureAbortRef.current) return;
-            context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-            frames.push(canvas.toDataURL('image/jpeg', 0.68));
-            setProgress(Math.round(((index + 1) / CAPTURE_FRAMES) * 100));
-            await new Promise(resolve => window.setTimeout(resolve, CAPTURE_INTERVAL_MS));
-        }
-
+    const analyzeFrames = useCallback(async (frames) => {
+        if (inferenceBusyRef.current || frames.length < CAPTURE_FRAMES) return;
+        inferenceBusyRef.current = true;
         setPhase('processing');
         try {
             const response = await fetch('/api/camera/recognize', {
@@ -112,13 +101,22 @@ export default function CameraPage() {
             const data = await response.json();
             if (!response.ok) throw new Error(apiError(data, 'Model không thể nhận diện clip này.'));
             setResult(data);
-            const rawWord = data.prediction.vietnamese || data.prediction.label;
-            const word = rawWord.split('/')[0].trim();
-            setSentence(current => [...current, {
-                word,
-                label: data.prediction.label,
-                confidence: data.prediction.confidence,
-            }]);
+            const now = Date.now();
+            const isDuplicate = (
+                lastPredictionRef.current.label === data.prediction.label
+                && now - lastPredictionRef.current.time < 6500
+            );
+            if (!isDuplicate && data.prediction.confidence >= 0.2) {
+                const rawWord = data.prediction.vietnamese || data.prediction.label;
+                const word = rawWord.split('/')[0].trim();
+                setSentence(current => [...current, {
+                    word,
+                    label: data.prediction.label,
+                    confidence: data.prediction.confidence,
+                }]);
+                setAiSentence('');
+                lastPredictionRef.current = { label: data.prediction.label, time: now };
+            }
             fetch('/api/profile/activities', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -132,8 +130,49 @@ export default function CameraPage() {
             setError(recognitionError.message || 'Không kết nối được với model nhận diện.');
         } finally {
             setPhase('idle');
-            setProgress(0);
+            inferenceBusyRef.current = false;
         }
+    }, []);
+
+    useEffect(() => {
+        if (!liveTranslation || !cameraOn) return undefined;
+        const canvas = document.createElement('canvas');
+        canvas.width = 320;
+        canvas.height = 240;
+        const context = canvas.getContext('2d', { alpha: false });
+
+        const captureTimer = window.setInterval(() => {
+            const video = videoRef.current;
+            if (!video || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) return;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            liveFramesRef.current.push(canvas.toDataURL('image/jpeg', 0.68));
+            if (liveFramesRef.current.length > CAPTURE_FRAMES) {
+                liveFramesRef.current.shift();
+            }
+            setProgress(Math.round((liveFramesRef.current.length / CAPTURE_FRAMES) * 100));
+
+            if (liveFramesRef.current.length === CAPTURE_FRAMES && !inferenceBusyRef.current) {
+                const frames = liveFramesRef.current;
+                liveFramesRef.current = [];
+                setProgress(0);
+                analyzeFrames(frames);
+            }
+        }, CAPTURE_INTERVAL_MS);
+
+        return () => {
+            window.clearInterval(captureTimer);
+            liveFramesRef.current = [];
+            setProgress(0);
+        };
+    }, [analyzeFrames, cameraOn, liveTranslation]);
+
+    const toggleLiveTranslation = () => {
+        if (!liveTranslation) {
+            setError('');
+            lastPredictionRef.current = { label: '', time: 0 };
+            liveFramesRef.current = [];
+        }
+        setLiveTranslation(current => !current);
     };
 
     const prediction = result?.prediction;
@@ -141,16 +180,38 @@ export default function CameraPage() {
     const sentenceText = sentence.map(item => item.word).join(' ');
 
     const speakSentence = () => {
-        if (!sentenceText || !window.speechSynthesis) return;
+        const text = aiSentence || sentenceText;
+        if (!text || !window.speechSynthesis) return;
         window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(sentenceText);
+        const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'vi-VN';
         window.speechSynthesis.speak(utterance);
     };
 
     const copySentence = async () => {
-        if (!sentenceText) return;
-        await navigator.clipboard.writeText(sentenceText);
+        const text = aiSentence || sentenceText;
+        if (!text) return;
+        await navigator.clipboard.writeText(text);
+    };
+
+    const buildMeaningfulSentence = async () => {
+        if (!sentence.length || buildingSentence) return;
+        setBuildingSentence(true);
+        setError('');
+        try {
+            const response = await fetch('/api/camera/build-sentence', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ words: sentence.map(item => item.word) }),
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(apiError(data, 'Không thể tạo câu bằng Gemini.'));
+            setAiSentence(data.sentence);
+        } catch (buildError) {
+            setError(buildError.message || 'Không kết nối được với Gemini.');
+        } finally {
+            setBuildingSentence(false);
+        }
     };
 
     return (
@@ -172,18 +233,17 @@ export default function CameraPage() {
                 <div className={`camera__live ${cameraOn ? '' : 'camera__live--off'}`}>
                     <span /> {cameraOn ? 'Sẵn sàng' : 'Đã tắt'}
                 </div>
-                {phase === 'capturing' && (
+                {liveTranslation && (
                     <div className="camera__countdown">
-                        <strong>Đang ghi cử chỉ</strong>
-                        <span>Giữ toàn bộ tay và thân trên trong khung hình</span>
+                        <strong>
+                            {phase === 'processing' ? (
+                                <><i className="fa-solid fa-spinner fa-spin" /> Đang nhận diện ký hiệu...</>
+                            ) : (
+                                <><i className="fa-solid fa-circle camera__record-dot" /> Đang dịch liên tục</>
+                            )}
+                        </strong>
+                        <span>Camera luôn hoạt động — hãy tiếp tục với ký hiệu tiếp theo</span>
                         <div className="camera__progress"><i style={{ width: `${progress}%` }} /></div>
-                    </div>
-                )}
-                {phase === 'processing' && (
-                    <div className="camera__processing">
-                        <i className="fa-solid fa-spinner fa-spin" />
-                        <strong>Model đang phân tích...</strong>
-                        <span>Lần đầu có thể lâu hơn do cần nạp model</span>
                     </div>
                 )}
             </section>
@@ -191,14 +251,14 @@ export default function CameraPage() {
             <div className="camera__controls">
                 {cameraOn ? (
                     <>
-                        <button className="camera__btn camera__btn--primary" onClick={recognize} disabled={phase !== 'idle' || !modelReady}>
-                            <i className="fa-solid fa-hand" />
-                            {phase === 'idle' ? (sentence.length ? 'Thêm từ tiếp theo' : 'Bắt đầu dịch câu') : 'Đang xử lý'}
+                        <button className={`camera__btn ${liveTranslation ? 'camera__btn--stop' : 'camera__btn--primary'}`} onClick={toggleLiveTranslation} disabled={!modelReady}>
+                            <i className={`fa-solid ${liveTranslation ? 'fa-stop' : 'fa-play'}`} />
+                            {liveTranslation ? 'Dừng dịch' : 'Bắt đầu dịch liên tục'}
                         </button>
-                        <button className="camera__btn camera__btn--icon" onClick={switchCamera} disabled={phase !== 'idle'} title="Đổi camera">
+                        <button className="camera__btn camera__btn--icon" onClick={switchCamera} disabled={liveTranslation || phase !== 'idle'} title="Đổi camera">
                             <i className="fa-solid fa-camera-rotate" />
                         </button>
-                        <button className="camera__btn camera__btn--quiet" onClick={stopStream} disabled={phase !== 'idle'}>
+                        <button className="camera__btn camera__btn--quiet" onClick={stopStream} disabled={liveTranslation || phase !== 'idle'}>
                             <i className="fa-solid fa-power-off" /> Tắt
                         </button>
                     </>
@@ -226,8 +286,11 @@ export default function CameraPage() {
                         <div className="camera__sentence-actions">
                             <button
                                 type="button"
-                                onClick={() => setSentence(current => current.slice(0, -1))}
-                                disabled={!sentence.length || phase !== 'idle'}
+                                onClick={() => {
+                                    setSentence(current => current.slice(0, -1));
+                                    setAiSentence('');
+                                }}
+                                disabled={!sentence.length || liveTranslation}
                                 title="Bỏ từ cuối"
                             >
                                 <i className="fa-solid fa-rotate-left" />
@@ -238,7 +301,10 @@ export default function CameraPage() {
                             <button type="button" onClick={speakSentence} disabled={!sentence.length} title="Đọc câu">
                                 <i className="fa-solid fa-volume-high" />
                             </button>
-                            <button type="button" onClick={() => setSentence([])} disabled={!sentence.length || phase !== 'idle'} title="Xóa câu">
+                            <button type="button" onClick={() => {
+                                setSentence([]);
+                                setAiSentence('');
+                            }} disabled={!sentence.length || liveTranslation} title="Xóa câu">
                                 <i className="fa-solid fa-trash" />
                             </button>
                         </div>
@@ -251,6 +317,25 @@ export default function CameraPage() {
                                     <small>{Math.round(item.confidence * 100)}%</small>
                                 </span>
                             ))}
+                        </div>
+                    )}
+                    {sentence.length > 0 && (
+                        <div className="camera__gemini">
+                            <button
+                                type="button"
+                                className="camera__gemini-btn"
+                                onClick={buildMeaningfulSentence}
+                                disabled={buildingSentence || liveTranslation}
+                            >
+                                <i className={`fa-solid ${buildingSentence ? 'fa-spinner fa-spin' : 'fa-wand-magic-sparkles'}`} />
+                                {buildingSentence ? 'Gemini đang viết câu...' : 'Tạo câu có nghĩa bằng Gemini'}
+                            </button>
+                            {aiSentence && (
+                                <div className="camera__gemini-result">
+                                    <span><i className="fa-solid fa-wand-magic-sparkles" /> Câu đề xuất</span>
+                                    <strong>{aiSentence}</strong>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
@@ -282,7 +367,7 @@ export default function CameraPage() {
 
             <p className="camera__hint">
                 <i className="fa-solid fa-circle-info" />
-                Thực hiện lần lượt từng ký hiệu trong câu. Mỗi lần nhận diện thành công, từ mới sẽ tự động được nối vào câu.
+                Camera tự nhận diện theo từng cửa sổ khoảng 3 giây. Hãy nghỉ ngắn giữa hai ký hiệu để model tách từ chính xác hơn.
             </p>
         </div>
     );

@@ -22,6 +22,7 @@ from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
 from .camera_recognition import is_available, recognize
+from .sentence_builder import build_sentence, gemini_configured
 from .sign_lookup import sign_dict
 from .text_parser import parse_text
 from .landmark_processing import process_landmark_entry
@@ -113,6 +114,10 @@ class CameraLandmarkRequest(BaseModel):
 class CameraRecognitionRequest(BaseModel):
     frames: list[str] = Field(min_length=12, max_length=48)
     top_k: int = Field(default=3, ge=1, le=5)
+
+
+class SentenceBuildRequest(BaseModel):
+    words: list[str] = Field(min_length=1, max_length=50)
 
 
 _holistic_landmarker = None
@@ -484,6 +489,7 @@ async def camera_model_status():
         "available": is_available(),
         "model": "WLASL100-I3D-Transformer",
         "classes": 100,
+        "gemini_configured": gemini_configured(),
     }
 
 
@@ -496,6 +502,27 @@ async def camera_recognize(req: CameraRecognitionRequest):
         raise HTTPException(status_code=400, detail=str(error)) from error
     except RuntimeError as error:
         raise HTTPException(status_code=503, detail=str(error)) from error
+
+
+@app.post("/api/camera/build-sentence")
+async def camera_build_sentence(req: SentenceBuildRequest):
+    try:
+        sentence = await build_sentence(req.words)
+        return {
+            "sentence": sentence,
+            "source_words": req.words,
+            "method": "gemini-3.6-flash",
+        }
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error)) from error
+    except RuntimeError as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error
+    except Exception as error:
+        print(f"[SentenceBuilder] Gemini error: {error}")
+        raise HTTPException(
+            status_code=502,
+            detail="Gemini đang không phản hồi. Vui lòng thử lại.",
+        ) from error
 
 
 async def camera_python_state():

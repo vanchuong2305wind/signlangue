@@ -29,8 +29,7 @@
     transform: scaleX(-1);
 }
 
-.camera__placeholder,
-.camera__processing {
+.camera__placeholder {
     position: absolute;
     inset: 0;
     display: flex;
@@ -93,7 +92,7 @@
 }
 
 .camera__countdown span,
-.camera__processing span {
+.camera__countdown span {
     margin-top: 3px;
     color: rgba(255, 255, 255, .7);
     font-size: 12px;
@@ -113,17 +112,6 @@
     border-radius: inherit;
     background: #6ee7b7;
     transition: width 120ms linear;
-}
-
-.camera__processing {
-    z-index: 3;
-    background: rgba(17, 20, 20, .78);
-    backdrop-filter: blur(7px);
-}
-
-.camera__processing i {
-    color: #6ee7b7;
-    font-size: 28px;
 }
 
 .camera__controls {
@@ -159,6 +147,19 @@
     background: var(--gradient-teal);
     color: white;
     box-shadow: 2px 3px 12px rgba(96, 180, 168, .28);
+}
+
+.camera__btn--stop {
+    border-color: transparent;
+    background: var(--gradient-rose);
+    color: white;
+}
+
+.camera__record-dot {
+    margin-right: 5px;
+    color: #fb7185;
+    font-size: 9px;
+    animation: pulse 1.2s ease-in-out infinite;
 }
 
 .camera__btn--icon {
@@ -274,6 +275,54 @@
     font-size: 10px;
 }
 
+.camera__gemini {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.camera__gemini-btn {
+    flex: 0 0 auto;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #7357c8, #4f8bc9);
+    color: white;
+    font: 700 12px 'Inter', sans-serif;
+    cursor: pointer;
+    box-shadow: 2px 3px 10px rgba(91, 82, 180, .2);
+}
+
+.camera__gemini-btn:disabled {
+    cursor: wait;
+    opacity: .55;
+}
+
+.camera__gemini-result {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    padding: 9px 12px;
+    border: 1px solid rgba(115, 87, 200, .2);
+    border-radius: 12px;
+    background: rgba(115, 87, 200, .07);
+}
+
+.camera__gemini-result span {
+    color: #7357c8;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.camera__gemini-result strong {
+    margin-top: 3px;
+    color: var(--ink-dark);
+    font-size: 15px;
+}
+
 .camera__result-icon {
     display: grid;
     flex: 0 0 48px;
@@ -363,6 +412,10 @@
 
     .camera__sentence-heading {
         align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .camera__gemini {
         flex-direction: column;
     }
 

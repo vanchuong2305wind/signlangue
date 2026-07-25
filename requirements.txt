@@ -5,7 +5,7 @@ numpy
 torch
 pydantic
 python-dotenv
-google-generativeai
+google-genai
 cloudinary
 requests
 yt-dlp
