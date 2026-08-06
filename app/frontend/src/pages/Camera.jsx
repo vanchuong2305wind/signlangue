@@ -3,8 +3,32 @@ import GlassCard from '../components/ui/GlassCard';
 import useStudyTimer from '../hooks/useStudyTimer';
 import './Camera.css';
 
-const CAPTURE_FRAMES = 24;
 const CAPTURE_INTERVAL_MS = 125;
+const PRE_ROLL_FRAMES = 4;
+const MIN_SEGMENT_FRAMES = 12;
+const MAX_SEGMENT_FRAMES = 44;
+const QUIET_TICKS_TO_CLOSE = 3;
+const MOTION_SAMPLE_WIDTH = 64;
+const MOTION_SAMPLE_HEIGHT = 48;
+const MOTION_GRID_COLS = 8;
+const MOTION_GRID_ROWS = 6;
+const MOTION_BLOCK_WIDTH = MOTION_SAMPLE_WIDTH / MOTION_GRID_COLS;
+const MOTION_BLOCK_HEIGHT = MOTION_SAMPLE_HEIGHT / MOTION_GRID_ROWS;
+// Motion score = mean abs RGB diff (0-255) inside the most-changed grid block, not the
+// whole frame — a small localized gesture (hand near the face) moves few pixels overall,
+// so averaging over the full frame drowns it out against the static background/body.
+// Tuned for typical webcam noise/lighting; may need retuning per deployment.
+const MOTION_START_THRESHOLD = 14;
+const MOTION_STOP_THRESHOLD = 7;
+// A short guard after a segment closes naturally (hand went quiet): the hand settling/
+// dropping can wobble past MOTION_START_THRESHOLD again and either bleed into the next
+// word's pre-roll or falsely start a new segment. Skip capture for a couple of ticks.
+const COOLDOWN_TICKS_AFTER_SEGMENT = 2;
+// A raw top-1 confidence bar alone still lets ambiguous/merged-gesture guesses through
+// (0.2 was too permissive). Also require a clear gap over the runner-up so a prediction
+// the model itself is unsure about doesn't get written into the sentence.
+const WORD_CONFIDENCE_THRESHOLD = 0.45;
+const WORD_MARGIN_THRESHOLD = 0.12;
 
 function apiError(data, fallback) {
     return typeof data?.detail === 'string' ? data.detail : fallback;
@@ -15,7 +39,12 @@ export default function CameraPage() {
     const videoRef = useRef(null);
     const streamRef = useRef(null);
     const captureAbortRef = useRef(false);
-    const liveFramesRef = useRef([]);
+    const segmentFramesRef = useRef([]);
+    const preRollRef = useRef([]);
+    const segmentActiveRef = useRef(false);
+    const quietStreakRef = useRef(0);
+    const cooldownTicksRef = useRef(0);
+    const prevMotionFrameRef = useRef(null);
     const recognitionQueueRef = useRef([]);
     const recognitionSessionRef = useRef(0);
     const processRecognitionQueueRef = useRef(null);
@@ -37,6 +66,12 @@ export default function CameraPage() {
         captureAbortRef.current = true;
         recognitionSessionRef.current += 1;
         recognitionQueueRef.current = [];
+        segmentFramesRef.current = [];
+        preRollRef.current = [];
+        segmentActiveRef.current = false;
+        quietStreakRef.current = 0;
+        cooldownTicksRef.current = 0;
+        prevMotionFrameRef.current = null;
         streamRef.current?.getTracks().forEach(track => track.stop());
         streamRef.current = null;
         if (videoRef.current) videoRef.current.srcObject = null;
@@ -118,7 +153,12 @@ export default function CameraPage() {
                 lastPredictionRef.current.label === data.prediction.label
                 && now - lastPredictionRef.current.time < 6500
             );
-            if (!isDuplicate && data.prediction.confidence >= 0.2) {
+            const runnerUpConfidence = data.alternatives?.[0]?.confidence ?? 0;
+            const isConfident = (
+                data.prediction.confidence >= WORD_CONFIDENCE_THRESHOLD
+                && data.prediction.confidence - runnerUpConfidence >= WORD_MARGIN_THRESHOLD
+            );
+            if (!isDuplicate && isConfident) {
                 const rawWord = data.prediction.vietnamese || data.prediction.label;
                 const word = rawWord.split('/')[0].trim();
                 setSentence(current => [...current, {
@@ -160,7 +200,7 @@ export default function CameraPage() {
     }, [processRecognitionQueue]);
 
     const enqueueRecognition = useCallback((frames) => {
-        if (frames.length < CAPTURE_FRAMES) return;
+        if (frames.length < MIN_SEGMENT_FRAMES) return;
 
         // Thu hình và nhận diện chạy độc lập. Giữ FIFO để mọi clip đã thu
         // đều tiếp tục được xử lý, kể cả sau khi người dùng bấm Dừng dịch.
@@ -178,27 +218,99 @@ export default function CameraPage() {
         canvas.height = 240;
         const context = canvas.getContext('2d', { alpha: false });
 
+        const motionCanvas = document.createElement('canvas');
+        motionCanvas.width = MOTION_SAMPLE_WIDTH;
+        motionCanvas.height = MOTION_SAMPLE_HEIGHT;
+        const motionContext = motionCanvas.getContext('2d', { alpha: false, willReadFrequently: true });
+
+        segmentFramesRef.current = [];
+        preRollRef.current = [];
+        segmentActiveRef.current = false;
+        quietStreakRef.current = 0;
+        cooldownTicksRef.current = 0;
+        prevMotionFrameRef.current = null;
+
+        const closeSegment = (naturalPause) => {
+            const frames = segmentFramesRef.current;
+            segmentFramesRef.current = [];
+            segmentActiveRef.current = false;
+            quietStreakRef.current = 0;
+            // Only cooldown after a natural pause (hand settling to rest) — a forced
+            // cutoff means the hand is still actively moving, so resume capture right away.
+            cooldownTicksRef.current = naturalPause ? COOLDOWN_TICKS_AFTER_SEGMENT : 0;
+            setProgress(0);
+            enqueueRecognition(frames);
+        };
+
         const captureTimer = window.setInterval(() => {
             const video = videoRef.current;
             if (!video || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) return;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            liveFramesRef.current.push(canvas.toDataURL('image/jpeg', 0.68));
-            if (liveFramesRef.current.length > CAPTURE_FRAMES) {
-                liveFramesRef.current.shift();
-            }
-            setProgress(Math.round((liveFramesRef.current.length / CAPTURE_FRAMES) * 100));
 
-            if (liveFramesRef.current.length === CAPTURE_FRAMES) {
-                const frames = liveFramesRef.current;
-                liveFramesRef.current = [];
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const frame = canvas.toDataURL('image/jpeg', 0.68);
+
+            motionContext.drawImage(video, 0, 0, motionCanvas.width, motionCanvas.height);
+            const pixels = motionContext.getImageData(0, 0, motionCanvas.width, motionCanvas.height).data;
+            const previous = prevMotionFrameRef.current;
+            let motionScore = 0;
+            if (previous) {
+                const blockSums = new Float64Array(MOTION_GRID_COLS * MOTION_GRID_ROWS);
+                for (let i = 0; i < pixels.length; i += 4) {
+                    const pixelIndex = i / 4;
+                    const x = pixelIndex % motionCanvas.width;
+                    const y = (pixelIndex / motionCanvas.width) | 0;
+                    const blockIndex = ((y / MOTION_BLOCK_HEIGHT) | 0) * MOTION_GRID_COLS + ((x / MOTION_BLOCK_WIDTH) | 0);
+                    blockSums[blockIndex] += Math.abs(pixels[i] - previous[i])
+                        + Math.abs(pixels[i + 1] - previous[i + 1])
+                        + Math.abs(pixels[i + 2] - previous[i + 2]);
+                }
+                const pixelsPerBlock = MOTION_BLOCK_WIDTH * MOTION_BLOCK_HEIGHT * 3;
+                for (let b = 0; b < blockSums.length; b++) {
+                    const blockScore = blockSums[b] / pixelsPerBlock;
+                    if (blockScore > motionScore) motionScore = blockScore;
+                }
+            }
+            prevMotionFrameRef.current = pixels;
+
+            if (!segmentActiveRef.current) {
+                if (cooldownTicksRef.current > 0) {
+                    cooldownTicksRef.current -= 1;
+                    setProgress(0);
+                    return;
+                }
+                preRollRef.current.push(frame);
+                if (preRollRef.current.length > PRE_ROLL_FRAMES) {
+                    preRollRef.current.shift();
+                }
+                if (motionScore > MOTION_START_THRESHOLD) {
+                    segmentActiveRef.current = true;
+                    quietStreakRef.current = 0;
+                    segmentFramesRef.current = [...preRollRef.current];
+                    preRollRef.current = [];
+                }
                 setProgress(0);
-                enqueueRecognition(frames);
+                return;
+            }
+
+            segmentFramesRef.current.push(frame);
+            quietStreakRef.current = motionScore < MOTION_STOP_THRESHOLD ? quietStreakRef.current + 1 : 0;
+            setProgress(Math.round((segmentFramesRef.current.length / MAX_SEGMENT_FRAMES) * 100));
+
+            if (quietStreakRef.current >= QUIET_TICKS_TO_CLOSE) {
+                closeSegment(true);
+            } else if (segmentFramesRef.current.length >= MAX_SEGMENT_FRAMES) {
+                closeSegment(false);
             }
         }, CAPTURE_INTERVAL_MS);
 
         return () => {
             window.clearInterval(captureTimer);
-            liveFramesRef.current = [];
+            segmentFramesRef.current = [];
+            preRollRef.current = [];
+            segmentActiveRef.current = false;
+            quietStreakRef.current = 0;
+            cooldownTicksRef.current = 0;
+            prevMotionFrameRef.current = null;
             setProgress(0);
         };
     }, [cameraOn, enqueueRecognition, liveTranslation]);
@@ -207,7 +319,12 @@ export default function CameraPage() {
         if (!liveTranslation) {
             setError('');
             lastPredictionRef.current = { label: '', time: 0 };
-            liveFramesRef.current = [];
+            segmentFramesRef.current = [];
+            preRollRef.current = [];
+            segmentActiveRef.current = false;
+            quietStreakRef.current = 0;
+            cooldownTicksRef.current = 0;
+            prevMotionFrameRef.current = null;
         }
         setLiveTranslation(current => !current);
     };
@@ -404,7 +521,7 @@ export default function CameraPage() {
 
             <p className="camera__hint">
                 <i className="fa-solid fa-circle-info" />
-                Camera tự nhận diện theo từng cửa sổ khoảng 3 giây. Hãy nghỉ ngắn giữa hai ký hiệu để model tách từ chính xác hơn.
+                Camera tự tách từng ký hiệu theo chuyển động của tay. Hãy nghỉ tay ngắn giữa hai ký hiệu để model tách từ chính xác hơn.
             </p>
         </div>
     );

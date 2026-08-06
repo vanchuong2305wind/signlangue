@@ -75,6 +75,40 @@ def _decode_frame(encoded: str) -> np.ndarray:
     return frame
 
 
+def _trim_static_edges(frames: list[np.ndarray], min_length: int = 12) -> list[np.ndarray]:
+    """Drop near-static frames at both ends of the clip.
+
+    The browser's motion gate has slop (fixed pixel thresholds on a downsampled preview),
+    so a captured segment can still start or end with a few near-idle frames. Those dilute
+    the fixed 64-frame resample in _preprocess with non-gesture content. The motion here is
+    scored per-clip (average consecutive-frame diff) rather than a fixed constant, since the
+    absolute diff scale depends on lighting/compression and varies a lot more per request
+    than the browser's own controlled downsample.
+    """
+    if len(frames) <= min_length:
+        return frames
+
+    small = [cv2.resize(cv2.cvtColor(f, cv2.COLOR_BGR2GRAY), (64, 48)) for f in frames]
+    diffs = [
+        float(np.abs(small[i].astype(np.int16) - small[i + 1].astype(np.int16)).mean())
+        for i in range(len(small) - 1)
+    ]
+    if not diffs:
+        return frames
+    threshold = max(2.0, (sum(diffs) / len(diffs)) * 0.35)
+
+    start = 0
+    while start < len(diffs) and diffs[start] < threshold:
+        start += 1
+    end = len(frames) - 1
+    while end > 0 and diffs[end - 1] < threshold:
+        end -= 1
+
+    if end - start + 1 < min_length:
+        return frames
+    return frames[start : end + 1]
+
+
 def _preprocess(frames: list[np.ndarray], frame_count: int = 64):
     import torch
 
@@ -104,6 +138,7 @@ def recognize(encoded_frames: list[str], top_k: int = 3) -> dict:
     import torch
 
     frames = [_decode_frame(frame) for frame in encoded_frames]
+    frames = _trim_static_edges(frames)
     video = _preprocess(frames).to(_device)
     with _inference_lock, torch.inference_mode():
         probabilities = _model(video).softmax(dim=1)[0]
