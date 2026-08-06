@@ -1177,6 +1177,2369 @@
         "confidence": 0.9295
       },
       "created_at": "2026-07-24T21:57:50.975406+07:00"
+    },
+    {
+      "id": "1784954284196-115",
+      "type": "recognition",
+      "label": "mẹ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8232
+      },
+      "created_at": "2026-07-25T11:38:04.196911+07:00"
+    },
+    {
+      "id": "1784954290918-116",
+      "type": "recognition",
+      "label": "màu trắng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8514
+      },
+      "created_at": "2026-07-25T11:38:10.918813+07:00"
+    },
+    {
+      "id": "1784954307681-117",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T11:38:27.681474+07:00"
+    },
+    {
+      "id": "1784954340607-118",
+      "type": "recognition",
+      "label": "năm",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6487
+      },
+      "created_at": "2026-07-25T11:39:00.607619+07:00"
+    },
+    {
+      "id": "1784954367645-119",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T11:39:27.645747+07:00"
+    },
+    {
+      "id": "1784954398726-120",
+      "type": "recognition",
+      "label": "màu hồng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8146
+      },
+      "created_at": "2026-07-25T11:39:58.726480+07:00"
+    },
+    {
+      "id": "1784954412528-121",
+      "type": "recognition",
+      "label": "màu hồng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7658
+      },
+      "created_at": "2026-07-25T11:40:12.528841+07:00"
+    },
+    {
+      "id": "1784954424215-122",
+      "type": "recognition",
+      "label": "cá",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.5921
+      },
+      "created_at": "2026-07-25T11:40:24.215771+07:00"
+    },
+    {
+      "id": "1784954450340-123",
+      "type": "recognition",
+      "label": "cá",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8514
+      },
+      "created_at": "2026-07-25T11:40:50.340640+07:00"
+    },
+    {
+      "id": "1784954465232-124",
+      "type": "recognition",
+      "label": "mẹ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.4631
+      },
+      "created_at": "2026-07-25T11:41:05.232459+07:00"
+    },
+    {
+      "id": "1784954471718-125",
+      "type": "recognition",
+      "label": "cho / đưa",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.1891
+      },
+      "created_at": "2026-07-25T11:41:11.718862+07:00"
+    },
+    {
+      "id": "1784954487638-126",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T11:41:27.638281+07:00"
+    },
+    {
+      "id": "1784954512220-127",
+      "type": "recognition",
+      "label": "mẹ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.4986
+      },
+      "created_at": "2026-07-25T11:41:52.220782+07:00"
+    },
+    {
+      "id": "1784954518772-128",
+      "type": "recognition",
+      "label": "cho / đưa",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.5446
+      },
+      "created_at": "2026-07-25T11:41:58.772833+07:00"
+    },
+    {
+      "id": "1784954525354-129",
+      "type": "recognition",
+      "label": "cho / đưa",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.469
+      },
+      "created_at": "2026-07-25T11:42:05.354569+07:00"
+    },
+    {
+      "id": "1784954547651-130",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T11:42:27.651841+07:00"
+    },
+    {
+      "id": "1784954558989-131",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7664
+      },
+      "created_at": "2026-07-25T11:42:38.989652+07:00"
+    },
+    {
+      "id": "1784954565501-132",
+      "type": "recognition",
+      "label": "màu trắng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8066
+      },
+      "created_at": "2026-07-25T11:42:45.501053+07:00"
+    },
+    {
+      "id": "1784954572108-133",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.4482
+      },
+      "created_at": "2026-07-25T11:42:52.108856+07:00"
+    },
+    {
+      "id": "1784954580666-134",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6612
+      },
+      "created_at": "2026-07-25T11:43:00.666611+07:00"
+    },
+    {
+      "id": "1784954585634-135",
+      "type": "recognition",
+      "label": "cho / đưa",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6991
+      },
+      "created_at": "2026-07-25T11:43:05.634973+07:00"
+    },
+    {
+      "id": "1784954986169-136",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9031
+      },
+      "created_at": "2026-07-25T11:49:46.169315+07:00"
+    },
+    {
+      "id": "1784955108781-137",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9751
+      },
+      "created_at": "2026-07-25T11:51:48.781315+07:00"
+    },
+    {
+      "id": "1784955112390-138",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.3877
+      },
+      "created_at": "2026-07-25T11:51:52.390903+07:00"
+    },
+    {
+      "id": "1784955115980-139",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9805
+      },
+      "created_at": "2026-07-25T11:51:55.980356+07:00"
+    },
+    {
+      "id": "1784955119316-140",
+      "type": "recognition",
+      "label": "cá",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9225
+      },
+      "created_at": "2026-07-25T11:51:59.316790+07:00"
+    },
+    {
+      "id": "1784955135844-141",
+      "type": "recognition",
+      "label": "mẹ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9835
+      },
+      "created_at": "2026-07-25T11:52:15.844352+07:00"
+    },
+    {
+      "id": "1784955140430-142",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T11:52:20.430350+07:00"
+    },
+    {
+      "id": "1784955146550-143",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6556
+      },
+      "created_at": "2026-07-25T11:52:26.550961+07:00"
+    },
+    {
+      "id": "1784955150303-144",
+      "type": "recognition",
+      "label": "màu trắng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9754
+      },
+      "created_at": "2026-07-25T11:52:30.303163+07:00"
+    },
+    {
+      "id": "1784955154142-145",
+      "type": "recognition",
+      "label": "uống / đồ uống",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6573
+      },
+      "created_at": "2026-07-25T11:52:34.142044+07:00"
+    },
+    {
+      "id": "1784955169278-146",
+      "type": "recognition",
+      "label": "thứ Năm",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.4472
+      },
+      "created_at": "2026-07-25T11:52:49.278491+07:00"
+    },
+    {
+      "id": "1784955180565-147",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8714
+      },
+      "created_at": "2026-07-25T11:53:00.565238+07:00"
+    },
+    {
+      "id": "1784955200418-148",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T11:53:20.418552+07:00"
+    },
+    {
+      "id": "1784955208288-149",
+      "type": "recognition",
+      "label": "mẹ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7124
+      },
+      "created_at": "2026-07-25T11:53:28.288407+07:00"
+    },
+    {
+      "id": "1784955218254-150",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9856
+      },
+      "created_at": "2026-07-25T11:53:38.254343+07:00"
+    },
+    {
+      "id": "1784955229233-151",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8765
+      },
+      "created_at": "2026-07-25T11:53:49.233250+07:00"
+    },
+    {
+      "id": "1784955242848-152",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9692
+      },
+      "created_at": "2026-07-25T11:54:02.848835+07:00"
+    },
+    {
+      "id": "1784955253806-153",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8827
+      },
+      "created_at": "2026-07-25T11:54:13.806236+07:00"
+    },
+    {
+      "id": "1784955260404-154",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T11:54:20.404473+07:00"
+    },
+    {
+      "id": "1784955261596-155",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7707
+      },
+      "created_at": "2026-07-25T11:54:21.596203+07:00"
+    },
+    {
+      "id": "1784955271856-156",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9457
+      },
+      "created_at": "2026-07-25T11:54:31.856065+07:00"
+    },
+    {
+      "id": "1784955283272-157",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9902
+      },
+      "created_at": "2026-07-25T11:54:43.272670+07:00"
+    },
+    {
+      "id": "1784955294441-158",
+      "type": "recognition",
+      "label": "màu trắng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9589
+      },
+      "created_at": "2026-07-25T11:54:54.441232+07:00"
+    },
+    {
+      "id": "1784955298000-159",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9986
+      },
+      "created_at": "2026-07-25T11:54:58.000779+07:00"
+    },
+    {
+      "id": "1784955301424-160",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9804
+      },
+      "created_at": "2026-07-25T11:55:01.424979+07:00"
+    },
+    {
+      "id": "1784955317409-161",
+      "type": "recognition",
+      "label": "màu hồng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7798
+      },
+      "created_at": "2026-07-25T11:55:17.409715+07:00"
+    },
+    {
+      "id": "1784955320409-162",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T11:55:20.409942+07:00"
+    },
+    {
+      "id": "1784955329202-163",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9975
+      },
+      "created_at": "2026-07-25T11:55:29.202190+07:00"
+    },
+    {
+      "id": "1784955332796-164",
+      "type": "recognition",
+      "label": "màu trắng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9758
+      },
+      "created_at": "2026-07-25T11:55:32.796550+07:00"
+    },
+    {
+      "id": "1784955336188-165",
+      "type": "recognition",
+      "label": "uống / đồ uống",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7871
+      },
+      "created_at": "2026-07-25T11:55:36.188139+07:00"
+    },
+    {
+      "id": "1784955356201-166",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.1949
+      },
+      "created_at": "2026-07-25T11:55:56.201895+07:00"
+    },
+    {
+      "id": "1784955359732-167",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7501
+      },
+      "created_at": "2026-07-25T11:55:59.732262+07:00"
+    },
+    {
+      "id": "1784955363116-168",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.5494
+      },
+      "created_at": "2026-07-25T11:56:03.116540+07:00"
+    },
+    {
+      "id": "1784955414556-169",
+      "type": "recognition",
+      "label": "kẹo",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.5468
+      },
+      "created_at": "2026-07-25T11:56:54.556810+07:00"
+    },
+    {
+      "id": "1784955417923-170",
+      "type": "recognition",
+      "label": "màu trắng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6238
+      },
+      "created_at": "2026-07-25T11:56:57.923748+07:00"
+    },
+    {
+      "id": "1784955439996-171",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9835
+      },
+      "created_at": "2026-07-25T11:57:19.996154+07:00"
+    },
+    {
+      "id": "1784955440404-172",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T11:57:20.404351+07:00"
+    },
+    {
+      "id": "1784955443595-173",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.3152
+      },
+      "created_at": "2026-07-25T11:57:23.595410+07:00"
+    },
+    {
+      "id": "1784955447028-174",
+      "type": "recognition",
+      "label": "uống / đồ uống",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6865
+      },
+      "created_at": "2026-07-25T11:57:27.028640+07:00"
+    },
+    {
+      "id": "1784955465121-175",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9995
+      },
+      "created_at": "2026-07-25T11:57:45.121860+07:00"
+    },
+    {
+      "id": "1784955468674-176",
+      "type": "recognition",
+      "label": "màu trắng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9891
+      },
+      "created_at": "2026-07-25T11:57:48.674490+07:00"
+    },
+    {
+      "id": "1784955472035-177",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6478
+      },
+      "created_at": "2026-07-25T11:57:52.035930+07:00"
+    },
+    {
+      "id": "1784955496900-178",
+      "type": "recognition",
+      "label": "màu trắng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8391
+      },
+      "created_at": "2026-07-25T11:58:16.900896+07:00"
+    },
+    {
+      "id": "1784955500418-179",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T11:58:20.418937+07:00"
+    },
+    {
+      "id": "1784955500452-180",
+      "type": "recognition",
+      "label": "màu hồng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.2525
+      },
+      "created_at": "2026-07-25T11:58:20.452361+07:00"
+    },
+    {
+      "id": "1784955503999-181",
+      "type": "recognition",
+      "label": "uống / đồ uống",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8573
+      },
+      "created_at": "2026-07-25T11:58:23.999431+07:00"
+    },
+    {
+      "id": "1784955617671-182",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9998
+      },
+      "created_at": "2026-07-25T12:00:17.671439+07:00"
+    },
+    {
+      "id": "1784955620419-183",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:00:20.419486+07:00"
+    },
+    {
+      "id": "1784955621264-184",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.2684
+      },
+      "created_at": "2026-07-25T12:00:21.264006+07:00"
+    },
+    {
+      "id": "1784955624607-185",
+      "type": "recognition",
+      "label": "uống / đồ uống",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9985
+      },
+      "created_at": "2026-07-25T12:00:24.607111+07:00"
+    },
+    {
+      "id": "1784955676369-186",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9993
+      },
+      "created_at": "2026-07-25T12:01:16.369545+07:00"
+    },
+    {
+      "id": "1784955679912-187",
+      "type": "recognition",
+      "label": "uống / đồ uống",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9946
+      },
+      "created_at": "2026-07-25T12:01:19.912185+07:00"
+    },
+    {
+      "id": "1784955680419-188",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:01:20.419209+07:00"
+    },
+    {
+      "id": "1784955683451-189",
+      "type": "recognition",
+      "label": "uống / đồ uống",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9162
+      },
+      "created_at": "2026-07-25T12:01:23.451973+07:00"
+    },
+    {
+      "id": "1784955697408-190",
+      "type": "recognition",
+      "label": "uống / đồ uống",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9987
+      },
+      "created_at": "2026-07-25T12:01:37.408441+07:00"
+    },
+    {
+      "id": "1784955738321-191",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.5449
+      },
+      "created_at": "2026-07-25T12:02:18.321207+07:00"
+    },
+    {
+      "id": "1784955741855-192",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.4328
+      },
+      "created_at": "2026-07-25T12:02:21.855707+07:00"
+    },
+    {
+      "id": "1784955767321-193",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9977
+      },
+      "created_at": "2026-07-25T12:02:47.321119+07:00"
+    },
+    {
+      "id": "1784955777495-194",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8932
+      },
+      "created_at": "2026-07-25T12:02:57.495628+07:00"
+    },
+    {
+      "id": "1784955778986-195",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:02:58.986908+07:00"
+    },
+    {
+      "id": "1784955790322-196",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9999
+      },
+      "created_at": "2026-07-25T12:03:10.322100+07:00"
+    },
+    {
+      "id": "1784955793911-197",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9078
+      },
+      "created_at": "2026-07-25T12:03:13.911801+07:00"
+    },
+    {
+      "id": "1784955797459-198",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.3508
+      },
+      "created_at": "2026-07-25T12:03:17.459886+07:00"
+    },
+    {
+      "id": "1784955838991-199",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:03:58.991966+07:00"
+    },
+    {
+      "id": "1784955898983-200",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:04:58.983665+07:00"
+    },
+    {
+      "id": "1784955951412-201",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.995
+      },
+      "created_at": "2026-07-25T12:05:51.412591+07:00"
+    },
+    {
+      "id": "1784955958977-202",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:05:58.977468+07:00"
+    },
+    {
+      "id": "1784955963713-203",
+      "type": "recognition",
+      "label": "bác sĩ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9922
+      },
+      "created_at": "2026-07-25T12:06:03.713319+07:00"
+    },
+    {
+      "id": "1784955972235-204",
+      "type": "recognition",
+      "label": "bác sĩ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9967
+      },
+      "created_at": "2026-07-25T12:06:12.235908+07:00"
+    },
+    {
+      "id": "1784956018995-205",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:06:58.995352+07:00"
+    },
+    {
+      "id": "1784956078982-206",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:07:58.982839+07:00"
+    },
+    {
+      "id": "1784956138987-207",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:08:58.987513+07:00"
+    },
+    {
+      "id": "1784956199008-208",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:09:59.008672+07:00"
+    },
+    {
+      "id": "1784956259007-209",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:10:59.007057+07:00"
+    },
+    {
+      "id": "1784956318987-210",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:11:58.987608+07:00"
+    },
+    {
+      "id": "1784956378982-211",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:12:58.982659+07:00"
+    },
+    {
+      "id": "1784956438979-212",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:13:58.979248+07:00"
+    },
+    {
+      "id": "1784956498984-213",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:14:58.984395+07:00"
+    },
+    {
+      "id": "1784956558988-214",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:15:58.988307+07:00"
+    },
+    {
+      "id": "1784956618980-215",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:16:58.980459+07:00"
+    },
+    {
+      "id": "1784956678988-216",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:17:58.988135+07:00"
+    },
+    {
+      "id": "1784956738976-217",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:18:58.976955+07:00"
+    },
+    {
+      "id": "1784956798991-218",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:19:58.991824+07:00"
+    },
+    {
+      "id": "1784956858992-219",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:20:58.992624+07:00"
+    },
+    {
+      "id": "1784956908223-220",
+      "type": "recognition",
+      "label": "sơn / vẽ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9367
+      },
+      "created_at": "2026-07-25T12:21:48.223293+07:00"
+    },
+    {
+      "id": "1784956916217-221",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9047
+      },
+      "created_at": "2026-07-25T12:21:56.217342+07:00"
+    },
+    {
+      "id": "1784956918983-222",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:21:58.983219+07:00"
+    },
+    {
+      "id": "1784956924064-223",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9432
+      },
+      "created_at": "2026-07-25T12:22:04.064334+07:00"
+    },
+    {
+      "id": "1784956933590-224",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9775
+      },
+      "created_at": "2026-07-25T12:22:13.590030+07:00"
+    },
+    {
+      "id": "1784956941639-225",
+      "type": "recognition",
+      "label": "năm",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8789
+      },
+      "created_at": "2026-07-25T12:22:21.639152+07:00"
+    },
+    {
+      "id": "1784956952603-226",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7217
+      },
+      "created_at": "2026-07-25T12:22:32.603865+07:00"
+    },
+    {
+      "id": "1784956978994-227",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:22:58.994013+07:00"
+    },
+    {
+      "id": "1784957092433-228",
+      "type": "recognition",
+      "label": "tận hưởng / yêu thích",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9882
+      },
+      "created_at": "2026-07-25T12:24:52.433420+07:00"
+    },
+    {
+      "id": "1784957098981-229",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:24:58.981608+07:00"
+    },
+    {
+      "id": "1784957101555-230",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9469
+      },
+      "created_at": "2026-07-25T12:25:01.555006+07:00"
+    },
+    {
+      "id": "1784957110301-231",
+      "type": "recognition",
+      "label": "bác sĩ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.988
+      },
+      "created_at": "2026-07-25T12:25:10.301706+07:00"
+    },
+    {
+      "id": "1784957124498-232",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9991
+      },
+      "created_at": "2026-07-25T12:25:24.498286+07:00"
+    },
+    {
+      "id": "1784957128055-233",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8028
+      },
+      "created_at": "2026-07-25T12:25:28.055502+07:00"
+    },
+    {
+      "id": "1784957131465-234",
+      "type": "recognition",
+      "label": "màu hồng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6489
+      },
+      "created_at": "2026-07-25T12:25:31.465269+07:00"
+    },
+    {
+      "id": "1784957141768-235",
+      "type": "recognition",
+      "label": "màu hồng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.5207
+      },
+      "created_at": "2026-07-25T12:25:41.768171+07:00"
+    },
+    {
+      "id": "1784957152623-236",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9478
+      },
+      "created_at": "2026-07-25T12:25:52.623484+07:00"
+    },
+    {
+      "id": "1784957158996-237",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:25:58.996820+07:00"
+    },
+    {
+      "id": "1784957161993-238",
+      "type": "recognition",
+      "label": "thứ Năm",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.5736
+      },
+      "created_at": "2026-07-25T12:26:01.993093+07:00"
+    },
+    {
+      "id": "1784957170520-239",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9655
+      },
+      "created_at": "2026-07-25T12:26:10.520561+07:00"
+    },
+    {
+      "id": "1784957179460-240",
+      "type": "recognition",
+      "label": "cá",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8585
+      },
+      "created_at": "2026-07-25T12:26:19.460373+07:00"
+    },
+    {
+      "id": "1784957188296-241",
+      "type": "recognition",
+      "label": "thích",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9625
+      },
+      "created_at": "2026-07-25T12:26:28.296933+07:00"
+    },
+    {
+      "id": "1784957197160-242",
+      "type": "recognition",
+      "label": "thích",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6377
+      },
+      "created_at": "2026-07-25T12:26:37.160675+07:00"
+    },
+    {
+      "id": "1784957205350-243",
+      "type": "recognition",
+      "label": "thích",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7447
+      },
+      "created_at": "2026-07-25T12:26:45.350930+07:00"
+    },
+    {
+      "id": "1784957213318-244",
+      "type": "recognition",
+      "label": "thích",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6386
+      },
+      "created_at": "2026-07-25T12:26:53.318065+07:00"
+    },
+    {
+      "id": "1784957218991-245",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:26:58.991403+07:00"
+    },
+    {
+      "id": "1784957221150-246",
+      "type": "recognition",
+      "label": "thích",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.4475
+      },
+      "created_at": "2026-07-25T12:27:01.150917+07:00"
+    },
+    {
+      "id": "1784957229107-247",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8772
+      },
+      "created_at": "2026-07-25T12:27:09.107291+07:00"
+    },
+    {
+      "id": "1784957241547-248",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.669
+      },
+      "created_at": "2026-07-25T12:27:21.547988+07:00"
+    },
+    {
+      "id": "1784957245656-249",
+      "type": "recognition",
+      "label": "có / vâng",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.213
+      },
+      "created_at": "2026-07-25T12:27:25.656638+07:00"
+    },
+    {
+      "id": "1784957258304-250",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9956
+      },
+      "created_at": "2026-07-25T12:27:38.304273+07:00"
+    },
+    {
+      "id": "1784957262117-251",
+      "type": "recognition",
+      "label": "uống / đồ uống",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.3395
+      },
+      "created_at": "2026-07-25T12:27:42.117930+07:00"
+    },
+    {
+      "id": "1784957278994-252",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:27:58.994531+07:00"
+    },
+    {
+      "id": "1784957321935-253",
+      "type": "recognition",
+      "label": "bác sĩ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7261
+      },
+      "created_at": "2026-07-25T12:28:41.935230+07:00"
+    },
+    {
+      "id": "1784957338989-254",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:28:58.989556+07:00"
+    },
+    {
+      "id": "1784957373009-255",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9991
+      },
+      "created_at": "2026-07-25T12:29:33.009839+07:00"
+    },
+    {
+      "id": "1784957376552-256",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.5633
+      },
+      "created_at": "2026-07-25T12:29:36.552593+07:00"
+    },
+    {
+      "id": "1784957379925-257",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9794
+      },
+      "created_at": "2026-07-25T12:29:39.925948+07:00"
+    },
+    {
+      "id": "1784957396499-258",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8815
+      },
+      "created_at": "2026-07-25T12:29:56.499296+07:00"
+    },
+    {
+      "id": "1784957398992-259",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:29:58.992256+07:00"
+    },
+    {
+      "id": "1784957400092-260",
+      "type": "recognition",
+      "label": "cho / đưa",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.5249
+      },
+      "created_at": "2026-07-25T12:30:00.092034+07:00"
+    },
+    {
+      "id": "1784957403508-261",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9948
+      },
+      "created_at": "2026-07-25T12:30:03.508736+07:00"
+    },
+    {
+      "id": "1784957420205-262",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9979
+      },
+      "created_at": "2026-07-25T12:30:20.205799+07:00"
+    },
+    {
+      "id": "1784957423741-263",
+      "type": "recognition",
+      "label": "cho / đưa",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.5214
+      },
+      "created_at": "2026-07-25T12:30:23.741449+07:00"
+    },
+    {
+      "id": "1784957427241-264",
+      "type": "recognition",
+      "label": "ngắn / thấp",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7377
+      },
+      "created_at": "2026-07-25T12:30:27.241374+07:00"
+    },
+    {
+      "id": "1784957435382-265",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9951
+      },
+      "created_at": "2026-07-25T12:30:35.382255+07:00"
+    },
+    {
+      "id": "1784957438883-266",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6625
+      },
+      "created_at": "2026-07-25T12:30:38.883222+07:00"
+    },
+    {
+      "id": "1784957442349-267",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9453
+      },
+      "created_at": "2026-07-25T12:30:42.349725+07:00"
+    },
+    {
+      "id": "1784957455137-268",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7305
+      },
+      "created_at": "2026-07-25T12:30:55.137438+07:00"
+    },
+    {
+      "id": "1784957459008-269",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:30:59.008757+07:00"
+    },
+    {
+      "id": "1784957477202-270",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.997
+      },
+      "created_at": "2026-07-25T12:31:17.202511+07:00"
+    },
+    {
+      "id": "1784957480673-271",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6251
+      },
+      "created_at": "2026-07-25T12:31:20.673349+07:00"
+    },
+    {
+      "id": "1784957513666-272",
+      "type": "recognition",
+      "label": "nói / kể",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.2396
+      },
+      "created_at": "2026-07-25T12:31:53.666421+07:00"
+    },
+    {
+      "id": "1784957518986-273",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:31:58.986529+07:00"
+    },
+    {
+      "id": "1784957522165-274",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9914
+      },
+      "created_at": "2026-07-25T12:32:02.165523+07:00"
+    },
+    {
+      "id": "1784957530044-275",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7522
+      },
+      "created_at": "2026-07-25T12:32:10.044261+07:00"
+    },
+    {
+      "id": "1784957538202-276",
+      "type": "recognition",
+      "label": "châu Phi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.4196
+      },
+      "created_at": "2026-07-25T12:32:18.202675+07:00"
+    },
+    {
+      "id": "1784957545998-277",
+      "type": "recognition",
+      "label": "cuối cùng / lần trước",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8337
+      },
+      "created_at": "2026-07-25T12:32:25.998488+07:00"
+    },
+    {
+      "id": "1784957554538-278",
+      "type": "recognition",
+      "label": "cuối cùng / lần trước",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9738
+      },
+      "created_at": "2026-07-25T12:32:34.538325+07:00"
+    },
+    {
+      "id": "1784957567873-279",
+      "type": "recognition",
+      "label": "cuối cùng / lần trước",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8421
+      },
+      "created_at": "2026-07-25T12:32:47.873554+07:00"
+    },
+    {
+      "id": "1784957578994-280",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:32:58.994668+07:00"
+    },
+    {
+      "id": "1784957583687-281",
+      "type": "recognition",
+      "label": "cuối cùng / lần trước",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8756
+      },
+      "created_at": "2026-07-25T12:33:03.687099+07:00"
+    },
+    {
+      "id": "1784957587239-282",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9997
+      },
+      "created_at": "2026-07-25T12:33:07.239426+07:00"
+    },
+    {
+      "id": "1784957590672-283",
+      "type": "recognition",
+      "label": "nói / kể",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.3524
+      },
+      "created_at": "2026-07-25T12:33:10.672575+07:00"
+    },
+    {
+      "id": "1784957601021-284",
+      "type": "recognition",
+      "label": "thuốc",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8823
+      },
+      "created_at": "2026-07-25T12:33:21.021994+07:00"
+    },
+    {
+      "id": "1784957609427-285",
+      "type": "recognition",
+      "label": "bác sĩ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9137
+      },
+      "created_at": "2026-07-25T12:33:29.427328+07:00"
+    },
+    {
+      "id": "1784957617684-286",
+      "type": "recognition",
+      "label": "đi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.2192
+      },
+      "created_at": "2026-07-25T12:33:37.684952+07:00"
+    },
+    {
+      "id": "1784957625568-287",
+      "type": "recognition",
+      "label": "bác sĩ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9821
+      },
+      "created_at": "2026-07-25T12:33:45.568867+07:00"
+    },
+    {
+      "id": "1784957635009-288",
+      "type": "recognition",
+      "label": "nói / kể",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8294
+      },
+      "created_at": "2026-07-25T12:33:55.009350+07:00"
+    },
+    {
+      "id": "1784957638991-289",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:33:58.991489+07:00"
+    },
+    {
+      "id": "1784957643868-290",
+      "type": "recognition",
+      "label": "bác sĩ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9975
+      },
+      "created_at": "2026-07-25T12:34:03.868365+07:00"
+    },
+    {
+      "id": "1784957648075-291",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.907
+      },
+      "created_at": "2026-07-25T12:34:08.075411+07:00"
+    },
+    {
+      "id": "1784957656754-292",
+      "type": "recognition",
+      "label": "cuối cùng / lần trước",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.5189
+      },
+      "created_at": "2026-07-25T12:34:16.754140+07:00"
+    },
+    {
+      "id": "1784957660863-293",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9991
+      },
+      "created_at": "2026-07-25T12:34:20.863179+07:00"
+    },
+    {
+      "id": "1784957664836-294",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6193
+      },
+      "created_at": "2026-07-25T12:34:24.836290+07:00"
+    },
+    {
+      "id": "1784957678539-295",
+      "type": "recognition",
+      "label": "cho / đưa",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.4845
+      },
+      "created_at": "2026-07-25T12:34:38.539226+07:00"
+    },
+    {
+      "id": "1784957694984-296",
+      "type": "recognition",
+      "label": "cuối cùng / lần trước",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8397
+      },
+      "created_at": "2026-07-25T12:34:54.984517+07:00"
+    },
+    {
+      "id": "1784957698638-297",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9906
+      },
+      "created_at": "2026-07-25T12:34:58.638100+07:00"
+    },
+    {
+      "id": "1784957698989-298",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:34:58.989124+07:00"
+    },
+    {
+      "id": "1784957702169-299",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9926
+      },
+      "created_at": "2026-07-25T12:35:02.169640+07:00"
+    },
+    {
+      "id": "1784957705591-300",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7667
+      },
+      "created_at": "2026-07-25T12:35:05.591195+07:00"
+    },
+    {
+      "id": "1784957939003-301",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:38:59.003309+07:00"
+    },
+    {
+      "id": "1784957957083-302",
+      "type": "recognition",
+      "label": "đi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8992
+      },
+      "created_at": "2026-07-25T12:39:17.083138+07:00"
+    },
+    {
+      "id": "1784957961415-303",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9994
+      },
+      "created_at": "2026-07-25T12:39:21.415708+07:00"
+    },
+    {
+      "id": "1784957965515-304",
+      "type": "recognition",
+      "label": "thuốc",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9941
+      },
+      "created_at": "2026-07-25T12:39:25.515228+07:00"
+    },
+    {
+      "id": "1784957982456-305",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9155
+      },
+      "created_at": "2026-07-25T12:39:42.456156+07:00"
+    },
+    {
+      "id": "1784957989555-306",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8069
+      },
+      "created_at": "2026-07-25T12:39:49.555993+07:00"
+    },
+    {
+      "id": "1784957996447-307",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8274
+      },
+      "created_at": "2026-07-25T12:39:56.447544+07:00"
+    },
+    {
+      "id": "1784957998996-308",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:39:58.996927+07:00"
+    },
+    {
+      "id": "1784958014321-309",
+      "type": "recognition",
+      "label": "cuối cùng / lần trước",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6379
+      },
+      "created_at": "2026-07-25T12:40:14.321434+07:00"
+    },
+    {
+      "id": "1784958021216-310",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9998
+      },
+      "created_at": "2026-07-25T12:40:21.216553+07:00"
+    },
+    {
+      "id": "1784958028211-311",
+      "type": "recognition",
+      "label": "thuốc",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.993
+      },
+      "created_at": "2026-07-25T12:40:28.211715+07:00"
+    },
+    {
+      "id": "1784958042844-312",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9997
+      },
+      "created_at": "2026-07-25T12:40:42.844369+07:00"
+    },
+    {
+      "id": "1784958049824-313",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9784
+      },
+      "created_at": "2026-07-25T12:40:49.824630+07:00"
+    },
+    {
+      "id": "1784958056912-314",
+      "type": "recognition",
+      "label": "bác sĩ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.997
+      },
+      "created_at": "2026-07-25T12:40:56.912999+07:00"
+    },
+    {
+      "id": "1784958059004-315",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:40:59.004404+07:00"
+    },
+    {
+      "id": "1784958071392-316",
+      "type": "recognition",
+      "label": "cuối cùng / lần trước",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9622
+      },
+      "created_at": "2026-07-25T12:41:11.392649+07:00"
+    },
+    {
+      "id": "1784958078367-317",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9996
+      },
+      "created_at": "2026-07-25T12:41:18.367930+07:00"
+    },
+    {
+      "id": "1784958085317-318",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8418
+      },
+      "created_at": "2026-07-25T12:41:25.317200+07:00"
+    },
+    {
+      "id": "1784958104700-319",
+      "type": "recognition",
+      "label": "thư ký",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6414
+      },
+      "created_at": "2026-07-25T12:41:44.700923+07:00"
+    },
+    {
+      "id": "1784958117151-320",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9971
+      },
+      "created_at": "2026-07-25T12:41:57.151212+07:00"
+    },
+    {
+      "id": "1784958118998-321",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:41:58.998427+07:00"
+    },
+    {
+      "id": "1784958129697-322",
+      "type": "recognition",
+      "label": "đi",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.4365
+      },
+      "created_at": "2026-07-25T12:42:09.697925+07:00"
+    },
+    {
+      "id": "1784958136681-323",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9079
+      },
+      "created_at": "2026-07-25T12:42:16.681258+07:00"
+    },
+    {
+      "id": "1784958143511-324",
+      "type": "recognition",
+      "label": "hôn / nụ hôn",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.4753
+      },
+      "created_at": "2026-07-25T12:42:23.511957+07:00"
+    },
+    {
+      "id": "1784958158030-325",
+      "type": "recognition",
+      "label": "cuối cùng / lần trước",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.6205
+      },
+      "created_at": "2026-07-25T12:42:38.030409+07:00"
+    },
+    {
+      "id": "1784958164963-326",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9996
+      },
+      "created_at": "2026-07-25T12:42:44.963403+07:00"
+    },
+    {
+      "id": "1784958171872-327",
+      "type": "recognition",
+      "label": "gian lận / lừa dối",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9955
+      },
+      "created_at": "2026-07-25T12:42:51.872519+07:00"
+    },
+    {
+      "id": "1784958180073-328",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T12:43:00.073656+07:00"
+    },
+    {
+      "id": "1784958237111-329",
+      "type": "translation",
+      "label": "i love yoi",
+      "value": 1,
+      "metadata": {
+        "found_count": 2,
+        "total_count": 3
+      },
+      "created_at": "2026-07-25T12:43:57.111446+07:00"
+    },
+    {
+      "id": "1784963308628-330",
+      "type": "translation",
+      "label": "i love you",
+      "value": 1,
+      "metadata": {
+        "found_count": 3,
+        "total_count": 3
+      },
+      "created_at": "2026-07-25T14:08:28.628109+07:00"
+    },
+    {
+      "id": "1784963354071-331",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-07-25T14:09:14.071365+07:00"
+    },
+    {
+      "id": "1784963358597-332",
+      "type": "translation",
+      "label": "i love you",
+      "value": 1,
+      "metadata": {
+        "found_count": 3,
+        "total_count": 3
+      },
+      "created_at": "2026-07-25T14:09:18.597648+07:00"
+    },
+    {
+      "id": "1784963448244-333",
+      "type": "recognition",
+      "label": "hôn / nụ hôn",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.7568
+      },
+      "created_at": "2026-07-25T14:10:48.244593+07:00"
+    },
+    {
+      "id": "1784963452425-334",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T14:10:52.425301+07:00"
+    },
+    {
+      "id": "1784963455099-335",
+      "type": "recognition",
+      "label": "mát / ngầu",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9524
+      },
+      "created_at": "2026-07-25T14:10:55.099678+07:00"
+    },
+    {
+      "id": "1784963474827-336",
+      "type": "recognition",
+      "label": "mát / ngầu",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.8262
+      },
+      "created_at": "2026-07-25T14:11:14.827066+07:00"
+    },
+    {
+      "id": "1784963505215-337",
+      "type": "recognition",
+      "label": "ngôn ngữ",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.5343
+      },
+      "created_at": "2026-07-25T14:11:45.215809+07:00"
+    },
+    {
+      "id": "1784963561312-338",
+      "type": "recognition",
+      "label": "thuốc",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9983
+      },
+      "created_at": "2026-07-25T14:12:41.312135+07:00"
+    },
+    {
+      "id": "1784963572436-339",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T14:12:52.436558+07:00"
+    },
+    {
+      "id": "1784963632432-340",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T14:13:52.432325+07:00"
+    },
+    {
+      "id": "1784963674261-341",
+      "type": "recognition",
+      "label": "năm",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9957
+      },
+      "created_at": "2026-07-25T14:14:34.261942+07:00"
+    },
+    {
+      "id": "1784963681695-342",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9951
+      },
+      "created_at": "2026-07-25T14:14:41.695363+07:00"
+    },
+    {
+      "id": "1784963692435-343",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T14:14:52.435356+07:00"
+    },
+    {
+      "id": "1784963752438-344",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T14:15:52.438852+07:00"
+    },
+    {
+      "id": "1784963812449-345",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T14:16:52.449463+07:00"
+    },
+    {
+      "id": "1784963872443-346",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T14:17:52.443448+07:00"
+    },
+    {
+      "id": "1784963932441-347",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T14:18:52.441530+07:00"
+    },
+    {
+      "id": "1784963992450-348",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T14:19:52.450084+07:00"
+    },
+    {
+      "id": "1784964052441-349",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T14:20:52.441957+07:00"
+    },
+    {
+      "id": "1784964112421-350",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-07-25T14:21:52.421947+07:00"
     }
   ]
 }

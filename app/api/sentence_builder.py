@@ -46,9 +46,8 @@ Hãy viết lại thành MỘT câu tiếng Việt tự nhiên và có nghĩa nh
             model="gemini-3.6-flash",
             contents=prompt,
             config=types.GenerateContentConfig(
-            temperature=0.2,
-            max_output_tokens=120,
-        ),
+                max_output_tokens=120,
+            ),
         ),
         timeout=25,
     )

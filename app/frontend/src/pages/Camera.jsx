@@ -16,6 +16,9 @@ export default function CameraPage() {
     const streamRef = useRef(null);
     const captureAbortRef = useRef(false);
     const liveFramesRef = useRef([]);
+    const recognitionQueueRef = useRef([]);
+    const recognitionSessionRef = useRef(0);
+    const processRecognitionQueueRef = useRef(null);
     const inferenceBusyRef = useRef(false);
     const lastPredictionRef = useRef({ label: '', time: 0 });
     const [cameraOn, setCameraOn] = useState(false);
@@ -32,6 +35,8 @@ export default function CameraPage() {
 
     const stopStream = useCallback(() => {
         captureAbortRef.current = true;
+        recognitionSessionRef.current += 1;
+        recognitionQueueRef.current = [];
         streamRef.current?.getTracks().forEach(track => track.stop());
         streamRef.current = null;
         if (videoRef.current) videoRef.current.srcObject = null;
@@ -88,18 +93,25 @@ export default function CameraPage() {
         await startCamera(facingMode === 'user' ? 'environment' : 'user');
     };
 
-    const analyzeFrames = useCallback(async (frames) => {
-        if (inferenceBusyRef.current || frames.length < CAPTURE_FRAMES) return;
+    const processRecognitionQueue = useCallback(async () => {
+        if (inferenceBusyRef.current) return;
+        const job = recognitionQueueRef.current.shift();
+        if (!job) {
+            setPhase('idle');
+            return;
+        }
+
         inferenceBusyRef.current = true;
         setPhase('processing');
         try {
             const response = await fetch('/api/camera/recognize', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ frames, top_k: 3 }),
+                body: JSON.stringify({ frames: job.frames, top_k: 3 }),
             });
             const data = await response.json();
             if (!response.ok) throw new Error(apiError(data, 'Model không thể nhận diện clip này.'));
+            if (job.session !== recognitionSessionRef.current) return;
             setResult(data);
             const now = Date.now();
             const isDuplicate = (
@@ -127,11 +139,36 @@ export default function CameraPage() {
                 }),
             }).catch(() => {});
         } catch (recognitionError) {
-            setError(recognitionError.message || 'Không kết nối được với model nhận diện.');
+            if (job.session === recognitionSessionRef.current) {
+                setError(recognitionError.message || 'Không kết nối được với model nhận diện.');
+            }
         } finally {
-            setPhase('idle');
             inferenceBusyRef.current = false;
+            if (recognitionQueueRef.current.length > 0) {
+                queueMicrotask(() => processRecognitionQueueRef.current?.());
+            } else {
+                setPhase('idle');
+            }
         }
+    }, []);
+
+    useEffect(() => {
+        processRecognitionQueueRef.current = processRecognitionQueue;
+        return () => {
+            processRecognitionQueueRef.current = null;
+        };
+    }, [processRecognitionQueue]);
+
+    const enqueueRecognition = useCallback((frames) => {
+        if (frames.length < CAPTURE_FRAMES) return;
+
+        // Thu hình và nhận diện chạy độc lập. Giữ FIFO để mọi clip đã thu
+        // đều tiếp tục được xử lý, kể cả sau khi người dùng bấm Dừng dịch.
+        recognitionQueueRef.current.push({
+            frames,
+            session: recognitionSessionRef.current,
+        });
+        processRecognitionQueueRef.current?.();
     }, []);
 
     useEffect(() => {
@@ -151,11 +188,11 @@ export default function CameraPage() {
             }
             setProgress(Math.round((liveFramesRef.current.length / CAPTURE_FRAMES) * 100));
 
-            if (liveFramesRef.current.length === CAPTURE_FRAMES && !inferenceBusyRef.current) {
+            if (liveFramesRef.current.length === CAPTURE_FRAMES) {
                 const frames = liveFramesRef.current;
                 liveFramesRef.current = [];
                 setProgress(0);
-                analyzeFrames(frames);
+                enqueueRecognition(frames);
             }
         }, CAPTURE_INTERVAL_MS);
 
@@ -164,7 +201,7 @@ export default function CameraPage() {
             liveFramesRef.current = [];
             setProgress(0);
         };
-    }, [analyzeFrames, cameraOn, liveTranslation]);
+    }, [cameraOn, enqueueRecognition, liveTranslation]);
 
     const toggleLiveTranslation = () => {
         if (!liveTranslation) {
