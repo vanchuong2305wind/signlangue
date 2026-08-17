@@ -20,6 +20,8 @@ const CONFIDENCE_THRESHOLD = 0.6;
 const MIN_TEXT_LENGTH = 2;
 const DEDUP_WINDOW_MS = 500;
 const RESTART_DELAY_MS = 250;
+// How long a user-requested stop is given to deliver its final result.
+const GRACEFUL_STOP_MS = 3000;
 // Generous, because it also covers the time the permission prompt is on screen.
 const START_TIMEOUT_MS = 10000;
 // Stops a restart loop when the engine accepts sessions but never yields speech.
@@ -37,8 +39,12 @@ const ERROR_MESSAGES = {
     'audio-capture': 'Không tìm thấy microphone.',
     'start-timeout': 'Không khởi động được microphone. Kiểm tra quyền micro rồi thử lại.',
     'insecure-context': 'Trang đang chạy qua HTTP nên trình duyệt chặn microphone. Hãy mở bằng HTTPS (hoặc localhost).',
+    'language-not-supported': 'Trình duyệt không hỗ trợ nhận dạng tiếng Việt. Hãy thử Chrome hoặc Edge bản mới.',
 };
-const FATAL_ERRORS = ['not-allowed', 'service-not-allowed', 'audio-capture', 'network'];
+// Routine on every browser: the engine simply heard nothing, or we aborted it
+// ourselves. Everything else is reported, because a swallowed error code is the
+// reason this feature could fail silently with no way to tell why.
+const IGNORED_ERRORS = ['no-speech', 'aborted'];
 
 function getSpeechRecognition() {
     if (typeof window === 'undefined') return null;
@@ -63,6 +69,7 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
     const sessionRef = useRef(0);
     const startTimerRef = useRef(null);
     const restartTimerRef = useRef(null);
+    const endTimerRef = useRef(null);
     const silentRestartsRef = useRef(0);
     const lastFinalRef = useRef({ text: '', time: 0 });
     const callbacksRef = useRef({ onFinal, onInterim, onError });
@@ -83,14 +90,26 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
         setState(next);
     }, []);
 
+    // A session that ends without a final result would otherwise leave its last
+    // partial text sitting on screen as though it had been recognised.
+    const clearInterim = useCallback(() => {
+        callbacksRef.current.onInterim?.({ text: '' });
+    }, []);
+
     const clearTimers = useCallback(() => {
         clearTimeout(startTimerRef.current);
         startTimerRef.current = null;
         clearTimeout(restartTimerRef.current);
         restartTimerRef.current = null;
+        clearTimeout(endTimerRef.current);
+        endTimerRef.current = null;
     }, []);
 
-    /** Drops the current instance and makes every callback still in flight stale. */
+    /**
+     * Drops the current instance and makes every callback still in flight stale.
+     * Uses abort(), which discards whatever the engine was holding — only for
+     * throwing a session away, never for a stop the user asked for.
+     */
     const teardown = useCallback(() => {
         const rec = recognitionRef.current;
         recognitionRef.current = null;
@@ -121,11 +140,12 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
         clearTimers();
         teardown();
         applyState('error');
+        clearInterim();
         callbacksRef.current.onError?.({
             error: code,
             message: ERROR_MESSAGES[code] || `Lỗi: ${code}`,
         });
-    }, [applyState, clearTimers, teardown]);
+    }, [applyState, clearInterim, clearTimers, teardown]);
 
     const beginSession = useCallback(() => {
         const SpeechRecognition = getSpeechRecognition();
@@ -151,6 +171,7 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
             if (isStale()) return;
             clearTimeout(startTimerRef.current);
             startTimerRef.current = null;
+            console.debug('[speech] onstart — mic open, lang', rec.lang);
             applyState('listening');
         };
 
@@ -176,7 +197,11 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
                 const confidence = typeof alternative.confidence === 'number'
                     ? alternative.confidence
                     : 0;
-                if (confidence > 0 && confidence < CONFIDENCE_THRESHOLD) continue;
+                if (confidence > 0 && confidence < CONFIDENCE_THRESHOLD) {
+                    console.debug(`[speech] dropped low confidence ${confidence.toFixed(2)}: "${transcript}"`);
+                    continue;
+                }
+                console.debug(`[speech] final (confidence ${confidence}): "${transcript}"`);
 
                 const now = Date.now();
                 if (
@@ -193,9 +218,10 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
         rec.onerror = (event) => {
             if (isStale()) return;
             const code = event.error;
-            // Both are routine on mobile: onend decides whether to resume.
-            if (code === 'no-speech' || code === 'aborted') return;
-            if (FATAL_ERRORS.includes(code)) failFatally(code);
+            console.warn('[speech] error:', code, event.message || '');
+            // onend decides whether to resume after these.
+            if (IGNORED_ERRORS.includes(code)) return;
+            failFatally(code);
         };
 
         rec.onend = () => {
@@ -203,6 +229,8 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
             recognitionRef.current = null;
             clearTimeout(startTimerRef.current);
             startTimerRef.current = null;
+            clearTimeout(endTimerRef.current);
+            endTimerRef.current = null;
 
             if (!wantListeningRef.current) {
                 applyState('idle');
@@ -213,6 +241,7 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
             if (IS_IOS) {
                 wantListeningRef.current = false;
                 applyState('idle');
+                clearInterim();
                 return;
             }
 
@@ -220,6 +249,7 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
             if (silentRestartsRef.current > MAX_SILENT_RESTARTS) {
                 wantListeningRef.current = false;
                 applyState('idle');
+                clearInterim();
                 return;
             }
 
@@ -258,7 +288,7 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
             if (wantListeningRef.current) failFatally('start-timeout');
             else applyState('idle');
         }, START_TIMEOUT_MS);
-    }, [applyState, clearTimers, failFatally, scheduleRestart, teardown]);
+    }, [applyState, clearInterim, clearTimers, failFatally, scheduleRestart, teardown]);
 
     useEffect(() => {
         beginSessionRef.current = beginSession;
@@ -280,17 +310,37 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
     const stop = useCallback(() => {
         wantListeningRef.current = false;
         clearTimers();
-        teardown();
+        // Reported straight away: pressing stop should feel immediate, and the
+        // handlers below stay attached so a late final result still lands.
         applyState('idle');
-    }, [applyState, clearTimers, teardown]);
+        clearInterim();
 
-    // Reads intent from refs so a tap is never judged against a stale render.
-    const toggle = useCallback(() => {
-        if (wantListeningRef.current || stateRef.current === 'listening' || stateRef.current === 'starting') {
-            stop();
-        } else {
-            start();
+        const rec = recognitionRef.current;
+        if (!rec) return;
+
+        try {
+            // stop(), not abort(): the engine finishes the utterance it is
+            // holding and delivers its final result. abort() would throw that
+            // text away, which is exactly the sentence the user just spoke.
+            rec.stop();
+        } catch {
+            teardown();
+            return;
         }
+
+        // Bounded, so a session that never reports onend cannot linger.
+        endTimerRef.current = setTimeout(() => {
+            endTimerRef.current = null;
+            if (recognitionRef.current === rec) teardown();
+        }, GRACEFUL_STOP_MS);
+    }, [applyState, clearInterim, clearTimers, teardown]);
+
+    // Reads intent from a ref so a tap is never judged against a stale render.
+    // While a graceful stop is still finishing, intent is already false, so a
+    // tap starts a new session rather than stopping twice.
+    const toggle = useCallback(() => {
+        if (wantListeningRef.current) stop();
+        else start();
     }, [start, stop]);
 
     useEffect(() => () => {
