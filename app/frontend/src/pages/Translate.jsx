@@ -19,33 +19,66 @@ function getSignVideos(sign, signVideosData) {
 export default function Translate() {
     useStudyTimer('Dịch ký hiệu');
     const [mode, setMode] = useState('video');
+    // Entries are { id, text, kind } so a past line can be replayed on click.
     const [transcripts, setTranscripts] = useState([]);
+    const [activeTranscriptId, setActiveTranscriptId] = useState(null);
     const [interimText, setInterimText] = useState('');
     const [textInput, setTextInput] = useState('');
     const [activeSignIdx, setActiveSignIdx] = useState(0);
     const [signVideosData, setSignVideosData] = useState(null);
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+    // Bumped for every playback request, including a repeat of the same
+    // sentence, which identity-based effects and <video key> would otherwise miss.
+    const [playToken, setPlayToken] = useState(0);
     const autoPlayTimerRef = useRef(null);
     const videoRef = useRef(null);
     const avatarRef = useRef(null);
+    const transcriptIdRef = useRef(0);
 
     const { isLoading, result, error, translate, clear } = useSignTranslation();
 
-    const handleFinal = useCallback(({ text }) => {
-        setTranscripts(prev => [...prev, text]);
-        setInterimText('');
+    // Read at playback time instead of in the deps, so bumping playToken is the
+    // only thing that starts a run.
+    const resultRef = useRef(null);
+    useEffect(() => {
+        resultRef.current = result;
+    }, [result]);
+
+    const pushTranscript = useCallback((text, kind = 'speech') => {
+        transcriptIdRef.current += 1;
+        const id = transcriptIdRef.current;
+        setTranscripts(prev => [...prev, { id, text, kind }]);
+        return id;
+    }, []);
+
+    const runTranslation = useCallback(async (text, transcriptId = null) => {
+        setActiveTranscriptId(transcriptId);
         setActiveSignIdx(0);
         setIsAutoPlaying(true);
-        translate(text);
+        const data = await translate(text);
+        // Bumped last so the playback effect always sees the fresh result.
+        if (data?.signs?.length) setPlayToken(token => token + 1);
     }, [translate]);
+
+    const handleFinal = useCallback(({ text }) => {
+        setInterimText('');
+        const id = pushTranscript(text, 'speech');
+        runTranslation(text, id);
+    }, [pushTranscript, runTranslation]);
 
     const handleInterim = useCallback(({ text }) => {
         setInterimText(text);
     }, []);
 
     const handleError = useCallback(({ message }) => {
-        setTranscripts(prev => [...prev, `⚠️ ${message}`]);
-    }, []);
+        pushTranscript(`⚠️ ${message}`, 'error');
+    }, [pushTranscript]);
+
+    const replayTranscript = useCallback((item) => {
+        if (item.kind === 'error') return;
+        setInterimText('');
+        runTranslation(item.text, item.id);
+    }, [runTranslation]);
 
     const { state: speechState, isSupported, toggle: toggleSpeech } = useSpeechRecognition({
         lang: 'vi-VN',
@@ -68,20 +101,21 @@ export default function Translate() {
     }, []);
 
     useEffect(() => {
-        if (mode === '3d' && result?.signs) {
-            let attempts = 0;
-            const timer = setInterval(() => {
-                attempts += 1;
-                if (avatarRef.current?.isModelLoaded) {
-                    avatarRef.current.playSignSequence(result.signs);
-                    clearInterval(timer);
-                } else if (attempts >= 100) {
-                    clearInterval(timer);
-                }
-            }, 100);
-            return () => clearInterval(timer);
-        }
-    }, [result, mode]);
+        const signs = resultRef.current?.signs;
+        if (mode !== '3d' || !signs?.length) return;
+
+        let attempts = 0;
+        const timer = setInterval(() => {
+            attempts += 1;
+            if (avatarRef.current?.isModelLoaded) {
+                avatarRef.current.playSignSequence(signs);
+                clearInterval(timer);
+            } else if (attempts >= 100) {
+                clearInterval(timer);
+            }
+        }, 100);
+        return () => clearInterval(timer);
+    }, [playToken, mode]);
 
     const advanceToNextSign = useCallback(() => {
         if (!result?.signs?.length) return;
@@ -132,16 +166,16 @@ export default function Translate() {
 
     function handleTextSubmit(e) {
         e.preventDefault();
-        if (!textInput.trim()) return;
-        setTranscripts(prev => [...prev, textInput.trim()]);
-        translate(textInput.trim());
+        const text = textInput.trim();
+        if (!text) return;
         setTextInput('');
-        setActiveSignIdx(0);
-        setIsAutoPlaying(true);
+        const id = pushTranscript(text, 'text');
+        runTranslation(text, id);
     }
 
     function handleClear() {
         setTranscripts([]);
+        setActiveTranscriptId(null);
         setInterimText('');
         clear();
         setActiveSignIdx(0);
@@ -158,6 +192,29 @@ export default function Translate() {
         }
     }
 
+    /** Replays the sentence currently on screen from its first available sign. */
+    function handleReplay() {
+        if (!result?.signs?.length) return;
+        const firstFound = result.signs.findIndex(s => s.found);
+        setActiveSignIdx(firstFound >= 0 ? firstFound : 0);
+        setIsAutoPlaying(true);
+        setPlayToken(token => token + 1);
+    }
+
+    function handleSignChipClick(idx) {
+        setActiveSignIdx(idx);
+        setIsAutoPlaying(false);
+        if (mode === '3d') {
+            const sign = result?.signs?.[idx];
+            if (sign?.found && avatarRef.current?.isModelLoaded) {
+                avatarRef.current.playSignSequence([sign]);
+            }
+            return;
+        }
+        // Re-keys the <video>, so picking the sign already showing replays it.
+        setPlayToken(token => token + 1);
+    }
+
     const foundCount = result?.found_count || 0;
     const totalCount = result?.total_count || 0;
     const matchPct = totalCount > 0 ? Math.round((foundCount / totalCount) * 100) : 0;
@@ -171,7 +228,7 @@ export default function Translate() {
                         <i className="fa-solid fa-microphone" />
                     </div>
                     <div>
-                        <h1 className="translate-title">Giọng nói → Ký hiệu</h1>
+                        <h1 className="translate-title">Giọng nói sang ký hiệu</h1>
                         <p className="translate-subtitle">Nói hoặc nhập text, xem ngôn ngữ ký hiệu</p>
                     </div>
                 </div>
@@ -212,12 +269,13 @@ export default function Translate() {
                             <div className="mic-status">
                                 <p className={`mic-status-text ${speechState}`}>
                                     {speechState === 'listening' ? 'Đang nghe...' :
-                                        speechState === 'error' ? 'Lỗi microphone' :
-                                            'Nhấn để bắt đầu nói'}
+                                        speechState === 'starting' ? 'Đang mở microphone...' :
+                                            speechState === 'error' ? 'Lỗi microphone' :
+                                                'Nhấn để bắt đầu nói'}
                                 </p>
-                                <p className="mic-status-sub">
-                                    {speechState === 'listening' ? 'Nói tiếng Việt rõ ràng' : 'Web Speech API • Tiếng Việt'}
-                                </p>
+                                {speechState === 'listening' && (
+                                    <p className="mic-status-sub">Nói tiếng Việt rõ ràng</p>
+                                )}
                             </div>
                         </>
                     ) : (
@@ -247,7 +305,12 @@ export default function Translate() {
 
                 <div className="transcript-section">
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-sm)' }}>
-                        <span className="transcript-label">Lịch sử nhận dạng</span>
+                        <span className="transcript-label">
+                            Lịch sử nhận dạng
+                            {transcripts.length > 0 && (
+                                <span className="transcript-hint">nhấn để chạy lại</span>
+                            )}
+                        </span>
                         {transcripts.length > 0 && (
                             <button onClick={handleClear} className="transcript-clear-btn">
                                 <i className="fa-solid fa-rotate-left" style={{ fontSize: '10px' }} /> Xóa
@@ -257,8 +320,21 @@ export default function Translate() {
                     <div className="transcript-list">
                         {interimText && <div className="transcript-item interim">{interimText}</div>}
                         {transcripts.length > 0 ? (
-                            [...transcripts].reverse().map((t, i) => (
-                                <div key={i} className="transcript-item">{t}</div>
+                            [...transcripts].reverse().map(item => (
+                                item.kind === 'error' ? (
+                                    <div key={item.id} className="transcript-item error">{item.text}</div>
+                                ) : (
+                                    <button
+                                        key={item.id}
+                                        type="button"
+                                        className={`transcript-item replayable ${item.id === activeTranscriptId ? 'active' : ''}`}
+                                        onClick={() => replayTranscript(item)}
+                                        title="Nhấn để chạy lại câu này"
+                                    >
+                                        <span className="transcript-item-text">{item.text}</span>
+                                        <i className="fa-solid fa-rotate-right transcript-item-icon" />
+                                    </button>
+                                )
                             ))
                         ) : (
                             <div className="transcript-empty">
@@ -313,6 +389,7 @@ export default function Translate() {
                             <div className="sign-video-player">
                                 {activeVideo.racedType === 'youtube' ? (
                                     <iframe
+                                        key={`${activeVideo.embedUrl}#${playToken}`}
                                         src={activeVideo.embedUrl}
                                         allow="autoplay; encrypted-media; picture-in-picture"
                                         allowFullScreen
@@ -325,7 +402,7 @@ export default function Translate() {
                                         autoPlay
                                         controls
                                         playsInline
-                                        key={activeVideo.url}
+                                        key={`${activeVideo.url}#${playToken}`}
                                         onError={tryNext}
                                         onEnded={isAutoPlaying ? advanceToNextSign : undefined}
                                     />
@@ -367,6 +444,15 @@ export default function Translate() {
                         <div className="video-output-header">
                             <span className="video-output-title">Chuỗi ký hiệu</span>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                {result.signs.some(s => s.found) && (
+                                    <button
+                                        onClick={handleReplay}
+                                        className="auto-play-btn"
+                                        title={mode === '3d' ? 'Chạy lại câu vừa dịch trên avatar 3D' : 'Chạy lại video câu vừa dịch'}
+                                    >
+                                        <i className="fa-solid fa-rotate-right" style={{ fontSize: '10px' }} /> Chạy lại
+                                    </button>
+                                )}
                                 {mode === 'video' && result.signs.filter(s => s.found).length > 1 && (
                                     <button onClick={handleAutoPlay} className={`auto-play-btn ${isAutoPlaying ? 'playing' : ''}`}>
                                         {isAutoPlaying
@@ -383,7 +469,7 @@ export default function Translate() {
                                 <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                                     <div
                                         className={`sign-chip ${sign.found ? 'found' : 'not-found'} ${idx === activeSignIdx ? 'active' : ''}`}
-                                        onClick={() => { setActiveSignIdx(idx); setIsAutoPlaying(false); }}
+                                        onClick={() => handleSignChipClick(idx)}
                                     >
                                         <span className="sign-chip-vi">{sign.vi}</span>
                                         {sign.found && sign.gloss ? (

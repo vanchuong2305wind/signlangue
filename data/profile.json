@@ -3950,6 +3950,202 @@
         "section": "Nhận diện camera"
       },
       "created_at": "2026-08-06T17:39:48.807351+07:00"
+    },
+    {
+      "id": "1786083374483-392",
+      "type": "recognition",
+      "label": "ai",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.9976
+      },
+      "created_at": "2026-08-07T13:16:14.483080+07:00"
+    },
+    {
+      "id": "1786083380171-393",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-08-07T13:16:20.171076+07:00"
+    },
+    {
+      "id": "1786083425647-394",
+      "type": "recognition",
+      "label": "cho / đưa",
+      "value": 1,
+      "metadata": {
+        "confidence": 0.3304
+      },
+      "created_at": "2026-08-07T13:17:05.647436+07:00"
+    },
+    {
+      "id": "1786083500178-395",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-08-07T13:18:20.178053+07:00"
+    },
+    {
+      "id": "1786083598836-396",
+      "type": "study_time",
+      "label": "Học ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Học ký hiệu"
+      },
+      "created_at": "2026-08-07T13:19:58.836591+07:00"
+    },
+    {
+      "id": "1786083656622-397",
+      "type": "translation",
+      "label": "Tôi đói bụng",
+      "value": 1,
+      "metadata": {
+        "found_count": 2,
+        "total_count": 2
+      },
+      "created_at": "2026-08-07T13:20:56.622614+07:00"
+    },
+    {
+      "id": "1786083699142-398",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-08-07T13:21:39.142269+07:00"
+    },
+    {
+      "id": "1786083711182-399",
+      "type": "translation",
+      "label": "tôi đói bụng",
+      "value": 1,
+      "metadata": {
+        "found_count": 2,
+        "total_count": 2
+      },
+      "created_at": "2026-08-07T13:21:51.182969+07:00"
+    },
+    {
+      "id": "1786083732316-400",
+      "type": "translation",
+      "label": "tôi ăn cơm",
+      "value": 1,
+      "metadata": {
+        "found_count": 2,
+        "total_count": 3
+      },
+      "created_at": "2026-08-07T13:22:12.316538+07:00"
+    },
+    {
+      "id": "1786083754525-401",
+      "type": "translation",
+      "label": "cảm ơn mọi người",
+      "value": 1,
+      "metadata": {
+        "found_count": 2,
+        "total_count": 2
+      },
+      "created_at": "2026-08-07T13:22:34.525050+07:00"
+    },
+    {
+      "id": "1786083758960-402",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-08-07T13:22:38.960204+07:00"
+    },
+    {
+      "id": "1786998297551-403",
+      "type": "translation",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "found_count": 1,
+        "total_count": 1
+      },
+      "created_at": "2026-08-18T03:24:57.551564+07:00"
+    },
+    {
+      "id": "1786998340399-404",
+      "type": "translation",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "found_count": 1,
+        "total_count": 1
+      },
+      "created_at": "2026-08-18T03:25:40.399426+07:00"
+    },
+    {
+      "id": "1786998343167-405",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-08-18T03:25:43.167448+07:00"
+    },
+    {
+      "id": "1786998544172-406",
+      "type": "study_time",
+      "label": "Học ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Học ký hiệu"
+      },
+      "created_at": "2026-08-18T03:29:04.172615+07:00"
+    },
+    {
+      "id": "1786998552622-407",
+      "type": "learned_word",
+      "label": "quần áo",
+      "value": 1,
+      "metadata": {
+        "gloss": "clothes"
+      },
+      "created_at": "2026-08-18T03:29:12.622035+07:00"
+    },
+    {
+      "id": "1786998553572-408",
+      "type": "video_view",
+      "label": "quần áo",
+      "value": 1,
+      "metadata": {
+        "gloss": "clothes"
+      },
+      "created_at": "2026-08-18T03:29:13.572086+07:00"
+    },
+    {
+      "id": "1786998575936-409",
+      "type": "learned_word",
+      "label": "quả cam",
+      "value": 1,
+      "metadata": {
+        "gloss": "orange"
+      },
+      "created_at": "2026-08-18T03:29:35.936742+07:00"
+    },
+    {
+      "id": "1786998577569-410",
+      "type": "video_view",
+      "label": "quả cam",
+      "value": 1,
+      "metadata": {
+        "gloss": "orange"
+      },
+      "created_at": "2026-08-18T03:29:37.569223+07:00"
     }
   ]
 }

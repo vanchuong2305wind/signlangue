@@ -43,19 +43,47 @@ Thứ tự ưu tiên, mỗi bước làm xong sẽ báo cáo trước khi sang b
 4. (Tinh chỉnh thêm) Thêm cooldown ngắn ngay sau khi một từ được chấp nhận, tránh phần đuôi của cử chỉ vừa nhận
    diện (tay đang về vị trí nghỉ) lẫn vào pre-roll của đoạn kế tiếp.
 
-## Track B — Khảo sát model open-source cho continuous SLR (làm sau, chưa thực hiện)
+## Track B — Khảo sát model open-source cho continuous SLR
 
-Ghi nhận các repo có mã chạy được (không chỉ paper) cho nhận diện ký hiệu liên tục theo câu (khác với model
-đơn-từ hiện tại), để clone về nghiên cứu sau — **chưa tích hợp, chưa đổi model trong lượt này**:
+Đã khảo sát qua web (không chỉ dựa trí nhớ) và **clone 2 repo triển vọng nhất** vào `train/` để nghiên cứu sau
+— chưa tích hợp gì vào app.
 
-- `neccam/slt` — Sign Language Transformers (continuous recognition + translation, PHOENIX-2014T).
-- `ycmin95/VAC_CSLR` — Visual Alignment Constraint, một baseline CSLR phổ biến.
-- `hulianyuyy/CorrNet` (và bản CorrNet+) — CSLR baseline mạnh, cập nhật gần đây hơn.
-- `dxli94/WLASL` — repo dataset gốc mà model hiện tại đang dùng, giữ lại để đối chiếu.
+### Đã clone
 
-Việc cần làm ở bước này (khi được yêu cầu tiếp tục): clone các repo trên vào `train/` cạnh
-`Sign-Language-Recognition`, đọc README/checkpoint để biết repo nào có sẵn pretrained weights tải được và định
-dạng dữ liệu/tiền xử lý cần gì, rồi báo cáo lại trước khi quyết định tích hợp.
+1. **`train/slt_how2sign_wicv2023`** (`imatge-upc/slt_how2sign_wicv2023`, MIT, CVPR WiCV 2023) — ⭐ ứng viên
+   sát nhu cầu nhất: dịch **video ASL liên tục → câu tiếng Anh** (đúng bài toán "câu nhiều từ" đang gặp lỗi),
+   train trên **How2Sign** (dataset ASL liên tục, video hướng dẫn có phụ đề). Có sẵn code train + infer
+   (Fairseq), có checkpoint pretrained tải trên Dataverse (`baseline_6_3_dp03_wd_2` là bản tốt nhất, ~12.4 BLEU).
+   Lưu ý quan trọng trước khi cân nhắc tích hợp:
+   - Input là **đặc trưng I3D đã trích xuất sẵn** (.npy), không phải video thô — cần thêm bước trích xuất
+     feature giống pipeline How2Sign, không cắm thẳng vào `camera_recognition.py` được.
+   - BLEU ~12.4 vẫn thấp (continuous SLT nói chung còn rất khó) — kỳ vọng câu ra không hoàn hảo, cần đánh giá
+     thực tế trên dữ liệu của mình trước khi thay thế Gemini-stitching hiện tại.
+   - Domain How2Sign là video hướng dẫn (instructional), có thể lệch với ngữ cảnh ký hiệu tự do của app.
+
+2. **`train/CorrNet`** (`hulianyuyy/CorrNet` + CorrNet+, đang được maintain tích cực, cập nhật gần nhất
+   01/2025–11/2025) — baseline continuous sign language **recognition** (xuất chuỗi gloss, chưa phải câu hoàn
+   chỉnh) mạnh, có pretrained checkpoint (Google Drive/Baidu), 19.4% WER trên PHOENIX2014. Nhưng train trên
+   **tiếng Đức (PHOENIX)** và **tiếng Trung (CSL-Daily)** — không phải ASL, nên checkpoint không dùng trực tiếp
+   được cho app; giá trị chính là tham khảo **kiến trúc** (cách họ giải quyết đúng vấn đề "gộp nhiều từ liền
+   nhau" bằng temporal correlation module) để áp dụng ý tưởng, không phải để lấy weight.
+
+### Đã xem qua nhưng không clone (ít giá trị hơn 2 repo trên)
+
+- `AI4Bharat/OpenHands` — repo đã **ngừng bảo trì** ("No longer actively maintained"), chỉ làm nhận diện từ
+  đơn lẻ (cùng loại bài toán với model hiện tại, không phải continuous) — không có gì mới hơn.
+- `neccam/slt`, `ycmin95/VAC_CSLR` — cùng nhóm continuous recognition cho PHOENIX (Đức), bị `CorrNet` vượt qua
+  về kết quả và mức độ cập nhật, giữ CorrNet làm đại diện cho nhóm này là đủ.
+- Google "Scaling Sign Language Translation" (YouTube-ASL, arXiv 2407.11855) — không tìm thấy code/checkpoint
+  công khai, chỉ có paper.
+
+### Kết luận sơ bộ
+
+Chưa có repo nào "chạy thẳng, chính xác hơn hẳn" mà không cần thêm việc: `slt_how2sign_wicv2023` đúng bài toán
+(ASL, liên tục, có checkpoint) nhưng cần build lại pipeline trích xuất feature I3D và BLEU còn thấp; `CorrNet`
+kiến trúc tốt nhưng sai ngôn ngữ ký hiệu. Bước tiếp theo nếu muốn đi xa hơn: chạy thử checkpoint của
+`slt_how2sign_wicv2023` trên vài clip mẫu để đánh giá chất lượng thực tế trước khi quyết định có đáng để xây
+pipeline tích hợp hay không.
 
 ## Trạng thái
 
@@ -78,7 +106,8 @@ dạng dữ liệu/tiền xử lý cần gì, rồi báo cáo lại trước khi
       [Camera.jsx:267-272](app/frontend/src/pages/Camera.jsx#L267-L272)): tránh phần tay đang "rơi" về vị trí
       nghỉ vừa lẫn vào pre-roll của từ kế tiếp, vừa dễ tự kích hoạt nhầm một đoạn mới. Không áp dụng khi đoạn bị
       ép cắt do chạm trần `MAX_SEGMENT_FRAMES` (lúc đó tay vẫn đang động, cần bắt lại ngay).
-- [ ] Track B — chờ yêu cầu tiếp theo.
+- [x] Track B — đã khảo sát + clone `train/slt_how2sign_wicv2023` và `train/CorrNet` để nghiên cứu sau.
+      Chưa đánh giá chất lượng thực tế, chưa tích hợp — xem "Kết luận sơ bộ" ở trên.
 
 ### Giới hạn còn lại (chưa nằm trong A1–A4)
 

@@ -189,7 +189,10 @@ function resetPose(sd) {
     if (sd.rightHand) sd.rightHand.rotation.set(0, 0, 0);
 }
 
-function disposeObject(obj) {
+// `disposeTextures` must stay off when only part of a model is being thrown
+// away: GLTFLoader hands the same texture instance to every material that
+// references it, so freeing one accessory's maps can blank a surface we keep.
+function disposeObject(obj, { disposeTextures = true } = {}) {
     if (!obj) return;
     obj.traverse(node => {
         if (node.geometry) {
@@ -198,10 +201,12 @@ function disposeObject(obj) {
         if (node.material) {
             const materials = Array.isArray(node.material) ? node.material : [node.material];
             for (const mat of materials) {
-                for (const key of Object.keys(mat)) {
-                    const value = mat[key];
-                    if (value && typeof value.dispose === 'function') {
-                        value.dispose();
+                if (disposeTextures) {
+                    for (const key of Object.keys(mat)) {
+                        const value = mat[key];
+                        if (value && typeof value.dispose === 'function') {
+                            value.dispose();
+                        }
                     }
                 }
                 mat.dispose();
@@ -210,22 +215,59 @@ function disposeObject(obj) {
     });
 }
 
+// The backpack and its fittings are baked into the same `wear` mesh as the
+// clothes and body, so they cannot be matched by node name — only the glTF
+// material of each primitive tells them apart. Verified against avatar.vrm by
+// skin weights (these sit on the `bagpack` bone) and by surface proximity:
+// `anim_logo` is printed on a shoulder strap and `robo_face`/`glass` are the
+// pack's display panel, so all three go with it rather than being left floating.
+// `wear_metal` and `armgear_plastic` belong to the clothing and the forearm
+// gauntlet, so they stay.
+const ACCESSORY_MATERIALS = new Set([
+    'backpack_metal',
+    'backpack_nm',
+    'backpack_plastic',
+    'green_emit',
+    'robo_face',
+    'glass',
+    'anim_logo',
+    // Only used by the detached mechanical arm, which node names alone may miss
+    // once the loader splits the mesh into per-primitive children.
+    'arm_mat',
+    'arm_plastic',
+]);
+
+function isAccessoryMaterial(material) {
+    if (!material) return false;
+    const materials = Array.isArray(material) ? material : [material];
+    return materials.some(mat => ACCESSORY_MATERIALS.has((mat?.name || '').toLowerCase()));
+}
+
 function removeNonHumanAccessories(root) {
-    const accessoryName = /(^|[_.-])(robo|robot|mecha)([_.-]|$)/i;
+    const accessoryName = /(^|[_.-])(robo|robot|mecha|bagpack|backpack)([_.-]|$)/i;
     const accessories = [];
 
     root.traverse(node => {
-        if ((node.isMesh || node.isSkinnedMesh) && accessoryName.test(node.name || '')) {
+        if (!node.isMesh && !node.isSkinnedMesh) return;
+        if (accessoryName.test(node.name || '') || isAccessoryMaterial(node.material)) {
             accessories.push(node);
         }
     });
 
+    // Reported with materials because the loader gives every primitive of a
+    // multi-material mesh the same name, which alone says nothing about what went.
+    const removed = accessories.map(accessory => {
+        const materials = Array.isArray(accessory.material) ? accessory.material : [accessory.material];
+        const names = materials.map(mat => mat?.name || '?').join('+');
+        return `${accessory.name || 'unnamed'}[${names}]`;
+    });
+
     for (const accessory of accessories) {
         accessory.removeFromParent();
-        disposeObject(accessory);
+        disposeObject(accessory, { disposeTextures: false });
     }
 
-    return accessories.map(accessory => accessory.name);
+    return removed;
 }
 
 /* ==================== COMPONENT ==================== */
@@ -491,9 +533,9 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             VRMUtils.combineSkeletons(gltf.scene);
             VRMUtils.rotateVRM0(vrm);
 
-            // Seed-san includes a separate mechanical arm mounted behind the
-            // character. It is not part of the humanoid rig used for signing,
-            // so remove it before framing and rendering the avatar.
+            // Seed-san carries a backpack with a mechanical arm mounted on it.
+            // None of it belongs to the humanoid rig used for signing and it
+            // clutters the silhouette, so strip it before framing the avatar.
             const removedAccessories = removeNonHumanAccessories(vrm.scene);
             if (removedAccessories.length > 0) {
                 console.info(

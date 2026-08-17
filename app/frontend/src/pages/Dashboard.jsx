@@ -17,7 +17,7 @@ const QUICK_ACTIONS = [
     },
     {
         title: 'Dịch giọng nói',
-        subtitle: 'Giọng nói → Ký hiệu',
+        subtitle: 'Giọng nói sang ký hiệu',
         icon: 'fa-microphone',
         path: '/translate',
         gradient: 'linear-gradient(135deg, #d89890, #c87a72)',
@@ -25,7 +25,7 @@ const QUICK_ACTIONS = [
     },
     {
         title: 'Nhận diện',
-        subtitle: 'Camera → Văn bản',
+        subtitle: 'Camera sang văn bản',
         icon: 'fa-camera',
         path: '/camera',
         gradient: 'linear-gradient(135deg, #8ab4cc, #6a9bba)',
