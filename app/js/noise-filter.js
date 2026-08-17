@@ -32,7 +32,10 @@ class NoiseFilter {
   process(result) {
     const isFinal = result.isFinal;
     const transcript = result[0].transcript.trim();
-    const confidence = result[0].confidence ?? 1.0; // Some browsers omit confidence
+    // Browsers report 0 here rather than omitting the score — notably phones and
+    // Chrome on non-English locales — so `?? 1.0` never kicks in and the
+    // threshold below would throw away every result. Only trust a real score.
+    const confidence = typeof result[0].confidence === 'number' ? result[0].confidence : 0;
 
     // Reset silence timer when we receive any result
     this._resetSilenceTimer();
@@ -43,7 +46,7 @@ class NoiseFilter {
     }
 
     // Filter 2: Low confidence (for final results only — interim rarely has confidence)
-    if (isFinal && confidence < CONFIDENCE_THRESHOLD) {
+    if (isFinal && confidence > 0 && confidence < CONFIDENCE_THRESHOLD) {
       console.debug(`[NoiseFilter] Discarded low-confidence: "${transcript}" (${confidence.toFixed(2)})`);
       return { passed: false, text: transcript, confidence, isFinal };
     }

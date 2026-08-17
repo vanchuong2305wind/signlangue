@@ -118,7 +118,8 @@ class App {
         this.micButton.classList.remove('recording', 'idle');
         this.micButton.classList.add('error');
         this.toggleButton.textContent = 'BẮT ĐẦU';
-        this.statusText.textContent = 'Lỗi - Kiểm tra quyền microphone';
+        // Replaced by the real reason in _handleError, which fires right after.
+        this.statusText.textContent = 'Lỗi microphone';
         this.statusText.classList.remove('text-gray-400', 'text-[#10B981]');
         this.statusText.classList.add('text-red-400');
         break;
@@ -128,10 +129,12 @@ class App {
   _handleError(error, message) {
     console.error(`[App] Error: ${error} - ${message}`);
 
-    if (error === 'not-allowed' || error === 'audio-capture') {
-      this.permissionError.classList.remove('hidden');
-      this.permissionError.querySelector('p').textContent = `❌ ${message}`;
-    }
+    // Every code gets shown, not just the permission ones. Hiding the rest is
+    // what made a network or unsupported-language failure look like nothing
+    // happening at all.
+    this.permissionError.classList.remove('hidden');
+    this.permissionError.querySelector('p').textContent = `❌ ${message}`;
+    this.statusText.textContent = message;
   }
 }
 
