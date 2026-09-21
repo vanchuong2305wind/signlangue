@@ -292,7 +292,19 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
         transitionProgress: 0,
         prevLeftLandmarks: null,
         prevRightLandmarks: null,
+        // Signs still in flight. Playback starts on the first one to arrive and
+        // waits here rather than ending when the queue momentarily drains.
+        pendingCount: 0,
+        awaitingData: false,
+        // Bumped per playSignSequence call so a stale in-flight fetch from a
+        // previous sentence cannot push frames into the current one.
+        runId: 0,
     });
+
+    // Landmark data keyed by gloss. A replay, or a word repeated in a sentence,
+    // then costs nothing at all.
+    const landmarkCacheRef = useRef(new Map());
+    const playNextRef = useRef(null);
 
     const [status, setStatus] = useState('Đang tải mô hình...');
     const [isModelLoaded, setIsModelLoaded] = useState(false);
@@ -580,8 +592,20 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             const anim = animDataRef.current;
             const sd = sceneDataRef.current;
 
+            if (sd && anim.queue.length === 0 && anim.pendingCount > 0) {
+                // The rest of the sentence is still downloading. Hold the pose
+                // instead of ending, and resume the moment it lands.
+                anim.awaitingData = true;
+                anim.currentFrames = null;
+                anim.currentFrameIdx = 0;
+                anim.frameTimer = 0;
+                updateStatus('Đang tải ký hiệu tiếp theo...');
+                return;
+            }
+
             if (!sd || anim.queue.length === 0) {
                 anim.isPlaying = false;
+                anim.awaitingData = false;
                 anim.currentFrames = null;
                 anim.currentSign = null;
                 anim.currentFrameIdx = 0;
@@ -592,6 +616,7 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
                 return;
             }
 
+            anim.awaitingData = false;
             anim.isPlaying = true;
             const current = anim.queue.shift();
             anim.currentSign = current;
@@ -607,6 +632,8 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             setCurrentGloss(current.gloss);
             onPlayingSign?.(current);
         }
+
+        playNextRef.current = playNextInQueue;
 
         function updateAnimation(delta) {
             const anim = animDataRef.current;
@@ -747,6 +774,36 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+    /* ---------- Landmark loading ---------- */
+    const loadLandmarks = useCallback(async (sign) => {
+        const cache = landmarkCacheRef.current;
+        const cached = cache.get(sign.gloss);
+        if (cached) {
+            // Either the data itself, or the in-flight promise for it — sharing
+            // the promise means a word repeated in one sentence is fetched once.
+            const data = await cached;
+            return data ? { gloss: sign.gloss, vi: sign.vi, data } : null;
+        }
+
+        const request = (async () => {
+            const resp = await fetch(`/api/landmarks/${encodeURIComponent(sign.gloss)}`);
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            const result = await resp.json();
+            if (!result.data?.frames?.length) throw new Error('empty landmark data');
+            return result.data;
+        })();
+
+        cache.set(sign.gloss, request);
+        try {
+            const data = await request;
+            cache.set(sign.gloss, data);
+            return { gloss: sign.gloss, vi: sign.vi, data };
+        } catch (err) {
+            cache.delete(sign.gloss);
+            throw err;
+        }
+    }, []);
+
     /* ---------- Imperative API ---------- */
     useImperativeHandle(ref, () => ({
         async playSignSequence(signs) {
@@ -759,48 +816,63 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
                 return;
             }
 
+            const anim = animDataRef.current;
+            const runId = anim.runId + 1;
+            anim.runId = runId;
+            anim.queue = [];
+            anim.pendingCount = foundSigns.length;
+            anim.awaitingData = false;
+
             updateStatus('Đang tải dữ liệu landmark...');
 
-            const signDataList = [];
-            for (const sign of foundSigns) {
+            // All requests go out at once. The old loop awaited each one before
+            // starting the next, so a five-word sentence paid five round trips
+            // end to end before the avatar moved at all.
+            const requests = foundSigns.map(sign => loadLandmarks(sign));
+
+            // Playback starts on the first sign and the rest stream in behind
+            // it, so what the user waits for is one sign, not the whole sentence.
+            for (const request of requests) {
+                let loaded = null;
                 try {
-                    const resp = await fetch(`/api/landmarks/${sign.gloss}`);
-                    if (resp.ok) {
-                        const result = await resp.json();
-                        if (result.data?.frames?.length > 0) {
-                            signDataList.push({ gloss: sign.gloss, vi: sign.vi, data: result.data });
-                        }
-                    }
+                    loaded = await request;
                 } catch (err) {
-                    console.warn(`[Avatar] Failed to load "${sign.gloss}":`, err);
+                    console.warn('[Avatar] landmark load failed:', err);
+                }
+
+                // A newer sentence started while this was in flight.
+                if (anim.runId !== runId) return;
+
+                anim.pendingCount -= 1;
+                if (!loaded) continue;
+
+                anim.queue.push(loaded);
+                if (!anim.isPlaying || anim.awaitingData) {
+                    playNextRef.current?.();
                 }
             }
 
-            if (signDataList.length > 0) {
-                const anim = animDataRef.current;
-                anim.queue = signDataList;
-                anim.isPlaying = true;
+            if (anim.runId !== runId) return;
 
-                const current = anim.queue.shift();
-                anim.currentSign = current;
-                anim.currentFrames = current.data.frames;
-                anim.currentFps = current.data.fps || 25;
-                anim.currentFrameIdx = 0;
-                anim.frameTimer = 0;
-                anim.isTransitioning = true;
-                anim.transitionProgress = 0;
+            // Nothing left in flight. If playback is parked waiting for data
+            // that never arrived, let it end instead of holding the pose.
+            if (anim.awaitingData && anim.queue.length === 0) {
+                playNextRef.current?.();
+                return;
+            }
 
-                updateStatus(`Đang ký: ${current.vi} (${current.gloss.toUpperCase()})`);
-                setCurrentGloss(current.gloss);
-                onPlayingSign?.(current);
-            } else {
+            if (!anim.isPlaying && anim.queue.length === 0) {
                 updateStatus('Không có dữ liệu landmark cho các từ này');
             }
         },
 
         stopAnimation() {
             const anim = animDataRef.current;
+            // Bumping the run id makes any in-flight fetch drop its result.
+            anim.runId += 1;
             anim.isPlaying = false;
+            anim.pendingCount = 0;
+            anim.awaitingData = false;
             anim.queue = [];
             anim.currentFrames = null;
             anim.currentSign = null;
@@ -813,7 +885,7 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
         },
 
         get isModelLoaded() { return isModelLoaded; },
-    }), [isModelLoaded, updateStatus, onPlayingSign]);
+    }), [isModelLoaded, updateStatus, onPlayingSign, loadLandmarks]);
 
     /* ---------- Render ---------- */
     if (loadError) {

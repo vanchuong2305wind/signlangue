@@ -4177,6 +4177,169 @@
         "section": "Dịch ký hiệu"
       },
       "created_at": "2026-08-18T04:15:06.085006+07:00"
+    },
+    {
+      "id": "1789978224168-414",
+      "type": "translation",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "found_count": 1,
+        "total_count": 1
+      },
+      "created_at": "2026-09-21T15:10:24.168934+07:00"
+    },
+    {
+      "id": "1789978239591-415",
+      "type": "translation",
+      "label": "xin chào rất vui được gặp bạn",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 5
+      },
+      "created_at": "2026-09-21T15:10:39.591152+07:00"
+    },
+    {
+      "id": "1789978246845-416",
+      "type": "translation",
+      "label": "xin chào rất vui được gặp bạn",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 5
+      },
+      "created_at": "2026-09-21T15:10:46.845516+07:00"
+    },
+    {
+      "id": "1789978247168-417",
+      "type": "translation",
+      "label": "xin chào rất vui được gặp bạn",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 5
+      },
+      "created_at": "2026-09-21T15:10:47.168079+07:00"
+    },
+    {
+      "id": "1789978247319-418",
+      "type": "translation",
+      "label": "xin chào rất vui được gặp bạn",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 5
+      },
+      "created_at": "2026-09-21T15:10:47.319389+07:00"
+    },
+    {
+      "id": "1789978247572-419",
+      "type": "translation",
+      "label": "xin chào rất vui được gặp bạn",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 5
+      },
+      "created_at": "2026-09-21T15:10:47.572304+07:00"
+    },
+    {
+      "id": "1789978267044-420",
+      "type": "translation",
+      "label": "xin chào rất vui được gặp bạn , hôm nay bạn khỏe không",
+      "value": 1,
+      "metadata": {
+        "found_count": 7,
+        "total_count": 8
+      },
+      "created_at": "2026-09-21T15:11:07.044194+07:00"
+    },
+    {
+      "id": "1789978278149-421",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-09-21T15:11:18.149418+07:00"
+    },
+    {
+      "id": "1789978288131-422",
+      "type": "translation",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "found_count": 1,
+        "total_count": 1
+      },
+      "created_at": "2026-09-21T15:11:28.131250+07:00"
+    },
+    {
+      "id": "1789978292742-423",
+      "type": "translation",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "found_count": 1,
+        "total_count": 1
+      },
+      "created_at": "2026-09-21T15:11:32.742512+07:00"
+    },
+    {
+      "id": "1789978297029-424",
+      "type": "translation",
+      "label": "xin chào rất vui được gặp bạn",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 5
+      },
+      "created_at": "2026-09-21T15:11:37.029909+07:00"
+    },
+    {
+      "id": "1789978338147-425",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-09-21T15:12:18.147841+07:00"
+    },
+    {
+      "id": "1789978345440-426",
+      "type": "translation",
+      "label": "xin chào rất vui được gặp bạn , hôm nay bạn khỏe không",
+      "value": 1,
+      "metadata": {
+        "found_count": 7,
+        "total_count": 8
+      },
+      "created_at": "2026-09-21T15:12:25.440760+07:00"
+    },
+    {
+      "id": "1789978363611-427",
+      "type": "translation",
+      "label": "ngày mai đi học",
+      "value": 1,
+      "metadata": {
+        "found_count": 3,
+        "total_count": 3
+      },
+      "created_at": "2026-09-21T15:12:43.611410+07:00"
+    },
+    {
+      "id": "1789978373991-428",
+      "type": "translation",
+      "label": "ngày mai đi học",
+      "value": 1,
+      "metadata": {
+        "found_count": 3,
+        "total_count": 3
+      },
+      "created_at": "2026-09-21T15:12:53.991050+07:00"
     }
   ]
 }
