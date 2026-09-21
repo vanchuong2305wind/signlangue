@@ -40,6 +40,36 @@ const FINGER_LM = {
 const FINGER_NAMES = Object.keys(FINGER_LM);
 const BONE_KEYS = ['b01', 'b02', 'b03'];
 const TRANSITION_DURATION = 0.35;
+const LANDMARK_CACHE_LIMIT = 32;
+const landmarkCache = new Map();
+
+function rememberLandmark(gloss, data) {
+    if (landmarkCache.has(gloss)) landmarkCache.delete(gloss);
+    landmarkCache.set(gloss, data);
+    while (landmarkCache.size > LANDMARK_CACHE_LIMIT) {
+        landmarkCache.delete(landmarkCache.keys().next().value);
+    }
+}
+
+async function loadLandmark(sign, signal) {
+    const gloss = sign.gloss.toLowerCase();
+    const cached = landmarkCache.get(gloss);
+    if (cached) {
+        rememberLandmark(gloss, cached);
+        return { gloss: sign.gloss, vi: sign.vi, data: cached, source: 'memory' };
+    }
+
+    const response = await fetch(`/api/landmarks/${encodeURIComponent(sign.gloss)}`, {
+        signal,
+        cache: 'force-cache',
+    });
+    if (!response.ok) return null;
+
+    const result = await response.json();
+    if (!result.data?.frames?.length) return null;
+    rememberLandmark(gloss, result.data);
+    return { gloss: sign.gloss, vi: sign.vi, data: result.data, source: 'network' };
+}
 
 /* ==================== PRE-ALLOCATED MATH OBJECTS ==================== */
 
@@ -171,8 +201,74 @@ function applyHandLandmarks(bones, restQuats, landmarks) {
     }
 }
 
+function createLandmarkPreview(scene) {
+    const group = new THREE.Group();
+    group.name = 'landmark-preview';
+    group.visible = false;
+
+    const createTrack = (count, color, size) => {
+        const positions = new Float32Array(count * 3);
+        positions.fill(-100);
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const material = new THREE.PointsMaterial({
+            color,
+            size,
+            sizeAttenuation: true,
+        });
+        const points = new THREE.Points(geometry, material);
+        group.add(points);
+        return { count, positions, geometry };
+    };
+
+    const preview = {
+        group,
+        pose: createTrack(33, 0x55ddff, 0.028),
+        leftHand: createTrack(21, 0xffd166, 0.034),
+        rightHand: createTrack(21, 0x72f1b8, 0.034),
+    };
+    scene.add(group);
+    return preview;
+}
+
+function updatePreviewTrack(track, landmarks) {
+    for (let index = 0; index < track.count; index += 1) {
+        const point = landmarks?.[index];
+        const offset = index * 3;
+        if (!point) {
+            track.positions[offset] = -100;
+            track.positions[offset + 1] = -100;
+            track.positions[offset + 2] = -100;
+            continue;
+        }
+        track.positions[offset] = (Number(point.x) - 0.5) * 1.25;
+        track.positions[offset + 1] = (0.5 - Number(point.y)) * 1.25 + 0.38;
+        track.positions[offset + 2] = -(Number(point.z) || 0) * 0.55;
+    }
+    track.geometry.attributes.position.needsUpdate = true;
+}
+
+function applyLandmarkPreview(preview, frame) {
+    if (!preview || !frame) return;
+    preview.group.visible = true;
+    updatePreviewTrack(preview.pose, frame.pose);
+    updatePreviewTrack(preview.leftHand, frame.left_hand);
+    updatePreviewTrack(preview.rightHand, frame.right_hand);
+}
+
+function removeLandmarkPreview(sceneData) {
+    const preview = sceneData?.landmarkPreview;
+    if (!preview) return;
+    preview.group.parent?.remove(preview.group);
+    disposeObject(preview.group);
+}
+
 function resetPose(sd) {
     if (!sd) return;
+    if (sd.landmarkPreview) {
+        sd.landmarkPreview.group.visible = false;
+        return;
+    }
     if (sd.vrmRetargeter) {
         sd.vrmRetargeter.reset();
         return;
@@ -273,13 +369,18 @@ function removeNonHumanAccessories(root) {
 /* ==================== COMPONENT ==================== */
 
 const AvatarScene3D = forwardRef(function AvatarScene3D(
-    { className, style, onStatusChange, onPlayingSign },
+    { className, style, active = true, onStatusChange, onPlayingSign, onFirstFrame },
     ref,
 ) {
     const containerRef = useRef(null);
     const sceneDataRef = useRef(null);
     const rendererRef = useRef(null);
     const animFrameRef = useRef(null);
+    const playNextRef = useRef(null);
+    const activeRef = useRef(active);
+    const onFirstFrameRef = useRef(onFirstFrame);
+    activeRef.current = active;
+    onFirstFrameRef.current = onFirstFrame;
     const animDataRef = useRef({
         queue: [],
         isPlaying: false,
@@ -292,6 +393,10 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
         transitionProgress: 0,
         prevLeftLandmarks: null,
         prevRightLandmarks: null,
+        loadGeneration: 0,
+        pendingLoads: 0,
+        abortController: null,
+        firstFramePending: false,
     });
 
     const [status, setStatus] = useState('Đang tải mô hình...');
@@ -308,6 +413,7 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
+        const animationState = animDataRef.current;
 
         let disposed = false;
 
@@ -436,6 +542,14 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
         grid.material.opacity = 0.3;
         scene.add(grid);
 
+        // A zero-download landmark avatar removes the full VRM from the
+        // critical path. It responds immediately and is replaced once the
+        // detailed model has finished loading and parsing.
+        const landmarkPreview = createLandmarkPreview(scene);
+        sceneDataRef.current = { landmarkPreview };
+        setIsModelLoaded(true);
+        updateStatus('Avatar nhẹ sẵn sàng — đang tải VRM...');
+
         async function loadFallbackHands() {
             const loader = new GLTFLoader();
             const gltf = await loader.loadAsync('/models/rigged_hand.glb');
@@ -504,6 +618,7 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
                 leftHand.traverse(n => { if (n.isBone) console.log(`  Bone: "${n.name}"`); });
             }
 
+            removeLandmarkPreview(sceneDataRef.current);
             sceneDataRef.current = {
                 leftHand, rightHand,
                 leftBones, rightBones,
@@ -556,6 +671,7 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             scene.add(vrm.scene);
             vrm.scene.updateMatrixWorld(true);
 
+            removeLandmarkPreview(sceneDataRef.current);
             sceneDataRef.current = {
                 vrm,
                 vrmRetargeter: new VrmHolisticRetargeter(vrm),
@@ -565,15 +681,19 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             return true;
         }
 
-        loadVrmAvatar()
-            .then(loaded => loaded || loadFallbackHands())
-            .catch(err => {
-                console.warn('[AvatarScene3D] VRM unavailable, using hand fallback:', err);
-                loadFallbackHands().catch(fallbackError => {
-                    console.error('[AvatarScene3D] Model load failed:', fallbackError);
-                    setLoadError('Không tải được mô hình 3D.');
+        // Give translation and the first landmark priority on a cold network.
+        // The lightweight preview already makes the avatar interactive.
+        const detailedModelTimer = window.setTimeout(() => {
+            loadVrmAvatar()
+                .then(loaded => loaded || loadFallbackHands())
+                .catch(err => {
+                    console.warn('[AvatarScene3D] VRM unavailable, using hand fallback:', err);
+                    loadFallbackHands().catch(fallbackError => {
+                        console.error('[AvatarScene3D] Model load failed:', fallbackError);
+                        updateStatus('Avatar nhẹ sẵn sàng — không tải được VRM');
+                    });
                 });
-            });
+        }, 1500);
 
         /* ---------- Animation loop ---------- */
         function playNextInQueue() {
@@ -581,6 +701,11 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             const sd = sceneDataRef.current;
 
             if (!sd || anim.queue.length === 0) {
+                if (sd && anim.pendingLoads > 0) {
+                    anim.isPlaying = false;
+                    updateStatus('Loading next sign...');
+                    return;
+                }
                 anim.isPlaying = false;
                 anim.currentFrames = null;
                 anim.currentSign = null;
@@ -588,7 +713,11 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
                 anim.frameTimer = 0;
                 resetPose(sd);
                 setCurrentGloss(null);
-                updateStatus('Mô hình tay sẵn sàng');
+                updateStatus(sd?.vrm
+                    ? 'Avatar VRM toàn thân sẵn sàng'
+                    : sd?.landmarkPreview
+                        ? 'Avatar nhẹ sẵn sàng — đang tải VRM...'
+                        : 'Mô hình tay sẵn sàng');
                 return;
             }
 
@@ -601,12 +730,14 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             anim.frameTimer = 0;
             anim.isTransitioning = true;
             anim.transitionProgress = 0;
+            anim.firstFramePending = Boolean(current.isSequenceFirst);
 
             const label = `Đang ký: ${current.vi} (${current.gloss.toUpperCase()})`;
             updateStatus(label);
             setCurrentGloss(current.gloss);
             onPlayingSign?.(current);
         }
+        playNextRef.current = playNextInQueue;
 
         function updateAnimation(delta) {
             const anim = animDataRef.current;
@@ -622,13 +753,15 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
                 if (anim.currentFrames.length > 0) {
                     const firstFrame = anim.currentFrames[0];
                     const t = easeInOutCubic(Math.min(anim.transitionProgress, 1));
-                    if (sd.vrmRetargeter) {
+                    if (sd.landmarkPreview) {
+                        applyLandmarkPreview(sd.landmarkPreview, firstFrame);
+                    } else if (sd.vrmRetargeter) {
                         sd.vrmRetargeter.apply(firstFrame, delta);
                     } else if (firstFrame.left_hand) {
                         const from = anim.prevLeftLandmarks || firstFrame.left_hand;
                         applyHandLandmarks(sd.leftBones, sd.leftRestQuats, lerpLandmarks(from, firstFrame.left_hand, t));
                     }
-                    if (!sd.vrmRetargeter && firstFrame.right_hand) {
+                    if (!sd.vrmRetargeter && !sd.landmarkPreview && firstFrame.right_hand) {
                         const from = anim.prevRightLandmarks || firstFrame.right_hand;
                         applyHandLandmarks(sd.rightBones, sd.rightRestQuats, lerpLandmarks(from, firstFrame.right_hand, t));
                     }
@@ -659,7 +792,21 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             const nextFrame = anim.currentFrames[nextIdx];
             const t = anim.frameTimer / frameDuration;
 
-            if (sd.vrmRetargeter) {
+            if (sd.landmarkPreview) {
+                applyLandmarkPreview(sd.landmarkPreview, {
+                    pose: lerpLandmarks(frame.pose, nextFrame?.pose || frame.pose, t),
+                    left_hand: lerpLandmarks(
+                        frame.left_hand,
+                        nextFrame?.left_hand || frame.left_hand,
+                        t,
+                    ),
+                    right_hand: lerpLandmarks(
+                        frame.right_hand,
+                        nextFrame?.right_hand || frame.right_hand,
+                        t,
+                    ),
+                });
+            } else if (sd.vrmRetargeter) {
                 sd.vrmRetargeter.apply({
                     ...frame,
                     pose: lerpLandmarks(frame.pose, nextFrame?.pose || frame.pose, t),
@@ -683,7 +830,7 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
                 applyHandLandmarks(sd.leftBones, sd.leftRestQuats,
                     lerpLandmarks(frame.left_hand, nextFrame?.left_hand || frame.left_hand, t));
             }
-            if (!sd.vrmRetargeter && frame.right_hand) {
+            if (!sd.vrmRetargeter && !sd.landmarkPreview && frame.right_hand) {
                 applyHandLandmarks(sd.rightBones, sd.rightRestQuats,
                     lerpLandmarks(frame.right_hand, nextFrame?.right_hand || frame.right_hand, t));
             }
@@ -694,9 +841,18 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             animFrameRef.current = requestAnimationFrame(animate);
 
             const delta = clock.getDelta();
+            if (!activeRef.current) return;
             controls.update();
             updateAnimation(delta);
             renderer.render(scene, camera);
+            const anim = animDataRef.current;
+            if (anim.firstFramePending && anim.isPlaying && anim.currentSign) {
+                anim.firstFramePending = false;
+                onFirstFrameRef.current?.({
+                    gloss: anim.currentSign.gloss,
+                    timestamp: performance.now(),
+                });
+            }
         }
 
         animate();
@@ -725,6 +881,7 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
         return () => {
             disposed = true;
             resizeObserver.disconnect();
+            clearTimeout(detailedModelTimer);
 
             if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
 
@@ -744,6 +901,8 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
 
             rendererRef.current = null;
             sceneDataRef.current = null;
+            playNextRef.current = null;
+            animationState.abortController?.abort();
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -761,39 +920,61 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
 
             updateStatus('Đang tải dữ liệu landmark...');
 
-            const signDataList = [];
-            for (const sign of foundSigns) {
-                try {
-                    const resp = await fetch(`/api/landmarks/${sign.gloss}`);
-                    if (resp.ok) {
-                        const result = await resp.json();
-                        if (result.data?.frames?.length > 0) {
-                            signDataList.push({ gloss: sign.gloss, vi: sign.vi, data: result.data });
-                        }
-                    }
-                } catch (err) {
-                    console.warn(`[Avatar] Failed to load "${sign.gloss}":`, err);
+            const anim = animDataRef.current;
+            anim.abortController?.abort();
+            const controller = new AbortController();
+            anim.abortController = controller;
+            const generation = ++anim.loadGeneration;
+            anim.queue = [];
+            anim.isPlaying = false;
+            anim.currentFrames = null;
+            anim.currentSign = null;
+            anim.pendingLoads = foundSigns.length;
+
+            // Start every request together, but animate as soon as the first
+            // available sign arrives instead of waiting for the whole sentence.
+            const requestCache = new Map();
+            const pending = foundSigns.map(sign => {
+                const key = sign.gloss.toLowerCase();
+                if (!requestCache.has(key)) {
+                    requestCache.set(
+                        key,
+                        loadLandmark(sign, controller.signal).catch(err => {
+                            if (err.name !== 'AbortError') {
+                                console.warn(`[Avatar] Failed to load "${sign.gloss}":`, err);
+                            }
+                            return null;
+                        }),
+                    );
+                }
+                return requestCache.get(key).then(item => (
+                    item ? { ...item, vi: sign.vi, gloss: sign.gloss } : null
+                ));
+            });
+
+            let firstIndex = -1;
+            for (let index = 0; index < pending.length; index += 1) {
+                const item = await pending[index];
+                if (generation !== anim.loadGeneration || controller.signal.aborted) return;
+                if (item) {
+                    firstIndex = index;
+                    anim.queue.push({ ...item, isSequenceFirst: true });
+                    playNextRef.current?.();
+                    break;
                 }
             }
 
-            if (signDataList.length > 0) {
-                const anim = animDataRef.current;
-                anim.queue = signDataList;
-                anim.isPlaying = true;
+            const allResults = await Promise.all(pending);
+            if (generation !== anim.loadGeneration || controller.signal.aborted) return;
+            anim.pendingLoads = 0;
 
-                const current = anim.queue.shift();
-                anim.currentSign = current;
-                anim.currentFrames = current.data.frames;
-                anim.currentFps = current.data.fps || 25;
-                anim.currentFrameIdx = 0;
-                anim.frameTimer = 0;
-                anim.isTransitioning = true;
-                anim.transitionProgress = 0;
+            allResults.forEach((item, index) => {
+                if (item && index !== firstIndex) anim.queue.push(item);
+            });
 
-                updateStatus(`Đang ký: ${current.vi} (${current.gloss.toUpperCase()})`);
-                setCurrentGloss(current.gloss);
-                onPlayingSign?.(current);
-            } else {
+            if (!anim.isPlaying && anim.queue.length > 0) {
+                playNextRef.current?.();
+            } else if (firstIndex < 0) {
                 updateStatus('Không có dữ liệu landmark cho các từ này');
             }
         },
@@ -807,13 +988,22 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             anim.currentFrameIdx = 0;
             anim.frameTimer = 0;
             anim.isTransitioning = false;
+            anim.pendingLoads = 0;
+            anim.abortController?.abort();
+            anim.abortController = null;
+            anim.loadGeneration += 1;
+            anim.firstFramePending = false;
             resetPose(sceneDataRef.current);
             setCurrentGloss(null);
-            updateStatus('Mô hình tay sẵn sàng');
+            updateStatus(sceneDataRef.current?.vrm
+                ? 'Avatar VRM toàn thân sẵn sàng'
+                : sceneDataRef.current?.landmarkPreview
+                    ? 'Avatar nhẹ sẵn sàng — đang tải VRM...'
+                    : 'Mô hình tay sẵn sàng');
         },
 
         get isModelLoaded() { return isModelLoaded; },
-    }), [isModelLoaded, updateStatus, onPlayingSign]);
+    }), [isModelLoaded, updateStatus]);
 
     /* ---------- Render ---------- */
     if (loadError) {

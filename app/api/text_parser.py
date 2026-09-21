@@ -5,10 +5,14 @@ Parse Vietnamese text into meaningful chunks using:
   2. Rule-based longest-match (fallback)
 """
 
+import asyncio
 import json
 import os
 import re
 from .sign_lookup import sign_dict
+
+
+LLM_TIMEOUT_SECONDS = 0.8
 
 
 def _build_llm_prompt(text: str, available_words: list[str]) -> str:
@@ -105,16 +109,31 @@ def parse_rule_based(text: str) -> list[str]:
     return result
 
 
-async def parse_text(text: str) -> list[dict]:
+async def parse_text_with_method(
+    text: str,
+    use_llm: bool = True,
+) -> tuple[list[dict], str]:
     """
     Main entry: parse Vietnamese text into sign-ready chunks.
     Returns list of {vi, gloss, found, fingerspell?}
     """
     if not text or not text.strip():
-        return []
+        return [], "rule_based"
 
-    # Try LLM first
-    llm_words = await parse_with_gemini(text)
+    # The interactive avatar has a strict latency budget. Callers can keep the
+    # remote LLM off the critical path and use the deterministic local parser.
+    llm_words = None
+    if use_llm:
+        try:
+            llm_words = await asyncio.wait_for(
+                parse_with_gemini(text),
+                timeout=LLM_TIMEOUT_SECONDS,
+            )
+        except TimeoutError:
+            print(
+                f"[TextParser] Gemini exceeded {LLM_TIMEOUT_SECONDS:.1f}s; "
+                "using rule-based fallback"
+            )
 
     if llm_words:
         # LLM gave us parsed words, now look up each in dictionary
@@ -134,7 +153,7 @@ async def parse_text(text: str) -> list[dict]:
                         "gloss": None,
                         "found": False,
                     })
-        return results
+        return results, "gemini"
 
     # Fallback: rule-based parsing
     words = parse_rule_based(text)
@@ -150,4 +169,10 @@ async def parse_text(text: str) -> list[dict]:
                 "found": False,
             })
 
+    return results, "rule_based"
+
+
+async def parse_text(text: str, use_llm: bool = True) -> list[dict]:
+    """Backward-compatible parser entry point returning only sign tokens."""
+    results, _method = await parse_text_with_method(text, use_llm=use_llm)
     return results

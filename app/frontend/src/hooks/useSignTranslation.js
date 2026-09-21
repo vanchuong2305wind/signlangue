@@ -24,7 +24,9 @@ export default function useSignTranslation() {
             const response = await fetch('/api/text-to-signs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: text.trim(), use_llm: true }),
+                // The local parser is deterministic and completes in under a
+                // millisecond. A remote LLM must not block first avatar motion.
+                body: JSON.stringify({ text: text.trim(), use_llm: false }),
             });
 
             if (!response.ok) {

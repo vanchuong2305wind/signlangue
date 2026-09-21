@@ -4177,6 +4177,39 @@
         "section": "Dịch ký hiệu"
       },
       "created_at": "2026-08-18T04:15:06.085006+07:00"
+    },
+    {
+      "id": "1790001401978-414",
+      "type": "translation",
+      "label": "bạn bạn có khỏe không",
+      "value": 1,
+      "metadata": {
+        "found_count": 5,
+        "total_count": 5
+      },
+      "created_at": "2026-09-21T21:36:41.978542+07:00"
+    },
+    {
+      "id": "1790001419702-415",
+      "type": "translation",
+      "label": "rất vui khi được gặp bạn",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 5
+      },
+      "created_at": "2026-09-21T21:36:59.702041+07:00"
+    },
+    {
+      "id": "1790001430546-416",
+      "type": "translation",
+      "label": "Hi xin chào tất cả các bạn",
+      "value": 1,
+      "metadata": {
+        "found_count": 3,
+        "total_count": 5
+      },
+      "created_at": "2026-09-21T21:37:10.546294+07:00"
     }
   ]
 }

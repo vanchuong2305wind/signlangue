@@ -18,7 +18,9 @@ function getSignVideos(sign, signVideosData) {
 
 export default function Translate() {
     useStudyTimer('Dịch ký hiệu');
-    const [mode, setMode] = useState('video');
+    // 3D is the latency-sensitive primary experience; starting here lets the
+    // avatar load immediately and avoids competing with the video catalogue.
+    const [mode, setMode] = useState('3d');
     // Entries are { id, text, kind } so a past line can be replayed on click.
     const [transcripts, setTranscripts] = useState([]);
     const [activeTranscriptId, setActiveTranscriptId] = useState(null);
@@ -34,6 +36,7 @@ export default function Translate() {
     const videoRef = useRef(null);
     const avatarRef = useRef(null);
     const transcriptIdRef = useRef(0);
+    const translationStartedAtRef = useRef(null);
 
     const { isLoading, result, error, translate, clear } = useSignTranslation();
 
@@ -52,13 +55,17 @@ export default function Translate() {
     }, []);
 
     const runTranslation = useCallback(async (text, transcriptId = null) => {
+        if (mode === '3d') {
+            translationStartedAtRef.current = performance.now();
+            performance.mark('avatar-translation-start');
+        }
         setActiveTranscriptId(transcriptId);
         setActiveSignIdx(0);
         setIsAutoPlaying(true);
         const data = await translate(text);
         // Bumped last so the playback effect always sees the fresh result.
         if (data?.signs?.length) setPlayToken(token => token + 1);
-    }, [translate]);
+    }, [translate, mode]);
 
     const handleFinal = useCallback(({ text }) => {
         setInterimText('');
@@ -88,11 +95,43 @@ export default function Translate() {
     });
 
     useEffect(() => {
-        fetch('/data/sign_videos.json')
+        if (mode !== 'video' || signVideosData) return undefined;
+        const controller = new AbortController();
+        fetch('/data/sign_videos.json', { signal: controller.signal })
             .then(r => r.json())
             .then(setSignVideosData)
-            .catch(err => console.warn('Could not load sign_videos.json:', err));
+            .catch(err => {
+                if (err.name !== 'AbortError') {
+                    console.warn('Could not load sign_videos.json:', err);
+                }
+            });
+        return () => controller.abort();
+    }, [mode, signVideosData]);
+
+    const handleFirstAvatarFrame = useCallback(({ gloss, timestamp }) => {
+        const startedAt = translationStartedAtRef.current;
+        if (startedAt == null) return;
+        const duration = timestamp - startedAt;
+        translationStartedAtRef.current = null;
+        performance.mark('avatar-first-frame');
+        performance.measure(
+            'avatar-time-to-first-motion',
+            'avatar-translation-start',
+            'avatar-first-frame',
+        );
+        console.info(`[Performance] Avatar first motion: ${duration.toFixed(1)}ms (${gloss})`);
+        window.dispatchEvent(new CustomEvent('avatar:first-motion', {
+            detail: { duration, gloss },
+        }));
     }, []);
+
+    const selectMode = useCallback((nextMode) => {
+        if (nextMode === '3d' && mode !== '3d' && resultRef.current?.signs?.length) {
+            translationStartedAtRef.current = performance.now();
+            performance.mark('avatar-translation-start');
+        }
+        setMode(nextMode);
+    }, [mode]);
 
     useEffect(() => {
         getProfile()
@@ -233,10 +272,10 @@ export default function Translate() {
                     </div>
                 </div>
                 <div className="translate-mode-toggle">
-                    <button className={`mode-btn ${mode === 'video' ? 'active' : ''}`} onClick={() => setMode('video')}>
+                    <button className={`mode-btn ${mode === 'video' ? 'active' : ''}`} onClick={() => selectMode('video')}>
                         <i className="fa-solid fa-video" style={{ fontSize: '12px' }} /> Video
                     </button>
-                    <button className={`mode-btn ${mode === '3d' ? 'active' : ''}`} onClick={() => setMode('3d')}>
+                    <button className={`mode-btn ${mode === '3d' ? 'active' : ''}`} onClick={() => selectMode('3d')}>
                         <i className="fa-solid fa-hand" style={{ fontSize: '12px' }} /> 3D Avatar
                     </button>
                 </div>
@@ -348,25 +387,26 @@ export default function Translate() {
             {/* Right panel — Output */}
             <GlassCard variant="strong" className="translate-output-panel">
                 {/* 3D Avatar */}
-                {mode === '3d' && (
-                    <Suspense fallback={(
-                        <div className="translate-loading avatar-container">
-                            <div className="loading-spinner" />
-                            <span className="loading-text">Đang tải bộ dựng 3D...</span>
-                        </div>
-                    )}>
-                        <AvatarScene3D
-                            ref={avatarRef}
-                            className="avatar-container"
-                            onPlayingSign={(sign) => {
-                                if (result?.signs) {
-                                    const idx = result.signs.findIndex(s => s.gloss === sign.gloss);
-                                    if (idx >= 0) setActiveSignIdx(idx);
-                                }
-                            }}
-                        />
-                    </Suspense>
-                )}
+                <Suspense fallback={mode === '3d' ? (
+                    <div className="translate-loading avatar-container">
+                        <div className="loading-spinner" />
+                        <span className="loading-text">Đang tải bộ dựng 3D...</span>
+                    </div>
+                ) : null}>
+                    <AvatarScene3D
+                        ref={avatarRef}
+                        className="avatar-container"
+                        active={mode === '3d'}
+                        style={mode === '3d' ? undefined : { display: 'none' }}
+                        onFirstFrame={handleFirstAvatarFrame}
+                        onPlayingSign={(sign) => {
+                            if (result?.signs) {
+                                const idx = result.signs.findIndex(s => s.gloss === sign.gloss);
+                                if (idx >= 0) setActiveSignIdx(idx);
+                            }
+                        }}
+                    />
+                </Suspense>
 
                 {/* Video mode */}
                 {mode === 'video' && (
