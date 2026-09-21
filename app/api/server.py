@@ -7,6 +7,7 @@ Or:  uvicorn app.api.server:app --reload --port 8000
 """
 
 import base64
+from functools import lru_cache
 import json
 import os
 import re
@@ -17,14 +18,15 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse, Response, StreamingResponse
 from pydantic import BaseModel, Field
 
 from .camera_recognition import is_available, recognize
 from .sentence_builder import build_sentence, gemini_configured
 from .sign_lookup import sign_dict
-from .text_parser import parse_text
+from .text_parser import parse_text_with_method
 from .landmark_processing import process_landmark_entry
 from .profile_store import profile_store
 
@@ -40,12 +42,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(GZipMiddleware, minimum_size=500, compresslevel=5)
 
 # Serve static frontend files
 FRONTEND_DIR = Path(__file__).resolve().parent.parent
 app.mount("/js", StaticFiles(directory=FRONTEND_DIR / "js"), name="js")
 app.mount("/styles", StaticFiles(directory=FRONTEND_DIR / "styles"), name="styles")
-app.mount("/models", StaticFiles(directory=FRONTEND_DIR / "models"), name="models")
+app.mount(
+    "/models",
+    StaticFiles(directory=FRONTEND_DIR / "frontend" / "public" / "models"),
+    name="models",
+)
 
 
 @app.on_event("startup")
@@ -65,7 +72,7 @@ async def serve_index():
 
 class TextToSignRequest(BaseModel):
     text: str
-    use_llm: bool = True
+    use_llm: bool = False
 
 
 class SignToken(BaseModel):
@@ -377,15 +384,18 @@ def _draw_camera_landmarks(frame, data):
 
 
 @app.post("/api/text-to-signs", response_model=TextToSignResponse)
-async def text_to_signs(req: TextToSignRequest):
+async def text_to_signs(req: TextToSignRequest, response: Response):
     """Convert Vietnamese text to a sequence of sign symbols."""
     if not req.text or not req.text.strip():
         raise HTTPException(status_code=400, detail="Text is required")
 
     text = req.text.strip()
 
-    # Parse text into sign tokens
-    signs = await parse_text(text)
+    # Keep the remote LLM optional so the avatar's first motion does not depend
+    # on an unbounded third-party network request.
+    parse_started = time.perf_counter()
+    signs, method = await parse_text_with_method(text, use_llm=req.use_llm)
+    parse_ms = (time.perf_counter() - parse_started) * 1000
 
     # For unfound words, provide fingerspell fallback
     fingerspell_fallback = []
@@ -396,10 +406,7 @@ async def text_to_signs(req: TextToSignRequest):
 
     found_count = sum(1 for s in signs if s.get("found"))
 
-    # Detect which method was used
-    has_gemini = bool(os.getenv("GEMINI_API_KEY") and
-                      os.getenv("GEMINI_API_KEY") != "your_gemini_api_key_here")
-    method = "gemini" if has_gemini and req.use_llm else "rule_based"
+    response.headers["Server-Timing"] = f"text_parse;dur={parse_ms:.2f}"
 
     return TextToSignResponse(
         input_text=text,
@@ -634,11 +641,21 @@ async def camera_python_stream(camera: int = 0):
     )
 
 
+@lru_cache(maxsize=64)
+def _cached_landmark_response(gloss: str) -> bytes:
+    """Return an API response without decoding and re-encoding landmark JSON."""
+    cache_path = sign_dict._landmarks_v2_dir / f"{gloss}.json"
+    raw_data = cache_path.read_bytes()
+    encoded_gloss = json.dumps(gloss, ensure_ascii=False).encode("utf-8")
+    return b'{"gloss":' + encoded_gloss + b',"data":' + raw_data + b'}'
+
+
 @app.get("/api/landmarks/{gloss}")
-async def get_landmarks(gloss: str):
+def get_landmarks(gloss: str):
     """
     Get landmark frames for a specific sign gloss.
-    Streams from the large JSON file without loading entirely.
+    Serve preprocessed entries directly and use the legacy aggregate only as a
+    fallback for entries that have not been materialized yet.
     """
     gloss_lower = gloss.lower().strip()
     if not re.fullmatch(r"[a-z0-9_' -]+", gloss_lower):
@@ -647,13 +664,24 @@ async def get_landmarks(gloss: str):
     cache_path = sign_dict._landmarks_v2_dir / f"{gloss_lower}.json"
     if cache_path.exists():
         try:
-            with cache_path.open("r", encoding="utf-8") as source:
-                return JSONResponse(content={
-                    "gloss": gloss_lower,
-                    "data": json.load(source),
-                })
-        except (OSError, json.JSONDecodeError):
-            cache_path.unlink(missing_ok=True)
+            cache_before = _cached_landmark_response.cache_info()
+            started = time.perf_counter()
+            body = _cached_landmark_response(gloss_lower)
+            elapsed_ms = (time.perf_counter() - started) * 1000
+            cache_after = _cached_landmark_response.cache_info()
+            cache_state = "hit" if cache_after.hits > cache_before.hits else "file"
+            return Response(
+                content=body,
+                media_type="application/json",
+                headers={
+                    "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",
+                    "Server-Timing": (
+                        f'landmark;dur={elapsed_ms:.2f};desc="{cache_state}"'
+                    ),
+                },
+            )
+        except OSError:
+            _cached_landmark_response.cache_clear()
 
     landmarks_path = sign_dict._landmarks_path
 
@@ -693,5 +721,5 @@ if __name__ == "__main__":
         "app.api.server:app",
         host="0.0.0.0",
         port=8000,
-        reload=True,
+        reload=False,
     )

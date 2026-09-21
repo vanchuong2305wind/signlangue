@@ -9,3 +9,4 @@ google-genai
 cloudinary
 requests
 yt-dlp
+Pillow
