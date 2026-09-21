@@ -6,6 +6,7 @@ Run: python -m app.api.server
 Or:  uvicorn app.api.server:app --reload --port 8000
 """
 
+import asyncio
 import base64
 import json
 import os
@@ -29,6 +30,7 @@ from .text_parser import gemini_enabled, parse_text, warmup as warmup_text_parse
 from .landmark_index import load_or_build, read_entry
 from .landmark_processing import process_landmark_entry
 from .profile_store import profile_store
+from .video_subtitles import SubtitleError, fetch_subtitles
 
 # Load environment variables
 load_dotenv(Path(__file__).resolve().parent.parent.parent / ".env")
@@ -95,6 +97,22 @@ class TextToSignResponse(BaseModel):
     total_count: int
     method: str  # "gemini" | "rule_based"
     fingerspell_fallback: list[SignToken] = []
+
+
+class BatchTextToSignRequest(BaseModel):
+    texts: list[str]
+    use_llm: bool = True
+
+
+class BatchTextToSignResponse(BaseModel):
+    results: list[TextToSignResponse]
+
+
+class VideoSubtitleRequest(BaseModel):
+    url: str
+    lang: str | None = None
+
+
 
 
 class ProfileDetails(BaseModel):
@@ -389,16 +407,9 @@ def _draw_camera_landmarks(frame, data):
     return frame
 
 
-@app.post("/api/text-to-signs", response_model=TextToSignResponse)
-async def text_to_signs(req: TextToSignRequest):
-    """Convert Vietnamese text to a sequence of sign symbols."""
-    if not req.text or not req.text.strip():
-        raise HTTPException(status_code=400, detail="Text is required")
-
-    text = req.text.strip()
-
-    # Parse text into sign tokens
-    signs, method = await parse_text(text, use_llm=req.use_llm)
+async def _convert_text_to_signs(text: str, use_llm: bool) -> TextToSignResponse:
+    """Shared body of the single and batch text-to-sign routes."""
+    signs, method = await parse_text(text, use_llm=use_llm)
 
     # For unfound words, provide fingerspell fallback
     fingerspell_fallback = []
@@ -417,6 +428,62 @@ async def text_to_signs(req: TextToSignRequest):
         method=method,
         fingerspell_fallback=[SignToken(**f) for f in fingerspell_fallback],
     )
+
+
+@app.post("/api/text-to-signs", response_model=TextToSignResponse)
+async def text_to_signs(req: TextToSignRequest):
+    """Convert Vietnamese text to a sequence of sign symbols."""
+    if not req.text or not req.text.strip():
+        raise HTTPException(status_code=400, detail="Text is required")
+
+    return await _convert_text_to_signs(req.text.strip(), req.use_llm)
+
+
+# One subtitle line per request would mean a round trip — and a Gemini call —
+# for every caption in the video, which is both slow and the fastest way to
+# burn the API quota. The whole transcript is converted in one request instead.
+BATCH_TEXT_LIMIT = 400
+_BATCH_CONCURRENCY = 6
+
+
+@app.post("/api/text-to-signs/batch", response_model=BatchTextToSignResponse)
+async def text_to_signs_batch(req: BatchTextToSignRequest):
+    """Convert many lines of text to sign sequences in one request."""
+    texts = [t.strip() for t in (req.texts or []) if t and t.strip()]
+    if not texts:
+        raise HTTPException(status_code=400, detail="texts is required")
+    if len(texts) > BATCH_TEXT_LIMIT:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Tối đa {BATCH_TEXT_LIMIT} câu mỗi lần",
+        )
+
+    # Bounded: the parser fans out to Gemini, and an unbounded gather over a
+    # long transcript would trip its rate limit and push every line onto the
+    # rule-based fallback.
+    semaphore = asyncio.Semaphore(_BATCH_CONCURRENCY)
+
+    async def convert(text: str) -> TextToSignResponse:
+        async with semaphore:
+            return await _convert_text_to_signs(text, req.use_llm)
+
+    results = await asyncio.gather(*(convert(text) for text in texts))
+    return BatchTextToSignResponse(results=list(results))
+
+
+@app.post("/api/video/subtitles")
+async def video_subtitles(req: VideoSubtitleRequest):
+    """Fetch a video's caption track as timed cues, ready to sign along to."""
+    url = (req.url or "").strip()
+    if not url:
+        raise HTTPException(status_code=400, detail="url is required")
+
+    try:
+        # yt-dlp is blocking and talks to the network, so it must not run on
+        # the event loop or it stalls every other request for seconds.
+        return await run_in_threadpool(fetch_subtitles, url, req.lang)
+    except SubtitleError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
 
 
 @app.get("/api/dictionary/stats")
