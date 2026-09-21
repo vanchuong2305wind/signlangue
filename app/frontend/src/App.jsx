@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard';
 import Learn from './pages/Learn';
 import Translate from './pages/Translate';
 import Camera from './pages/Camera';
+import VideoTranslate from './pages/VideoTranslate';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
           <Route path="/learn" element={<Learn />} />
           <Route path="/translate" element={<Translate />} />
           <Route path="/camera" element={<Camera />} />
+          <Route path="/video-translate" element={<VideoTranslate />} />
         </Route>
       </Routes>
     </BrowserRouter>

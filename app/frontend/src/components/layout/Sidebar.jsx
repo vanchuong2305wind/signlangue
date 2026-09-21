@@ -6,6 +6,7 @@ const NAV_ITEMS = [
     { path: '/', icon: 'fa-chart-pie', label: 'Tổng quan' },
     { path: '/learn', icon: 'fa-book-open', label: 'Học' },
     { path: '/translate', icon: 'fa-microphone', label: 'Dịch' },
+    { path: '/video-translate', icon: 'fa-film', label: 'Video' },
     { path: '/camera', icon: 'fa-camera', label: 'Camera' },
 ];
 
