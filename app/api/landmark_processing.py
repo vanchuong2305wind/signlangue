@@ -1,4 +1,4 @@
-"""Landmark cleanup and temporal smoothing for sign animation data."""
+"""Landmark cleanup, temporal smoothing and size reduction for sign animation data."""
 
 from __future__ import annotations
 
@@ -12,6 +12,34 @@ TRACK_SIZES = {
     "right_hand": 21,
     "face": None,
 }
+
+# Only these reach the avatar (see vrm-holistic-retargeter.js). Anything else in
+# the source data is dropped so it never crosses the wire.
+KEPT_TRACKS = (
+    "pose",
+    "pose_world",
+    "left_hand",
+    "right_hand",
+    "face_blendshapes",
+)
+
+# Normalised coordinates, so 4 decimals is ~0.1 px at 1000 px — far below what
+# the retargeter can express, and it roughly halves the JSON.
+COORD_DECIMALS = 4
+
+# Bumped whenever the cached shape changes, so stale files can be spotted.
+SCHEMA_VERSION = 3
+
+
+def _quantise(value):
+    """Round every float in a nested structure to keep the payload small."""
+    if isinstance(value, float):
+        return round(value, COORD_DECIMALS)
+    if isinstance(value, dict):
+        return {key: _quantise(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_quantise(item) for item in value]
+    return value
 
 
 def _valid_track(track, expected_size=None):
@@ -126,12 +154,39 @@ def process_landmark_entry(entry, cutoff_hz=7.0, max_gap=4):
         for index, value in enumerate(track_values):
             processed_frames[index][track_name] = value
 
-    result = dict(entry)
-    result["schema_version"] = 2
+    result = slim_entry(entry, processed_frames)
     result["processing"] = {
         "filter": "zero_phase_exponential",
         "cutoff_hz": cutoff_hz,
         "max_interpolated_gap": max_gap,
+        "coord_decimals": COORD_DECIMALS,
     }
-    result["frames"] = processed_frames
+    return result
+
+
+def slim_entry(entry, frames=None):
+    """Drop unused tracks and round coordinates — no smoothing.
+
+    Safe to run on an already-processed entry, which is how existing cache
+    files are shrunk without being filtered twice.
+    """
+    source_frames = entry.get("frames") or [] if frames is None else frames
+
+    # Keep only the tracks the avatar reads, and drop empty ones entirely —
+    # a null key still costs bytes on every frame.
+    slim_frames = [
+        {
+            name: value
+            for name, value in frame.items()
+            if name in KEPT_TRACKS and value
+        }
+        for frame in source_frames
+    ]
+
+    # schema_version goes first so a cached file can be version-checked from a
+    # short head read instead of parsing the whole thing.
+    result = {"schema_version": SCHEMA_VERSION}
+    result.update(entry)
+    result["schema_version"] = SCHEMA_VERSION
+    result["frames"] = _quantise(slim_frames)
     return result

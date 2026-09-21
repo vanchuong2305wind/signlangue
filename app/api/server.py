@@ -14,17 +14,19 @@ import time
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse, Response, StreamingResponse
 from pydantic import BaseModel, Field
 
 from .camera_recognition import is_available, recognize
 from .sentence_builder import build_sentence, gemini_configured
 from .sign_lookup import sign_dict
-from .text_parser import parse_text
+from .text_parser import gemini_enabled, parse_text, warmup as warmup_text_parser
+from .landmark_index import load_or_build, read_entry
 from .landmark_processing import process_landmark_entry
 from .profile_store import profile_store
 
@@ -41,6 +43,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Landmark payloads are float-dense JSON and compress ~4x, which is the single
+# biggest win on the wire for the avatar. 1 KB floor keeps small replies raw.
+app.add_middleware(GZipMiddleware, minimum_size=1024, compresslevel=5)
+
 # Serve static frontend files
 FRONTEND_DIR = Path(__file__).resolve().parent.parent
 app.mount("/js", StaticFiles(directory=FRONTEND_DIR / "js"), name="js")
@@ -49,12 +55,19 @@ app.mount("/models", StaticFiles(directory=FRONTEND_DIR / "models"), name="model
 
 
 @app.on_event("startup")
-def startup():
+async def startup():
     sign_dict.load()
-    has_key = bool(os.getenv("GEMINI_API_KEY") and
-                   os.getenv("GEMINI_API_KEY") != "your_gemini_api_key_here")
-    status = "configured" if has_key else "not set (using rule-based fallback)"
+    status = "configured" if gemini_enabled() else "not set (using rule-based fallback)"
     print(f"[Server] Gemini API: {status}")
+
+    cached = len(list(sign_dict._landmarks_v2_dir.glob("*.json")))         if sign_dict._landmarks_v2_dir.exists() else 0
+    print(f"[Server] Landmark cache: {cached} glosses")
+    if cached < len(sign_dict.available_glosses):
+        print("[Server] Some glosses are uncached — run "
+              "`python -m scripts.build_landmark_cache` to avoid slow first hits")
+
+    # Both are first-use costs that would otherwise land on a user request.
+    await warmup_text_parser()
     print("[Server] Ready at http://localhost:8000")
 
 
@@ -385,7 +398,7 @@ async def text_to_signs(req: TextToSignRequest):
     text = req.text.strip()
 
     # Parse text into sign tokens
-    signs = await parse_text(text)
+    signs, method = await parse_text(text, use_llm=req.use_llm)
 
     # For unfound words, provide fingerspell fallback
     fingerspell_fallback = []
@@ -395,11 +408,6 @@ async def text_to_signs(req: TextToSignRequest):
             fingerspell_fallback.extend(letters)
 
     found_count = sum(1 for s in signs if s.get("found"))
-
-    # Detect which method was used
-    has_gemini = bool(os.getenv("GEMINI_API_KEY") and
-                      os.getenv("GEMINI_API_KEY") != "your_gemini_api_key_here")
-    method = "gemini" if has_gemini and req.use_llm else "rule_based"
 
     return TextToSignResponse(
         input_text=text,
@@ -635,10 +643,13 @@ async def camera_python_stream(camera: int = 0):
 
 
 @app.get("/api/landmarks/{gloss}")
-async def get_landmarks(gloss: str):
+async def get_landmarks(gloss: str, request: Request):
     """
-    Get landmark frames for a specific sign gloss.
-    Streams from the large JSON file without loading entirely.
+    Return the landmark frames for one sign gloss.
+
+    Cached files are served as raw bytes with no parse/re-serialise step: the
+    payload is float-dense JSON the server has nothing useful to say about, and
+    round-tripping it through Python cost more than reading it from disk.
     """
     gloss_lower = gloss.lower().strip()
     if not re.fullmatch(r"[a-z0-9_' -]+", gloss_lower):
@@ -647,44 +658,79 @@ async def get_landmarks(gloss: str):
     cache_path = sign_dict._landmarks_v2_dir / f"{gloss_lower}.json"
     if cache_path.exists():
         try:
-            with cache_path.open("r", encoding="utf-8") as source:
-                return JSONResponse(content={
-                    "gloss": gloss_lower,
-                    "data": json.load(source),
-                })
-        except (OSError, json.JSONDecodeError):
+            return _cached_landmark_response(gloss_lower, cache_path, request)
+        except OSError:
             cache_path.unlink(missing_ok=True)
 
-    landmarks_path = sign_dict._landmarks_path
+    # Cache miss. Read just this entry out of the big file using the byte-offset
+    # index — a seek plus a few hundred KB, instead of a 446 MB json.load that
+    # would block the event loop for 5-15 s and hold ~1.5 GB of RAM.
+    data = await run_in_threadpool(_build_landmark_cache_entry, gloss_lower, cache_path)
+    if data is None:
+        raise HTTPException(status_code=404, detail=f"No landmarks for '{gloss}'")
 
+    try:
+        return _cached_landmark_response(gloss_lower, cache_path, request)
+    except OSError:
+        return JSONResponse(content={"gloss": gloss_lower, "data": data})
+
+
+def _landmark_headers(stat_result) -> dict[str, str]:
+    etag = f'"{stat_result.st_mtime_ns:x}-{stat_result.st_size:x}"'
+    return {
+        "ETag": etag,
+        # Revalidate rather than trust an age: rebuilding the cache has to take
+        # effect immediately. The ETag makes that a 304 with an empty body, and
+        # the avatar keeps its own in-memory copy for replays inside a session.
+        "Cache-Control": "no-cache",
+    }
+
+
+def _cached_landmark_response(gloss: str, cache_path: Path, request: Request):
+    """Serve a cached file, wrapping the raw bytes in the API envelope."""
+    stat_result = cache_path.stat()
+    headers = _landmark_headers(stat_result)
+
+    if request.headers.get("if-none-match") == headers["ETag"]:
+        return Response(status_code=304, headers=headers)
+
+    body = cache_path.read_bytes()
+    envelope = b'{"gloss":' + json.dumps(gloss).encode("utf-8") + b',"data":'
+    return Response(
+        content=envelope + body + b"}",
+        media_type="application/json",
+        headers=headers,
+    )
+
+
+def _build_landmark_cache_entry(gloss: str, cache_path: Path):
+    """Extract one gloss from the source file and write its cache file.
+
+    Runs in a worker thread — everything here is blocking disk and CPU work.
+    """
+    landmarks_path = sign_dict._landmarks_path
     if not landmarks_path.exists():
         raise HTTPException(status_code=404, detail="Landmarks file not found")
 
     try:
-        # Use ijson-style streaming or load specific entry
-        # For simplicity, we'll load and cache on first access
-        if not hasattr(sign_dict, '_landmarks_cache'):
-            print("[Server] Loading landmarks file (this may take a moment)...")
-            with open(landmarks_path, "r", encoding="utf-8") as f:
-                sign_dict._landmarks_cache = json.load(f)
-            print(f"[Server] Landmarks loaded: {len(sign_dict._landmarks_cache)} entries")
+        offsets = load_or_build(landmarks_path, sign_dict._landmarks_offsets_path)
+        span = offsets.get(gloss)
+        if span is None:
+            return None
+        entry = read_entry(landmarks_path, span)[gloss]
+        data = process_landmark_entry(entry)
+    except (OSError, ValueError, KeyError) as error:
+        raise HTTPException(
+            status_code=500,
+            detail="Error reading landmarks file",
+        ) from error
 
-        if gloss_lower in sign_dict._landmarks_cache:
-            data = process_landmark_entry(sign_dict._landmarks_cache[gloss_lower])
-            sign_dict._landmarks_v2_dir.mkdir(parents=True, exist_ok=True)
-            temporary_path = cache_path.with_suffix(".tmp")
-            with temporary_path.open("w", encoding="utf-8") as destination:
-                json.dump(data, destination, ensure_ascii=False, separators=(",", ":"))
-            temporary_path.replace(cache_path)
-            return JSONResponse(content={
-                "gloss": gloss_lower,
-                "data": data,
-            })
-        else:
-            raise HTTPException(status_code=404, detail=f"No landmarks for '{gloss}'")
-
-    except json.JSONDecodeError:
-        raise HTTPException(status_code=500, detail="Error reading landmarks file")
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_path = cache_path.with_suffix(".tmp")
+    with temporary_path.open("w", encoding="utf-8") as destination:
+        json.dump(data, destination, ensure_ascii=False, separators=(",", ":"))
+    temporary_path.replace(cache_path)
+    return data
 
 
 if __name__ == "__main__":

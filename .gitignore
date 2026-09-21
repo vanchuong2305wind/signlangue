@@ -39,6 +39,9 @@ data/archive/
 data/WLASL_v0.3.json/
 data/processed/sign_dictionary_landmarks.json
 data/processed/sign_dictionary_landmarks_vi.json
+# Byte-offset index derived from the file above — regenerated on demand
+data/processed/landmarks_offsets.json
+data/processed/landmarks_v2/*.tmp
 
 # Large model files
 app/models/*.glb

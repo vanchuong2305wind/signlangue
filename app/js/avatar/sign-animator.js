@@ -49,22 +49,22 @@ class SignAnimator {
 
     eventBus.emit('avatar:status', { text: 'Đang tải dữ liệu...' });
 
-    const signDataList = [];
-    for (const sign of foundSigns) {
+    // One request per sign, all in flight together. Awaiting each fetch before
+    // starting the next made a sentence cost N round trips end to end.
+    const loaded = await Promise.all(foundSigns.map(async (sign) => {
       try {
-        const resp = await fetch(`${API_BASE}/api/landmarks/${sign.gloss}`);
-        if (resp.ok) {
-          const result = await resp.json();
-          signDataList.push({
-            gloss: sign.gloss,
-            vi: sign.vi,
-            data: result.data,
-          });
-        }
+        const resp = await fetch(`${API_BASE}/api/landmarks/${encodeURIComponent(sign.gloss)}`);
+        if (!resp.ok) return null;
+        const result = await resp.json();
+        if (!result.data?.frames?.length) return null;
+        return { gloss: sign.gloss, vi: sign.vi, data: result.data };
       } catch (err) {
         console.warn(`[SignAnimator] Failed to load "${sign.gloss}":`, err);
+        return null;
       }
-    }
+    }));
+
+    const signDataList = loaded.filter(Boolean);
 
     if (signDataList.length > 0) {
       this.queue = signDataList;

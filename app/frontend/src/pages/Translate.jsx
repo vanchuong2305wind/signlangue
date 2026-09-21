@@ -104,6 +104,13 @@ export default function Translate() {
         const signs = resultRef.current?.signs;
         if (mode !== '3d' || !signs?.length) return;
 
+        // The usual case is a model that is already loaded, so try it straight
+        // away — going through the interval first cost 100 ms on every play.
+        if (avatarRef.current?.isModelLoaded) {
+            avatarRef.current.playSignSequence(signs);
+            return;
+        }
+
         let attempts = 0;
         const timer = setInterval(() => {
             attempts += 1;
