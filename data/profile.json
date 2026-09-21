@@ -4340,6 +4340,386 @@
         "total_count": 3
       },
       "created_at": "2026-09-21T15:12:53.991050+07:00"
+    },
+    {
+      "id": "1790015147387-429",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T01:25:47.387016+07:00"
+    },
+    {
+      "id": "1790015254550-430",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T01:27:34.550038+07:00"
+    },
+    {
+      "id": "1790015315119-431",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T01:28:35.119242+07:00"
+    },
+    {
+      "id": "1790017565602-432",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:06:05.602919+07:00"
+    },
+    {
+      "id": "1790017625734-433",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:07:05.734158+07:00"
+    },
+    {
+      "id": "1790017685607-434",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:08:05.607634+07:00"
+    },
+    {
+      "id": "1790017745615-435",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:09:05.615967+07:00"
+    },
+    {
+      "id": "1790017805644-436",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:10:05.644056+07:00"
+    },
+    {
+      "id": "1790017865608-437",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:11:05.608571+07:00"
+    },
+    {
+      "id": "1790017925626-438",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:12:05.626114+07:00"
+    },
+    {
+      "id": "1790017985647-439",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:13:05.647054+07:00"
+    },
+    {
+      "id": "1790018019757-440",
+      "type": "study_time",
+      "label": "Nhận diện camera",
+      "value": 1,
+      "metadata": {
+        "section": "Nhận diện camera"
+      },
+      "created_at": "2026-09-22T02:13:39.757749+07:00"
+    },
+    {
+      "id": "1790018045630-441",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:14:05.630975+07:00"
+    },
+    {
+      "id": "1790018105670-442",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:15:05.670713+07:00"
+    },
+    {
+      "id": "1790018165645-443",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:16:05.645625+07:00"
+    },
+    {
+      "id": "1790018225615-444",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:17:05.615203+07:00"
+    },
+    {
+      "id": "1790018285622-445",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:18:05.622070+07:00"
+    },
+    {
+      "id": "1790018345617-446",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:19:05.617351+07:00"
+    },
+    {
+      "id": "1790018405632-447",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:20:05.632690+07:00"
+    },
+    {
+      "id": "1790018465631-448",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:21:05.631883+07:00"
+    },
+    {
+      "id": "1790018525640-449",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:22:05.640874+07:00"
+    },
+    {
+      "id": "1790018585611-450",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:23:05.611100+07:00"
+    },
+    {
+      "id": "1790018645610-451",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:24:05.610545+07:00"
+    },
+    {
+      "id": "1790018765597-452",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:26:05.597553+07:00"
+    },
+    {
+      "id": "1790018878473-453",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:27:58.473595+07:00"
+    },
+    {
+      "id": "1790018938476-454",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:28:58.476950+07:00"
+    },
+    {
+      "id": "1790018998488-455",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:29:58.488674+07:00"
+    },
+    {
+      "id": "1790019058479-456",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:30:58.479325+07:00"
+    },
+    {
+      "id": "1790019118491-457",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:31:58.491211+07:00"
+    },
+    {
+      "id": "1790019178506-458",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:32:58.506212+07:00"
+    },
+    {
+      "id": "1790019238479-459",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:33:58.479788+07:00"
+    },
+    {
+      "id": "1790019298483-460",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:34:58.483342+07:00"
+    },
+    {
+      "id": "1790019358477-461",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:35:58.477387+07:00"
+    },
+    {
+      "id": "1790019418520-462",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:36:58.520080+07:00"
+    },
+    {
+      "id": "1790019478476-463",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:37:58.476485+07:00"
+    },
+    {
+      "id": "1790019538498-464",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T02:38:58.498883+07:00"
+    },
+    {
+      "id": "1790020931903-465",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T03:02:11.903460+07:00"
+    },
+    {
+      "id": "1790021139428-466",
+      "type": "study_time",
+      "label": "Video dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Video dịch ký hiệu"
+      },
+      "created_at": "2026-09-22T03:05:39.428327+07:00"
     }
   ]
 }
