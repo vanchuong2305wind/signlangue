@@ -2,7 +2,8 @@
 text_parser.py
 Parse Vietnamese text into meaningful chunks using:
   1. Google Gemini API (primary)
-  2. Rule-based longest-match (fallback)
+  2. PhoBERT local NLP (offline fallback, see local_nlp.py)
+  3. Rule-based longest-match (last resort)
 """
 
 import asyncio
@@ -13,6 +14,7 @@ import time
 import unicodedata
 from collections import OrderedDict
 
+from . import local_nlp
 from .sign_lookup import sign_dict
 
 # Splitting a sentence into dictionary words is a light task, so it runs on a
@@ -265,5 +267,14 @@ async def parse_text(text: str, use_llm: bool = True) -> tuple[list[dict], str]:
         _cache_put(text, llm_words)
         return _lookup_words(llm_words), "gemini"
 
-    # Fallback: rule-based parsing
+    # Offline fallback: PhoBERT. Only once its model is already in memory — a
+    # cold load takes seconds and must never land on a live request; the
+    # startup preload is what makes it ready.
+    if local_nlp.status()["loaded"]:
+        try:
+            return await asyncio.to_thread(local_nlp.parse, text), "local"
+        except Exception as error:  # noqa: BLE001 - fall through to rules
+            print(f"[TextParser] local NLP failed: {ascii(str(error))}")
+
+    # Last resort: rule-based parsing
     return _lookup_words(parse_rule_based(text)), "rule_based"

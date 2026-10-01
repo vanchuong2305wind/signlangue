@@ -9,3 +9,7 @@ google-genai
 cloudinary
 requests
 yt-dlp
+# Offline fallback (only used when Gemini / the browser speech engine are unreachable)
+faster-whisper
+sentence-transformers
+underthesea

@@ -515,12 +515,6 @@ export default function Translate() {
             {/* Bottom stats */}
             {result && (
                 <div className="translate-bottom-bar" style={{ borderRadius: 'var(--radius-md)' }}>
-                    <span className={`method-badge ${result.method === 'gemini' ? 'gemini' : 'rule-based'}`}>
-                        {result.method === 'gemini'
-                            ? <><i className="fa-solid fa-robot" style={{ marginRight: '4px' }} /> Gemini AI</>
-                            : <><i className="fa-solid fa-book" style={{ marginRight: '4px' }} /> Rule-based</>
-                        }
-                    </span>
                     <div className="result-stats">
                         <div className="stat-item">
                             <span>Tìm thấy:</span>

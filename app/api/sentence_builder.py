@@ -14,7 +14,7 @@ def gemini_configured() -> bool:
 
 async def build_sentence(words: list[str]) -> str:
     if not gemini_configured():
-        raise RuntimeError("Chưa cấu hình GEMINI_API_KEY trong file .env.")
+        raise RuntimeError("Chức năng tạo câu chưa được cấu hình trên máy chủ.")
 
     cleaned = [
         re.sub(r"\s+", " ", word).strip()
@@ -53,5 +53,27 @@ Hãy viết lại thành MỘT câu tiếng Việt tự nhiên và có nghĩa nh
     )
     sentence = response.text.strip().strip('"“”')
     if not sentence:
-        raise RuntimeError("Gemini không trả về câu hợp lệ.")
+        raise RuntimeError("Không tạo được câu hợp lệ.")
     return sentence
+
+
+def build_sentence_local(words: list[str]) -> str:
+    """Offline stand-in when the language model cannot be reached.
+
+    Keeps the recognised order, drops the repeats the camera produces when a
+    sign is held across two clips, and makes it read as one sentence. It adds
+    no words of its own, so it can never invent meaning.
+    """
+    cleaned: list[str] = []
+    for word in words:
+        if not isinstance(word, str):
+            continue
+        # "uống / đồ uống" in the label list: the first reading is the sign.
+        text = re.sub(r"\s+", " ", word.split("/")[0]).strip()
+        if text and (not cleaned or cleaned[-1].lower() != text.lower()):
+            cleaned.append(text)
+    if not cleaned:
+        raise ValueError("Chưa có từ nào để tạo câu.")
+    sentence = " ".join(cleaned)
+    return sentence[0].upper() + sentence[1:] + "."
+

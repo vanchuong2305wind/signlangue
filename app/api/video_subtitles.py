@@ -20,13 +20,16 @@ Preference order for a track is deliberate:
 
 import html
 import json
+import os
 import re
+import tempfile
 import time
 from collections import OrderedDict
 from typing import Any
 
 import requests
 
+from . import asr
 from .cue_translate import translate_lines
 
 # Auto-captions arrive as 2-5 word fragments — roughly one per breath. Signing
@@ -408,6 +411,49 @@ def _extract_info(url: str) -> dict:
         return ydl.extract_info(url, download=False)
 
 
+# Whisper on a GPU handles this in well under a minute; past it the viewer is
+# better served by the "no captions" message than by a long wait.
+WHISPER_MAX_SECONDS = float(os.getenv("WHISPER_MAX_VIDEO_SECONDS", "1200"))
+
+
+def _transcribe_audio(url: str, info: dict) -> dict | None:
+    """Whisper transcript of a video's audio, or None when it cannot be made."""
+    if not asr.is_installed():
+        return None
+    duration = float(info.get("duration") or 0)
+    if duration and duration > WHISPER_MAX_SECONDS:
+        return None
+
+    try:
+        import yt_dlp
+        with tempfile.TemporaryDirectory(prefix="signlang-audio-") as folder:
+            options = {
+                "quiet": True,
+                "no_warnings": True,
+                # Audio only, in whatever container the site serves: Whisper
+                # decodes it directly, so no ffmpeg conversion step is needed.
+                "format": "bestaudio/best",
+                "outtmpl": os.path.join(folder, "audio.%(ext)s"),
+                "noplaylist": True,
+            }
+            with yt_dlp.YoutubeDL(options) as ydl:
+                ydl.download([url])
+            files = [name for name in os.listdir(folder) if name.startswith("audio.")]
+            if not files:
+                return None
+            # Language left to detection: a caption-less video can be in any.
+            result = asr.transcribe(os.path.join(folder, files[0]), language=None)
+    except Exception as error:  # noqa: BLE001 - download, decode, model
+        print(f"[Subtitles] Whisper fallback failed: {ascii(str(error))}")
+        return None
+
+    if not result["cues"]:
+        return None
+    print(f"[Subtitles] Whisper transcribed {result['duration']}s of audio "
+          f"in {result['elapsed']}s ({result['language']})")
+    return result
+
+
 def fetch_subtitles(url: str, lang: str | None = None) -> dict:
     """Fetch and segment a video's caption track.
 
@@ -431,10 +477,6 @@ def fetch_subtitles(url: str, lang: str | None = None) -> dict:
 
     available = _list_available(info)
     candidates = _rank_tracks(info, lang)
-    if not candidates:
-        raise SubtitleError(
-            "Video này không có phụ đề. Hãy bật chế độ micro hoặc tải lên file .srt/.vtt."
-        )
 
     headers = dict(info.get("http_headers") or {})
     headers.setdefault("User-Agent", _DEFAULT_UA)
@@ -460,7 +502,19 @@ def fetch_subtitles(url: str, lang: str | None = None) -> dict:
         break
 
     if not cues:
-        raise SubtitleError(f"Không tải được phụ đề: {last_error or 'không rõ nguyên nhân'}.")
+        # No caption track, or none of them would download: transcribe the
+        # audio itself. Only reached where the old code gave up with an error.
+        transcript = _transcribe_audio(url, info)
+        if transcript is None:
+            if not candidates:
+                raise SubtitleError(
+                    "Video này không có phụ đề. Hãy bật chế độ micro hoặc tải lên file .srt/.vtt."
+                )
+            raise SubtitleError(f"Không tải được phụ đề: {last_error or 'không rõ nguyên nhân'}.")
+        cues = transcript["cues"]
+        track_lang = transcript["language"]
+        # Machine-made, which is what "auto" already means to the page.
+        origin = "auto"
 
     segments = segment_cues(cues)
 
