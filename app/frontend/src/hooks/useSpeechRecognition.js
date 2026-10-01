@@ -12,9 +12,15 @@
  *    session builds a fresh instance instead of reusing one for the page's life.
  *  - iOS Safari requires a user gesture per session, so it is never restarted
  *    automatically; the hook returns to idle and waits for the next tap.
+ *
+ * Offline fallback: the browser engine needs internet. When it reports a
+ * network error, or the browser has no engine at all, the hook switches to
+ * recording utterances for the backend's Whisper model (whisperRecorder.js).
+ * Callers see the same states and callbacks either way.
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { isWhisperRecordingSupported, startWhisperSession } from './whisperRecorder';
 
 const CONFIDENCE_THRESHOLD = 0.6;
 const MIN_TEXT_LENGTH = 2;
@@ -35,7 +41,7 @@ const IS_MOBILE = IS_IOS || /Android|Mobile|IEMobile|Opera Mini/i.test(UA);
 const ERROR_MESSAGES = {
     'not-allowed': 'Chưa cấp quyền microphone. Hãy kiểm tra cài đặt trình duyệt.',
     'service-not-allowed': 'Trình duyệt đang chặn nhận dạng giọng nói. Hãy cấp quyền microphone.',
-    'network': 'Lỗi kết nối mạng. Web Speech API cần internet.',
+    'network': 'Lỗi kết nối mạng.',
     'audio-capture': 'Không tìm thấy microphone.',
     'start-timeout': 'Không khởi động được microphone. Kiểm tra quyền micro rồi thử lại.',
     'insecure-context': 'Trang đang chạy qua HTTP nên trình duyệt chặn microphone. Hãy mở bằng HTTPS (hoặc localhost).',
@@ -60,7 +66,12 @@ function isSecureContextAvailable() {
 
 export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInterim, onError } = {}) {
     const [state, setState] = useState('idle'); // idle | starting | listening | error
-    const [isSupported] = useState(() => !!getSpeechRecognition());
+    const [isSupported] = useState(() => !!getSpeechRecognition() || isWhisperRecordingSupported());
+    // 'browser' until the browser engine proves unusable, then 'whisper' for
+    // the rest of the page's life — retrying a dead engine on every tap would
+    // cost the user a failed start each time.
+    const modeRef = useRef(getSpeechRecognition() ? 'browser' : 'whisper');
+    const whisperRef = useRef(null);
 
     const recognitionRef = useRef(null);
     // What the user asked for, which is not the same as what the engine is doing.
@@ -147,6 +158,43 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
         });
     }, [applyState, clearInterim, clearTimers, teardown]);
 
+    const stopWhisper = useCallback(() => {
+        const session = whisperRef.current;
+        whisperRef.current = null;
+        session?.stop();
+    }, []);
+
+    const beginWhisperSession = useCallback(async () => {
+        if (!isWhisperRecordingSupported()) {
+            failFatally('network');
+            return;
+        }
+        stopWhisper();
+        const session = sessionRef.current;
+        try {
+            const controller = await startWhisperSession({
+                lang: langRef.current,
+                onListening: () => {
+                    if (sessionRef.current === session && wantListeningRef.current) applyState('listening');
+                },
+                onFinal: ({ text, confidence, lang: spokenLang }) => {
+                    if (sessionRef.current !== session) return;
+                    callbacksRef.current.onFinal?.({ text, confidence, lang: spokenLang });
+                },
+            });
+            // The user may have pressed stop while the mic was opening.
+            if (sessionRef.current !== session || !wantListeningRef.current) {
+                controller.stop();
+                return;
+            }
+            whisperRef.current = controller;
+        } catch (error) {
+            console.warn('[speech] offline microphone failed:', error);
+            if (sessionRef.current !== session) return;
+            failFatally(error?.name === 'NotAllowedError' ? 'not-allowed' : 'audio-capture');
+        }
+    }, [applyState, failFatally, stopWhisper]);
+
     const beginSession = useCallback(() => {
         const SpeechRecognition = getSpeechRecognition();
         if (!SpeechRecognition) return;
@@ -221,6 +269,14 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
             console.warn('[speech] error:', code, event.message || '');
             // onend decides whether to resume after these.
             if (IGNORED_ERRORS.includes(code)) return;
+            if (code === 'network' && isWhisperRecordingSupported()) {
+                console.info('[speech] browser engine offline — switching to Whisper');
+                modeRef.current = 'whisper';
+                teardown();
+                clearTimers();
+                if (wantListeningRef.current) beginWhisperSession();
+                return;
+            }
             failFatally(code);
         };
 
@@ -288,14 +344,14 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
             if (wantListeningRef.current) failFatally('start-timeout');
             else applyState('idle');
         }, START_TIMEOUT_MS);
-    }, [applyState, clearInterim, clearTimers, failFatally, scheduleRestart, teardown]);
+    }, [applyState, beginWhisperSession, clearInterim, clearTimers, failFatally, scheduleRestart, teardown]);
 
     useEffect(() => {
         beginSessionRef.current = beginSession;
     }, [beginSession]);
 
     const start = useCallback(() => {
-        if (!getSpeechRecognition()) return;
+        if (!isSupported) return;
         if (!isSecureContextAvailable()) {
             failFatally('insecure-context');
             return;
@@ -304,8 +360,9 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
         silentRestartsRef.current = 0;
         lastFinalRef.current = { text: '', time: 0 };
         applyState('starting');
-        beginSession();
-    }, [applyState, beginSession, failFatally]);
+        if (modeRef.current === 'whisper') beginWhisperSession();
+        else beginSession();
+    }, [applyState, beginSession, beginWhisperSession, failFatally, isSupported]);
 
     const stop = useCallback(() => {
         wantListeningRef.current = false;
@@ -314,6 +371,12 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
         // handlers below stay attached so a late final result still lands.
         applyState('idle');
         clearInterim();
+
+        if (whisperRef.current) {
+            // Flushes the sentence in progress, so it still gets transcribed.
+            stopWhisper();
+            return;
+        }
 
         const rec = recognitionRef.current;
         if (!rec) return;
@@ -333,7 +396,7 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
             endTimerRef.current = null;
             if (recognitionRef.current === rec) teardown();
         }, GRACEFUL_STOP_MS);
-    }, [applyState, clearInterim, clearTimers, teardown]);
+    }, [applyState, clearInterim, clearTimers, stopWhisper, teardown]);
 
     // Reads intent from a ref so a tap is never judged against a stale render.
     // While a graceful stop is still finishing, intent is already false, so a
@@ -347,7 +410,8 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
         wantListeningRef.current = false;
         clearTimers();
         teardown();
-    }, [clearTimers, teardown]);
+        stopWhisper();
+    }, [clearTimers, stopWhisper, teardown]);
 
     return { state, isSupported, isMobile: IS_MOBILE, start, stop, toggle };
 }

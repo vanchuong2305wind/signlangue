@@ -359,10 +359,10 @@ export default function CameraPage() {
                 body: JSON.stringify({ words: sentence.map(item => item.word) }),
             });
             const data = await response.json();
-            if (!response.ok) throw new Error(apiError(data, 'Không thể tạo câu bằng Gemini.'));
+            if (!response.ok) throw new Error(apiError(data, 'Không thể tạo câu.'));
             setAiSentence(data.sentence);
         } catch (buildError) {
-            setError(buildError.message || 'Không kết nối được với Gemini.');
+            setError(buildError.message || 'Không kết nối được với máy chủ.');
         } finally {
             setBuildingSentence(false);
         }
@@ -482,7 +482,7 @@ export default function CameraPage() {
                                 disabled={buildingSentence || liveTranslation}
                             >
                                 <i className={`fa-solid ${buildingSentence ? 'fa-spinner fa-spin' : 'fa-wand-magic-sparkles'}`} />
-                                {buildingSentence ? 'Gemini đang viết câu...' : 'Tạo câu có nghĩa bằng Gemini'}
+                                {buildingSentence ? 'Đang viết câu...' : 'Tạo câu có nghĩa'}
                             </button>
                             {aiSentence && (
                                 <div className="camera__gemini-result">

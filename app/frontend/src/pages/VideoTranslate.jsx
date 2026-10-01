@@ -989,11 +989,6 @@ export default function VideoTranslate() {
             {/* ── Bottom Stats ── */}
             {displayResult && (
                 <div className="vt-bottom-bar glass animate-fade-in">
-                    <span className={`method-badge ${displayResult.method === 'gemini' ? 'gemini' : 'rule-based'}`}>
-                        {displayResult.method === 'gemini'
-                            ? <><i className="fa-solid fa-robot" style={{ marginRight: '4px' }} /> Gemini AI</>
-                            : <><i className="fa-solid fa-book" style={{ marginRight: '4px' }} /> Rule-based</>}
-                    </span>
                     <div className="vt-bottom-stats">
                         <span className="vt-bottom-stat">
                             Tìm thấy: <strong className={foundCount / totalCount >= 0.7 ? 'high' : foundCount / totalCount >= 0.4 ? 'medium' : 'low'}>

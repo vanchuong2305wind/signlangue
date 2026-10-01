@@ -8,9 +8,11 @@ Or:  uvicorn app.api.server:app --reload --port 8000
 
 import asyncio
 import base64
+import io
 import json
 import os
 import re
+import threading
 import time
 from pathlib import Path
 
@@ -24,7 +26,8 @@ from fastapi.responses import FileResponse, JSONResponse, Response, StreamingRes
 from pydantic import BaseModel, Field
 
 from .camera_recognition import is_available, recognize
-from .sentence_builder import build_sentence, gemini_configured
+from . import asr, local_nlp
+from .sentence_builder import build_sentence, build_sentence_local, gemini_configured
 from .sign_lookup import sign_dict
 from .text_parser import gemini_enabled, parse_text, warmup as warmup_text_parser
 from .landmark_index import load_or_build, read_entry
@@ -70,7 +73,23 @@ async def startup():
 
     # Both are first-use costs that would otherwise land on a user request.
     await warmup_text_parser()
+
+    # The offline models are standby only, so they load in the background:
+    # startup and the normal path never wait on them.
+    if os.getenv("LOCAL_AI_PRELOAD", "1") != "0":
+        threading.Thread(target=_preload_local_ai, daemon=True).start()
     print("[Server] Ready at http://localhost:8000")
+
+
+def _preload_local_ai():
+    for name, module in (("PhoBERT", local_nlp), ("Whisper", asr)):
+        if not module.is_installed():
+            print(f"[Server] {name} not installed — offline fallback disabled")
+            continue
+        try:
+            module.load()
+        except Exception as error:  # noqa: BLE001 - standby must never crash
+            print(f"[Server] {name} preload failed: {ascii(str(error))}")
 
 
 @app.get("/")
@@ -88,6 +107,10 @@ class SignToken(BaseModel):
     gloss: str | None = None
     found: bool = False
     fingerspell: bool = False
+    # Set by the offline parser when the gloss came from meaning similarity.
+    match: str | None = None
+    matched_vi: str | None = None
+    score: float | None = None
 
 
 class TextToSignResponse(BaseModel):
@@ -95,7 +118,7 @@ class TextToSignResponse(BaseModel):
     signs: list[SignToken]
     found_count: int
     total_count: int
-    method: str  # "gemini" | "rule_based"
+    method: str  # "gemini" | "local" | "rule_based"
     fingerspell_fallback: list[SignToken] = []
 
 
@@ -590,14 +613,41 @@ async def camera_build_sentence(req: SentenceBuildRequest):
         }
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error)) from error
+    except Exception as error:  # noqa: BLE001 - no key, offline, quota, timeout
+        print(f"[SentenceBuilder] Gemini unavailable, using local builder: {ascii(str(error))}")
+        try:
+            sentence = build_sentence_local(req.words)
+        except ValueError as local_error:
+            raise HTTPException(status_code=400, detail=str(local_error)) from local_error
+        return {
+            "sentence": sentence,
+            "source_words": req.words,
+            "method": "local",
+        }
+
+
+@app.post("/api/speech/transcribe")
+async def speech_transcribe(request: Request):
+    """Offline speech-to-text for the microphone, used when the browser's own
+    speech engine is unreachable. The body is the raw recorded audio."""
+    audio = await request.body()
+    if not audio:
+        raise HTTPException(status_code=400, detail="Không có dữ liệu âm thanh.")
+    if len(audio) > 20 * 1024 * 1024:
+        raise HTTPException(status_code=413, detail="Đoạn ghi âm quá dài.")
+    lang = request.query_params.get("lang", "vi").split("-")[0] or "vi"
+    try:
+        return await run_in_threadpool(asr.transcribe, io.BytesIO(audio), lang)
     except RuntimeError as error:
         raise HTTPException(status_code=503, detail=str(error)) from error
-    except Exception as error:
-        print(f"[SentenceBuilder] Gemini error: {error}")
-        raise HTTPException(
-            status_code=502,
-            detail="Gemini đang không phản hồi. Vui lòng thử lại.",
-        ) from error
+    except Exception as error:  # noqa: BLE001 - undecodable audio
+        print(f"[ASR] transcribe failed: {ascii(str(error))}")
+        raise HTTPException(status_code=400, detail="Không đọc được đoạn ghi âm.") from error
+
+
+@app.get("/api/local-ai/status")
+async def local_ai_status():
+    return {"asr": asr.status(), "nlp": local_nlp.status()}
 
 
 async def camera_python_state():
