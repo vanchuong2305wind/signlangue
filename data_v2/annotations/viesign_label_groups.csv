@@ -1,0 +1,2335 @@
+﻿Word_id,Meaning,Video_count,Video_ids,Meaning_in_original_manifest,Review_status
+vsl-08ae65804408e1f68027,0 (số không),1,D0529,false,pending_video_verification
+vsl-4a44dc15364204a80fe8,10,1,D0539,false,pending_video_verification
+vsl-4fc82b26aecb47d2868c,11,1,D0540B,false,pending_video_verification
+vsl-d59eced1ded07f84c145,40,1,D0544,false,pending_video_verification
+vsl-a6d4ed83125a2c546ed1,5000 (năm nghìn),2,D0549B | D0549T,false,pending_video_verification
+vsl-7902699be42c8a8e46fb,7,1,D0536,false,pending_video_verification
+vsl-be39b1e745099b980c88,7up,1,D0408,false,pending_video_verification
+vsl-48449a14a4ff7d79bb7a,80,1,D0545,false,pending_video_verification
+vsl-19581e27de7ced00ff1c,9,1,D0538,false,pending_video_verification
+vsl-69f59c273b6e669ac32a,90,1,D0546N,false,pending_video_verification
+vsl-6a06548e29d954a6c1a4,ai bảo,1,W04071,false,pending_video_verification
+vsl-88530181f7dbabef55e5,ai cho,1,D0032,false,pending_video_verification
+vsl-9c85eb079803e52d428b,albania (nước albania),1,D0012,false,pending_video_verification
+vsl-1ae6e41a89aa7e6426b8,an giang,1,W00006,false,pending_video_verification
+vsl-a9c3a502a5094657ca81,an ninh,1,W00007,false,pending_video_verification
+vsl-cf25157f4512ffa9b182,anh chị,1,W00010B,false,pending_video_verification
+vsl-ec41f3c1a63bf2bf9e0e,anh chị em,1,W00011,false,pending_video_verification
+vsl-93aafb957c956ca62c36,anh hùng,1,W00015,false,pending_video_verification
+vsl-077e78fa3831a42db149,anh họ,2,W00014N | W00014T,false,pending_video_verification
+vsl-62e88a55fb41f042f866,anh vợ,1,W00020,false,pending_video_verification
+vsl-40bbe1f8d3ad08c2eff8,ao chuôm,1,W00026,false,pending_video_verification
+vsl-c84785b4fe3b7b41a9bf,ba chân bốn cẳng,1,W00065,false,pending_video_verification
+vsl-931db80cccf7eb67dc06,ba là,1,D0148,false,pending_video_verification
+vsl-940b1550394512120770,ban giám hiệu,1,W00087,false,pending_video_verification
+vsl-7c6b4363350b838fcad8,ban ngày,1,W00089,false,pending_video_verification
+vsl-57ccb2ab603d33345e0a,bao la,1,W00146,false,pending_video_verification
+vsl-04103ef4e955bce07af7,bao nhiêu?,1,W00147,false,pending_video_verification
+vsl-d373fb379c4e1c18f04a,bao tay (dùng cho trẻ sơ sinh),1,W00150,false,pending_video_verification
+vsl-a21dfce2c27396ca29a3,bay,1,W00174,false,pending_video_verification
+vsl-9880e9477287f6e274ca,bay liệng (bay lượn),1,W00176,false,pending_video_verification
+vsl-eafe1e5032e6ea2438a5,bay nhanh (máy bay),1,D0177,false,pending_video_verification
+vsl-a10c5bd1531e0f4da202,biến đổi,1,W00262N,false,pending_video_verification
+vsl-357b25d62daec282e23f,biển hiệu,1,W00261,false,pending_video_verification
+vsl-62e95df2e8dc179a2b02,biển đông,1,W00260,false,pending_video_verification
+vsl-b83d6cd123906977ea04,biểu thị,1,W00270,false,pending_video_verification
+vsl-01fddb09017762eda6d9,biểu thức,1,W00271,false,pending_video_verification
+vsl-87e1168810c6fdf5ca7c,biểu đồ,1,W00265,false,pending_video_verification
+vsl-377807471b11317bbbce,biểu đồ cột,1,W00266,false,pending_video_verification
+vsl-17951e03e2b1d086c4c2,biểu đồ hình quạt,1,W00267,false,pending_video_verification
+vsl-ffeb48e7afc24598db70,biện pháp,1,W00263,false,pending_video_verification
+vsl-8846ae5d0d90f96bb046,bom nguyên tử,1,W00303,false,pending_video_verification
+vsl-908f18966742e718863d,bom đạn,1,W00302,false,pending_video_verification
+vsl-a8c5e92fe57c2a822d21,boong tàu,1,W00312,false,pending_video_verification
+vsl-01ac2276e480cf7d3aa8,bru-nây (nước bru-nây),1,W00356B,false,pending_video_verification
+vsl-e6a6f91b9cb73206c459,bun-ga-ri (nước bun-ga-ri),1,W00360,false,pending_video_verification
+vsl-64fe8b19a5be77d21161,buôn làng,1,W00371,false,pending_video_verification
+vsl-623dd135b6500141c9f3,buồn nôn,1,W00372,false,pending_video_verification
+vsl-36974eac46fd0e436ef9,buồn thảm,1,D0064,false,pending_video_verification
+vsl-3e246b076ee5919ce921,buồng trứng,1,W00377,false,pending_video_verification
+vsl-8fd4612421eaffc14fa6,buộc dây,1,W00363,false,pending_video_verification
+vsl-b05aef6df4bc70b742d7,bà nà,1,W00067,false,pending_video_verification
+vsl-f3203d806affe29ea7cf,bà rịa - vũng tàu,1,W00068,false,pending_video_verification
+vsl-dcc9190c9986d489cb6e,bài báo,1,W00071,false,pending_video_verification
+vsl-2d6d8eda9a8a66d9fa0f,bàn bạc,1,W00091,false,pending_video_verification
+vsl-8f3d637a2758c79124b3,bàn chân,1,W00093,false,pending_video_verification
+vsl-5a983494519442d406cc,bàn chải đánh răng,1,W00092,false,pending_video_verification
+vsl-4cb2712d5748988a64c7,bàn ghế,1,W00094,false,pending_video_verification
+vsl-7c27cf0dff8403838830,bàn là,1,W00095,false,pending_video_verification
+vsl-18d23db0f2be3e83018c,bàn phím (máy vi tính),1,W00096,false,pending_video_verification
+vsl-1701c584a7427a1bb610,bán đảo,1,W00106,false,pending_video_verification
+vsl-528ed6cabd811a8bb6dd,bánh bột lọc,1,W00127,false,pending_video_verification
+vsl-9a4ebf66f5b8dc1ab537,bánh canh,1,D0393,false,pending_video_verification
+vsl-5c28ea09015982d18c50,bánh cốm,1,W00128,false,pending_video_verification
+vsl-c2ba1de0d79e87651fc7,bánh gai,1,W00133,false,pending_video_verification
+vsl-15d241218e6ecaa18aff,bánh giò,1,W00135,false,pending_video_verification
+vsl-b8b63116b282814eee11,bánh giầy,1,W00134,false,pending_video_verification
+vsl-bb60fb88061b1163c9e1,bánh hamburger,1,D0391,false,pending_video_verification
+vsl-0e843081d92b12c0a154,bánh pizza,1,W00140,false,pending_video_verification
+vsl-2d853821775ceb0bbb79,bánh pía,1,W00141,false,pending_video_verification
+vsl-66c7d8671a119b203f04,bánh sandwich,1,D0392,false,pending_video_verification
+vsl-f476689798124487b00c,bánh trung thu,1,W00130,false,pending_video_verification
+vsl-848f7c38da0cf48e3378,bánh tráng,1,D0110,false,pending_video_verification
+vsl-1173ad6a1c9db1930308,bánh đa,1,W00131,false,pending_video_verification
+vsl-5ac597fea3889c7e2452,bánh đúc,1,W00132,false,pending_video_verification
+vsl-4f54e9e1a61c1d4cf256,báo cáo,1,W00161,false,pending_video_verification
+vsl-60b3f7f2ec029d8b2dac,báo thù,1,W00166,false,pending_video_verification
+vsl-d991c788f02c4aa39526,báo động,1,W00163,false,pending_video_verification
+vsl-7be00303d10b79f04340,bát hương,1,W00171,false,pending_video_verification
+vsl-f14e1c4bef527835f692,bát ngát,1,W00172,false,pending_video_verification
+vsl-f6bf623c400b97e25313,bãi biển vũng tàu,1,W00079,false,pending_video_verification
+vsl-c944729a2ad045b9fd4f,bãi cát,1,W00081,false,pending_video_verification
+vsl-6b82f0ef0a0de9fc7e19,bãi cỏ,1,W00082,false,pending_video_verification
+vsl-e53228eb0e82303b5dd5,bãi tắm,1,W00084,false,pending_video_verification
+vsl-cac0e04453b0a4e92999,bãi đỗ xe (ô tô),1,W00083,false,pending_video_verification
+vsl-b5ef447ccb23e26704a0,bé gái,1,W00217,false,pending_video_verification
+vsl-f8469da8ab26d65ca305,bé hơn,1,W00218,false,pending_video_verification
+vsl-a766fe010b9df3f5d19f,bé loắt choắt,1,W00219,false,pending_video_verification
+vsl-5c18906836160ce52d26,béo,1,W00225,false,pending_video_verification
+vsl-9b9c331c41c19a808f72,bê tông,1,W00228,false,pending_video_verification
+vsl-63c8fc46d48738c07907,bên dưới,1,W00237,false,pending_video_verification
+vsl-c4eca024465167bca15e,bên phải,1,W00238,false,pending_video_verification
+vsl-a9b83cd2a14b512b8cb1,bên trong,1,W00241,false,pending_video_verification
+vsl-30b9198963ba8b354dca,bên trái,1,W00239,false,pending_video_verification
+vsl-6fdf887dc865105ae4d9,bên trên,1,W00240,false,pending_video_verification
+vsl-be9ff4f6f6b2463ec38c,bênh vực,1,W00246,false,pending_video_verification
+vsl-9048bc518ad67862e276,bìa sách,1,W00254,false,pending_video_verification
+vsl-24935afbe3e87382c19e,bình dương,1,W00276,false,pending_video_verification
+vsl-2fc7dc4b37c6ad08ec2e,bình phương,1,W00282,false,pending_video_verification
+vsl-03eb766cd1929bdf9f43,bình phước,1,W00283,false,pending_video_verification
+vsl-1eb2cabb2b755ac8b1c8,bình sữa (em bé),1,D0461,false,pending_video_verification
+vsl-d033a4112c9d5962ab28,bình thuận,1,W00285,false,pending_video_verification
+vsl-aef9ed5174ec7d4477c3,bình định,1,W00277,false,pending_video_verification
+vsl-98416dfa887a7e814da1,bím tóc đuôi sam,1,W00273,false,pending_video_verification
+vsl-ac2b21093812de0c5471,bít tất,1,W00287,false,pending_video_verification
+vsl-e13e11fbb5aa9d8dccab,bò sát,1,W00289,false,pending_video_verification
+vsl-7f35bfbe5a09e2e31a5b,bò tót,1,W00290,false,pending_video_verification
+vsl-0b98c3f52a332ec5f551,bó hoa,1,W00298,false,pending_video_verification
+vsl-d791c370be7037217538,bó đũa,1,W00297,false,pending_video_verification
+vsl-45b6463c04540ba5c2de,bóc lột,1,W00299,false,pending_video_verification
+vsl-7aa717226ff9b50a9426,bóc vỏ,1,W00300,false,pending_video_verification
+vsl-2a5b9e8294e74ba902a1,bóng bay,1,W00308,false,pending_video_verification
+vsl-a73c52603fe62c133a37,bùng binh,1,W03371,false,pending_video_verification
+vsl-2ac69b0739599b51a57c,bún chả,1,D0084,false,pending_video_verification
+vsl-279788541ce6e46e0191,bún mắm,1,D0083,false,pending_video_verification
+vsl-13fcdc738a0633af8766,bún ngan,1,D0085,false,pending_video_verification
+vsl-2db929a3b846f5a4f1c8,bún đậu,1,D0087B,false,pending_video_verification
+vsl-ab76ef467e69c25fcca6,bún ốc,1,D0086,false,pending_video_verification
+vsl-4a35c1af4880da3d8f94,bút dạ,1,W00382,false,pending_video_verification
+vsl-06d7d533566b62634765,bút máy,1,W00384,false,pending_video_verification
+vsl-0861b1a17d86b10ce1ba,băng bó,1,W00188,false,pending_video_verification
+vsl-f03d6bde7af5df4da51b,băng chuyền,1,W00189,false,pending_video_verification
+vsl-f0e0c5b98940a6a9dc4d,băng giá,1,W00191,false,pending_video_verification
+vsl-b6f73baeefca1c729041,băng hình,1,W00192,false,pending_video_verification
+vsl-c1d36464d19063d4c5dd,băng-la-đét (nước băng-la-đét),1,W00193,false,pending_video_verification
+vsl-714827e6d9d07e328081,bơm (cái bơm),1,W00349,false,pending_video_verification
+vsl-ed89673b579a5197b950,bơm nước,1,W00350,false,pending_video_verification
+vsl-83283bb07d0290170af7,bơm xe,1,W00351,false,pending_video_verification
+vsl-83b3ff4c15a9ca5c84b1,bưu tá,1,W00393,false,pending_video_verification
+vsl-2313c786d4af92797518,bước,1,W00388,false,pending_video_verification
+vsl-1eb7e25966d2891c31f7,bước chân,1,W00389,false,pending_video_verification
+vsl-15d81178f94d01033e26,bướng bỉnh,2,W00390N | W00390T,false,pending_video_verification
+vsl-c72c2622757155297189,bạc liêu,1,W00070,false,pending_video_verification
+vsl-48098cc0043918049338,bạn yêu bạn ấy,1,D0141,false,pending_video_verification
+vsl-4f3456410e5485c4c64a,bạn yêu tôi,1,D0138,false,pending_video_verification
+vsl-77e0ae68bcf893761f67,bạn ấy yêu bạn,1,D0142,false,pending_video_verification
+vsl-a0fbdf9d799358acdd81,bạn ấy yêu tôi,1,D0140,false,pending_video_verification
+vsl-daf3106319a067240db3,bản làng,1,W00100,false,pending_video_verification
+vsl-5325c43fa907738ca043,bản lề,1,W00101,false,pending_video_verification
+vsl-6961a14b13c8ac3d59b5,bản sao (chỉ người),1,W00103,false,pending_video_verification
+vsl-3706ea0c58a2c79d2709,bản thân,1,W00104,false,pending_video_verification
+vsl-7fa4902fd460c35dd057,bảng chia,2,W00115N | W00115T,false,pending_video_verification
+vsl-751a0fc6907e10430818,bảng chỉ dẫn,1,W00116,false,pending_video_verification
+vsl-73a64f79629e0e146dae,bảng chữ cái ngón tay,1,W00118,false,pending_video_verification
+vsl-50f03aa92e82312200a0,bảng học sinh,1,W00113,false,pending_video_verification
+vsl-b57964685c7269b77491,bảng màu,1,W00123B,false,pending_video_verification
+vsl-5d2b89b6a0ea7b9850fc,bảo thủ,1,W00157,false,pending_video_verification
+vsl-aa108bade083a9f77b96,bảo tàng,1,W00156,false,pending_video_verification
+vsl-59e53c162044dbb804ea,bảo đảm,1,W00152,false,pending_video_verification
+vsl-fa53ed0af7831241c356,bất hiếu,1,W00207,false,pending_video_verification
+vsl-22bbe32d806ad9e5fd09,bất khuất,1,D0241,false,pending_video_verification
+vsl-ff5c9324c6855c775495,bất động,1,W00206,false,pending_video_verification
+vsl-cd771ca4384154eab433,bẫy chim,1,W00213,false,pending_video_verification
+vsl-68544cbdbada6dca01b6,bẫy chuột (dụng cụ),1,W00215,false,pending_video_verification
+vsl-52a804d78ecd19e81981,bật đèn,1,W00209,false,pending_video_verification
+vsl-5a3fb2bde3aa6aa92c9a,bắc bán cầu,1,W00179,false,pending_video_verification
+vsl-cbfbd2a491ad93e6d28d,bắc bộ,1,W00181,false,pending_video_verification
+vsl-9a13ff64bb4b0b12d172,bắc giang,1,W00182,false,pending_video_verification
+vsl-6667d4ec7e4e8eb194f7,bắc kạn,1,W00183,false,pending_video_verification
+vsl-8bdeeeb71ac46692a53e,bắc nam,2,W00184N | W00184T,false,pending_video_verification
+vsl-34bf35f4ea37b5d4fafe,bắc ninh,1,W00185,false,pending_video_verification
+vsl-724df7f8595793765299,bắt,1,W00197,false,pending_video_verification
+vsl-4c3adf343c621ef281fc,bắt buộc,1,W01008,false,pending_video_verification
+vsl-f43a4c365d4e46fa838b,bắt giữ,1,W00199,false,pending_video_verification
+vsl-29ec81070b0e7b2e7948,bắt nạt,1,W00200,false,pending_video_verification
+vsl-5b643900906249f830d1,bằng,1,W00194,false,pending_video_verification
+vsl-88f232188e5c07217de1,bằng phẳng,1,W00195,false,pending_video_verification
+vsl-fe85513efb4fc539d01d,bế em,1,W00232,false,pending_video_verification
+vsl-8ee326a4c13bce08c68e,bến phà,1,W00242,false,pending_video_verification
+vsl-e24258e6c192b6a3408a,bến tre,1,W00244,false,pending_video_verification
+vsl-7479bca5c79b3b45007e,bể bơi,1,W00230,false,pending_video_verification
+vsl-1a883ab6460ce3944060,bệ hạ,2,W00234B | W00234T,false,pending_video_verification
+vsl-bfc64c8f3644a8927607,bệ xí,1,W00235,false,pending_video_verification
+vsl-88cd4b2b0fee34d1e844,bệnh phong/cùi,1,D0366,false,pending_video_verification
+vsl-005518a334346f082dde,bệnh thủy đậu,1,W00247,false,pending_video_verification
+vsl-cc0f58661e2b424488bd,bệnh tật,1,W00249,false,pending_video_verification
+vsl-779f08bfabe967aaf3b5,bệnh đao - down,1,D03671,false,pending_video_verification
+vsl-5e212ade3a5db17e1582,bị động,1,W00253,false,pending_video_verification
+vsl-c2eb3de74dec41744557,bịa đặt,1,W00256,false,pending_video_verification
+vsl-e6dc0dfc4704be2eb588,bọc sách,1,W00301,false,pending_video_verification
+vsl-7534093f2848f02b8f51,bọt biển,1,W00313,false,pending_video_verification
+vsl-e05bdaa4e67b11fcdae0,bọt xà phòng,1,W00314,false,pending_video_verification
+vsl-d0cc40e753f2004bc666,bỏ phiếu,1,W00293,false,pending_video_verification
+vsl-b53bcebaab564c5e829a,bỏ qua,1,W00294,false,pending_video_verification
+vsl-f78a40937e2f03f5f769,bỏ rơi,1,W00295,false,pending_video_verification
+vsl-08d7a4027c24bbb9cec9,bỏng,1,W00305,false,pending_video_verification
+vsl-bf356be95edb9d2022aa,bỏng ngô,1,W00306,false,pending_video_verification
+vsl-d50be66ff93a1765afab,bố mẹ,1,W00327,false,pending_video_verification
+vsl-9f1ed09e39c311478c26,bố trí,1,W00320,false,pending_video_verification
+vsl-b88fd5c50eff21635676,bốc hơi,1,W00330,false,pending_video_verification
+vsl-1f9d3ee11f5afffc730b,bốc thăm,1,W00331,false,pending_video_verification
+vsl-5112b92d6ec7ab03f26d,bốc vác,1,W00322,false,pending_video_verification
+vsl-76a0a10b16e365b83874,bối rối,1,D0069,false,pending_video_verification
+vsl-fa6d49b874f9f7a0276f,bốn là,1,D0149,false,pending_video_verification
+vsl-c1d0893579935e8685ed,bồ kết,1,W00315,false,pending_video_verification
+vsl-7d45ca77d314f8b8ff24,bồi bàn,1,W00332,false,pending_video_verification
+vsl-78207cbb52165cf69da2,bồi thường,1,W00333,false,pending_video_verification
+vsl-f162231d896322ee9415,bồn hoa,1,W00334,false,pending_video_verification
+vsl-396603ae818b9e916422,bồn rửa bát,1,W00335,false,pending_video_verification
+vsl-0c8f1933947f543dabe8,bổ ngữ,1,W00317,false,pending_video_verification
+vsl-ce99480e5a71d0d8b030,bổ trợ,1,W00318,false,pending_video_verification
+vsl-5d43e367982d56b1056e,bổ ích,1,W00316,false,pending_video_verification
+vsl-d603e1ad9dd200c25d35,bộ sách,1,W00329,false,pending_video_verification
+vsl-9574858ec5b5894d43c5,bộ truyện,1,W00321,false,pending_video_verification
+vsl-433226f06e5ff138ed6f,bờ biển,1,W00344,false,pending_video_verification
+vsl-3f9227cc5e4164f63ca0,bờ ruộng,1,W00346,false,pending_video_verification
+vsl-750e281ec64ab8108e78,bờ rào,1,W00345,false,pending_video_verification
+vsl-fd38c6c7c8d59a429a55,bụi đời,1,W00358,false,pending_video_verification
+vsl-6870b975d058fb618f26,bức tường,1,W00387,false,pending_video_verification
+vsl-328d9a35a65351ed7b2e,bữa cơm,1,W00385,false,pending_video_verification
+vsl-6959097001d10501ac7d,ca,1,W00395,false,pending_video_verification
+vsl-d69dce7406823bc89d44,cao (người),1,W00415,false,pending_video_verification
+vsl-ee629a225ac4534dbbbb,cao (nhà),1,W004152,false,pending_video_verification
+vsl-ca2042139ac3718ead7f,cao (núi),1,W004153,false,pending_video_verification
+vsl-d47e1f07410b1a2dd594,cao (vật),1,W004151,false,pending_video_verification
+vsl-487a9a1ffea34bfb10ea,cao bằng,1,W00417,false,pending_video_verification
+vsl-9aa00e7293428fe4bb05,cao nguyên,1,W00419,false,pending_video_verification
+vsl-cc1e9de0387e66f37ef9,cao quý,1,W00420,false,pending_video_verification
+vsl-fe20dc7433d5fedcedb8,cao tầng,1,W00421,false,pending_video_verification
+vsl-c2d1b79b10c57435af3c,cao tốc,1,W00423,false,pending_video_verification
+vsl-25e0541b981955b8a7e9,cao độ,1,W00418,false,pending_video_verification
+vsl-5de0d3864fa4bad3d99f,cau có,1,W00425,false,pending_video_verification
+vsl-d602c74b86c96b8e2b64,cha,1,W00481,false,pending_video_verification
+vsl-2ec82a97eb988e4dcdb9,cha mẹ,1,W00482,false,pending_video_verification
+vsl-ca9cfcfa498aa21bd1c2,chai,1,W00485,false,pending_video_verification
+vsl-d55c5c6bcb0b51d22846,chai nước,1,W00486,false,pending_video_verification
+vsl-e6f0e6e5eab903ee757c,chanh muối,1,D0402,false,pending_video_verification
+vsl-47206933135892234f72,chanh nóng,1,D0401,false,pending_video_verification
+vsl-39901dff066c416602a5,chanh đá,1,D0400,false,pending_video_verification
+vsl-639557890692a27e76aa,che chở,1,W00546,false,pending_video_verification
+vsl-c43df1b888e8e22fc4c5,che phủ,1,W00547,false,pending_video_verification
+vsl-e97983d65ee51af44a24,chen lấn,1,W00551,false,pending_video_verification
+vsl-0c90eb591db11b1c4b68,chi hội,1,W00561,false,pending_video_verification
+vsl-21426fc5a690dadd61ce,chi tiết,1,W00563,false,pending_video_verification
+vsl-868326dae9927ca89821,chi-lê (nước chi-lê),1,W00573,false,pending_video_verification
+vsl-537e61691f9bda62bbd1,chia cắt,1,W00577,false,pending_video_verification
+vsl-99fbfa1b0102120d13e9,chia hết,1,W00579,false,pending_video_verification
+vsl-897f3d8a2936655bd05e,chia phần,1,W00580,false,pending_video_verification
+vsl-c3fc139892fbfc9584d4,chia sẻ,1,W00581,false,pending_video_verification
+vsl-9cbd68dc7b025e3ae286,chia đều,1,W00578,false,pending_video_verification
+vsl-03ec0a3188207073256a,chim chuyền cành,1,W00693,false,pending_video_verification
+vsl-d8f80b6c697f8a556c6a,chim chào mào,1,W00603,false,pending_video_verification
+vsl-bf2376112a6bcb54db26,chim chích chòe,1,W00604,false,pending_video_verification
+vsl-e8909c5f178f43f200ad,chim chóc,1,W00605,false,pending_video_verification
+vsl-774bbbd6db7798dd5c2d,chim gõ kiến,1,W00608,false,pending_video_verification
+vsl-de9942ab13dbd7da4a72,chim phượng hoàng,1,W00609,false,pending_video_verification
+vsl-5201324d33a8b532ca2f,chim sâu,1,W00610,false,pending_video_verification
+vsl-42441f2537d1c8187181,chim sơn ca,1,W00612,false,pending_video_verification
+vsl-746bd5cd0ac385a0c944,chim sẻ,1,W00611,false,pending_video_verification
+vsl-b842f51a9e249412fa1e,chim yến,1,W00614,false,pending_video_verification
+vsl-364aeeb22386b5629c69,chim đại bàng,1,W00606,false,pending_video_verification
+vsl-b95e0f627ca20c288816,chiêng,1,W00593,false,pending_video_verification
+vsl-79c4580fbec22a34ce95,chiếm đoạt,1,W00585,false,pending_video_verification
+vsl-c313ecb6699a14f23be1,chiến khu,1,W00588,false,pending_video_verification
+vsl-55f0e194ad008ced6fa6,chiến thắng,1,W00591,false,pending_video_verification
+vsl-5bdec9ec34c3feb9d5c8,chiếu phim,1,W00599,false,pending_video_verification
+vsl-8551e4bc16452cbe4380,chiều cao,1,W00594,false,pending_video_verification
+vsl-c96de437e1cf312c22f4,chiều tối,1,W00597,false,pending_video_verification
+vsl-be81bf3cde5c560f6166,chong chóng,1,W00630,false,pending_video_verification
+vsl-225bf1776fa77021801b,chui,1,W00669,false,pending_video_verification
+vsl-f19f1ec92fc0507a44ff,chum,1,W00672,false,pending_video_verification
+vsl-b91cdf1e16bc452ef747,chung kết,1,W00678,false,pending_video_verification
+vsl-cafe6c52f4aacd484ced,chung tay,1,D0411,false,pending_video_verification
+vsl-98726fc247f0bfa9cfc2,chuyên biệt,1,W00689,false,pending_video_verification
+vsl-6e9c686757f97635ec3b,chuyên cần,1,W00690,false,pending_video_verification
+vsl-7266c48e728a9f7d6bab,chuyền bóng,1,W00692,false,pending_video_verification
+vsl-18dfa9819c0b2e11cc6b,chuyển giao,1,W00700,false,pending_video_verification
+vsl-e9469f2d1b3b36522c6c,chuyển hướng,1,W00701,false,pending_video_verification
+vsl-633490071da24b62adb4,chuyển vế,1,W00702,false,pending_video_verification
+vsl-867dac4acf998b08b786,chuyển đồ,1,W00694,false,pending_video_verification
+vsl-8f7cea73114acba58968,chuyển đổi số đo,1,W00696,false,pending_video_verification
+vsl-a0b96f953ae7f15019b6,chuyển động,1,W00697,false,pending_video_verification
+vsl-7d9be3abf22d79b9cd81,chuyển động quay,1,W00699,false,pending_video_verification
+vsl-ede142e4696f27a2bed0,chuyển động đều,1,W00698,false,pending_video_verification
+vsl-eab8b7ee181cfea092e1,chuyện lớn,1,D0238,false,pending_video_verification
+vsl-0028a448f42d1890e08f,chuyện nhỏ,1,D0237,false,pending_video_verification
+vsl-2beea3ca2f04234345e2,chuyện trò,1,W00703,false,pending_video_verification
+vsl-8212827e0e13f62c23af,chuông,1,W00683,false,pending_video_verification
+vsl-639cb88a5177290f4e6c,chuông nhà,1,W00684,false,pending_video_verification
+vsl-1d66fc70c4718ded0f86,chuồng,1,W00685,false,pending_video_verification
+vsl-b843c20aa7227637c799,chuỗi hạt,1,W00679,false,pending_video_verification
+vsl-7e14bb25d740ed421436,chuột quang,1,W00686,false,pending_video_verification
+vsl-7f3a09fd7de8c488280e,chàng trai,1,W00488,false,pending_video_verification
+vsl-8291d731fe122e6dc740,chào cờ,1,W00490,false,pending_video_verification
+vsl-d4e0dbe844096b6f04b4,chào mừng,1,W00492,false,pending_video_verification
+vsl-34ae0a3eed00f88d6356,chày,1,W00499,false,pending_video_verification
+vsl-3709f3552f732d8622e0,cháo sườn,1,D0090,false,pending_video_verification
+vsl-8055e4c6b42bfa2a0390,chát,1,W00494,false,pending_video_verification
+vsl-5bf810ae4dbcc303248a,cháu trai,2,W00498B | W00498N,false,pending_video_verification
+vsl-63d75ea63dbd53f9df24,cháy rừng,1,W00500,false,pending_video_verification
+vsl-e8a3dc4591e8ffb8b413,châm chọc,1,W00515,false,pending_video_verification
+vsl-4339563359bf9d48b83c,chân dung,1,W00522,false,pending_video_verification
+vsl-efce4f416f178fc434d0,chân tay,1,W00525,false,pending_video_verification
+vsl-9b75756fba2cf163d4d9,chân đất,1,W00523,false,pending_video_verification
+vsl-416576adf2ad46dfaae1,châu á thái bình dương,1,W00542,false,pending_video_verification
+vsl-2354b1f52fb54b849c36,châu đại dương,1,W00544,false,pending_video_verification
+vsl-2ed46d16b4057de24593,chè đỗ đỏ,1,W00548,false,pending_video_verification
+vsl-3087a47a6cf461a270a7,chèn ép,1,W00552,false,pending_video_verification
+vsl-072216ed50610d22c54c,chèo thuyền,1,W00554,false,pending_video_verification
+vsl-817af91d67e23de0363e,chém,1,W00550,false,pending_video_verification
+vsl-b3996d6145afbceedae8,chén,1,W00553,false,pending_video_verification
+vsl-a3668e4666013491b0a9,chép bài,1,W00555,false,pending_video_verification
+vsl-b6354d8716a2a389958d,chính phủ,2,W00617B | W00617T,false,pending_video_verification
+vsl-57c5db763b3816af581a,chính quyền,1,W00618,false,pending_video_verification
+vsl-94dcbb943614fe9766ad,chó cắn,1,D0229,false,pending_video_verification
+vsl-c4a4ef2c421c4b665006,chõ xôi,1,D0472,false,pending_video_verification
+vsl-6e6e545cfcee32401edd,chùa hương,1,W00657,false,pending_video_verification
+vsl-1ac8f29cad63f3e37084,chùa một cột,1,W00658,false,pending_video_verification
+vsl-bd734daa64f92b57b6bb,chùa yên tử,1,D0471,false,pending_video_verification
+vsl-22bcfb6752145ba69ce2,chùm hoa,1,W00673,false,pending_video_verification
+vsl-97814aab714c88dda413,chùm khế,1,W00674,false,pending_video_verification
+vsl-c9f18907ece35d0bd5bb,chùm nho,1,W00676,false,pending_video_verification
+vsl-c11661a4bcf2c0925b77,chùm vải,1,W00677,false,pending_video_verification
+vsl-7e6337db08c17b599c0f,chú hề,1,W00650,false,pending_video_verification
+vsl-919db469a3ed97d48c52,chú tễu,1,W00652,false,pending_video_verification
+vsl-723a05c95c420ed27655,chúi đầu,1,W00671,false,pending_video_verification
+vsl-b368e792ae4d22cb56ed,chăm học,1,W00507,false,pending_video_verification
+vsl-90f57f5b5f3e7cd4a3a9,chương trình,1,W00713,false,pending_video_verification
+vsl-ae6d3ebb3523c7aaa832,chạy bàn,1,W00502,false,pending_video_verification
+vsl-7ef9e52a58298f63e58d,chạy chậm,1,W00503,false,pending_video_verification
+vsl-34a557766bcbb6113266,chạy nhanh,1,W00504,false,pending_video_verification
+vsl-4efa1954b85853a18515,chấm dứt,1,W00519,false,pending_video_verification
+vsl-88523842cd0b311e5a0b,chấm điểm,1,W00520,false,pending_video_verification
+vsl-8b534fd1c7d569c57190,chất dẻo,1,W00529,false,pending_video_verification
+vsl-71a18ae82ca2cced676f,chất hữu cơ,1,W00534,false,pending_video_verification
+vsl-7c01566db20802f960ad,chất lượng,1,W00537,false,pending_video_verification
+vsl-fe606cc956f9dbe34f50,chất lỏng,1,W00536,false,pending_video_verification
+vsl-e12fb22c8747ad942d20,chất rắn,1,W00538,false,pending_video_verification
+vsl-4aff1a44cec01195a78a,chất thải,1,W00539,false,pending_video_verification
+vsl-fab69e0faf8393c3af89,chất đốt,1,W00530,false,pending_video_verification
+vsl-251e0f2794867b208d55,chất độc,1,W00531,false,pending_video_verification
+vsl-f8f83756f1cb56d244dd,chất độc màu da cam,1,W00533,false,pending_video_verification
+vsl-087b07b1dddfc9397b35,chậm chạp,1,D0178,false,pending_video_verification
+vsl-fa2623c35024ee214386,chật chội,1,W00540,false,pending_video_verification
+vsl-eabfe22dda85f667d648,chậu,1,W00545,false,pending_video_verification
+vsl-a3fb695ba5affb872de4,chặn,1,W00512,false,pending_video_verification
+vsl-8905e46cd63780d5aab1,chặt chẽ,1,W00514,false,pending_video_verification
+vsl-53520562313097e53ff9,chỉ,1,W00564,false,pending_video_verification
+vsl-a9962fe35bafbec411ee,chỉ dẫn,1,W00565,false,pending_video_verification
+vsl-d85854720e4d0132b99e,chỉ huy,1,W00567,false,pending_video_verification
+vsl-6ac16d9b2cd82cb727f0,chỉ khâu,1,W00568,false,pending_video_verification
+vsl-d06b92301ca476dc451c,chỉnh sửa,1,W00615,false,pending_video_verification
+vsl-abfe4616b9f5d37204d1,chị chồng,2,W00571B | W00571N,false,pending_video_verification
+vsl-fb1f98703385c4a07848,chọi gà,1,W00625,false,pending_video_verification
+vsl-62fcca07938378a5f416,chọi trâu,1,W00626,false,pending_video_verification
+vsl-d90b5e89f67997944230,chồi non,1,W00632,false,pending_video_verification
+vsl-37746702b3795003798c,chớp mắt,1,W00640,false,pending_video_verification
+vsl-75b77be87846837c489e,chợ bến thành,1,W00634,false,pending_video_verification
+vsl-0ba11de0c8a7dd121f65,chợ nổi,1,W00635,false,pending_video_verification
+vsl-058b77903c9325fdcf32,chợ nổi cái bè,1,W00636,false,pending_video_verification
+vsl-c89498a5087b6113ccbe,chợ nổi cái răng,1,W00637,false,pending_video_verification
+vsl-66c285a9e923930bec4b,chục,1,W00666,false,pending_video_verification
+vsl-49f71f819b01fa47ca10,chục nghìn,1,W00667,false,pending_video_verification
+vsl-66e348f8dd5bf6024237,chục triệu,1,W00668,false,pending_video_verification
+vsl-ae0b4733302034cf3cbb,chụp đèn,1,W00688,false,pending_video_verification
+vsl-115cd3ebc9a0957a6d9d,chụp ảnh,1,W00687,false,pending_video_verification
+vsl-054f25c0abbd2de5b452,chủ nghĩa xã hội,1,W00645,false,pending_video_verification
+vsl-380be651f4935512db63,chủ ngữ,1,W00646,false,pending_video_verification
+vsl-97cb0cc166ceb8316012,chủ nhiệm,1,W00647,false,pending_video_verification
+vsl-d17c196a6f54702887cd,chủ đề,1,W00642,false,pending_video_verification
+vsl-b76aa4acccba7f884f44,chủ động,1,W00644,false,pending_video_verification
+vsl-a6c5b36d9c7a1fd935b0,chức năng,1,W00710,false,pending_video_verification
+vsl-10774a35c15260b8c614,chứng cớ,1,W00718,false,pending_video_verification
+vsl-9548621aa092f2469ecb,chứng kiến,1,W00712,false,pending_video_verification
+vsl-8226ac2c095094b71e53,chứng minh,1,W00719,false,pending_video_verification
+vsl-47581558d4f908ca66c8,chứng nhận,1,W00720,false,pending_video_verification
+vsl-9b151a803843cc8c54cd,chữ,1,W00714,false,pending_video_verification
+vsl-6736de85f467abf72ce1,chữ cái,1,W00705,false,pending_video_verification
+vsl-609cc5c52b8c7b26d26f,chữ hoa,1,W00706,false,pending_video_verification
+vsl-36be56e0d113dca0721b,chữ viết,1,W00707,false,pending_video_verification
+vsl-88847ffab07069a29a41,chữa cháy,1,W00709,false,pending_video_verification
+vsl-c4171b69a16fc32fa5cf,co dãn,1,W00721,false,pending_video_verification
+vsl-0d1c2f46cb45703adabe,co giật,1,W00722,false,pending_video_verification
+vsl-c46d87f1fb4a5df6df84,cocacola,1,D0407,false,pending_video_verification
+vsl-a40e4ce44a0fb6616751,coi thường,1,W00731,false,pending_video_verification
+vsl-f485012af5b0a41bad5c,con chồn,1,W00740,false,pending_video_verification
+vsl-684128fd6aed5503d14a,con cò,1,W00745,false,pending_video_verification
+vsl-6778f7338e081e3f976e,con cóc,1,W00746,false,pending_video_verification
+vsl-1fbf531d8130df8badb3,con cú mèo,1,W00750,false,pending_video_verification
+vsl-9bd09a9d67a1cc29eb1c,con ghẹ,1,W00762,false,pending_video_verification
+vsl-f997b0a4a397cb4c4b3c,con gái,1,W00760,false,pending_video_verification
+vsl-5485fa87f9835b371ad0,con hàu,1,D0387,false,pending_video_verification
+vsl-c952c1d6716fac2e45ba,con quạ,1,W00783,false,pending_video_verification
+vsl-f1cfe501a382241ab89c,con rối,1,W00785,false,pending_video_verification
+vsl-9cf10a8e31b227215e71,con sông,1,W00792,false,pending_video_verification
+vsl-e1ecdf24df376451e5df,con số,1,W00793,false,pending_video_verification
+vsl-1c9708abf080323f3030,con tem,1,W00795,false,pending_video_verification
+vsl-1abeab47e4c287151a8d,con trai,1,W04068,false,pending_video_verification
+vsl-b8228fe54a97ddf5dd8b,con trai (động vật),1,W00798,false,pending_video_verification
+vsl-5e10b50451fdb39b30db,con trỏ,1,W00800,false,pending_video_verification
+vsl-65564b9b57b876df63a0,con vẹt,1,W00801,false,pending_video_verification
+vsl-071fa0a12e65ebf73ae9,cong,1,W00804,false,pending_video_verification
+vsl-c70b362666d5e94b5567,cu ba (nước cu ba),1,W00887,false,pending_video_verification
+vsl-b814b2cb82ffc4932196,cua đồng,1,D0386,false,pending_video_verification
+vsl-99d7e62e28a532b6d3ac,cung cấp,1,D0099,false,pending_video_verification
+vsl-7f1cab939d819b353405,cung tên,1,D0220,false,pending_video_verification
+vsl-cbc24c4093b8aeaf6884,cuối tuần,1,D0419,false,pending_video_verification
+vsl-983ac345743c7bf0a29f,cuốn,1,W00924,false,pending_video_verification
+vsl-689b5c0f5586ecbe9d70,cuống hoa,1,W00899,false,pending_video_verification
+vsl-6882642c63f6505046bf,cuống lá,1,W00926,false,pending_video_verification
+vsl-af81d197c70d1cfbc16d,cuộc sống,1,W00923,false,pending_video_verification
+vsl-3d203382297a6a8dfa8e,cuộc đời,1,W00922,false,pending_video_verification
+vsl-169c826d398e7ee8cdff,cuộn giấy vệ sinh,1,W00925,false,pending_video_verification
+vsl-04b00d93d6358fd377c3,cà mau,1,W00397,false,pending_video_verification
+vsl-2b27099d39b9b324b688,cày,1,W00426,false,pending_video_verification
+vsl-62aa941802c329f1a28b,cá kiếm,1,D0074,false,pending_video_verification
+vsl-6f0991879622a97ae9ea,cá mập,1,W00601,false,pending_video_verification
+vsl-c040f8febc1735220f95,các bạn,1,W00400,false,pending_video_verification
+vsl-0c82c49c83c5a2a40d5d,các bạn (2 người),1,D0135,false,pending_video_verification
+vsl-97161c4b259fe47ecff3,cách ly,1,D0286,false,pending_video_verification
+vsl-053eea53c3d57bd1cd54,cái bè,1,W00402,false,pending_video_verification
+vsl-b3efc69326a73c7e78a5,cái gùi,1,D0239,false,pending_video_verification
+vsl-4cc0e93bef52cdc0f78b,cái gương,1,W00404B,false,pending_video_verification
+vsl-bc237ba2c1e05ad14306,cái neo,1,D0468,false,pending_video_verification
+vsl-6522344d56977eb4886d,cái túi,1,W00406,false,pending_video_verification
+vsl-3c1360fe9be1412e16e2,cái vợt cá,1,D0447,false,pending_video_verification
+vsl-315e110563ec176cb734,cánh buồm,1,D0344,false,pending_video_verification
+vsl-3bc533313f0ffc388fa5,cánh tay,1,W00410,false,pending_video_verification
+vsl-6c8dc33505fbaf3f162b,cáp treo,1,W00453,false,pending_video_verification
+vsl-57f821a65eb18efbdea6,câu chuyện,1,W00439,false,pending_video_verification
+vsl-654994b30a805f638ba8,câu cá,1,W00438,false,pending_video_verification
+vsl-750789eabe46547d6939,câu ghép,1,W00443,false,pending_video_verification
+vsl-b394adaf20a523a49c5e,câu văn,1,W00445,false,pending_video_verification
+vsl-9e98aa8833f09357a937,câu đơn,1,W00442,false,pending_video_verification
+vsl-2b8a63ddf44e61382078,câu đố,1,W00440,false,pending_video_verification
+vsl-511c40d35b4116247531,câu đối,1,W00441,false,pending_video_verification
+vsl-bf4b87ac91c01abf62e9,cây bàng,2,W00457B | W00457T,false,pending_video_verification
+vsl-70bdf3ab2475abaca677,cây cọ,1,D0473,false,pending_video_verification
+vsl-d0fb6e1d3e1e5c4f5b65,cây cối,1,W00460,false,pending_video_verification
+vsl-a625c3a1b7b80a452e90,cây gỗ,1,W00464,false,pending_video_verification
+vsl-df982726b280d4e889f4,cây khế,1,W00465,false,pending_video_verification
+vsl-45e840f2c6edf6a8d4d3,cây nến,1,D0435,false,pending_video_verification
+vsl-7f42799deaa31b526e30,cây sả,1,W00471,false,pending_video_verification
+vsl-83be7f8b220bb7c0c251,cây thông,1,W02096,false,pending_video_verification
+vsl-1cdef77eab7c1c2d1f63,cây tre,1,W00476,false,pending_video_verification
+vsl-f309f86325116a7b830c,cây trồng,1,W00477,false,pending_video_verification
+vsl-8221156075d8752cc868,cây xanh,1,W00478,false,pending_video_verification
+vsl-ba50f384e37d5a1aa2bc,cây đa,1,W00462,false,pending_video_verification
+vsl-753b7267ee7f21104aef,còi xương,1,W00730,false,pending_video_verification
+vsl-2929df7f6d81e68bed2f,còn bạn?,1,D0121,false,pending_video_verification
+vsl-eff7e984a1142eaf81d2,còng,1,W00806,false,pending_video_verification
+vsl-81e0a8b3980a5d922187,còng (cái còng),1,W00805,false,pending_video_verification
+vsl-a1f33ff0a0b616932e30,có ích,1,W00726,false,pending_video_verification
+vsl-21539be2c8686ca342eb,có … không?,1,D0098,false,pending_video_verification
+vsl-7fc2e4e133043f2e7071,cô vy (covid),1,D0284,false,pending_video_verification
+vsl-42ab6102d3883797aab7,cô đơn,1,W00811,false,pending_video_verification
+vsl-2bb0ad42779cb8ad30c8,cô-lôm-bi-a (nước cô-lôm-bi-a),1,W00829,false,pending_video_verification
+vsl-8bf377fe95db7af1652a,công bằng,1,W00838,false,pending_video_verification
+vsl-e287fa8b825622057d0e,công chúa,1,W00839,false,pending_video_verification
+vsl-11d8662363dff0f84b16,công cộng,1,W00840,false,pending_video_verification
+vsl-abe0d4ada02ba571c61a,công cụ,1,W00841,false,pending_video_verification
+vsl-1aa9ac8b487c884f197e,công nhận,1,W00843,false,pending_video_verification
+vsl-c534639309d851d8f4d0,công sức,1,W00844,false,pending_video_verification
+vsl-6f2f922efc76685020b9,công thức,1,W00846,false,pending_video_verification
+vsl-39917b03ea2d601af617,công trường,1,W00848B,false,pending_video_verification
+vsl-e899b03e384582fa0908,công việc,1,W00851,false,pending_video_verification
+vsl-b01b987b91e6bb8b29b3,công ước,1,W00849,false,pending_video_verification
+vsl-5e1f57861e49251d2724,cõng,1,W00807,false,pending_video_verification
+vsl-9243a85fcf3393e4daea,cù,1,W00900,false,pending_video_verification
+vsl-c0ae87c92f3d0f1054f4,cùi chỏ,1,W00915,false,pending_video_verification
+vsl-473ecb630d198048bf78,cùng / với (giới từ),1,D0166,false,pending_video_verification
+vsl-388d2181fde4dc83e560,cúc áo,1,W00894,false,pending_video_verification
+vsl-e3f69ad4f65c96071806,cúi,1,W00895,false,pending_video_verification
+vsl-d116427234cb64bc705f,căm thù,1,D0127,false,pending_video_verification
+vsl-1dbc92b66bdc43ff52f9,cơ bắp,1,W00867,false,pending_video_verification
+vsl-0f413d49aace68ad2031,cơ quan,1,W00870,false,pending_video_verification
+vsl-1def2b8f628a1efd90bc,cơ sở,1,W00871,false,pending_video_verification
+vsl-1b08389ad2bcaa9cc6c0,cơ thể,1,W00872,false,pending_video_verification
+vsl-9023ef35e21612eb7924,cơm hộp,1,W00877,false,pending_video_verification
+vsl-d76274514a18c0e5f233,cơm rang,1,D0091,false,pending_video_verification
+vsl-166fec202c020954ceaa,cưa,1,W00932,false,pending_video_verification
+vsl-4d073e645702323fc9b4,cưa (cái cưa),1,W00931,false,pending_video_verification
+vsl-5fa176594be588c0e535,cướp biển,1,W00944,false,pending_video_verification
+vsl-c741934baf03535c70e5,cướp cờ,1,W00945,false,pending_video_verification
+vsl-7ae96fce694f0076bb85,cướp giật,1,W00946,false,pending_video_verification
+vsl-82279ca1ecf3ff6baa85,cười nhếch mép,1,D0022,false,pending_video_verification
+vsl-2b6b8e11abd502628bbb,cười vỡ bụng,1,D0023,false,pending_video_verification
+vsl-1be73bf8d01aa6da3856,cưỡi ngựa,1,W00941,false,pending_video_verification
+vsl-63d0bfad4ad1eaa72ae0,cạnh bên (toán),1,W00412,false,pending_video_verification
+vsl-76b57fb5c1a518bfe2f0,cạnh tranh,1,D0466,false,pending_video_verification
+vsl-9c39bc9c335075f5afb4,cạnh đáy,1,W00413,false,pending_video_verification
+vsl-f0a190ea9734007db9e3,cạnh đối diện,1,W00414,false,pending_video_verification
+vsl-22871123929f4e070a99,cả ngày,1,D0372,false,pending_video_verification
+vsl-5939fa821ab535ed1686,cảng hải phòng,1,D0319,false,pending_video_verification
+vsl-76c569231c082f709770,cảng sài gòn,1,D0320,false,pending_video_verification
+vsl-9df170f105f4facfabd1,cảnh giác,1,D0254,false,pending_video_verification
+vsl-a06f4ba6389faf4bdad5,cấp dưỡng,1,W00433,false,pending_video_verification
+vsl-c3a3e3cbf261989bb2cd,cất giấu,1,W00434,false,pending_video_verification
+vsl-7cb73bd09a7ddd167ed6,cất giữ,1,W00435,false,pending_video_verification
+vsl-6d4b5bdc7d596cbda441,cất tiếng khóc,1,W00436,false,pending_video_verification
+vsl-e9df3e64d203ffbf89de,cất tiếng nói,1,W00437,false,pending_video_verification
+vsl-583d14f4f92f5f0eb7df,cấy,1,W00479,false,pending_video_verification
+vsl-4cdae9bf7648ce222fbe,cấy lúa,1,W00480,false,pending_video_verification
+vsl-e2c2b011cbbf1b6c8b13,cần khởi động,1,W00431,false,pending_video_verification
+vsl-27a8a5a2cb2ca692a99c,cầu cứu,1,W00447,false,pending_video_verification
+vsl-22fe5d10da8f161c2f1b,cầu giao,1,W00448,false,pending_video_verification
+vsl-3b8f550fcf5c5b5b86ff,cầu kì,1,W00449,false,pending_video_verification
+vsl-89500719710f73067224,cầu long biên,1,W01831,false,pending_video_verification
+vsl-347eb377a06e6a004d85,cầu thê húc (hồ gươm),1,D0345,false,pending_video_verification
+vsl-03d004b747e96990f48a,cầu thủ,1,W00451,false,pending_video_verification
+vsl-2d3fb0b682a87c94560f,cắt lông mũi,1,D0276,false,pending_video_verification
+vsl-bb6bfd03411a0f718ba1,cắt nhau,1,W00430,false,pending_video_verification
+vsl-ff762aadb51ce498d7a3,cặp tóc,1,W00429,false,pending_video_verification
+vsl-f883df6ae058d5015d51,cố ý (như cố tình),1,W00831,false,pending_video_verification
+vsl-9d5afb86190472f2bf3e,cố đô huế,1,D0285,false,pending_video_verification
+vsl-3cdd882871cd3afee69e,cố định,1,W00827,false,pending_video_verification
+vsl-f1c7b19e634cfbae0389,cối giã,1,W00833,false,pending_video_verification
+vsl-e0c597306316e0f0de0a,cối xay gió,1,W00834,false,pending_video_verification
+vsl-1bb7410b5b873d6aed18,cối xay lúa,1,W00835,false,pending_video_verification
+vsl-50b8269ea1d2dfe29ad7,cốm,1,W00836,false,pending_video_verification
+vsl-8588695d16205c448c11,cống,1,W00856,false,pending_video_verification
+vsl-0d3cb5d13606dc6dcb37,cốp xe,1,W00859,false,pending_video_verification
+vsl-0914391f9b628187ad11,cổ chân,1,W00816,false,pending_video_verification
+vsl-6f482b0f077e762f5515,cổ họng,1,W00818,false,pending_video_verification
+vsl-6d7508f5cb0427deec72,cổ kính,1,W00819,false,pending_video_verification
+vsl-57eba8db6a112b25953b,cổ tay,1,W00822,false,pending_video_verification
+vsl-d1eeb92dc5d89ed39b66,cổ truyền,1,W00823,false,pending_video_verification
+vsl-cb1aa17889a26865e181,cổ vũ,1,W00824,false,pending_video_verification
+vsl-20503e068fb71466011a,cổ áo,1,W00815,false,pending_video_verification
+vsl-cf37011287f5407dd89d,cổng,1,W00854,false,pending_video_verification
+vsl-ddabb805fb94664caf3b,cỗ,1,W00826,false,pending_video_verification
+vsl-86eac096888cbe98068b,cộng hòa séc (nước cộng hòa séc),1,W00858,false,pending_video_verification
+vsl-4ca70ea3d189a62adc31,cột,1,W00861,false,pending_video_verification
+vsl-c7f2eb0747f1d06aab2c,cột nhà,1,W00865,false,pending_video_verification
+vsl-5990bd5d52947d4344d7,cột sống,1,W00866,false,pending_video_verification
+vsl-33da886da20f873aa688,cột đèn,1,W00862,false,pending_video_verification
+vsl-02e085e476c92c08c15b,cờ,1,W00878,false,pending_video_verification
+vsl-5eaaa2fc7f0baad3f324,cờ ca rô,1,W00880,false,pending_video_verification
+vsl-d381eb87c1fd4b782405,cờ tướng,1,W00881,false,pending_video_verification
+vsl-f65c87f651c28c3a4a5f,cờ vua,1,W00882,false,pending_video_verification
+vsl-717a44363976a7c778b5,cởi mở,1,W00883,false,pending_video_verification
+vsl-d4f2c717ba907dd7bc18,cởi áo,1,W00876,false,pending_video_verification
+vsl-709951a6e9d24a2a28f9,cụ,1,W00910,false,pending_video_verification
+vsl-e1b88907dad6c6320f13,cụ già,1,W00912,false,pending_video_verification
+vsl-202a3aa54bf87888a095,cụ thể,1,W00893,false,pending_video_verification
+vsl-4ed1dd08403b8e578c64,cụ đồ,1,W00911,false,pending_video_verification
+vsl-7185b009aac82f193fce,cụm từ,1,W00918,false,pending_video_verification
+vsl-db9f25d5ca85d7bc6ce7,củ cải trắng,1,W00902,false,pending_video_verification
+vsl-b6857f4320fd91e648f2,củ hành tây,1,W00904,false,pending_video_verification
+vsl-2675f06b91ba4a39e6e5,củ nghệ,1,W00906,false,pending_video_verification
+vsl-8aeb85bb6422db382df5,củ sả,1,W00909,false,pending_video_verification
+vsl-27c0aff675ecfd275f33,củ từ,1,W00892,false,pending_video_verification
+vsl-d6ddedeb7fc16f367f6c,củ đậu,1,W00889,false,pending_video_verification
+vsl-d8e124234ca16d6f6b35,củi,1,W00916,false,pending_video_verification
+vsl-e7dd41d2407658c46ee8,cứu,1,W00947,false,pending_video_verification
+vsl-1df025079ae366a18c3b,cử chỉ điệu bộ,1,W00929,false,pending_video_verification
+vsl-8e1c73f3fcff1fbe9d2f,cử động,1,W00930,false,pending_video_verification
+vsl-901096f595b27fcdac73,cửa khẩu,1,W00936,false,pending_video_verification
+vsl-3c93517c24431be443a6,cửa kính,1,W00937,false,pending_video_verification
+vsl-3c00ef3edf665ad567f6,cực khổ,1,D0101,false,pending_video_verification
+vsl-4de6bb4e4a6c2058981c,dai,1,W00951,false,pending_video_verification
+vsl-6b066361b6078dbf97f1,danh bạ,1,W00963,false,pending_video_verification
+vsl-a3089ddb55fec3e81c73,danh dự,1,W00964,false,pending_video_verification
+vsl-11edeaac2f2627cfa864,danh hiệu,1,W00965,false,pending_video_verification
+vsl-98f29dd30a77a0751410,danh lam thắng cảnh,1,W00966,false,pending_video_verification
+vsl-451254afd43704f3f168,danh mục,1,W00967,false,pending_video_verification
+vsl-a14083dfa45a6e9a0b89,danh nhân,1,W00968,false,pending_video_verification
+vsl-e9cde15326f482bb1a65,danh sách,1,W00969,false,pending_video_verification
+vsl-b90e44179d4baca64b08,danh từ,1,W00970,false,pending_video_verification
+vsl-f7c7de1b15c3eda70995,danh từ riêng,1,W00971,false,pending_video_verification
+vsl-6386713deb27b609daad,dao,1,W00973,false,pending_video_verification
+vsl-949b270fdc8ee43b1eed,di chuyển,1,W01029,false,pending_video_verification
+vsl-820ba48e28fed77abf14,dinh độc lập,1,W01046,false,pending_video_verification
+vsl-42443dfd058a295ce7c1,diêm,1,W01034,false,pending_video_verification
+vsl-6b4d583cf43e34e990fb,diều,1,W01044,false,pending_video_verification
+vsl-91c9ef06928c12fd163c,diễn thuyết,1,W01038,false,pending_video_verification
+vsl-32ad710d2bb73d93409c,diện tích toàn phần,1,W01040,false,pending_video_verification
+vsl-ab9ff248af61a85fd36c,diện tích xung quanh,1,W01041,false,pending_video_verification
+vsl-c234a221d38629fa6454,diệt chủng,1,W01042,false,pending_video_verification
+vsl-5340d9d5df6079530910,do thái,1,D0007,false,pending_video_verification
+vsl-fd30e861c3ebe41a097c,doanh nghiệp,1,W01051,false,pending_video_verification
+vsl-5d5353f79a3ef406f219,doanh trại,1,W01053,false,pending_video_verification
+vsl-f15eaee3612e261f8d3a,du học,1,W01062,false,pending_video_verification
+vsl-d48f54037323194ae7b8,du thuyền,1,W01064,false,pending_video_verification
+vsl-99072f60249f16fbe37e,dung tích,1,W01310,false,pending_video_verification
+vsl-d271b1daf3284e9e82f4,duy nhất,1,D0465,false,pending_video_verification
+vsl-dc745805d4a1a36aa220,duyên dáng,1,W01070,false,pending_video_verification
+vsl-ce9066f0be3b222b33c0,duyệt binh,1,W01071,false,pending_video_verification
+vsl-3bc498c4d72313de389a,dài,1,W00952,false,pending_video_verification
+vsl-28d38e631c870e3c4cf3,dài hơn,1,W00954,false,pending_video_verification
+vsl-4c81ab8fbde23b5ca8d0,dài hạn,1,W00953,false,pending_video_verification
+vsl-1a639ae3821d8a08dbed,dài nhất,1,W00955,false,pending_video_verification
+vsl-06afb6343a7f4a74a06f,dàn bài,1,W00959,false,pending_video_verification
+vsl-89d9e0fd8d09cab577ce,dàn nhạc,1,W00960,false,pending_video_verification
+vsl-67d7dc5ca5d47133666f,dân ca,1,W00982,false,pending_video_verification
+vsl-d65074a24c08fccfbf0c,dân chài,1,W00983,false,pending_video_verification
+vsl-dee4fa4e21386b69abe6,dân chủ,1,D0114,false,pending_video_verification
+vsl-512013985c0f40ecfc99,dân số,1,W00987,false,pending_video_verification
+vsl-2783596bce1e7c14878e,dân tộc chăm,1,D0308,false,pending_video_verification
+vsl-98647b9d99dc613b1cee,dân tộc khơ me,1,D0310,false,pending_video_verification
+vsl-8d615a38192a5d13d87e,dân tộc mông,1,D0312,false,pending_video_verification
+vsl-b9103d394327b6a63b9a,dân tộc mường,1,D0309,false,pending_video_verification
+vsl-427c5c959fb51c536198,dân tộc thái,1,D0311,false,pending_video_verification
+vsl-d1e4dbf85e6ffd458998,dây chun,1,W01015,false,pending_video_verification
+vsl-f4a4a92b34e2207da5ad,dây thần kinh,1,W01017,false,pending_video_verification
+vsl-1180e83aaf53c3b66a08,dây thừng,1,W01018,false,pending_video_verification
+vsl-9201250010fbb0fe9338,dây xích,1,W01019,false,pending_video_verification
+vsl-69bab97aa49a97bd5b71,dãy nhà,1,W00975,false,pending_video_verification
+vsl-5304b4b1d0df576b7449,dãy núi,1,W00976,false,pending_video_verification
+vsl-1f1d14affc97187fd435,dãy núi hoàng liên sơn,1,D0245,false,pending_video_verification
+vsl-ead721377760d53b8dab,dãy số,1,W00977,false,pending_video_verification
+vsl-2f7d8999d6993fc4cec5,dãy số liệu,1,W00978,false,pending_video_verification
+vsl-fbff717782313303a662,dòng chữ,1,W01055,false,pending_video_verification
+vsl-aae75a87c764a2dba3a5,dòng họ,1,W01056,false,pending_video_verification
+vsl-6f21305f540ee6b24a4e,dòng sông,1,W01058,false,pending_video_verification
+vsl-c3d51c4fbc17c1cac673,dòng sông chảy,1,D0439,false,pending_video_verification
+vsl-0a766d553470506f62b1,dũng cảm,1,W01068,false,pending_video_verification
+vsl-c21090841399ab0f95b8,dạy,1,W00979,false,pending_video_verification
+vsl-00adfd070f81f4776a73,dấu chấm,1,W01001,false,pending_video_verification
+vsl-d9c185f92aa2feaf0686,dấu chấm hỏi,1,W01002,false,pending_video_verification
+vsl-35befc469c7706f02042,dấu chấm than,1,W01003,false,pending_video_verification
+vsl-f936ae5c56e95d05fcaf,dấu gạch ngang,1,W01005,false,pending_video_verification
+vsl-7a2ae2536f6c34afb161,dấu hai chấm,1,W01006,false,pending_video_verification
+vsl-def610e510d1c56035ac,dấu ngoặc đơn,1,W01009,false,pending_video_verification
+vsl-20e40cb279876c1576d9,dấu nặng,1,D0528,false,pending_video_verification
+vsl-9c9a6bfec9717ba77eb6,dấu phẩy,1,W01011,false,pending_video_verification
+vsl-06e1fbb23d879a7380a2,dầu hoả,1,W00995,false,pending_video_verification
+vsl-9d3064cb964aa34ee9a1,dầu khí,1,W00996,false,pending_video_verification
+vsl-36e8bd1d6899ec17c559,dầu mỏ,1,W00997,false,pending_video_verification
+vsl-0ac6c7e9cd1466355671,dẫn chương trình,1,W00990,false,pending_video_verification
+vsl-b8a5bbab4ac5fa50b930,dẫn chứng,1,W00991,false,pending_video_verification
+vsl-c7c5b8e658d80db2a2be,dập,1,W00992,false,pending_video_verification
+vsl-549d7e7357bd41971b80,dắt,1,W00981,false,pending_video_verification
+vsl-488e8474f3c170908f3d,dặn dò,1,W00980,false,pending_video_verification
+vsl-a6475c0cb1b9c82141a2,dẻo,1,W01021,false,pending_video_verification
+vsl-0b6f52a4e54523d1e9b5,dễ chịu,1,W01026,false,pending_video_verification
+vsl-b3218488c3bcceef2d48,dễ thương,1,W01027,false,pending_video_verification
+vsl-fa14292b1296778390c6,dệt,1,W01028,false,pending_video_verification
+vsl-deaaa55aadaec757a224,dịu dàng,1,D0436,false,pending_video_verification
+vsl-4f1207da15c55c45f2c5,dọc,1,W01054,false,pending_video_verification
+vsl-56ebe2fe3748e5aa8396,dụng cụ,1,W01069,false,pending_video_verification
+vsl-cee4acee181f4109a1a8,dự trữ,1,W02097,false,pending_video_verification
+vsl-9429f817a4f1571f41a0,dự án,1,D0259,false,pending_video_verification
+vsl-e0f210a0c689b1c1263d,dựng phim,1,W01076,false,pending_video_verification
+vsl-3f79bb7b435b05321651,e,1,D0496,false,pending_video_verification
+vsl-44cc3fc34a7a2e0d85e1,em dâu,1,W01349,false,pending_video_verification
+vsl-f8f68d76a117293b2e90,em gái,1,W01350,false,pending_video_verification
+vsl-37d23314e97c64f1baa3,em út,1,W01353,false,pending_video_verification
+vsl-82244417f956ac7c599f,email,1,W01354,false,pending_video_verification
+vsl-252f10c83610ebca1a05,f,1,D0521,false,pending_video_verification
+vsl-ad99ee823dce53177095,gai,1,W01375,false,pending_video_verification
+vsl-58d31c326ab8e0ffb54a,gan dạ,1,W01378N,false,pending_video_verification
+vsl-36bccb1577a12efabd48,gan lì,1,W01379,false,pending_video_verification
+vsl-b58a51805a44157093a1,gang tay,1,W01381,false,pending_video_verification
+vsl-cd02ee61448c5feb3845,ghi chép,1,W01410,false,pending_video_verification
+vsl-5d89ad0ef821e3f21392,ghi chú,1,W01411,false,pending_video_verification
+vsl-f126733fa9889ab90ff3,ghi hình,1,W01412,false,pending_video_verification
+vsl-bf72def71a4f59d96f91,ghi nhớ,1,W01413,false,pending_video_verification
+vsl-451768aa3843a7fe4f4f,ghé thăm,1,W01406,false,pending_video_verification
+vsl-574f21fd28bac205ff4e,gia lai,1,W01415,false,pending_video_verification
+vsl-5d06a9a288eafd20dc7c,giai đoạn,1,W01423,false,pending_video_verification
+vsl-6dd7e6948db2d2089ded,gian dối,1,D0337,false,pending_video_verification
+vsl-5116cb3ba42d3271641c,gian khổ,1,W01443,false,pending_video_verification
+vsl-b1a7c685a8604c5fa829,gian lận,1,W00985,false,pending_video_verification
+vsl-16b254cc2dd5546710d8,giao hoán,1,W01450,false,pending_video_verification
+vsl-3ac74f5185fd04df93f1,giao hàng,1,W01429,false,pending_video_verification
+vsl-9a140ed3b691270c1d86,giao lưu,1,W01451,false,pending_video_verification
+vsl-2d241d0190034c7656a5,giao thông,2,W01430B | W01430N,false,pending_video_verification
+vsl-54a1ae3e954db2e52813,giao thừa,1,W01452,false,pending_video_verification
+vsl-ef33736a88189c267abf,gieo xúc xắc,1,W01477,false,pending_video_verification
+vsl-3b85c13f1dfdd73ac560,giàn khoan,1,W01444,false,pending_video_verification
+vsl-5a7472d351e5b04c446a,giàn mướp,1,W01427,false,pending_video_verification
+vsl-e3d4aa29b172d26e6c7c,giàn nho,1,W01445,false,pending_video_verification
+vsl-6d47e38e3d7ca241c108,giàu có,1,W01459,false,pending_video_verification
+vsl-2c1ae59c669432a1307b,giá sách,1,W01420,false,pending_video_verification
+vsl-14eb7cb9c37739b8abe8,giá trị tuyệt đối,1,W01435,false,pending_video_verification
+vsl-b75fb498b68d9a52aaff,giám khảo,1,W01442,false,pending_video_verification
+vsl-0a7619299e3cebddbcd1,giám sát,2,D0255 | W01426,false,pending_video_verification
+vsl-57e156468a426dc231e4,giám đốc,1,W01441,false,pending_video_verification
+vsl-7a244dfdbbe63382a277,giáo dục,1,W01456,false,pending_video_verification
+vsl-210c019933f585570940,giáo sĩ,1,W01458,false,pending_video_verification
+vsl-bd00810e5b68bef749d2,giã,1,W01432,false,pending_video_verification
+vsl-12461e47f16a6f1d3f09,giãn cách xã hội,1,D0287,false,pending_video_verification
+vsl-4d5b507f670db9a1599e,gió lào,1,W01482,false,pending_video_verification
+vsl-6a0b9f568602d0f98609,giơ tay,1,W01491,false,pending_video_verification
+vsl-5efc8d0edde3a8bf021e,giả bộ (giống giả vờ),1,W01417T,false,pending_video_verification
+vsl-e2c04b138a4fef938951,giả mạo,1,W01418,false,pending_video_verification
+vsl-32ab8021f0347cdc8537,giả sử,1,W01419,false,pending_video_verification
+vsl-8629b05d7e828c1ede6e,giải lao,1,W01437,false,pending_video_verification
+vsl-df5f9ae5ae8482310d32,giải quyết,1,W01438,false,pending_video_verification
+vsl-27f87e0279ddf1eeccf2,giải vô địch,1,W01440,false,pending_video_verification
+vsl-2940f02000d0c755500f,giấc ngủ,1,W01462,false,pending_video_verification
+vsl-0f8b23bcc1fd378d9eec,giấy tờ,1,W01474,false,pending_video_verification
+vsl-1616c8c132497415cd37,giầy dép,1,W01468,false,pending_video_verification
+vsl-c18ae6dfe62779c68b30,giẫm,1,W01463,false,pending_video_verification
+vsl-8b2d95e08831303de0d7,giận dỗi,1,W01464,false,pending_video_verification
+vsl-1565d5414240395bd194,giận dữ,1,W01465,false,pending_video_verification
+vsl-b7a8a76daffb9ef53d4a,giật mình,1,W01466,false,pending_video_verification
+vsl-52aacc2d08ee9b9957d6,giẻ lau,1,W01476,false,pending_video_verification
+vsl-6758acbdf94bdb52133c,giếng nước,1,W01478,false,pending_video_verification
+vsl-81e247c0add9efe0330f,giết,1,W01479,false,pending_video_verification
+vsl-6839c8d04e8acd47a48a,giọng ca,1,W01486,false,pending_video_verification
+vsl-f4eaace26ee14ca04ecb,giọng nói,1,W01487,false,pending_video_verification
+vsl-91018fefa26f8fc01739,giống nhau,1,W01490,false,pending_video_verification
+vsl-eb2d64ad16f1f2002a2b,giỗ,1,D0041,false,pending_video_verification
+vsl-e85277f43a0ff681ea0f,giới hạn,1,W01493,false,pending_video_verification
+vsl-19ce3d3e893f8e126762,giới thiệu,1,W01494,false,pending_video_verification
+vsl-a0dff7a92644bd751f4c,giữ nguyên,1,W02626,false,pending_video_verification
+vsl-9eb1005207fc283de13e,gà nướng lu,1,D0390,false,pending_video_verification
+vsl-97e45c0ee671b4dd69e2,gà rừng,1,W01366,false,pending_video_verification
+vsl-9e170fc847a60ea56603,gánh,1,W01382,false,pending_video_verification
+vsl-d11191cdacbd3da9a34a,gáy,1,W01389,false,pending_video_verification
+vsl-de78117ff773a6f8e0f8,gãi đầu gãi tai,1,W01376,false,pending_video_verification
+vsl-17d69fc4142f0890a199,gãy chân,1,W01387,false,pending_video_verification
+vsl-9c3bfd4abf7f9fdf4f05,gãy tay,1,W01388,false,pending_video_verification
+vsl-b3710bc3d642982c3b84,góc bếp,1,W01502,false,pending_video_verification
+vsl-ed08acb08d0fbd698021,góc học tập,1,W01503,false,pending_video_verification
+vsl-dd89f13de17948a34a5c,góc vuông,1,W01507,false,pending_video_verification
+vsl-3e6d14fa41262f2efef4,góc vườn,1,W01508,false,pending_video_verification
+vsl-66e5c9c100d1fa9d9f85,gói,1,W01510,false,pending_video_verification
+vsl-a78ec12f69a9d73c04dd,gói (đgt),1,W01509,false,pending_video_verification
+vsl-1bf135ac082bd9356abc,góp tiền,1,D0451,false,pending_video_verification
+vsl-a52d2a4339df5b02aecb,góp ý,1,W01513,false,pending_video_verification
+vsl-fc38996f98031737b8ce,gù lưng,1,W04070,false,pending_video_verification
+vsl-3e0492a320dbb4a09d55,gương,1,W01523,false,pending_video_verification
+vsl-785769147609ae26282a,gương mẫu,1,W01525,false,pending_video_verification
+vsl-2fd4b4e14da0ce0fb2cd,gương mặt,1,W01524,false,pending_video_verification
+vsl-792f352f8dc73984fd9b,gạo nếp,1,W01385,false,pending_video_verification
+vsl-0e820612e7cc026e9632,gấp ba,1,D0248,false,pending_video_verification
+vsl-d7e26ae796e862a25943,gấp giấy,1,W01398,false,pending_video_verification
+vsl-1d9549c2cfc6fc650f12,gấp đôi,1,D0247,false,pending_video_verification
+vsl-d5fe208d9de0aeeeb133,gần gũi,1,W01397,false,pending_video_verification
+vsl-3513880886465afeff91,gầy (miền nam: ốm),2,W01403B | W01403N,false,pending_video_verification
+vsl-14419a50e4784caccae6,gật gù,1,W01401,false,pending_video_verification
+vsl-89c0b17afd32bf877577,gật đầu,1,W01400,false,pending_video_verification
+vsl-1345b490f2a6a1a2de5d,gậy của người già,1,W01404,false,pending_video_verification
+vsl-eaf9e5573388f2375230,gắn bó,1,W01392,false,pending_video_verification
+vsl-b5df978a7c6131a6daed,gắp thức ăn,1,W01394,false,pending_video_verification
+vsl-8ea35fd01b02f0d1f108,gặm cỏ,1,W01390,false,pending_video_verification
+vsl-77dc40f1634baa5dacbf,gặm xương (con chó gặm xương),1,W01391,false,pending_video_verification
+vsl-e94deb4953d9ab746b12,gặp gỡ,1,W01395,false,pending_video_verification
+vsl-024ceabf9ee2a3e5a51f,gặt lúa,1,W01396,false,pending_video_verification
+vsl-32c3b830d31107c73f76,gọn gàng,1,W01512,false,pending_video_verification
+vsl-5518df4949d8a083f02e,gỏi/nộm,1,D0378,false,pending_video_verification
+vsl-7a79cd62e6a805f37fc5,gốm sứ,1,W01517,false,pending_video_verification
+vsl-fd9880adb74cb5617376,gợi ý,1,W01518,false,pending_video_verification
+vsl-fe8a7d5c1db61fb1b57f,gửi,1,W01519,false,pending_video_verification
+vsl-6d136628c1ee562d7cdb,gửi quà,1,W01520,false,pending_video_verification
+vsl-9da9865b8aefd9195690,gửi thư,1,W01522,false,pending_video_verification
+vsl-ca2c6e4c2a3174bc0368,hai là,1,D0147,false,pending_video_verification
+vsl-9a3ba7c28f5883cb6628,hai phân số bằng nhau,1,W02617,false,pending_video_verification
+vsl-2040fd2fd10feb214c13,hiếu thảo,1,W01593,false,pending_video_verification
+vsl-72cc6f30efb46eee809c,hiện nay,1,W01588,false,pending_video_verification
+vsl-2897990b40d8ec47de41,hiện đại,1,W01587,false,pending_video_verification
+vsl-2e491e71e0296f5ac476,hiệu (toán học),1,W01595,false,pending_video_verification
+vsl-1433676790e9e9af700f,hiệu cầm đồ,1,W01596,false,pending_video_verification
+vsl-bff3406bec42c50c2d9d,hoa cúc,1,W01620,false,pending_video_verification
+vsl-4570b1e9595f16b1850b,hoa dâm bụt,1,D0482,false,pending_video_verification
+vsl-cabde766958ec024390a,hoa giấy,1,D0481,false,pending_video_verification
+vsl-7d7f48b4ff047dadf2c8,hoa hậu,1,D0467,false,pending_video_verification
+vsl-e7b49739bb9beb839dfb,hoa hồng,1,W01622,false,pending_video_verification
+vsl-03b72242e81822f91a7d,hoa lay ơn,1,W01625,false,pending_video_verification
+vsl-0801257b7c26289637e1,hoa mai,1,D0488,false,pending_video_verification
+vsl-a28f0dc2945f8c8cd4e8,hoa đào,1,W01621,false,pending_video_verification
+vsl-1aab9d75143dba701728,hoang mang,1,W01764,false,pending_video_verification
+vsl-98f0b711d29ebed83433,hoàn thành,1,W01641,false,pending_video_verification
+vsl-e7e4b1a855202c208361,hoàng tử,1,W01649,false,pending_video_verification
+vsl-4e8075b60777f593a873,hoàng đế,1,W01645,false,pending_video_verification
+vsl-ff9dad9aab52b5bbf7b4,hoán vị,1,W01643,false,pending_video_verification
+vsl-26864ac0d8e7231f1515,hoãn,1,D0350,false,pending_video_verification
+vsl-c3f5004120e17cb0847b,hoạt động,1,W01651B,false,pending_video_verification
+vsl-57ca14d006def05c2d0e,hung thủ,1,W01712,false,pending_video_verification
+vsl-37206f9cfb987ff98842,hung ác,1,W01711,false,pending_video_verification
+vsl-20cd27a65d65fc846b9f,hung-ga-ri (nước hung-ga-ri),1,W01714,false,pending_video_verification
+vsl-f47963e995aaecd47fe7,huy hiệu,1,W01718,false,pending_video_verification
+vsl-81b9bcc3a047df04d6d3,huân chương,1,W01710,false,pending_video_verification
+vsl-c2428d31840f7dc49dd5,huỷ,1,D0351,false,pending_video_verification
+vsl-db734c016dec68b4b633,huỷ diệt,1,W01719,false,pending_video_verification
+vsl-84c01c3736f9edbb3193,hà giang,1,W01526,false,pending_video_verification
+vsl-3da02a206e2e3b57d22c,hà lan (nước hà lan),1,W01527,false,pending_video_verification
+vsl-05f1e103208aa35dfd07,hài hước,1,W01532,false,pending_video_verification
+vsl-e92ddc4c721438ab524d,hài lòng,1,D0199,false,pending_video_verification
+vsl-3861635f66f59f74c11d,hàm răng,1,W01536,false,pending_video_verification
+vsl-11ea4ea212db76634f1b,hàng chục,1,W01539,false,pending_video_verification
+vsl-bb73653d2f1ac809c6a0,hàng chục nghìn,1,W01540,false,pending_video_verification
+vsl-df5bcd2801c407c83e2f,hàng chục triệu,1,W01541,false,pending_video_verification
+vsl-123a269196e734477ed1,hàng nghìn,1,W01546,false,pending_video_verification
+vsl-089eed908d71f90fe94f,hàng triệu,1,W01550,false,pending_video_verification
+vsl-0824216dfb817356b75e,hàng trăm,1,W01547,false,pending_video_verification
+vsl-652d373bef5a661cc408,hàng trăm nghìn,1,W01548,false,pending_video_verification
+vsl-6a6ab60991f27c16e664,hàng xóm,1,W01552,false,pending_video_verification
+vsl-872da589bd4b47c21025,hàng đơn vị,1,W01543,false,pending_video_verification
+vsl-273e155af892cb74ee88,hành lang,1,W01556,false,pending_video_verification
+vsl-ec81130f01682bf1d0d9,hành quân,1,W01557B,false,pending_video_verification
+vsl-6bcadaac756e9bbdceba,hành tinh,1,W01558,false,pending_video_verification
+vsl-e2e95a7e197d59aacd9d,hành vi,1,W01559,false,pending_video_verification
+vsl-932a76aec18baebfc278,hành động,1,W01554,false,pending_video_verification
+vsl-1a5533949d245bf1e095,háo hức,1,D0262,false,pending_video_verification
+vsl-9ceaeae087df9721847d,hát ru,1,W01560,false,pending_video_verification
+vsl-a33829756f7f744d2514,hãng máy bay,1,W00122,false,pending_video_verification
+vsl-464653957958dad36e39,hãng tàu thuyền,1,W00142,false,pending_video_verification
+vsl-34511ef7345cdd741939,hãng xe máy,1,W00125,false,pending_video_verification
+vsl-11fff32499b942a4203d,hãng ô tô,1,W04072,false,pending_video_verification
+vsl-7e0be5c61d1aa2a22b5e,héc-ta (ha),1,W01575B,false,pending_video_verification
+vsl-56b553097ab09121fe68,héo,1,W01579,false,pending_video_verification
+vsl-564031e785cb3573c48b,hét (giống la),1,W01580,false,pending_video_verification
+vsl-37f038ad29444047d45d,hên/gặp may,1,D0266,false,pending_video_verification
+vsl-43bcce0de32fe834e594,hình,1,W01599,false,pending_video_verification
+vsl-1a82a57f436668c3f677,hình chiếu,1,W01602,false,pending_video_verification
+vsl-cb414f16c9e08d8cf742,hình cầu,1,W01601,false,pending_video_verification
+vsl-9c928abadd3c0746dfb4,hình dáng,1,W01603,false,pending_video_verification
+vsl-22642ca1def0b9ff8389,hình elip,1,W01604,false,pending_video_verification
+vsl-d72ef90e3f6b0f205a98,hình học,1,W01605,false,pending_video_verification
+vsl-8199e75cc2e55ce9c215,hình hộp chữ nhật,1,W01606,false,pending_video_verification
+vsl-aab3b4f43b3fca84ff14,hình lập phương,1,W01608,false,pending_video_verification
+vsl-1ac94eceeb10572ac22f,hình phạt,1,W01610,false,pending_video_verification
+vsl-9d8dab8d7c1337952ab9,hình vẽ,1,W01618,false,pending_video_verification
+vsl-b6fa0cb4c1297feba040,hòa bình,1,W01634,false,pending_video_verification
+vsl-83322b2bba02211994e3,hòa nhập,1,W01637,false,pending_video_verification
+vsl-fc5e095b545798fbd694,hòn bi (giống viên bi),1,W01674B,false,pending_video_verification
+vsl-3a1f7c9675266057f552,hóa đơn,1,W00258,false,pending_video_verification
+vsl-db8aab7827be5b3d9b50,hói đầu,1,D0021,false,pending_video_verification
+vsl-4ca03a4fbeb9d3c91993,hót,1,W01678,false,pending_video_verification
+vsl-c69b60ebb97c8833c683,hôi,1,D0173,false,pending_video_verification
+vsl-0ba19549beb0ff9f9ac6,hùng vĩ,1,D0240,false,pending_video_verification
+vsl-e68bc3994306885bc54d,hùng vương,1,W01715,false,pending_video_verification
+vsl-4a213d7c632217cb14a4,hú vía,1,D0070,false,pending_video_verification
+vsl-4cb084458926bd3c49a8,hút nước,1,W01716,false,pending_video_verification
+vsl-3f235d7f83ead96b9a3e,hút thuốc lá,1,W01717,false,pending_video_verification
+vsl-f02685d8edbddd135678,hăng hái,1,W01569,false,pending_video_verification
+vsl-c2f2489e2510572bc6c8,hơi nước,1,W01706,false,pending_video_verification
+vsl-d9cd26c7e7611295c5ea,hưng yên,1,W01723,false,pending_video_verification
+vsl-28a553e7c31027b70c91,hướng dẫn,1,W01724,false,pending_video_verification
+vsl-c2a280dcfc1139155f02,hạn hán,1,W01537,false,pending_video_verification
+vsl-7c5e79215f586c9c5140,hạt,1,W01562,false,pending_video_verification
+vsl-7fb912a7304a548b9385,hạt cườm,1,W01563,false,pending_video_verification
+vsl-a8cf568a516827e79b94,hạt lúa,1,W01567,false,pending_video_verification
+vsl-35b3d9f5da6907fb41ae,hạt lạc,1,W01566,false,pending_video_verification
+vsl-af8cc363272caa21fca1,hạt tiêu,1,W01568,false,pending_video_verification
+vsl-4ae3e02ab08aab2555b4,hải dương,1,W01533,false,pending_video_verification
+vsl-cd1ff6b60437b18735d1,hải sản,1,D0388,false,pending_video_verification
+vsl-ca8355f69c678cd58179,hải đảo,1,W01534,false,pending_video_verification
+vsl-bbba9fe9ee0befe7eb19,hấp,1,D0380,false,pending_video_verification
+vsl-1146b1f8436cb86959c4,hấp dẫn,1,D0017,false,pending_video_verification
+vsl-e84af416fd5c546da53d,hậu giang,1,W01572,false,pending_video_verification
+vsl-1d2f3a9bb78b2c2a530a,hậu quả,1,W01573,false,pending_video_verification
+vsl-da716eb4a5b3b3b66298,hắt hơi,1,W01571,false,pending_video_verification
+vsl-d335a9097bb007d9d104,hằng đẳng thức,1,W01570,false,pending_video_verification
+vsl-b8694339850600e6585d,hệ bài tiết,1,W00076,false,pending_video_verification
+vsl-8f192f643fa5e468de92,họ (2 người) (đại từ),1,D0136,false,pending_video_verification
+vsl-4d19f0683006daff8942,họ (đại từ),1,D0137,false,pending_video_verification
+vsl-ff71f9a8443c0a1a2831,họa sỹ,1,W01638,false,pending_video_verification
+vsl-11ba75c451eaaf340e13,học bổng,1,W01665,false,pending_video_verification
+vsl-e954b9a3e23c3e67bd68,học giỏi,1,W01656,false,pending_video_verification
+vsl-135aaf63481006cf41e4,học kém,1,W01666,false,pending_video_verification
+vsl-79ce812f934697a2ed3f,học phí,1,W01669,false,pending_video_verification
+vsl-2af724b23c13de0b739e,học sinh miền nam,1,W01658,false,pending_video_verification
+vsl-294911a8fa40245cee8b,học trung bình,1,W01659,false,pending_video_verification
+vsl-1b9966c745262b22fc00,học trò,1,W01671,false,pending_video_verification
+vsl-20c137e0f3dc65a8f0ab,học tập,1,W01670,false,pending_video_verification
+vsl-6c02d01ea3afda052fb9,họng,1,W01676,false,pending_video_verification
+vsl-ee2dd78bae2ebcfa9040,hỏi han,1,W01660,false,pending_video_verification
+vsl-84459addb2a401c1df74,hỏi thăm,1,W01673B,false,pending_video_verification
+vsl-d97b871a3398c576dd9c,hối lộ,1,W01693,false,pending_video_verification
+vsl-3896ec22c132739dd56d,hốt hoảng,1,D0236,false,pending_video_verification
+vsl-cf981c9fc3f26fa23e2e,hồ chí minh,1,W01681,false,pending_video_verification
+vsl-cf42ead541cd523aee04,hồ hoàn kiếm,1,W01684,false,pending_video_verification
+vsl-38574f51b7dd0bc04171,hồ nước,1,W01686,false,pending_video_verification
+vsl-4950dca346a83531ef2a,hỗn số,1,W01701,false,pending_video_verification
+vsl-6bb7a5571e7e0f6afd06,hội chứng đao - down,1,D0367,false,pending_video_verification
+vsl-f6be610efaa54ccba486,hội nghị,1,W01695B,false,pending_video_verification
+vsl-a5c73e61a726c147583d,hội thoại,1,D0295,false,pending_video_verification
+vsl-2eeb43fde2b079c15259,hội thảo,2,W01696 | W01696N,false,pending_video_verification
+vsl-0e894efcf7fafff62acd,hộp,1,W01702,false,pending_video_verification
+vsl-9d5ce211dfa0afab0609,hợp lí,1,W01708,false,pending_video_verification
+vsl-a98b3f6e64402a73ead2,hợp tác,1,W01709,false,pending_video_verification
+vsl-e2813e4532a20cb47247,hợp đồng,2,W01707B | W01707T,false,pending_video_verification
+vsl-f6f4c27221f2cbc363bd,hứa,2,D0165N | D0165T,false,pending_video_verification
+vsl-3e640870d0cef02d59fb,hữu nghị,1,D0217,false,pending_video_verification
+vsl-36993e2933149e05db2b,i-rắc (nước i-rắc),1,W01726,false,pending_video_verification
+vsl-61215c2a9a205b14208f,in (ấn),1,W01728B,false,pending_video_verification
+vsl-3b0fe0d342e9fa16a5c6,internet,1,D0484,false,pending_video_verification
+vsl-2f667f935ba1770b15c7,italia (nước italia),1,W01733,false,pending_video_verification
+vsl-189f40034be7a199f1fa,j,1,D0522,false,pending_video_verification
+vsl-8254c329a92850f6d539,k,1,D0502,false,pending_video_verification
+vsl-6387eb0aa5f5f8796a23,keo kiệt,1,W01739,false,pending_video_verification
+vsl-6400002cce22fba6d66d,khai mạc,1,W01766,false,pending_video_verification
+vsl-85ccf1ab7a1d36bb5e66,khe cửa,1,W01787,false,pending_video_verification
+vsl-e8e44738729aad2f7259,khe núi,1,W01788,false,pending_video_verification
+vsl-584b19df93eb807d491f,khen,1,W01789,false,pending_video_verification
+vsl-8026d9217f9360361b59,khen tặng,1,W01791,false,pending_video_verification
+vsl-8dc058006bc5ca906661,khiêm tốn,1,W01796,false,pending_video_verification
+vsl-34c1e6b4b0d223d26ee2,khiêng,1,W01800,false,pending_video_verification
+vsl-e54b4d9a736bdada62af,khoa học,1,W01804,false,pending_video_verification
+vsl-98b6af3fefa41a47cb8c,khoanh tay,1,W01820,false,pending_video_verification
+vsl-ea12d35fe232b5131507,khoe,1,W01822,false,pending_video_verification
+vsl-eb96e17c8b8ebfc3a660,khoá (cái khóa),1,W01810,false,pending_video_verification
+vsl-abf6e322eb6a1705af90,khoác tay,1,W01814,false,pending_video_verification
+vsl-0f1131bb144338740690,khoác vai,1,W01807,false,pending_video_verification
+vsl-300ff397530402cc99b9,khoác áo,1,W01813,false,pending_video_verification
+vsl-10b78e56882443c46651,khoáng sản,1,D0305,false,pending_video_verification
+vsl-caaf8e6f4ac1333920f5,khoảng cách,1,W01809,false,pending_video_verification
+vsl-486dc0d8066c39e87291,khoẻ mạnh,1,W01823,false,pending_video_verification
+vsl-6442dfba012cde910e9d,khu rừng,1,W01849,false,pending_video_verification
+vsl-5083e6845bd5e723e204,khu vườn,1,W01851,false,pending_video_verification
+vsl-a8a71422122a80a01223,khu vực cách ly,1,D0474,false,pending_video_verification
+vsl-58dac1b14a7e1d9842fb,khung cửa số,1,W01856,false,pending_video_verification
+vsl-0b4879765f373eff111d,khung thành,1,W01857,false,pending_video_verification
+vsl-6b9014b756df710c0c36,khuy,1,W01859,false,pending_video_verification
+vsl-2c7416958013c15708d9,khuyên tai,1,W01860,false,pending_video_verification
+vsl-1f824b1f61f64c728677,khuyến khích,1,D0030,false,pending_video_verification
+vsl-d93ba2142e7775143d79,khuôn hình,1,W01858,false,pending_video_verification
+vsl-a04d8a220dce52c0d6a4,khác,1,W01757,false,pending_video_verification
+vsl-3fecdb93a7947deda802,khách,1,W01758,false,pending_video_verification
+vsl-57ff144e333f14b83235,khách mời,1,W01759,false,pending_video_verification
+vsl-673865f61721f4ed506c,khách vip,1,W01761,false,pending_video_verification
+vsl-63424d25aff9f7a03299,khám phá,1,W01768,false,pending_video_verification
+vsl-36d17c44b76d8a49232c,kháng cự,1,W01770,false,pending_video_verification
+vsl-03734ce112624e04cd95,kháng sinh,1,W01771,false,pending_video_verification
+vsl-8128e9d1ccb444ae3ac9,khánh hòa,1,W01772,false,pending_video_verification
+vsl-d9e17fd266ddeb6d1291,khát nước,1,W01774,false,pending_video_verification
+vsl-09c32101cd4eae22383d,khát vọng,1,W01775,false,pending_video_verification
+vsl-9b306883b01656c1421a,kháu khỉnh,1,D0280,false,pending_video_verification
+vsl-fc28d941afe4083d643b,khâm phục,1,W01783,false,pending_video_verification
+vsl-2f8dd9230734bdc9f8b6,khâu vá,1,W01784,false,pending_video_verification
+vsl-a7b64d962bf8d86f7653,khéo,1,W01792,false,pending_video_verification
+vsl-34af6b64617ce14eb76c,khép cửa,1,W01793,false,pending_video_verification
+vsl-3c54563bb059adfbbf4a,khí cầu,1,W01794,false,pending_video_verification
+vsl-313a0c105eaf59973797,khó khăn,2,W01803B | W01803N,false,pending_video_verification
+vsl-46b3754cd97cc3cda666,khó tiêu,1,W00562,false,pending_video_verification
+vsl-1f537db76820c87813fc,khóa cửa,1,W01811,false,pending_video_verification
+vsl-6eb0b55148398bd12a18,khóa quần,1,W01806,false,pending_video_verification
+vsl-914508d1b19a5e3f3ebc,khói,1,W01825,false,pending_video_verification
+vsl-4fdf30495a7961109495,khô héo,1,W01828,false,pending_video_verification
+vsl-4b900ed80484bf5aa8f5,không bình đẳng,1,D0323,false,pending_video_verification
+vsl-8d94a04eddbefbc3fcfd,không có,1,D0112,false,pending_video_verification
+vsl-1e6566c02ca91b80a492,không có chi,1,D0113,false,pending_video_verification
+vsl-53d3418b4eb8e42e55ac,không cần,1,D0034,false,pending_video_verification
+vsl-79407edef856aca3b6b7,không gian,1,W01833,false,pending_video_verification
+vsl-e590788a6ac20576ef4e,không ngon,1,D0198,false,pending_video_verification
+vsl-a5fc1d04866bd0757a63,khúc khuỷu,1,W01854,false,pending_video_verification
+vsl-d4e4632e917f193878c5,khăn quàng,1,W01779,false,pending_video_verification
+vsl-cae4aec29e8c0217fc40,khăn quàng đỏ,1,W01780,false,pending_video_verification
+vsl-155f6cacdf5a626b332e,khả năng,1,D0096,false,pending_video_verification
+vsl-3a781f0127124ba76264,khẩu hiệu,1,W01785,false,pending_video_verification
+vsl-4dca581adc9fe4a88934,khắc phục,1,W01776,false,pending_video_verification
+vsl-81d421e5d50ecc0f4dd0,khối lượng,1,W01832,false,pending_video_verification
+vsl-4999fecf3bc52a42de3d,khổ,2,W01842 | W01842N,false,pending_video_verification
+vsl-7064047a499f24e76698,khổ công,1,D0208,false,pending_video_verification
+vsl-10fe45622b68f010e231,khổ thơ,1,W01829,false,pending_video_verification
+vsl-687c3626d16d737e805b,khổng lồ,1,W01835,false,pending_video_verification
+vsl-c3611a0e29bc7ee8b098,khớp xương,1,W01847,false,pending_video_verification
+vsl-bde811f48ca0db6ef0d9,khờ dại,1,D0100,false,pending_video_verification
+vsl-27a1834e374ec3bbd809,khởi nghiệp,1,D0325,false,pending_video_verification
+vsl-407ea2baf9dc983119fc,ki-lô-gam,1,W01864,false,pending_video_verification
+vsl-7cb0f667f40a83b705d6,ki-lô-mét (km),1,W01869,false,pending_video_verification
+vsl-f46b6b022b6afa6a7c30,ki-lô-mét vuông (km2),1,W01865,false,pending_video_verification
+vsl-37268bb0020007468bbc,kia,1,D0124,false,pending_video_verification
+vsl-26ae784d194a57604643,kim,1,W01890,false,pending_video_verification
+vsl-8837f8def11a8a346cf3,kim cương,1,D0321,false,pending_video_verification
+vsl-31537cb7c2fef269fd9c,kim đồng,1,D0479,false,pending_video_verification
+vsl-bdccc1cc2a394cf8ec58,kinh ngạc,1,W01897,false,pending_video_verification
+vsl-3976d8e99edf7398719a,kiên giang,1,W01881,false,pending_video_verification
+vsl-e243d469142137ab7156,kiên quyết,1,W01882,false,pending_video_verification
+vsl-260bdbf8352f28182ecc,kiên trì (giống: kiên nhẫn),1,W01883,false,pending_video_verification
+vsl-a7339f9b450305958be9,"kiêu (kiêu căng, kiêu xa)",1,W01888,false,pending_video_verification
+vsl-4f081baedb53dd454ec8,kiếm (cái kiếm),1,W01879,false,pending_video_verification
+vsl-63ad1bb8b5a0597fb504,kiến thức,1,W01885,false,pending_video_verification
+vsl-830cf33ea860ca0aeb6c,kiến trúc,1,W01886,false,pending_video_verification
+vsl-cab4febe3cad56f0afd3,kon tum,1,W01908,false,pending_video_verification
+vsl-7a9d7823994d4e3ddd39,kèn,1,W01735,false,pending_video_verification
+vsl-75d396df9558ce876c12,kêu gọi,1,W01756,false,pending_video_verification
+vsl-13fde6472a6c69c72315,kì diệu,1,W01861,false,pending_video_verification
+vsl-1cc3a68f4c5be0d30e86,kì lạ,1,W01862,false,pending_video_verification
+vsl-3d2bd792763579b3bd8c,kí duyệt,1,W01863,false,pending_video_verification
+vsl-83088dbe69e27de3f3bd,kí hiệu,1,W01867,false,pending_video_verification
+vsl-a5e627dacb31b9364a4e,kính,1,W01900,false,pending_video_verification
+vsl-adf36cc2f4c6174ed8d8,kính hiển vi,1,W01902,false,pending_video_verification
+vsl-18b6f83f448eaae3da00,kính lão,1,W01903,false,pending_video_verification
+vsl-7293e7089ce0b52c6dbd,kính lúp,1,W01904,false,pending_video_verification
+vsl-b4a684adcfdb33926772,kính trọng,1,W01906,false,pending_video_verification
+vsl-fdb634f5e46ea29fe2d8,kẹp,1,W01744,false,pending_video_verification
+vsl-550130c6e0e3e50bf8e2,kẹt xe/tắc đường,1,D0185,false,pending_video_verification
+vsl-bd03b01d0ada1d286571,kẻ cắp,1,W01734,false,pending_video_verification
+vsl-083e380a1174f6c53d79,kẻ thù,1,W01737,false,pending_video_verification
+vsl-71befd30dd6dd765c857,kết bạn,1,W01750,false,pending_video_verification
+vsl-5f4b8d86e36e5b6401b7,kết hợp,1,W01751,false,pending_video_verification
+vsl-6f18443617911ef67a2e,kết luận,1,D0483,false,pending_video_verification
+vsl-d0e91edf3108235f9577,kỉ luật,1,W01871,false,pending_video_verification
+vsl-97aa00d485f5b942ed80,kịch,1,W01035,false,pending_video_verification
+vsl-0bf6001e4cc157787bdb,kịch bản,1,W01876,false,pending_video_verification
+vsl-ea796a49c0ee2b95004f,kịch câm,1,W01036,false,pending_video_verification
+vsl-cacf8a3cd5eb608a6b07,kịp thời,1,D0068,false,pending_video_verification
+vsl-1d497a7c0ca64d585de2,kỹ năng,1,D0097,false,pending_video_verification
+vsl-acac86c0e609ca906f63,l,1,D0503,false,pending_video_verification
+vsl-4f338968fd5d7b68d7e8,la bàn,1,W01909,false,pending_video_verification
+vsl-62a679b89dab125fe728,la hét,1,W01910,false,pending_video_verification
+vsl-50fa276334d2eb1f2860,lang thang,1,W01930,false,pending_video_verification
+vsl-9fa91aa68e3e28e01f0c,lao phổi,1,W01944,false,pending_video_verification
+vsl-29a027cd010a71ca69da,lau chùi,1,W01948,false,pending_video_verification
+vsl-65c6f2f52cd9d1e2e8cb,lau khô,1,W01949,false,pending_video_verification
+vsl-8eaa0de3f7e39f3d5760,lau miệng,1,D0228,false,pending_video_verification
+vsl-d5e5b6cf00b4a70a6406,leo trèo,1,W01973,false,pending_video_verification
+vsl-91c977360d10a9a389fe,linh hồn,1,W02010,false,pending_video_verification
+vsl-04e4198a2edadcc00a46,liên kết,1,W01999,false,pending_video_verification
+vsl-b1915f41cfe5c0d8b093,liên tục,1,W02002,false,pending_video_verification
+vsl-d463b5608f32d17b363c,liền sau,1,W02003,false,pending_video_verification
+vsl-ebb7ff19d3492564f239,liền trước,1,W02004,false,pending_video_verification
+vsl-ab76888e08928c16df22,liều lĩnh,1,W02006,false,pending_video_verification
+vsl-8b303899375d21bf0afb,liều mình,1,W02008,false,pending_video_verification
+vsl-c23b05e1de00d5d75f56,liệt (liệt tay chân),1,W02005,false,pending_video_verification
+vsl-4086db6278c8c793f2bf,lo sợ,1,W02016,false,pending_video_verification
+vsl-b5fd4da6901078530ad0,loa,1,W02021,false,pending_video_verification
+vsl-a5c7dd170f9cbe76fbc5,lon bia,1,W02026,false,pending_video_verification
+vsl-bdc35ee0d1426b5654e7,long an,1,W02027,false,pending_video_verification
+vsl-f12663d6896243451dd7,long lanh (mắt),1,D0269,false,pending_video_verification
+vsl-e388d11a896aa27efae3,long vương,1,D0225,false,pending_video_verification
+vsl-654dbdb0aeb05941a499,loạn thị,1,W02025,false,pending_video_verification
+vsl-fb63eeb3268452355545,lung tung,2,D0020B | D0020N,false,pending_video_verification
+vsl-3dac52397f2c7f0fde5e,luyện tập,1,W02074,false,pending_video_verification
+vsl-71e02516ff296c0a32c9,luyện từ và câu,1,W02075,false,pending_video_verification
+vsl-d4e1fea5c0f8c622f2bc,luân phiên,2,W00638 | W00638N,false,pending_video_verification
+vsl-e2cf8af463cc3d9cc2b0,luật lệ,1,W02065,false,pending_video_verification
+vsl-0316d10e3171ae26a209,luộc,1,D0375,false,pending_video_verification
+vsl-496458cfb0435fc963af,luộc rau,1,D0455,false,pending_video_verification
+vsl-dd123025b1085f2877b6,làm bài tập,2,W01924 | W01924N,false,pending_video_verification
+vsl-03d25b060a90c3559af4,làm quen,1,W01925B,false,pending_video_verification
+vsl-ac41873615fe6135a000,làm ruộng,1,W01926,false,pending_video_verification
+vsl-b12c1f1e2771e232b680,làm được,1,D0438,false,pending_video_verification
+vsl-047e78198bfbdedd47d2,làn sóng,1,W01932,false,pending_video_verification
+vsl-19f9bbbdb037b7d30667,làng gốm bát tràng,1,W00173,false,pending_video_verification
+vsl-9b6507414f00f030297b,làng xóm,1,W01939,false,pending_video_verification
+vsl-5f250f0d6b414115d670,lá thư,1,W01913,false,pending_video_verification
+vsl-0963f7238f98f11da3fe,lâm đồng,1,W01961,false,pending_video_verification
+vsl-f34cf11ffd0162e51eb0,lâu,1,D0167,false,pending_video_verification
+vsl-d170f93c221fa2905a1a,lây nhiễm,1,W01967,false,pending_video_verification
+vsl-78623fc607d557b58332,lãng phí,1,D0314,false,pending_video_verification
+vsl-a95b0d7ef5423810fa72,lãnh đạo,1,W01942,false,pending_video_verification
+vsl-042bc9b13f410a610ede,lão già,1,W01947,false,pending_video_verification
+vsl-55e944adb4a80d8733de,lên ngôi,1,W01987,false,pending_video_verification
+vsl-1aeace01a069bfdff0d5,lên đường,1,W01986,false,pending_video_verification
+vsl-81fa73032bc42216b0de,lí do,1,W01992,false,pending_video_verification
+vsl-e4f5cf3ac22604b69271,lò xo,1,W02018,false,pending_video_verification
+vsl-6ff45a66e4a3e485b442,lông,1,W02039,false,pending_video_verification
+vsl-d5e0b8cf8d4f35dee120,lông gà,1,W02040,false,pending_video_verification
+vsl-bcb93eab9562ad671ce2,lùi bước,1,W02070,false,pending_video_verification
+vsl-e6448100227267d30833,lúa,1,W02060,false,pending_video_verification
+vsl-0e01dcf197f93f2cb528,lúng túng,1,W02071,false,pending_video_verification
+vsl-ca3719d40299584dd5f4,lý do,1,D0296,false,pending_video_verification
+vsl-e382463e367f62f789cb,lăng bác hồ,1,W01953,false,pending_video_verification
+vsl-fa478e358e7985d59264,lĩnh hội,1,W02011,false,pending_video_verification
+vsl-4de26764cf478a4b32b2,lũ quét,1,W02059,false,pending_video_verification
+vsl-e2f9c8271a849e8a6c87,lũy tre,1,W02073,false,pending_video_verification
+vsl-80000844ff838fe43816,lơ lửng,1,W02046,false,pending_video_verification
+vsl-083bf76d23070cdab97d,lưu,1,W00155,false,pending_video_verification
+vsl-dca99319d8eb13aef6f9,lưu ý,1,W02098,false,pending_video_verification
+vsl-aa9b9a99de325e547927,lương thực,1,W02090,false,pending_video_verification
+vsl-abeb8783e43cd708837c,lưới,1,W02083,false,pending_video_verification
+vsl-78ed94f158b3c3f7785d,lướt ván,1,W02091,false,pending_video_verification
+vsl-d3ae0091c0eebbe5dcdc,lưỡi,1,W02080,false,pending_video_verification
+vsl-083c1634c5dcf50cabe7,lược,1,W02077,false,pending_video_verification
+vsl-8b6b3234537f28b042bf,lượm,2,D0316 | W02084,false,pending_video_verification
+vsl-5146220ad99364351411,lượt về (trong thể thao),1,D0328,false,pending_video_verification
+vsl-0d8d62ae709ea8e09c3a,lượt đi,1,D0327,false,pending_video_verification
+vsl-bfa8fe45c3a4977ad958,lạc long quân,1,W01914,false,pending_video_verification
+vsl-1ccc365bbe73cc7f4dc6,lạc quan,1,W01915,false,pending_video_verification
+vsl-133867db9b914c52f238,lạng sơn,1,W01940,false,pending_video_verification
+vsl-ba69a24ad975e85e8693,lấm lem,1,D0341,false,pending_video_verification
+vsl-069bcabf010001e92ee4,lấy,1,W01970,false,pending_video_verification
+vsl-f3c1af3a2f93e9f09ea1,lầu (tầng),1,W01964,false,pending_video_verification
+vsl-4b0cf64b4646a8811b8b,lẩu,1,D0377,false,pending_video_verification
+vsl-54199e643e00ab74cd36,lẫn lộn,1,W01962,false,pending_video_verification
+vsl-deb61ca6f189058bf52b,lắc đầu,1,W01951,false,pending_video_verification
+vsl-3adaee013a1f5dbdf2f1,lắng nghe,1,W01955,false,pending_video_verification
+vsl-2f4e197655014028cfc0,lắp ráp,1,W01960,false,pending_video_verification
+vsl-1497fae55fb9675192c9,lặn,1,W01956,false,pending_video_verification
+vsl-f0ea617be26a9f20a39c,lặng lẽ,1,W01957,false,pending_video_verification
+vsl-d10e547896b924960624,lễ bế giảng,2,W01977 | W01977B,false,pending_video_verification
+vsl-1194d66499525ab6b1ee,lễ vật,1,W01984,false,pending_video_verification
+vsl-dbe34f03b0a61d424943,lọng,1,W02032,false,pending_video_verification
+vsl-11e91ebec2f39d42fce3,lối đi,1,W02037,false,pending_video_verification
+vsl-45eba70e2fa5172dfa15,lồng bàn,1,W02041,false,pending_video_verification
+vsl-0cf9d3cb93c55f4a68bb,lồng chim,1,W02042,false,pending_video_verification
+vsl-f40e272723783464cd7a,lỗi chính tả,1,W02035,false,pending_video_verification
+vsl-c073c7b75941fbc95b37,lỗi lầm,1,W02036,false,pending_video_verification
+vsl-37e0002519e5243afcca,lớn hơn 1 (toán học),1,D0297,false,pending_video_verification
+vsl-eafb265cc0047cfb8990,lớn hơn 2 (toán học),1,D0298,false,pending_video_verification
+vsl-d0da84ee2359e3a0a112,lớp,1,W02052,false,pending_video_verification
+vsl-502660e6ea424479f5d6,lời giải,1,W02047,false,pending_video_verification
+vsl-88bf440ef7c57d5e8203,lời nói,1,W02048,false,pending_video_verification
+vsl-623d93d007853f1ee027,lợi ích,1,W02049,false,pending_video_verification
+vsl-71445a54bf68b6266e86,lục giác,1,W02068,false,pending_video_verification
+vsl-705986af09b350b02718,lục địa,1,W02067,false,pending_video_verification
+vsl-73133cf6a2724f043867,lựu,1,W02099,false,pending_video_verification
+vsl-d17158a7b19306f2a6e1,lựu đạn,1,W02100,false,pending_video_verification
+vsl-3c44c3e1b8b784478672,ma,1,W02104,false,pending_video_verification
+vsl-e5a5d8ffc93c931d326c,ma cao,1,D0006,false,pending_video_verification
+vsl-9a92dc1dcc50cf4b837f,ma cà rồng,1,W02105,false,pending_video_verification
+vsl-c4323b03327b57eccb33,ma quỷ,1,W02106,false,pending_video_verification
+vsl-d9d2be679330283f3ac6,ma sát,1,W02107,false,pending_video_verification
+vsl-18479ba25697cc5ffc8b,ma túy,1,W02108,false,pending_video_verification
+vsl-ef93c9c357f7a2ecd60c,may mắn,1,D0102,false,pending_video_verification
+vsl-a5577c9d3e1bead8212c,mi-li-mét (mm),1,W02208,false,pending_video_verification
+vsl-451a94f5bca1b0604a0a,minh hoạ,1,W02215,false,pending_video_verification
+vsl-8baf99641e5faa5e3d20,miêu tả,1,W02214,false,pending_video_verification
+vsl-f3df9a7ebabe9ea6397e,miến,1,D0394,false,pending_video_verification
+vsl-62f77d740b5acce89766,miến điện (nước mi-an-ma),1,D0005B,false,pending_video_verification
+vsl-13f6a53ae41ef6d29d7e,miền bắc việt nam,1,W02211,false,pending_video_verification
+vsl-465501310cc82cd591bc,miền nam việt nam,1,W02212,false,pending_video_verification
+vsl-e62d56babaf55d84aad4,mua bán,1,W02266,false,pending_video_verification
+vsl-4adfdc9697fdda24c2f2,mui xe,1,W02280,false,pending_video_verification
+vsl-e7d0ad54990ba50ecdb8,muộn,1,W02281,false,pending_video_verification
+vsl-82a4f43a9c2d1965b0b7,màu cam,1,W02132,false,pending_video_verification
+vsl-4c6d486ef6585cd4150d,màu nhiệm,1,W02138,false,pending_video_verification
+vsl-d28eeb3635a23425b186,màu đen,1,W02133B,false,pending_video_verification
+vsl-a4a6579c47f9ca4a0063,màu đỏ,1,W02134,false,pending_video_verification
+vsl-d525a3ccbde005dd319c,má hồng,1,D0200,false,pending_video_verification
+vsl-8eea8582c1d27843ae92,mái chèo,1,W02116,false,pending_video_verification
+vsl-641a47c25b0fc5e1c47d,mái hiên,1,W02117,false,pending_video_verification
+vsl-c977e73696b47c02169d,mái tóc,1,W02119,false,pending_video_verification
+vsl-20b11cef751410599e4d,mái vòm,1,W03859,false,pending_video_verification
+vsl-7970292f12355e87b1c3,máy bơm,1,W02146,false,pending_video_verification
+vsl-03c537b2a6d4d7e13dba,máy chiếu,1,W02147,false,pending_video_verification
+vsl-3cd6c9c48a8ec13c7205,máy khâu,1,W02149,false,pending_video_verification
+vsl-c7573d0e7a5703b332c7,máy quay,1,W02150,false,pending_video_verification
+vsl-b6d241590a4ca796039e,máy xúc,1,D0318,false,pending_video_verification
+vsl-ea7109239a5ba3078445,mâm cơm,1,W02177,false,pending_video_verification
+vsl-c11247c150b9d5124b75,mã vạch,1,W02109,false,pending_video_verification
+vsl-329408f169360826d293,mèo cào,1,D0230,false,pending_video_verification
+vsl-3b0dfb27cde48143fca4,mét (m),1,W02197,false,pending_video_verification
+vsl-13feb3be39467f164a49,mét khối (m3),1,W02198,false,pending_video_verification
+vsl-0b481679b2d4e9678d34,mê say (như: say mê),1,W02202,false,pending_video_verification
+vsl-ccf2b9b7d874edaefaa8,mê tín,1,W02203,false,pending_video_verification
+vsl-321d99fa48328be2a996,mênh mông,1,W02205,false,pending_video_verification
+vsl-4d957d0da61d012ba800,mía,1,D0399,false,pending_video_verification
+vsl-b6fcfce028fd74e7b0fe,móc áo,1,W02218,false,pending_video_verification
+vsl-5af0eed61c9c3c987f1d,móng chân,1,W02223,false,pending_video_verification
+vsl-9f64528908b986413250,móng tay,1,W02225,false,pending_video_verification
+vsl-75489c37b1c9cfe123af,móng vuốt,1,W02226,false,pending_video_verification
+vsl-9ceeb800ccef399fc96d,mô hình,1,W02227,false,pending_video_verification
+vsl-9dba7a2806d3430c9682,mô tả,1,D0426,false,pending_video_verification
+vsl-c74850c686aed57f49c9,môi,1,W02235,false,pending_video_verification
+vsl-8becdea566a8ccedc6d8,môi trường,1,W02236,false,pending_video_verification
+vsl-43719b66fc970af37b82,môn giáo dục công dân,1,W02240N,false,pending_video_verification
+vsl-6c10bd7d007d5b239965,môn giáo dục thể chất,1,W02241,false,pending_video_verification
+vsl-27a8e0782901bc7dbf4a,môn khoa học,1,W02242,false,pending_video_verification
+vsl-1c2b8976858e70c145db,môn ngoại ngữ,1,W02246,false,pending_video_verification
+vsl-3151957c87f885c5bce9,môn sinh học,1,W02247,false,pending_video_verification
+vsl-ee26a1f9e1557423919c,môn tin học và công nghệ,1,W02249,false,pending_video_verification
+vsl-1a8880e118b98f8adc07,môn tự nhiên và xã hội,1,W02251,false,pending_video_verification
+vsl-995bc73f310f7b80e834,mõm,1,W02220,false,pending_video_verification
+vsl-05a7f84685093ffb10a9,mù chữ,1,D0038,false,pending_video_verification
+vsl-cbcb99ff1e08165be948,mùa thu,1,W02271,false,pending_video_verification
+vsl-915f320383a60f745eb6,múa lân,1,W02277,false,pending_video_verification
+vsl-25fb42b3639b186ae9fd,múa rối,1,W02273,false,pending_video_verification
+vsl-37c48b869189caba93d4,múa sạp,1,W02278,false,pending_video_verification
+vsl-2ba45d4f753adf28b639,măng,1,W02162,false,pending_video_verification
+vsl-da767c9c0ecfb7f46ebd,mĩ thuật,1,W02209,false,pending_video_verification
+vsl-396759f3e8a3241e8f07,mũi tên,1,D0219,false,pending_video_verification
+vsl-01bdcd97a418bcabdcd4,mũm mĩm,1,D0427,false,pending_video_verification
+vsl-7aca73457986cacb2d7a,mơ ngủ,1,W02255,false,pending_video_verification
+vsl-d54081354b09849f053b,mơ ước,1,W02256,false,pending_video_verification
+vsl-1593ba14b9054212b0d3,mạch lạc,1,W02112,false,pending_video_verification
+vsl-8654060fb9dd36e8510a,mạch máu,1,W02113,false,pending_video_verification
+vsl-de9779164b51b6cdfeed,mạng lưới,1,W02125,false,pending_video_verification
+vsl-46136cc743b067a66189,mạnh bạo (giống: mạnh dạn),1,W02129,false,pending_video_verification
+vsl-5916752d116a781fe19c,mạnh mẽ,1,W02131,false,pending_video_verification
+vsl-de4a56463b3e853e19c3,mất (chết) (chỉ người),1,D0252,false,pending_video_verification
+vsl-98b7448200d3515c812d,mất ngủ,1,W02182,false,pending_video_verification
+vsl-93d43cee6ca5b26c922c,mấy giờ?,1,W02196,false,pending_video_verification
+vsl-f7917461fbb052be7eba,mầm cây,1,W02180,false,pending_video_verification
+vsl-63358fb2dae293e078f6,mầm non,1,W02181,false,pending_video_verification
+vsl-c44ddc489c1aef3386b4,mẫu số,1,W02191,false,pending_video_verification
+vsl-03e41725f0c205ccd70d,mẫu số bé,1,W02192,false,pending_video_verification
+vsl-6c8154c314904bbe90d8,mẫu số chung,1,W02193,false,pending_video_verification
+vsl-62b778b62dd135398fb3,mẫu số lớn,1,W02194,false,pending_video_verification
+vsl-9f750a428d19fff56e75,mật ong,1,W02189,false,pending_video_verification
+vsl-00b8d3b27c1221addf06,mắc áo,1,W02155,false,pending_video_verification
+vsl-bae44e82e080d6622063,mắm,1,W02161,false,pending_video_verification
+vsl-8e01c3a9a43c185f4d37,mặc kệ,1,W02159,false,pending_video_verification
+vsl-1322ed3d576b70a7c62c,mặt,1,W02166,false,pending_video_verification
+vsl-021814db688ccced8cc5,mặt dài,1,W02175,false,pending_video_verification
+vsl-1d1674417a190b1a3c23,mặt nạ,1,W02173,false,pending_video_verification
+vsl-7012529345f07e7464d3,mặt vuông,1,W02172,false,pending_video_verification
+vsl-73603d6d149e5cfee3a2,mặt đất,1,W02171,false,pending_video_verification
+vsl-ee0baac724620038d2a8,mềm mại,1,W02204,false,pending_video_verification
+vsl-3b861c25dd96e5173ac1,mệt không?,1,D0370,false,pending_video_verification
+vsl-1e2923cc659a010d3299,mọc ria mép,1,D0283,false,pending_video_verification
+vsl-daa8f6721d1be93ba608,mọc râu,1,D0282,false,pending_video_verification
+vsl-d9668d1454d03d0ea49b,mọc tóc,1,D0281,false,pending_video_verification
+vsl-5a8fdc75f4b76813aa7f,mồ côi,1,W02229,false,pending_video_verification
+vsl-e42d1efb73aa891adb52,mồ côi cha mẹ,1,W02230,false,pending_video_verification
+vsl-117316edae3255b9d686,mồ hôi,1,W02231,false,pending_video_verification
+vsl-54b8e645736f897d3c86,mồ hôi nhễ nhại,1,D0197,false,pending_video_verification
+vsl-59f84ab8fb20a7c18b7a,mỗi,1,W02237,false,pending_video_verification
+vsl-3c00edf22f9dab8876c0,mộc nhĩ,1,W02234,false,pending_video_verification
+vsl-3115c71f0a66a2d7bcbc,một cặp,1,W02252,false,pending_video_verification
+vsl-1fe87d879e0a904c7023,một là,1,D0146,false,pending_video_verification
+vsl-0ccf1e2a6cdb3ff499be,một mình,1,W02254,false,pending_video_verification
+vsl-c857f58e696828bd7a08,một tiết học,1,D0409,false,pending_video_verification
+vsl-dfc8a1716c6a5ff89897,một đôi,1,W02253,false,pending_video_verification
+vsl-8ea3014c5e0aadf51d45,mớ rau,1,W02262,false,pending_video_verification
+vsl-ffc4039121908f46d8b4,mở cửa,1,W02258,false,pending_video_verification
+vsl-0077baa242b2dcdaf668,mở màn,1,W02260,false,pending_video_verification
+vsl-66a257574546c49bd556,mở rộng,1,W02261,false,pending_video_verification
+vsl-0248dd0b6c39bd363280,mở đầu,1,W02259,false,pending_video_verification
+vsl-589897d4fd53879787f1,mục lục,1,W02279,false,pending_video_verification
+vsl-8a700f50968fd386d1ed,mục tiêu,1,D0422,false,pending_video_verification
+vsl-48c5457d99a5272bfa7a,mục đích,1,W03355,false,pending_video_verification
+vsl-d4435fedc17d0a12abad,mứt,1,W02283,false,pending_video_verification
+vsl-7be2209426f081b75690,mỳ vằn thắn,1,D0081B,false,pending_video_verification
+vsl-50d3260c534c62554ffd,nam bán cầu,1,W02284,false,pending_video_verification
+vsl-ab96450cca7a9e6dbf03,nam định,1,W02285,false,pending_video_verification
+vsl-bc7daf3bfaebd850d55d,nghiêm túc,1,W02374,false,pending_video_verification
+vsl-4bdd0322ef8a76d22a47,nghiên cứu,1,W02367,false,pending_video_verification
+vsl-228a1e4a538ab864eb05,nghiến răng,1,W02375,false,pending_video_verification
+vsl-bd5e01e3ab2e90549127,nghênh nghênh (đầu),1,D0459,false,pending_video_verification
+vsl-821be24663f6130f6914,nghĩ,1,W02368,false,pending_video_verification
+vsl-6493556c1b2467082efd,nghĩa bóng,1,W02370,false,pending_video_verification
+vsl-fba6cb33d5bef2c0ab76,nghĩa trang,1,W02371,false,pending_video_verification
+vsl-388e77fe4ef6e30f8f29,nghĩa đen,1,W02366,false,pending_video_verification
+vsl-21e9d68651af93d3e9e0,nghẹn ngào,1,W02355,false,pending_video_verification
+vsl-7ba982e359e38e9e79f5,nghệ sĩ,1,W02356,false,pending_video_verification
+vsl-6db11f2bcf23f14a8935,nghỉ hưu,1,W02362,false,pending_video_verification
+vsl-3c75c9a58d0d5d836a94,nghỉ mát,1,W02363,false,pending_video_verification
+vsl-9ea4c26f68c030e3252d,nghị lực,1,W02369,false,pending_video_verification
+vsl-e89c3c11871464906b92,ngoan ngoãn,1,W02381,false,pending_video_verification
+vsl-97e5dcc3e1650a71c85b,ngon giấc,1,W02388,false,pending_video_verification
+vsl-1fda42a44f63bd3d28ed,ngon miệng,1,W02390,false,pending_video_verification
+vsl-5b3fec9d61a00ccf0358,ngoại hình,1,W02378,false,pending_video_verification
+vsl-f9cccf4a539926d00630,ngoắc tay,1,W02382,false,pending_video_verification
+vsl-3112ed1755b828738591,ngoằn ngoèo,1,W02385,false,pending_video_verification
+vsl-370f86c7ffb9b168bed9,ngoặc kép,1,W02384,false,pending_video_verification
+vsl-5d1a2b5588b24c928fd2,nguyên nhân,1,W02407B,false,pending_video_verification
+vsl-ae68a023ad414701063f,nguyện vọng,1,W02418,false,pending_video_verification
+vsl-b5527a26923176910988,nguệch ngoạc,1,W02403,false,pending_video_verification
+vsl-02ce0ebfafb2d2d19924,nguồn gốc,1,W02404,false,pending_video_verification
+vsl-6ac673a9d16d378942f2,nguội,1,D0383,false,pending_video_verification
+vsl-d37451e83e9fe1d78208,ngà voi,1,W02324,false,pending_video_verification
+vsl-b306a701b5cad3b3a02d,ngành nghề,1,W02333,false,pending_video_verification
+vsl-58fcbbe342abb7204998,ngày khai trường,1,W02327B,false,pending_video_verification
+vsl-8a5841654302fe5e3507,ngày nhà giáo việt nam,2,W02328N | W02328T,false,pending_video_verification
+vsl-7fadbe054afdd7fd17fb,ngày đêm,1,W02334,false,pending_video_verification
+vsl-b1d19ac82ea6a5c8b71f,ngán,1,D0384,false,pending_video_verification
+vsl-c1e2c6e4fe2cf46473d6,ngâm hạt,1,W02346,false,pending_video_verification
+vsl-c245bc5add1936385042,ngân hàng,1,W02348,false,pending_video_verification
+vsl-7bf36043805ea895066d,ngây thơ,1,W02352,false,pending_video_verification
+vsl-4898a005c8cfa6db895e,ngói,1,W02387,false,pending_video_verification
+vsl-b32ec21356f8754cffee,ngón tay,1,W02393,false,pending_video_verification
+vsl-4aeffc01fd03975c7e2a,ngô,2,W02395N | W02395T,false,pending_video_verification
+vsl-d5cf6ca411f3a0876f04,ngôn ngữ,1,W02401,false,pending_video_verification
+vsl-4e4a7903313034f42c73,ngõ,1,W02391,false,pending_video_verification
+vsl-2db9eeb3da6ea50d6312,ngăn cản,1,W02340,false,pending_video_verification
+vsl-56bd6e4fe13c4a097243,ngước nhìn,1,W02422,false,pending_video_verification
+vsl-23fe177bba3695154d7a,người gửi,1,W02428,false,pending_video_verification
+vsl-a22306f3c87670486021,người máy,1,W02432,false,pending_video_verification
+vsl-61138fd91f58f10cdb2b,người nhận,1,W02433,false,pending_video_verification
+vsl-1da9f442cb1b6b09162c,người nước ngoài,1,D0013,false,pending_video_verification
+vsl-a2ed65e2ef24de82d824,ngưỡng mộ,1,W02440,false,pending_video_verification
+vsl-5e31c3a4bb67178c5f2c,ngược lại,1,W02424,false,pending_video_verification
+vsl-6e0b1a786858b763d754,ngược đãi,1,W02423,false,pending_video_verification
+vsl-e11c60d8fb2174485424,ngạc nhiên,1,W02332,false,pending_video_verification
+vsl-a98a0e1e60273565d13c,ngẩng đầu,1,W02349,false,pending_video_verification
+vsl-a9c8c584620da297ba1f,ngập ngừng,1,D0201,false,pending_video_verification
+vsl-1c52e0df586bcd032834,ngắn,1,W02343,false,pending_video_verification
+vsl-74fbd226bc5af21c4b00,ngắn nhất,1,W02344,false,pending_video_verification
+vsl-960f56c1ed5f03e83d38,ngắt hoa,2,W02345B | W02345N,false,pending_video_verification
+vsl-5f77a67359b3bec07a11,ngộ nghĩnh,1,W02399,false,pending_video_verification
+vsl-53564293998cadac385b,ngộ độc,1,W02398,false,pending_video_verification
+vsl-a68d95cd425f73172cc5,ngừng lại,1,D0179,false,pending_video_verification
+vsl-646cf6f9cee8b0ec5308,ngữ điệu,1,W02421,false,pending_video_verification
+vsl-bd35503db0229f95c58d,nhanh nhẹn,1,W02462,false,pending_video_verification
+vsl-c8fbe519b1748558b3e5,nhi đồng,1,W02495,false,pending_video_verification
+vsl-4d69094a1f3055a49ba6,nhiều hơn,1,W02498,false,pending_video_verification
+vsl-0bb49ac5656dbbfee9f8,nhiều vô cùng,1,W03865,false,pending_video_verification
+vsl-ed7fb1382d0ef8a92338,nhu cầu,1,W02508,false,pending_video_verification
+vsl-32fb03bbd1e91fd4386e,nhà bác học,1,W02441,false,pending_video_verification
+vsl-150baa409417d39746ba,nhà cửa,1,W02443,false,pending_video_verification
+vsl-07e79986e5e759e07bfe,nhà kho,1,D0379,false,pending_video_verification
+vsl-89113e15772ac06701a1,nhà thơ,1,W02449,false,pending_video_verification
+vsl-b70c0d419d76e0343343,nhà thờ,1,W02450,false,pending_video_verification
+vsl-516b6d2313df3671d198,nhà thờ đức bà,1,W02451,false,pending_video_verification
+vsl-50a3f7180778f0a66e3f,nhà toán học,1,W02453,false,pending_video_verification
+vsl-5d09673e58aef58d95aa,nhà tù,1,W02456,false,pending_video_verification
+vsl-fa3d3e76a72fb4f370e6,nhào lộn,1,W02463,false,pending_video_verification
+vsl-5e1fe22211bb31f7f6a3,nhát gan,1,W02464,false,pending_video_verification
+vsl-6da7014b02e4bd84dca8,nháy mắt,1,W02468,false,pending_video_verification
+vsl-dc3e72586da94e36cfda,nhân chứng,1,W02477,false,pending_video_verification
+vsl-b69ac980c3425881c693,nhân cách hoá,1,W02476,false,pending_video_verification
+vsl-17c8e5518437ad09af73,nhân dân,1,W02478,false,pending_video_verification
+vsl-3b3dc410e390723dce75,nhân viên,1,D0004,false,pending_video_verification
+vsl-07b9b92749ca6180a719,nhân vật,1,W02481,false,pending_video_verification
+vsl-95ea0ff3d4e6260f2c61,nhóm,1,W02503,false,pending_video_verification
+vsl-28a33b0ea04d97a2ac4f,nhõng nhẽo,1,D0265,false,pending_video_verification
+vsl-d631f359bbf91dae6453,nhút nhát,1,D0453,false,pending_video_verification
+vsl-8cce58375ea1ecba78ca,nhăn mặt,1,W02471,false,pending_video_verification
+vsl-a64ab08a84ef7687a90f,như hình với bóng,1,W02513,false,pending_video_verification
+vsl-dd35b68dba90a6993ee5,nhược điểm,1,W02514,false,pending_video_verification
+vsl-14adb86c002353c9156f,nhạy cảm,1,W02469,false,pending_video_verification
+vsl-b0f90d74e6e7768de222,nhảy bao bố,1,D0292,false,pending_video_verification
+vsl-2eca56dae6b675c6a2a0,nhảy cao,1,W02465,false,pending_video_verification
+vsl-d195e02f66b6d09d319a,nhảy dù,1,W02466,false,pending_video_verification
+vsl-075db7b0d2e985fb5fb2,nhảy lò cò,1,D0293,false,pending_video_verification
+vsl-9ea7cca5d25ef3ba49bc,nhấn mạnh,1,D0092,false,pending_video_verification
+vsl-2a1470be2d907ade3b7b,nhấp nháy,1,W02488,false,pending_video_verification
+vsl-8184710dfef821b2c12c,nhận,1,W02485,false,pending_video_verification
+vsl-98a1566337b5cd2c3de8,nhận hàng,1,W02483,false,pending_video_verification
+vsl-ba4c8f269336f4c708f0,nhận thức,1,W02486,false,pending_video_verification
+vsl-7832c6c99c64e5bfc531,nhận xét,1,W02487,false,pending_video_verification
+vsl-32fdd9b2cd928686c238,nhập khẩu,1,D0014,false,pending_video_verification
+vsl-efc1f0ec53e5e479d2d0,nhắc nhở,1,W02470,false,pending_video_verification
+vsl-5a3df880cbea4da5d79f,nhắm mắt,1,D0433,false,pending_video_verification
+vsl-e5b708d82df95b4cce08,nhẹ hơn,1,W02493,false,pending_video_verification
+vsl-83eb2fe50eb49904ffd0,nhẹ nhàng,1,W02494,false,pending_video_verification
+vsl-6e0878825634078c22b3,nhọn,1,W02504,false,pending_video_verification
+vsl-cb4e76d3c092895f09be,nhọn hoắt,1,W02505,false,pending_video_verification
+vsl-008195d34809e0774e67,nhỏ hơn,1,W02501,false,pending_video_verification
+vsl-aa1186a53854e73dd24a,nhỏ tuổi,1,W02502,false,pending_video_verification
+vsl-8250535bc59edddefd4e,nhỏ/ nhỏ bé,1,W02500,false,pending_video_verification
+vsl-0faa8918f07ae52327c1,nhổ củ cải,1,W02506,false,pending_video_verification
+vsl-3a202f06e9a3f9ca29ed,nhổ lông mày,1,D0275,false,pending_video_verification
+vsl-4c8acda3964bbbf74def,nhổ râu,1,D0274,false,pending_video_verification
+vsl-40bcc08ae3f5ff2cf08b,nhổ răng,1,D0277,false,pending_video_verification
+vsl-77e60d658ba6d2ca87aa,nhổ tóc,1,D0273,false,pending_video_verification
+vsl-ab2dd9ccdc6d39d8ac50,nhộn nhịp (đông người),1,D0301,false,pending_video_verification
+vsl-313be9473bb1ecd65efe,nhụy hoa,1,W02512,false,pending_video_verification
+vsl-dca800e518537ee0ef1a,ninh bình,1,W02518,false,pending_video_verification
+vsl-aca350852d848c33ed8d,ninh thuận,1,W02519,false,pending_video_verification
+vsl-27edb282aabb37b3adbe,niềm vui,1,W02517,false,pending_video_verification
+vsl-183c651ebf704687243b,náo nức,1,W02291,false,pending_video_verification
+vsl-300dd7801c62bfb57cd7,"náo động, náo nhiệt",1,W02290,false,pending_video_verification
+vsl-13aef193634e895c371a,nén,1,W02305,false,pending_video_verification
+vsl-33a7860c0e5cc0ce09b2,nét mặt,1,W02311,false,pending_video_verification
+vsl-cfd14365643395ef309b,nóc nhà,1,W02522,false,pending_video_verification
+vsl-be19c5903a98bb021f37,nói chuyện,1,W02523,false,pending_video_verification
+vsl-48b04baf545de9257272,nói leo,1,W02526,false,pending_video_verification
+vsl-461d23e080560679c007,nói ngập ngừng,1,D0202,false,pending_video_verification
+vsl-2baba7b356dff99ce9a0,nóng tính,1,D0125,false,pending_video_verification
+vsl-c01392949dde2b5f0ce0,nô lệ,1,W02528,false,pending_video_verification
+vsl-981618daa69d3ea25ea9,nông nghiệp,1,W02544,false,pending_video_verification
+vsl-71cf62c6693428cef4f3,nông thôn,1,W02546,false,pending_video_verification
+vsl-f30ddcb2dd1db2452676,núi cao,1,D0193,false,pending_video_verification
+vsl-6d124e3f5c03b71d712e,núi lửa,1,W02551,false,pending_video_verification
+vsl-4d07876e1f725134ab85,núi thấp,1,D0194,false,pending_video_verification
+vsl-095a5a1c1286294a3ed5,năm là,1,D0150,false,pending_video_verification
+vsl-330ad69250d149f6dfb9,năn nỉ,1,D0261,false,pending_video_verification
+vsl-84607f72674ba595099b,năng khiếu,1,W02297,false,pending_video_verification
+vsl-0d9e2e881309758744a9,năng lực,1,W02298,false,pending_video_verification
+vsl-a60170e0fd2a93c9eeb0,nơ,1,W02549,false,pending_video_verification
+vsl-3796493a2ec80776cc5d,nơi chốn,1,W02550,false,pending_video_verification
+vsl-53240e523240e23ede6d,nước mắt,1,W02554,false,pending_video_verification
+vsl-289958f2d1281b7c55b2,nướng,1,D0374,false,pending_video_verification
+vsl-a4e7d55a6204b4d0f0b6,nạn nhân,1,W02289,false,pending_video_verification
+vsl-8ecd54fcde890d443339,nấu nướng,1,D0104,false,pending_video_verification
+vsl-dfd2e687718547a836e6,nắp,1,W02302,false,pending_video_verification
+vsl-e1d07879d66fcc12cff8,nặng hơn,1,W02301,false,pending_video_verification
+vsl-33fc82451da6e0302352,nẻ,1,W02304,false,pending_video_verification
+vsl-f091f1b987e8bc8fb41e,nếm,1,W02321,false,pending_video_verification
+vsl-1b902465a8e0d00d92b2,nến,1,W02323,false,pending_video_verification
+vsl-e4d531f12b0d93215f6a,nền nhà,1,W02322,false,pending_video_verification
+vsl-74a96e890496e2c51dc9,nỏ,1,W02521,false,pending_video_verification
+vsl-fb330bbb1b0ba011c3b2,nối tiếp,1,W02539,false,pending_video_verification
+vsl-f73e853bbad5e9d3f56f,nốt ruồi,1,W02548,false,pending_video_verification
+vsl-4bc877ba69dedf00e612,nồi cơm điện,1,W02534,false,pending_video_verification
+vsl-8be5b151b269c61a3bfa,nổ lốp xe,1,W02529,false,pending_video_verification
+vsl-0c1566cb9bc059a0922d,nổ mìn,1,W02530,false,pending_video_verification
+vsl-cfdb102b2df950c25c67,nổ súng,1,W02531,false,pending_video_verification
+vsl-be77530d9587bbc749d7,nổi bật,1,W02535,false,pending_video_verification
+vsl-e58f4d3069e62560e642,nổi da gà,1,D0018,false,pending_video_verification
+vsl-0e20e77c84d697f7ae82,nổi dậy,1,W02536,false,pending_video_verification
+vsl-62395e69cd12d2856053,nổi giận,1,W02537,false,pending_video_verification
+vsl-ab352de0336b1ab869c2,nổi nóng,1,W02538,false,pending_video_verification
+vsl-30957ea0bd2184d33233,nội quy,1,W02541,false,pending_video_verification
+vsl-31e9e08cbff49f9aa409,nội tiếp,1,W02542,false,pending_video_verification
+vsl-4186fccd2aa516f7f91c,nứt nẻ (ruộng),1,D0222,false,pending_video_verification
+vsl-65c74c15a686187bb6bb,o,1,D0506,false,pending_video_verification
+vsl-c3a8fd5ee96b67f93604,oa-sinh-tơn,1,W02556,false,pending_video_verification
+vsl-3714ef2ed9df85c03159,pa-ki-xtan (nước pa-ki-xtan),1,W02582,false,pending_video_verification
+vsl-1670f2e42fefa5044d59,paris,1,W00852,false,pending_video_verification
+vsl-cedd7607309d83b55584,pha chế,1,W02585,false,pending_video_verification
+vsl-ecd5d356c484e1e41888,pha cà phê,1,W02584,false,pending_video_verification
+vsl-5744b4fc2ab4aba2f751,pha lê,1,W02586,false,pending_video_verification
+vsl-f7d39b5d2b23f7eeaf6d,phao,1,W02602,false,pending_video_verification
+vsl-8e7f6352dd71143ac9d1,phi ngựa,1,W02647,false,pending_video_verification
+vsl-3621e473f258c390ea0c,phi tiêu,1,W02648,false,pending_video_verification
+vsl-4ab98e346291e10c5904,phim tài liệu,1,W02657,false,pending_video_verification
+vsl-556fc0430efe139b7c23,phiền hà,1,D0211,false,pending_video_verification
+vsl-3dac6d55e2f0a6fddb42,phong cách,1,W02661,false,pending_video_verification
+vsl-a4c3ba343ce5e380f982,phong kiến,1,W02662,false,pending_video_verification
+vsl-75fbd9e2b759fe8c567f,phong toả,1,D0475,false,pending_video_verification
+vsl-4d3aae3925a11080ff06,phong trào,1,W02665,false,pending_video_verification
+vsl-1d04decd5edd16a5a1d7,phong tục,1,W02666,false,pending_video_verification
+vsl-81c2a12fd3e240210ad7,phun nước,1,W02710,false,pending_video_verification
+vsl-71b73ce912a4f8550f2d,pháo hoa,1,W02605,false,pending_video_verification
+vsl-d05da77f381d61136a9b,pháo sáng,1,W02606,false,pending_video_verification
+vsl-926339323ee581fd9f3a,pháo đài,1,W01079,false,pending_video_verification
+vsl-ad180296402554abbacd,phát hiện,1,W02610,false,pending_video_verification
+vsl-6af65431867fa941f8a2,phát động,1,W02609,false,pending_video_verification
+vsl-0828ccec5905cb3f02b6,phân biệt,1,D0322,false,pending_video_verification
+vsl-43634100a4c21ecb0e15,phân công,1,W02614,false,pending_video_verification
+vsl-9c7fb2fb6cdaf97461ab,phân loại,1,W02615,false,pending_video_verification
+vsl-a6a3eed9f1d087792afe,phân số,1,W02616,false,pending_video_verification
+vsl-741c066364e4ef5d3d63,phân số thập phân,1,W02618,false,pending_video_verification
+vsl-54ea7aef53813b7d2e15,phân số tối giản,1,W02619,false,pending_video_verification
+vsl-70311eb1c4535fdf9fe4,phân tích,1,W02620,false,pending_video_verification
+vsl-1f2b35d7dfdde13a2caf,phân vân,1,D0227,false,pending_video_verification
+vsl-d402e11381d3a2dcdc71,phép mầu,1,W02640,false,pending_video_verification
+vsl-440763e9d8ae1c1c6a1b,phép tính,1,W02641,false,pending_video_verification
+vsl-6a696d2df318406e2c29,phê bình,1,W02643,false,pending_video_verification
+vsl-5f3a2129b4d3c9cf17e5,phích nước,1,W02649,false,pending_video_verification
+vsl-adbada92a7232dcd1f15,phòng bệnh,1,W02668,false,pending_video_verification
+vsl-2ebce43e0c70ed64ca23,phòng chống,1,W02669,false,pending_video_verification
+vsl-2c9fef873094f3fec129,phòng chức năng,1,W02670,false,pending_video_verification
+vsl-89a246682fb253288efd,phòng học tin học,1,W02675,false,pending_video_verification
+vsl-73d5404857d162d16052,phòng máy tính,1,W02677,false,pending_video_verification
+vsl-882feed19f2630d2170c,phòng mĩ thuật,1,W02678,false,pending_video_verification
+vsl-7b479528d2a6f1481fae,phòng thí nghiệm,1,W02679,false,pending_video_verification
+vsl-1b9b0333bf9f7ec9916a,phòng thư viện,1,W02680,false,pending_video_verification
+vsl-291647dd702f262e0d21,phòng y tế,1,W02682,false,pending_video_verification
+vsl-33b5f33cb69426530646,phòng âm nhạc,1,W02667,false,pending_video_verification
+vsl-8bbfce1f0d6eaa9901df,phòng đa năng,1,W02672,false,pending_video_verification
+vsl-9ff0fa1a5d6cba838e25,phô tô,1,W02685,false,pending_video_verification
+vsl-7fee2510a344aada7a96,phù hợp,1,W02699,false,pending_video_verification
+vsl-261633bcd11d42704cc8,phú thọ,1,W02702,false,pending_video_verification
+vsl-7f2acebfd792064cb3b8,phương hướng,1,W02713,false,pending_video_verification
+vsl-48cfd4a6f012cad0caae,phương pháp,1,W02714,false,pending_video_verification
+vsl-2470edad2b87d8188b41,phương tiện,1,W02715,false,pending_video_verification
+vsl-14b13655761b4a2c3246,phương tây,1,D0009,false,pending_video_verification
+vsl-2c170cebd96848039ebe,phương đông,1,D0010,false,pending_video_verification
+vsl-9e074b713d03e1589ac2,phản xạ,1,W02600,false,pending_video_verification
+vsl-b44745a87bb00ab98635,phản động,1,W02598,false,pending_video_verification
+vsl-5dc6088a9dd847c69a95,phấn trang điểm,1,W02634,false,pending_video_verification
+vsl-24fb2fdd2a1d41349f23,phấn đấu,1,W02631,false,pending_video_verification
+vsl-e9e73342bfacd2135fce,phấp phới,1,W02635,false,pending_video_verification
+vsl-6d5d8886af4953f213ae,phần trăm,1,W02628,false,pending_video_verification
+vsl-4575c1f63e8f5b45de60,phẫu thuật bụng,1,D0365,false,pending_video_verification
+vsl-f5cbdd5900bc0611af81,phẫu thuật chân,1,D0361,false,pending_video_verification
+vsl-34ca50bb08f2e496200a,phẫu thuật cổ,1,D0364,false,pending_video_verification
+vsl-75beb758e8294586c6f6,phẫu thuật mũi,1,D0363,false,pending_video_verification
+vsl-2dcb53479f134a4d7a09,phẫu thuật mắt,1,D0362,false,pending_video_verification
+vsl-21f9285757b84cda69bf,phẫu thuật tay,1,D0360,false,pending_video_verification
+vsl-1443e47cd947b8ef0382,phật (tượng),1,W02637,false,pending_video_verification
+vsl-963825983da025b739d8,phễu,1,W02644,false,pending_video_verification
+vsl-808e0df8dbb3689db3b1,phố,1,W02689,false,pending_video_verification
+vsl-ba98070c781bdeb087f1,phố cổ,1,W02690,false,pending_video_verification
+vsl-c5b706f5cb256068ea35,phố cổ hội an,1,W02691,false,pending_video_verification
+vsl-a44d11cb23985e8a0c2d,phổ biến,1,W02686,false,pending_video_verification
+vsl-211a8dc32cdec08cb444,phụ huynh,1,W02704,false,pending_video_verification
+vsl-191a4d06c25b36c7a9c9,phụ thuộc,1,D0352,false,pending_video_verification
+vsl-1c09ac18da0bebd70a0a,phục hồi,1,W02707,false,pending_video_verification
+vsl-9a9013b015e11ae1057b,phủ nhận,1,W02701,false,pending_video_verification
+vsl-9a3bf4dc2512dd7322b4,phức tạp,1,W02712,false,pending_video_verification
+vsl-354a4678ba9f3a65ac74,pi-a-nô (dương cầm),1,W02718,false,pending_video_verification
+vsl-61c1bfbd15309fa1cd09,pê-ru (nước pê-ru),1,W02583,false,pending_video_verification
+vsl-8e35c2cd3bf6641bdb0e,q,1,D0510,false,pending_video_verification
+vsl-ebfdf66c6f94f8374718,quan (chức vụ),1,D0233,false,pending_video_verification
+vsl-099327d6465b09809b47,quan hệ,1,W02763,false,pending_video_verification
+vsl-058300d0e0962f0235d6,quan hệ từ,1,D0231,false,pending_video_verification
+vsl-fe832bc5112951dd0759,quan sát,1,D0256,false,pending_video_verification
+vsl-c33221deec367597cb3f,quan trọng,1,W02766,false,pending_video_verification
+vsl-dbc25d63f85449db9d69,quan tâm,1,W02765,false,pending_video_verification
+vsl-a696057a0e407be6e93e,quan điểm,1,W02762,false,pending_video_verification
+vsl-61e9679e84808ba7d96f,quang hợp,1,W02769,false,pending_video_verification
+vsl-440f61e26631c8642a91,quay cóp,1,W02778,false,pending_video_verification
+vsl-4480fb249f41aab89de3,quay phim,1,W02779,false,pending_video_verification
+vsl-cb7d4264cee820d41dce,quy nhơn,1,D0016,false,pending_video_verification
+vsl-a75da821416ffd24909c,quy nạp,1,W02810,false,pending_video_verification
+vsl-07a5ed1797ffd207040d,quy tắc,1,W02811,false,pending_video_verification
+vsl-53bb705cf8b62f028a7e,quy định,1,W02808,false,pending_video_verification
+vsl-789527bdb555b485bff1,quy đồng mẫu số,1,W02809,false,pending_video_verification
+vsl-a51f96d27a5a45223183,quyên góp,1,D0334,false,pending_video_verification
+vsl-52081f180f5da62c3feb,quyến luyến,1,D0164,false,pending_video_verification
+vsl-55f14a72e6a2a2b8b1f1,quà,1,W02780,false,pending_video_verification
+vsl-a6c86e9e5777693ed5f0,quàng khăn,1,W02771,false,pending_video_verification
+vsl-2bf1fc4f3c95df1205fa,quá cảnh,1,W02761,false,pending_video_verification
+vsl-8ed067e6c0e4b43e8e74,quát mắng,1,W02776,false,pending_video_verification
+vsl-f763d305fa41d1ba3166,quân đội,2,W02784B | W02784N,false,pending_video_verification
+vsl-7e4a8d5fd3657a050c04,quét dọn,1,W02794,false,pending_video_verification
+vsl-8c508bdc544bb8604d9e,quên,1,W02798,false,pending_video_verification
+vsl-39378a8f878649d67374,quý giá,1,W02812,false,pending_video_verification
+vsl-d0e5ee53d310ea93d466,quý hiếm,1,W02816,false,pending_video_verification
+vsl-0d316c241e7d0db4f8ca,quạt cây,1,W02777,false,pending_video_verification
+vsl-a7db37afb0cb60da8122,quạt treo tường,1,W02783,false,pending_video_verification
+vsl-60c6c48ed6f8c9428278,quả,1,W02721,false,pending_video_verification
+vsl-6e4807c2bff3ea40c762,quả bầu,1,W02722,false,pending_video_verification
+vsl-95f4c8cca64edd3ad268,quả bầu hồ lô,1,D0145,false,pending_video_verification
+vsl-264e2280aa354699f72e,quả chanh,1,W02728,false,pending_video_verification
+vsl-a3eab7f74ca9d5c156bf,quả gấc,1,W02739,false,pending_video_verification
+vsl-9df020549b6d446c2ccb,quả hồng,1,W02740,false,pending_video_verification
+vsl-13e173fc740f2d847cd2,quả hồng xiêm,1,W02741,false,pending_video_verification
+vsl-1a2a6d998a8b2fc0ac7d,quả mướp,1,W02746,false,pending_video_verification
+vsl-73962a7f0928638a1bc5,quả na,1,W02747,false,pending_video_verification
+vsl-f8303e4b5678bcd48a45,quả quýt,1,W02753,false,pending_video_verification
+vsl-c1a7410795fe67ed4cef,quả quất,1,W02752,false,pending_video_verification
+vsl-17a7a2335b3a3d6543ca,quả su su,1,W02756,false,pending_video_verification
+vsl-1506fe5579b7568ad09c,quả điều,2,W01211 | W01211N,false,pending_video_verification
+vsl-9e08cf6ce102105c68b0,quả đu đủ,2,W02737B | W02737N,false,pending_video_verification
+vsl-e06219811da9f2c79934,quả đất,1,W02734,false,pending_video_verification
+vsl-aac988754cedec10fbe5,quả địa cầu,1,W02735,false,pending_video_verification
+vsl-7316ffa51ad4052c4a89,quả ớt,1,W02751,false,pending_video_verification
+vsl-eb455cc417f99664dcd1,quảng bình,1,W02772,false,pending_video_verification
+vsl-71470dae70513f543a57,quảng cáo,1,W02773,false,pending_video_verification
+vsl-ebcd48101fc19a5beb98,quảng nam,1,W02781,false,pending_video_verification
+vsl-d493cd7e51adfbca15c3,quảng ngãi,1,W02774,false,pending_video_verification
+vsl-441134c12a3ea8271e4c,quảng trị,1,W02782,false,pending_video_verification
+vsl-835791818cf411f103ba,quần yếm,1,W02789,false,pending_video_verification
+vsl-9b9b9dc418342fb7da01,quốc ca,1,W02799,false,pending_video_verification
+vsl-ed9af55d0de660beacdf,quốc gia,1,W02800,false,pending_video_verification
+vsl-b0b291d0f5cfce86945e,quốc hội,1,W02801,false,pending_video_verification
+vsl-1746e11858aa6a8df1a2,quốc khánh,1,W02802,false,pending_video_verification
+vsl-6465cfa524891d4c1557,quốc tế,1,W02805,false,pending_video_verification
+vsl-f4e226e142ed89fb662a,quốc tử giám,1,W02807,false,pending_video_verification
+vsl-710ffa90ef23b9b5d85b,quỳ,1,W02815,false,pending_video_verification
+vsl-049dad4df2ac5e694f9f,ra lệnh,1,W02823,false,pending_video_verification
+vsl-bb68e6bda4c602551914,rau,1,W02835,false,pending_video_verification
+vsl-50caaef4516883076154,rau cải thảo,1,W02839,false,pending_video_verification
+vsl-5db465383d2e5612930e,rau diếp cá,1,D0329,false,pending_video_verification
+vsl-4b4737787a50b7a44bb6,rau dền,1,W02841,false,pending_video_verification
+vsl-9498a278489b0eb99003,rau ngò/rau mùi,1,D0330,false,pending_video_verification
+vsl-148d32dec1547b771f30,reo hò,1,W02855,false,pending_video_verification
+vsl-e9ecd4f10e3e99fd8c49,ria mép,1,D0289,false,pending_video_verification
+vsl-aee2b6000e5990cc9062,riêng biệt,1,W02860,false,pending_video_verification
+vsl-c5551cc048cf91e0bd8f,riêng tư,1,W02861,false,pending_video_verification
+vsl-399e46b20e7425f0a6c9,rong biển,1,W02867,false,pending_video_verification
+vsl-df604192b4a507a9070c,ru ngủ,1,W02876,false,pending_video_verification
+vsl-0751d5df824e6d6d51bc,ruộng bậc thang,1,W02878,false,pending_video_verification
+vsl-f3aa555133a6df3136f7,ruột già,1,W02879,false,pending_video_verification
+vsl-1aab6f0085466fd175c1,ruột non,1,W02880,false,pending_video_verification
+vsl-f2b08b64c6030e9684e1,rào chắn,1,W02832,false,pending_video_verification
+vsl-328a14ed0552c2848051,rách,1,W02828,false,pending_video_verification
+vsl-1007324fa7936531b88d,râu,1,W02851,false,pending_video_verification
+vsl-37894d4eabd06710e4f4,rèn luyện,1,W02854,false,pending_video_verification
+vsl-fd84c13b0ab7399bf2af,rèn sắt,1,W02853,false,pending_video_verification
+vsl-8addcbba4352285cfb2b,rình mò,1,W02862,false,pending_video_verification
+vsl-0f20a81c9362822a05d1,rìu,1,W02863,false,pending_video_verification
+vsl-4a0eb97363050ad96035,róc rách,1,W02865N,false,pending_video_verification
+vsl-fe21e309c68c83bb75aa,rón rén,1,W02866,false,pending_video_verification
+vsl-368a5045f7919d5a35d6,rõ ràng,2,W02864B | W02864T,false,pending_video_verification
+vsl-1ccb163a2f5281d4572a,rút gọn,1,W02883,false,pending_video_verification
+vsl-3cbbf83d57daf07a7e27,rút gọn phân số,1,W02884,false,pending_video_verification
+vsl-c0c39cb8fffe229ff7a2,răng cưa,1,W02849,false,pending_video_verification
+vsl-68e736ec9a26a6322e16,răng hô,1,D0278,false,pending_video_verification
+vsl-6070a7ca310185f637f8,răng khểnh,1,D0279,false,pending_video_verification
+vsl-44a1b90525ce6d0821d7,rơi,1,W02874,false,pending_video_verification
+vsl-3761ec40cd4c684232e2,rơm,1,W02875,false,pending_video_verification
+vsl-47c925481a9ca098dbd8,rơm rớm,1,W01297,false,pending_video_verification
+vsl-1e3e8a89ad962bd80b2b,rước đèn,1,W02895,false,pending_video_verification
+vsl-a39fcaba0616fea154e0,rạch,1,W02831,false,pending_video_verification
+vsl-6906a89b2b55927b02d0,rạp chiếu phim,1,W02833,false,pending_video_verification
+vsl-0434ad6f9120e00a818c,rắc rối,1,D0263,false,pending_video_verification
+vsl-73b23ad8236f79a3f984,rẽ phải,1,W02852,false,pending_video_verification
+vsl-915548830d49f8f2bda1,rế,1,W02859,false,pending_video_verification
+vsl-494017252b02276d11a9,rễ chùm,1,W02857,false,pending_video_verification
+vsl-0d613a928c7bb59814b5,rễ cây,1,W02856,false,pending_video_verification
+vsl-81bb16b3e0cbb8adf31e,rễ cọc,1,W02858,false,pending_video_verification
+vsl-1f98cb9084dc945bf3d4,rổ,1,W02870,false,pending_video_verification
+vsl-8beac6178d1c57213357,rộng lớn,1,W02872,false,pending_video_verification
+vsl-fcbf81846e4d45daee1a,rộng rãi,1,W02873,false,pending_video_verification
+vsl-15da08a3b365cbaed47b,rụng tóc (đt),1,W02877,false,pending_video_verification
+vsl-273ca20db4e8c3442a01,rừng rậm,1,W02893,false,pending_video_verification
+vsl-82c12c3b45be7d887330,rừng thưa,1,W02894,false,pending_video_verification
+vsl-53a15e3fa86b8f3717c1,rửa chân,2,D0412 | W02886,false,pending_video_verification
+vsl-25c888a4ae03fea35568,rửa tay,1,W02888,false,pending_video_verification
+vsl-043a718774c572bd8a25,s,1,D0512,false,pending_video_verification
+vsl-5acafae7716e71fa1bf9,sa mạc,1,D0191,false,pending_video_verification
+vsl-7d759c6ebbf474b9d633,sa thải,1,W01324,false,pending_video_verification
+vsl-f875510014ee6b9df937,san hô,1,W02903,false,pending_video_verification
+vsl-923c72cafd7703625db9,san sẻ,1,W02906,false,pending_video_verification
+vsl-f20f5b0dfb30b315a2ad,sao,2,W02919N | W02919T,false,pending_video_verification
+vsl-4e0f90c5fa3049da4d50,sao chép,1,W02921,false,pending_video_verification
+vsl-0b287bc211c65221a3ba,sapa,1,W02925,false,pending_video_verification
+vsl-4d979a41c054768840ab,say sưa,1,W02927,false,pending_video_verification
+vsl-cd0f8cd1388e9e8bae49,sinh hoạt,1,W02955,false,pending_video_verification
+vsl-e239b81e34479fd85685,sinh sống,1,W02957,false,pending_video_verification
+vsl-2229d5db886c37e4e248,sinh vật,1,W02960,false,pending_video_verification
+vsl-ce045a3009c05f72bfef,sinh động,1,W02954,false,pending_video_verification
+vsl-971281bfbcf260d083d3,siêng năng,1,W02948,false,pending_video_verification
+vsl-b973247deed83cd46329,siêu thị,1,W02951,false,pending_video_verification
+vsl-3a725c0085c6b614748e,siêu tốc,1,W02952,false,pending_video_verification
+vsl-63c35e43cec4b8d88261,siêu âm,1,W02949,false,pending_video_verification
+vsl-b49659a43b5a89435324,socola,1,D0406,false,pending_video_verification
+vsl-9eba12ac972f2245d31b,soi,1,W02962,false,pending_video_verification
+vsl-7bfbdd7e961b59cbfdb2,son môi,1,W02964,false,pending_video_verification
+vsl-731b62e5652b8f2d4cdf,sum họp,1,W03023,false,pending_video_verification
+vsl-e1bbbef985df0948d679,suy nghĩ,2,W03025N | W03025T,false,pending_video_verification
+vsl-60052fe1f97fc686cd1b,suỵt,1,D0071,false,pending_video_verification
+vsl-79657eb28e0cfbc7ef88,sách giáo khoa,1,W02901,false,pending_video_verification
+vsl-f448003234c653a86e7b,sách toán,1,W02902,false,pending_video_verification
+vsl-df3d29d0bacd57c5acf8,sáng chói,1,W02915,false,pending_video_verification
+vsl-46ee14ee663fe80d2f5d,sáng kiến,1,W02916,false,pending_video_verification
+vsl-2e21f16d0efa26b4612a,sáng tạo,1,W02918,false,pending_video_verification
+vsl-23d3791ed4fd759e49c9,sân chơi,2,W02936B | W02936T,false,pending_video_verification
+vsl-b011d2705fdf067ecd22,sân khấu,1,W02937,false,pending_video_verification
+vsl-81d3be147a3731f8a0c0,sân nhà,1,W02938,false,pending_video_verification
+vsl-f7a7a67adf28f2c00f97,sân vận động,1,W02941,false,pending_video_verification
+vsl-e1b060faf3185e7c1603,sâu,1,W02943,false,pending_video_verification
+vsl-2dc438016901d8dd33ab,sâu bọ,1,W02944,false,pending_video_verification
+vsl-c71affff3fa5f8e0b498,sâu răng,1,W02945,false,pending_video_verification
+vsl-808c7850171f77b59810,sâu thẳm,1,W02946,false,pending_video_verification
+vsl-6d1fd5060ad5d66fc123,sóc trăng,1,W02961,false,pending_video_verification
+vsl-ca4c733737e7612c7094,sóng biển,1,W02967,false,pending_video_verification
+vsl-7aeb53d71def32e5e1ba,sóng thần,1,W02968,false,pending_video_verification
+vsl-1b05616fcd973289b4f3,sông hồng,1,W03005,false,pending_video_verification
+vsl-44e8610e07ae75b8861a,súp,1,D0078,false,pending_video_verification
+vsl-fb2ea8dbb6ca0062a276,súp lơ,1,D0079,false,pending_video_verification
+vsl-7588190a22283573b0f3,săn bắn,1,W02929,false,pending_video_verification
+vsl-008ded04ad861b4ccb72,sĩ diện,2,W02947B | W02947N,false,pending_video_verification
+vsl-ef77002551ba70c6c91f,sĩ quan,1,W00590,false,pending_video_verification
+vsl-3fe2e1ca737291d4cb86,sơ đồ,2,W03010N | W03010T,false,pending_video_verification
+vsl-bdce70b9b6256fc9b316,sương gió,1,W03050,false,pending_video_verification
+vsl-2179e548e181c5be7b81,sườn,1,W03051,false,pending_video_verification
+vsl-4696596bf18a4b5a50b2,sản xuất,1,W02912,false,pending_video_verification
+vsl-894ed87f4434d893d151,sấm chớp,1,W02934,false,pending_video_verification
+vsl-722264705cce315dbce5,số bé,1,W02975,false,pending_video_verification
+vsl-6866a7cae7391dc97e53,số chín,1,W02981,false,pending_video_verification
+vsl-b65118f9a9f5cb284913,số chẵn,1,W02979,false,pending_video_verification
+vsl-cc2e28bbc43695129206,số la mã (toán học),1,D0224,false,pending_video_verification
+vsl-7c4becdedaea226f12a7,số liền sau,1,W02990,false,pending_video_verification
+vsl-6381a9d0bbb712cb3e5e,số liền trước,1,W02991,false,pending_video_verification
+vsl-24affd8935a9740180be,số lẻ,1,W02989,false,pending_video_verification
+vsl-84a9433030f483d13249,số lớn,1,W02992,false,pending_video_verification
+vsl-26aee6f268db012abee6,số đo,1,W02987,false,pending_video_verification
+vsl-eca01190c46eb02be877,sổ tay,1,W02974,false,pending_video_verification
+vsl-fb90c24e53683dfaa0f5,sổ điểm danh,1,W02972,false,pending_video_verification
+vsl-92a538b68afb1aacd31a,sổ đầu bài,1,W02970,false,pending_video_verification
+vsl-d3e925561bf66dc37cd2,sờ,1,D0434,false,pending_video_verification
+vsl-59a75d0efcff2c7483d7,sợi,1,W03014,false,pending_video_verification
+vsl-8bab5d55826e291c27e8,sợi chỉ,1,W03015,false,pending_video_verification
+vsl-586eb3628cf808fb6b90,sợi dây,1,W03016,false,pending_video_verification
+vsl-90501d373e2f9e0b48a1,sợi len,1,W03017,false,pending_video_verification
+vsl-0ea715d11a71bc2b532c,sụp đổ,1,D0205,false,pending_video_verification
+vsl-1d4a31861f51efb7256b,sừng,1,W03046,false,pending_video_verification
+vsl-e46a6ac4a86663e46c53,sừng bò,1,W03047,false,pending_video_verification
+vsl-39357021639a3c431636,sừng trâu,1,W03048,false,pending_video_verification
+vsl-f7dfeb93c30352a1de5c,sửa chữa,1,W03034,false,pending_video_verification
+vsl-58519651a04e12cb970b,sữa đặc,1,W03039,false,pending_video_verification
+vsl-84af18d8f75e1502a205,sự thật,1,W03031,false,pending_video_verification
+vsl-c4105bc1e4ca612b02d1,tai nạn giao thông,1,W03543,false,pending_video_verification
+vsl-6a53116d4c2bacdda1a1,tam giác,1,W03074,false,pending_video_verification
+vsl-76489a53a7b70263d044,tay chân sạch sẽ,1,D0432N,false,pending_video_verification
+vsl-dec06329e0dd43576181,tay phải,1,W03095,false,pending_video_verification
+vsl-b8750da0a648a41d6e77,tay trái,1,W03097,false,pending_video_verification
+vsl-83ef8b564c63a20814ea,tha,1,W03135,false,pending_video_verification
+vsl-f0cc3de8ec5831a9cda8,tha mồi,1,W03136,false,pending_video_verification
+vsl-46e1107101bb0b3fd06e,tha thứ,2,W03138N | W03138T,false,pending_video_verification
+vsl-cbe4b6117c7dcfcd505c,tham khảo,1,W03154,false,pending_video_verification
+vsl-4e2d42a9d6c435bcb409,tham lam,1,W03155,false,pending_video_verification
+vsl-2035d470f202ed07fcad,thanh hóa,1,W03168,false,pending_video_verification
+vsl-1bf01f4089b778d3ee62,thanh niên,1,W03171,false,pending_video_verification
+vsl-ba2270178fe5fa3f1363,theo dõi,1,W03228,false,pending_video_verification
+vsl-8e74c989e1591e349773,theo đuổi,1,W03229,false,pending_video_verification
+vsl-7466af6a71cdd947a395,thiu,1,D0382,false,pending_video_verification
+vsl-982d0aeab961d3b76718,thiên nhiên,1,W03256,false,pending_video_verification
+vsl-8661dbe7804732959ba3,thiên thần,1,W03258,false,pending_video_verification
+vsl-904b047ff8a7463e9c82,thiên đình,1,W03254,false,pending_video_verification
+vsl-ec9a8b3a8899c385e2a6,thiếp mời,1,W03263,false,pending_video_verification
+vsl-3cc24dc9f6a9cff04c11,thiếp đi,1,W03262,false,pending_video_verification
+vsl-f20f075ac938614425c7,thiếu nhi,1,W03269,false,pending_video_verification
+vsl-fa795e56626beda982a0,thiếu niên,1,W03270,false,pending_video_verification
+vsl-57671f41bfcb34ea1292,thiệt thòi,1,W03268,false,pending_video_verification
+vsl-d19dbd099f80956ad873,thoát hiểm,1,W03276,false,pending_video_verification
+vsl-213abc2d17a532dadcdf,thoăn thoắt,1,D0458,false,pending_video_verification
+vsl-154ab9ecefe42b76b088,thu mua,1,W03316,false,pending_video_verification
+vsl-0803efe3adad97e3ef9b,thu nhỏ,1,W03317,false,pending_video_verification
+vsl-24af331b6ebfcc11643b,thu thập,1,W03318,false,pending_video_verification
+vsl-534a5451fa39692d9463,thung lũng,1,D0477,false,pending_video_verification
+vsl-17c708f08952eb033bf1,thuyết phục,1,W03351,false,pending_video_verification
+vsl-0576e440c71b5c79b127,thuyết trình,1,W03352,false,pending_video_verification
+vsl-bce597abbfcc312b37e9,thuyền chài,1,W03347,false,pending_video_verification
+vsl-af4129c879aa68648967,thuyền rồng,1,W03349,false,pending_video_verification
+vsl-0dff0187a249e415316b,thuận lợi,1,W03326,false,pending_video_verification
+vsl-87c827b699c95b462cc6,thuốc bắc,1,W03333,false,pending_video_verification
+vsl-1438ad13e9a302579592,thuốc bổ,1,W03334,false,pending_video_verification
+vsl-180ebf2786429dbf0eb0,thuốc lá,1,W03335,false,pending_video_verification
+vsl-b20612360b4a88e5104b,thuộc lòng,1,W03338,false,pending_video_verification
+vsl-e177b9e3ca8f0c1c0bed,thuộc địa,1,D0353,false,pending_video_verification
+vsl-87b0a8dacd1b6cd61c2c,thuỷ thủ,1,W03341,false,pending_video_verification
+vsl-a68b980df605bc8c7e62,thành công,1,W03173,false,pending_video_verification
+vsl-becfc77474faf61eb13a,thành thạo,1,W03180,false,pending_video_verification
+vsl-b54dac60aba6e84a6e84,thành thị,1,W03181,false,pending_video_verification
+vsl-8d1ef0285d15ce446081,thành viên,1,W03185,false,pending_video_verification
+vsl-8872895663b77161ef16,thái nguyên,1,W03150,false,pending_video_verification
+vsl-ba9652f0a873557abc45,thái độ,2,W03148N | W03148T,false,pending_video_verification
+vsl-58ce996c4521749366bd,thám tử,1,W03160,false,pending_video_verification
+vsl-6b1f51e42969aa3c7626,thán phục,1,W03164,false,pending_video_verification
+vsl-2abd9d81f599c479c29f,thánh gióng,1,D0480,false,pending_video_verification
+vsl-c82035681ab0f1bcccb6,thánh địa mỹ sơn,1,W03186,false,pending_video_verification
+vsl-925b57bc92835f0f2c95,tháo gỡ,1,W03191,false,pending_video_verification
+vsl-222f1f855dde7d7d6f06,tháp,1,W03192,false,pending_video_verification
+vsl-ae1e0fab135683975e40,tháp rùa,1,W03193,false,pending_video_verification
+vsl-5f9d0cbc5b00385cdd49,thâm quầng mắt,1,D0332,false,pending_video_verification
+vsl-ae6b7f293f933685364b,thân hình,1,W03205,false,pending_video_verification
+vsl-573c190c662f3f33d1e1,thân thiết,1,W03207,false,pending_video_verification
+vsl-b37f0daf193652db5c82,thân thiện,1,W03208,false,pending_video_verification
+vsl-a460567ada719153698c,thèm,1,D0026,false,pending_video_verification
+vsl-2764ae4fe82a552ac317,thèm rỏ dãi,1,D0027,false,pending_video_verification
+vsl-1fdf6e5c3d3d880b8039,thét,1,W03232,false,pending_video_verification
+vsl-072473fe24e38e7cb328,thêm,1,W03240,false,pending_video_verification
+vsl-f711080b70cb7efd2c14,thêu,2,W03242B | W03242N,false,pending_video_verification
+vsl-7e58cde6c217827f3841,thí nghiệm,1,D0094,false,pending_video_verification
+vsl-06e5fb06cefa9754fe74,thích nghi,1,W00653,false,pending_video_verification
+vsl-e63b2c44531bb207aae1,thím,1,W03272,false,pending_video_verification
+vsl-4c47095ad20922c00e20,thóc (gạo),1,W03278,false,pending_video_verification
+vsl-7e3e51845af30f039143,thông báo,1,W03285,false,pending_video_verification
+vsl-5f24f77f18ce9a0abda3,thông qua,1,W03289,false,pending_video_verification
+vsl-4458d45d029a26d7deea,thông thường,1,W03291,false,pending_video_verification
+vsl-24361da296d248402033,thù lao,1,W03319,false,pending_video_verification
+vsl-224c067f997b281f1c51,thùng,1,W03330,false,pending_video_verification
+vsl-05ee9528447f092e2d90,thúc đẩy,1,W03328,false,pending_video_verification
+vsl-96022cd4fb2944477665,thăng bằng,1,W03199,false,pending_video_verification
+vsl-ae0a3c09795943209e17,thăng long,1,D0244,false,pending_video_verification
+vsl-d309e29683ccf1127746,thư giãn,1,W03354,false,pending_video_verification
+vsl-7571a6216fc193b2e4cc,thương (số),1,W03370,false,pending_video_verification
+vsl-338f697d7676c2685d3b,thương mại,1,D0306,false,pending_video_verification
+vsl-a714e4f2e008979adc6e,thả mồi,1,W03140,false,pending_video_verification
+vsl-008e506b14f9ff12f3cc,thản nhiên,1,W03163,false,pending_video_verification
+vsl-793d2e59995a89f7c1f0,thấp hơn,1,W03215,false,pending_video_verification
+vsl-97c3849f7e9cd1f4affd,thấp nhất,1,W03216,false,pending_video_verification
+vsl-71a7ad517ff74caffe30,thần chết,1,W03210,false,pending_video_verification
+vsl-bc332f99a0e0dd937157,thần kinh,1,W03211N,false,pending_video_verification
+vsl-595cca6efbedd912135c,thần kì,1,W03445,false,pending_video_verification
+vsl-17471de4ef5a17da675c,thầy cúng,1,W03223,false,pending_video_verification
+vsl-3d9175a607d073c04eec,thập thò,1,W03219,false,pending_video_verification
+vsl-e7b8fb9b3f0cf6560763,thắc mắc,1,W03196,false,pending_video_verification
+vsl-fe21ebc8892cb9fc3174,thắng lợi,1,W03203,false,pending_video_verification
+vsl-c870da41f5e5bbae9c1b,thắp đèn,1,D0450,false,pending_video_verification
+vsl-252b8e211538a760bb89,thẳng hàng (toán học),1,W03201,false,pending_video_verification
+vsl-9a09363172d6b3488b75,thẳng tắp,1,W03202,false,pending_video_verification
+vsl-943a6f2558b6b7366d24,thẻ,1,W03230,false,pending_video_verification
+vsl-e8e8ceb848cb5ee3fdab,thế hệ,1,W03237,false,pending_video_verification
+vsl-27a934c1b87043e7eea6,thề,1,W03233,false,pending_video_verification
+vsl-2c4a683ccc5b5638416a,thềm,1,W03241,false,pending_video_verification
+vsl-c86aaed15e131106610b,thị giác,1,W03247,false,pending_video_verification
+vsl-a42cecb2ed3429eea386,thị lực,1,W03248,false,pending_video_verification
+vsl-4505eb39996b4d7e74a5,thịnh vượng,1,D0340,false,pending_video_verification
+vsl-c3f258cbd1ef799da67a,thối,1,D0381,false,pending_video_verification
+vsl-3afe48119992564f3fc4,thống nhất,1,W03294,false,pending_video_verification
+vsl-b0f3ca66c7ea0ad9b218,thống nhất đất nước,1,D0304,false,pending_video_verification
+vsl-459b09d6ddf9634d148f,thổ dân,1,W01943,false,pending_video_verification
+vsl-8ef92b4508cb68d63012,thổi bóng,1,W03282,false,pending_video_verification
+vsl-a3632ce12b1173a3656d,thổi kèn,1,W03283,false,pending_video_verification
+vsl-4ec49481da1fdf95dd4e,thờ cúng,1,W03299,false,pending_video_verification
+vsl-7bd2292a84acde8d867f,thời gian biểu,1,W03303,false,pending_video_verification
+vsl-e7edd7914b405e46fc48,thở,1,W03305,false,pending_video_verification
+vsl-fcdd68bfc34dcedaae41,thở dài,1,W03300,false,pending_video_verification
+vsl-11d4237992183edc7b55,thợ kim hoàn,1,W03306,false,pending_video_verification
+vsl-a969ed16cfbc9e994ffa,thợ rèn,1,W03308,false,pending_video_verification
+vsl-b0bef26e0840ab96058a,thợ thêu,1,W03309,false,pending_video_verification
+vsl-7f09fe51a599bcfd0c7c,thụ phấn (hoa),1,W03427,false,pending_video_verification
+vsl-0bc21063efb8dc31a51d,thủng,1,W03331,false,pending_video_verification
+vsl-a820ae58416d8b17e230,thủy chung,1,W03344,false,pending_video_verification
+vsl-45307f86bf9acc42b9e6,thực hiện,1,W03365,false,pending_video_verification
+vsl-d826a8fcc76966255bab,thực phẩm,1,W03366,false,pending_video_verification
+vsl-67cdc6122843d1909360,thực sự,1,W03367,false,pending_video_verification
+vsl-8c7d9b5d44116c57ee25,thực tế,1,W03368,false,pending_video_verification
+vsl-c0a6b86bb4ed867fb7ee,thực vật,1,W03369,false,pending_video_verification
+vsl-7b3b6b4e42a47fadb2b3,ti hí mắt,1,D0067,false,pending_video_verification
+vsl-7a305a93ce8a4e8c65c9,tia chớp,1,W03386,false,pending_video_verification
+vsl-e709051189eec9cd1e5c,tia nắng,1,W03387,false,pending_video_verification
+vsl-026cf02d887272ebeaa4,tia số,1,W03388,false,pending_video_verification
+vsl-303e0571c64010497bae,tin cậy,1,W03435,false,pending_video_verification
+vsl-3bcc877cbb318dd1f1f8,tin học,1,W03436,false,pending_video_verification
+vsl-64742dc7fce4190e7d76,tin nhắn,1,W03437,false,pending_video_verification
+vsl-8f6ea7853df4fb680f65,tin tức,1,W03438,false,pending_video_verification
+vsl-b8e87f0874653d7b2cf6,tinh trùng,1,W03342,false,pending_video_verification
+vsl-87cb8511588e74607a15,tiêu cực,1,W03424,false,pending_video_verification
+vsl-4f833e2f0e1ffa1893a8,tiêu diệt,1,W03425,false,pending_video_verification
+vsl-4f859f00d193d3fdbf37,tiêu hoá,1,W03426,false,pending_video_verification
+vsl-be1909ce2b41fc4f3e32,tiến bộ,1,D0315,false,pending_video_verification
+vsl-b8b979c4d7627b041307,tiến sĩ,1,W03405,false,pending_video_verification
+vsl-c02badcf55392d09f221,tiếng nói,1,W03414,false,pending_video_verification
+vsl-c5c11922e74fa9320b77,tiếp nhận,1,W03416,false,pending_video_verification
+vsl-b3f0e876e7c50421d69f,tiếp theo,1,W03418,false,pending_video_verification
+vsl-6f9f6f51afa975b2cdbb,tiếp thu,1,W03419,false,pending_video_verification
+vsl-456a8a072d0502f81626,tiếp tân,1,D0003,false,pending_video_verification
+vsl-61ec80c73c9e3367efaa,tiểu học,1,W03430,false,pending_video_verification
+vsl-7b7a40cfac5fc66da0a9,tiệc,1,W03393,false,pending_video_verification
+vsl-456f6fb2d0e9cc2029e6,tiện nghi,1,W03407,false,pending_video_verification
+vsl-d8646093295c4e6037a6,to lớn,1,W03466,false,pending_video_verification
+vsl-be1f7880783d7a59ed53,toa lét,1,W03469,false,pending_video_verification
+vsl-df58abf841011f6c3447,toàn cầu,1,W03476,false,pending_video_verification
+vsl-43b80335f76c66c7030f,trang phục,1,W03537,false,pending_video_verification
+vsl-1c301c4708c88e6b637d,trang trí,1,W03519,false,pending_video_verification
+vsl-bbc6bb4f2d045ece659c,trang điểm,1,D0445,false,pending_video_verification
+vsl-35cc972b869bc9ad36c5,tranh luận,1,W03542,false,pending_video_verification
+vsl-93a67127cf5cc8e5e80a,trao tặng,1,W03545,false,pending_video_verification
+vsl-b108df10a0acf3e0b538,tri kỉ,1,W03238,false,pending_video_verification
+vsl-599d19a6ae7ddbf73268,triều cường,1,W03585,false,pending_video_verification
+vsl-09c92e85182d21b6ddc9,triều đình,1,W03587,false,pending_video_verification
+vsl-c74b300009108cb001f5,triệu phú,1,W00069,false,pending_video_verification
+vsl-d1bed3163b1a82ba4146,trong khoảng,1,D0290,false,pending_video_verification
+vsl-38c2f4968ac0e4960aa5,trong ngoài,1,W03611B,false,pending_video_verification
+vsl-15f8fd4dfedec5bdd04f,trong sáng,1,W03606,false,pending_video_verification
+vsl-1d438e70fa1cebb12a09,trung thu,1,W03645B,false,pending_video_verification
+vsl-e899e9d97d130f3c4b48,trung tâm,1,W03643,false,pending_video_verification
+vsl-d2580ac11c6c8a025ee2,trung điểm,1,W03641,false,pending_video_verification
+vsl-07f57365b1aff7cb619b,trung ương,1,W03646,false,pending_video_verification
+vsl-fab60da8ab53344db7e1,truyền dịch,1,W03650,false,pending_video_verification
+vsl-4b4ab7705fed9f59c62c,truyền thông,1,W03653,false,pending_video_verification
+vsl-209356e770557f58c8e2,truyền thống,1,W03654,false,pending_video_verification
+vsl-ec6546383cbd0a503f7f,trà nóng,1,D0404,false,pending_video_verification
+vsl-7b891016ff4a5c63e5d9,trà sữa,1,D0405,false,pending_video_verification
+vsl-9ea323c9358a722c7d25,trà vinh,1,W03513,false,pending_video_verification
+vsl-c546cb87137ddbd60776,trà đá,1,D0403,false,pending_video_verification
+vsl-4f79e6567e7dc8f67c3e,tràn ngập (nước),1,W03536,false,pending_video_verification
+vsl-2f456c528591ec5c1656,trách mắng,1,W03514,false,pending_video_verification
+vsl-107db938ce6e442ccc64,trách nhiệm,1,W03528,false,pending_video_verification
+vsl-9b5d4af706b6bb238264,trái nghĩa,2,W03531N | W03531T,false,pending_video_verification
+vsl-ae08569ad4c23877fa46,tránh thai,1,W03544,false,pending_video_verification
+vsl-58fd2bbf9dfdcbfaf97e,trình bày,1,W03593,false,pending_video_verification
+vsl-56b86b8cef5b629544c6,trí khôn,1,W03576,false,pending_video_verification
+vsl-7ea2b7cf996e4cb20445,trói tay,1,W03603,false,pending_video_verification
+vsl-65a7b9223ba040e117d5,trông coi,1,W03621,false,pending_video_verification
+vsl-a5cf92477bea18996677,trông nhà,1,D0174,false,pending_video_verification
+vsl-351194fd48dd063ba234,trùm chăn,1,W03637,false,pending_video_verification
+vsl-218db03b592bce527922,trú mưa,1,W03632,false,pending_video_verification
+vsl-7c621c14a70d99507a04,trúng thưởng,1,W03648,false,pending_video_verification
+vsl-6f03ad5ed8f751671f60,trăng,1,W03550B,false,pending_video_verification
+vsl-186c8a0b85483a96f5e9,trưng bày,1,W03666,false,pending_video_verification
+vsl-8a5b9b9326613d0030c0,trưởng nhóm,1,W03676,false,pending_video_verification
+vsl-40ea31a82988d80e4f58,trưởng thành,1,W03350,false,pending_video_verification
+vsl-3fd2a881b7e6c8ad3433,trại giam,1,W03517,false,pending_video_verification
+vsl-6b8bc5da47a238a1ce38,trả (đt),1,W03525,false,pending_video_verification
+vsl-89f2a93e48dd0863e25a,trả thù,1,W04065,false,pending_video_verification
+vsl-ad506b273d8025f80ea6,trầm trồ,1,W03554,false,pending_video_verification
+vsl-32c2881871d589880ad0,trần quốc toản,1,W02806,false,pending_video_verification
+vsl-eebf956648df818f5658,trắng tay,1,W03553,false,pending_video_verification
+vsl-04d9b50400f08e04ab9a,trọng nam khinh nữ,1,W00728,false,pending_video_verification
+vsl-266b713066504a834340,trọng tài,1,W03614,false,pending_video_verification
+vsl-d2b33e00b3224616a0ce,trốn chạy,1,W03619B,false,pending_video_verification
+vsl-535f7919c7fcead4cd23,trốn tìm,1,D0291,false,pending_video_verification
+vsl-fa48629257c4a5d861e2,trộm cắp,1,W03618,false,pending_video_verification
+vsl-812a90aea3b921c8edae,trộn (đt),1,W03626,false,pending_video_verification
+vsl-b3731dddac53522cbcc6,trở thành,1,W03629,false,pending_video_verification
+vsl-7f33dc6068c89a97b31f,trục hoành,1,W03633,false,pending_video_verification
+vsl-e21a9fecd513c80ecaab,trục tung,1,W03634,false,pending_video_verification
+vsl-fa9b07c8510a74822cda,trục xuất,1,W03635,false,pending_video_verification
+vsl-2a123b5fe58cce47bd7d,trụi lá,1,W03636B,false,pending_video_verification
+vsl-4c3c39817ae157867edd,trực nhật,1,W03657,false,pending_video_verification
+vsl-fce2135070005e8a05d3,trực tiếp,1,W03665,false,pending_video_verification
+vsl-1bd8d8e6b5aac88ebc62,tung tăng,1,W03696,false,pending_video_verification
+vsl-87efd4ce1e47867a2bab,tuy hoà,1,D0015,false,pending_video_verification
+vsl-9e6e4ae3255d341f41e0,tuyên bố,1,W03701,false,pending_video_verification
+vsl-4396802cb833ec37cd6e,tuyên ngôn,1,W03702,false,pending_video_verification
+vsl-10664a2e6387ccc288dd,tuyên truyền,1,D0339,false,pending_video_verification
+vsl-4535b2b9e02b4c293307,tuyệt vọng,1,W03708,false,pending_video_verification
+vsl-b1a8b0a9b811ed04848b,tuân lệnh,1,W03683,false,pending_video_verification
+vsl-f3b9bc2d193977e07dff,tuân thủ,1,W03684,false,pending_video_verification
+vsl-3a5ecf1357029142fd2d,tuần lễ người điếc thế giới,2,D0053B | D0053T,false,pending_video_verification
+vsl-a94ddca4daa0101083c1,tuần trăng mật,1,D0348,false,pending_video_verification
+vsl-a08af8badf7587760fa2,tuốt lúa,1,W03699,false,pending_video_verification
+vsl-89300de1b7ac80c8ef58,tuổi thơ,1,W03698,false,pending_video_verification
+vsl-edf9cb3445f8ba6aaddb,tuổi thơ ấu,1,W03297,false,pending_video_verification
+vsl-c08a1ef072a937bbd5a3,tuỷ sống,1,W03700,false,pending_video_verification
+vsl-1efef15709a378d0c351,tài giỏi,1,W03063,false,pending_video_verification
+vsl-f2525e0dcac134ac5e65,tài năng,1,W03064,false,pending_video_verification
+vsl-7b9db8d16e7e47ca2456,tài trợ,1,W03067,false,pending_video_verification
+vsl-0081001a48210f2ca68a,tàu thuyền,1,W03087,false,pending_video_verification
+vsl-e30d75a75499760b06ee,tác dụng,1,W03054,false,pending_video_verification
+vsl-81708ac57d9d47cafa7f,tác giả,1,W03056,false,pending_video_verification
+vsl-677453a6ed8fd8c0f1c1,tác phẩm,1,W03058,false,pending_video_verification
+vsl-b66283ed66fb610f8503,tác động,2,W01301 | W03055,false,pending_video_verification
+vsl-b41b9633800c03da2029,tách,1,W03059,false,pending_video_verification
+vsl-cfd551eef14eac8f1f45,tách lớp,1,W03060,false,pending_video_verification
+vsl-cc7d2a10038192e559f1,tái phát,1,W03070,false,pending_video_verification
+vsl-26fbf6d958c5d88dce92,tán thành,1,W03077,false,pending_video_verification
+vsl-351756d5d12fd20a4dcf,tát,1,W03084,false,pending_video_verification
+vsl-4a68dc715ef2b5df947b,tâm thần,1,W03103,false,pending_video_verification
+vsl-50e25ef7e37343f9a78a,tây bắc,1,W03121,false,pending_video_verification
+vsl-e9e662ecaeee23b618c5,tây nguyên,1,W03123,false,pending_video_verification
+vsl-529a91f7d9c279cb76ca,tây ninh,1,W03124,false,pending_video_verification
+vsl-ddb2686bcd2e217fdf82,tên là gì?,2,W03129N | W03129T,false,pending_video_verification
+vsl-07d72153234d87f38266,tên riêng,1,W03130N,false,pending_video_verification
+vsl-dd837cfd818da6602f4e,tình cờ,1,W03448,false,pending_video_verification
+vsl-ffcd9e5f4cd3ba6e3220,tình huống,1,W03449,false,pending_video_verification
+vsl-c8188908062b9300a896,tình yêu,1,W03451,false,pending_video_verification
+vsl-50e1b58aad871ea6128b,tí hon,1,W03383,false,pending_video_verification
+vsl-76b46e0f5029e722c79c,tích (số),1,W03390,false,pending_video_verification
+vsl-f688c8de4475b630d31e,tích cực,1,W03391,false,pending_video_verification
+vsl-0fca22622e4f17a22730,tím tái,1,W03434,false,pending_video_verification
+vsl-0d87f75d4a4a7925681a,tính,1,W01313,false,pending_video_verification
+vsl-4b3717128baffdbb39c9,tính chất,1,W03455,false,pending_video_verification
+vsl-51014b3a728f68b77de3,tính chất bằng nhau,1,W03456,false,pending_video_verification
+vsl-3ccaa816d01f6c600362,tính chất cơ bản của phân số,1,W03457,false,pending_video_verification
+vsl-27fea60dbde7e950db1b,tính chất giao hoán,1,W03458,false,pending_video_verification
+vsl-d1ed44d63ae232470b27,tính chất kết hợp,1,W03459,false,pending_video_verification
+vsl-97fddf023243be535f98,tính cách,1,W03454,false,pending_video_verification
+vsl-e2bfa65bd332c7687e26,tính nhẩm,1,W03461,false,pending_video_verification
+vsl-4d50ea987566da5837c8,tính toán,1,W03463,false,pending_video_verification
+vsl-a7b0b1b08cf4d907f9fd,tính từ,1,W03464,false,pending_video_verification
+vsl-2ef10519e4c4e93fb325,tò mò,2,W03467B | W03467T,false,pending_video_verification
+vsl-0c0bbceefea40f9ad118,tòa soạn,1,W03473,false,pending_video_verification
+vsl-68582298b1d47938e242,tóc dài,1,D0428,false,pending_video_verification
+vsl-09fe25d1f1fb6f8cfa2a,tóc dựng đứng,1,W04007,false,pending_video_verification
+vsl-799e7f24cefd38ce2239,tóc xoăn,1,W03479,false,pending_video_verification
+vsl-9ad2bfc2eeeb45e8acd2,tóm cổ,1,W03480,false,pending_video_verification
+vsl-443ce47d8a6134ff1b0c,tóm lược,1,W03481,false,pending_video_verification
+vsl-7d45f45b04d7c7fdd44b,tôi yêu bạn,3,W04056B | W04056N | W04056T,false,pending_video_verification
+vsl-5c0d8adef42689641f63,tôi yêu bạn ấy,1,D0139,false,pending_video_verification
+vsl-809e87f710d568624667,tôm hùm,1,D0385,false,pending_video_verification
+vsl-809e27e98603ab11262a,tôn thờ,1,W03492,false,pending_video_verification
+vsl-61ead939441e7b7251d2,tù giam,1,W03678,false,pending_video_verification
+vsl-4f45adf61110a865732d,túm tóc,1,W03692,false,pending_video_verification
+vsl-d508e7d1254518832423,tăm,1,W03100,false,pending_video_verification
+vsl-fc162f2b3ecd9fd54b18,tĩnh lặng,1,W03452,false,pending_video_verification
+vsl-8fd1e854c0a77b9414a8,tươi cười,1,W03725,false,pending_video_verification
+vsl-3aa248888c7046379653,tương lai,1,D0288,false,pending_video_verification
+vsl-fe62808370adb7b1378e,tưởng,1,W03730,false,pending_video_verification
+vsl-1698ec68926f13493bf8,tượng,1,W03734,false,pending_video_verification
+vsl-ca91ee72023e545b463f,tượng đài,1,W03735,false,pending_video_verification
+vsl-b296050694ba7cbe39de,tạm biệt,1,W03075,false,pending_video_verification
+vsl-b05590e99e6df2948a5f,tạo dáng,1,W03081,false,pending_video_verification
+vsl-d64f8c4d2c10338eeb2b,tạo thành,1,W00559,false,pending_video_verification
+vsl-d47c380d6ccf789a4e70,tải về,1,D0264,false,pending_video_verification
+vsl-1896c14858ba2b3c3fa0,tấm lòng,1,W01204,false,pending_video_verification
+vsl-30c459825758ecfb4968,tấn công,1,W03107,false,pending_video_verification
+vsl-2aaf2545e31db6df512e,tẩy chay,1,D0354,false,pending_video_verification
+vsl-89abea1fa7558d2d0286,tập hợp (toán học),1,W03110,false,pending_video_verification
+vsl-c2528402ff2918543e31,tập hợp rỗng,1,W03111,false,pending_video_verification
+vsl-6bd88cf64243412d0496,tập thể,1,W03115N,false,pending_video_verification
+vsl-852f5ded5946dec0e427,tập trung,1,W03117,false,pending_video_verification
+vsl-fc412c72876300e11795,tập viết,1,W03118,false,pending_video_verification
+vsl-88612237f19f501969a3,tặc lưỡi,1,W03099,false,pending_video_verification
+vsl-a71835fb2211fdcb3c8e,tết dương,2,W03132N | W03132T,false,pending_video_verification
+vsl-e04a5c0bbb1a5d90ca66,tết thiếu nhi,1,W03133N,false,pending_video_verification
+vsl-fdb2503939b8368133db,tết âm,2,W03131N | W03131T,false,pending_video_verification
+vsl-357d5d05bbb55d2a3870,tỉ lệ,1,W03377,false,pending_video_verification
+vsl-0491c203f44032becd13,tỉ mỉ,1,W03379,false,pending_video_verification
+vsl-c971226092cb7e2c6c4e,tỉ số,1,W03380,false,pending_video_verification
+vsl-b4f7dafb71d23a68c693,tỉ số phần trăm,1,W03381,false,pending_video_verification
+vsl-884e5432fba7f675381a,tỉnh,1,D0002,false,pending_video_verification
+vsl-71b61bcd817d301f1d7d,tỉnh táo,1,D0300,false,pending_video_verification
+vsl-bf93835f1a3265760b46,tỏa hương,1,W03474,false,pending_video_verification
+vsl-f49a52eabbcf9d79ecae,tống tiền,1,W03507,false,pending_video_verification
+vsl-74e052f2c80764c33ad1,tồn tại,1,W00158,false,pending_video_verification
+vsl-f922132211f721cd23c6,tổ chim,1,W03488,false,pending_video_verification
+vsl-4b21f5be1844bc4d795b,tổ tiên,1,W03494,false,pending_video_verification
+vsl-8f2b593b7f163d05b669,tổ trưởng,1,W03495,false,pending_video_verification
+vsl-b8052dd638536d2d39fc,tổng (số),1,W03502,false,pending_video_verification
+vsl-a7ce9a0b10bc8a731cf5,tổng hợp,1,W03503,false,pending_video_verification
+vsl-b670d253f15c805f6467,tờ tiền,1,W03512,false,pending_video_verification
+vsl-8bb037e5dca70a8e4529,tụ tập,1,W03682,false,pending_video_verification
+vsl-4f1898f0ec38abe57fb5,tủi thân,1,W03689,false,pending_video_verification
+vsl-7c41a757d5ff303bbd0f,từ ngữ,1,W03712,false,pending_video_verification
+vsl-7c532ac0991953013ad7,từ phải sang trái,1,W03713,false,pending_video_verification
+vsl-f6812ce750672075c13e,từ trái sang phải,1,W03715,false,pending_video_verification
+vsl-ce251b99170f77058ae4,từ đồng âm,1,W03711,false,pending_video_verification
+vsl-22fe915c303106b029aa,tự (tự làm),1,W03568,false,pending_video_verification
+vsl-223f25c3068d9081ef7d,tự giác,1,D0037,false,pending_video_verification
+vsl-cbab0ab501177d022216,tự hào,1,D0333,false,pending_video_verification
+vsl-67364b4ec98c569ed706,tự trọng,1,D0336,false,pending_video_verification
+vsl-515b3f9a0856888e8ce1,u ám ( trời u ám),1,W03738,false,pending_video_verification
+vsl-623b2b96c7d64680a894,unicef,1,W03744,false,pending_video_verification
+vsl-a0e32af9c1f50f79e5fe,uốn,1,W03745,false,pending_video_verification
+vsl-f3853ed13039e2d5c741,uốn cong,1,W03746,false,pending_video_verification
+vsl-f3dad357f0c88ea8ed30,uốn dẻo,1,W03747,false,pending_video_verification
+vsl-1967bbeca97fa443d366,uốn tóc,1,W03748,false,pending_video_verification
+vsl-4c94485e0c21ae6c41ce,v,1,D0516,false,pending_video_verification
+vsl-83773f8817bcb2bfba28,va chạm,1,W03759,false,pending_video_verification
+vsl-df0724e3b90f5fc5dc68,vai,1,W03767,false,pending_video_verification
+vsl-cff744e682e4f9f964b4,vai trò,1,W03768,false,pending_video_verification
+vsl-e136003b6d6faac59043,vi khuẩn,1,W03823,false,pending_video_verification
+vsl-d10b09fd730aad38d5bd,viết lia lịa,1,W03842,false,pending_video_verification
+vsl-599fcf070950e37c60a3,việc làm,1,W03835,false,pending_video_verification
+vsl-5773b5d817ddaf90f67a,viện bảo tàng,1,W03840,false,pending_video_verification
+vsl-84501950e8aa01178840,viện nghiên cứu,1,W03841,false,pending_video_verification
+vsl-0bdabec040e8febb1907,vua hùng,1,W03887,false,pending_video_verification
+vsl-4bc3690fdf4ef3009de7,vui tính,1,W03892,false,pending_video_verification
+vsl-3ac41ce259a5fd9a7b8e,vun đắp,1,W03894,false,pending_video_verification
+vsl-487e1e195a94d16a94a4,vuốt tóc,1,W03909,false,pending_video_verification
+vsl-68f913e44dae84fae4cc,vàng (kim loại),1,W03777,false,pending_video_verification
+vsl-b00c39fc6188d2591bcc,vàng bạc,1,W03778,false,pending_video_verification
+vsl-c655b69da568038199d0,vào,1,W03780,false,pending_video_verification
+vsl-256ffaf16388de6da32d,vào lớp,1,W03781,false,pending_video_verification
+vsl-b45798b58a0faf500504,vào mùa,2,W03782 | W03782B,false,pending_video_verification
+vsl-8b4c62cb7cd428f9040f,vá quần áo,1,W04062,false,pending_video_verification
+vsl-55bc734860cd85e60328,vá xe,1,W03784,false,pending_video_verification
+vsl-5e12e8ec48b583afa36b,vác,1,W03762,false,pending_video_verification
+vsl-9270b96aedd031f8de37,vái lạy,1,W03770,false,pending_video_verification
+vsl-d40bad4322bf383a71bc,vái tứ phương,1,W03771,false,pending_video_verification
+vsl-eeae1086990d9b5a0267,vây bắt,1,W03810,false,pending_video_verification
+vsl-99f73d075f4f8add760b,vênh váo,1,W03820,false,pending_video_verification
+vsl-1f2bb4b8b09b3295d9ee,vòm lá,1,W03860,false,pending_video_verification
+vsl-479fd4ac69c9f274deef,vòng cung,1,W03861,false,pending_video_verification
+vsl-1e0b4c6bc7a421fcfa0c,vòng nguyệt quế,1,D0216,false,pending_video_verification
+vsl-5877367837dabfa3880c,vòng quanh trái đất,1,W03854,false,pending_video_verification
+vsl-9c8e52cf27b6b3dc5dcb,vòng đeo tay,1,W03853,false,pending_video_verification
+vsl-37174d02bac3657e5409,vòng đời,1,W03862,false,pending_video_verification
+vsl-341dbd53cf58a64533cb,vô lo vô nghĩ,1,W03867,false,pending_video_verification
+vsl-c231226adc6e444a0599,vô lí,1,W03866,false,pending_video_verification
+vsl-14080575665a737328a4,vô tâm,1,W03868,false,pending_video_verification
+vsl-d8add087c6fd29fe04d9,vô tình,1,D0039,false,pending_video_verification
+vsl-786d1cb48d067415c817,vô tư,1,W03870,false,pending_video_verification
+vsl-720be577fd054b1dbc1f,vô ý,1,W03871,false,pending_video_verification
+vsl-e4ae18d6b8362bb8bbac,vô ý thức,1,W03872,false,pending_video_verification
+vsl-fdb897d98936ed4abd60,võ nguyên giáp,1,W03851,false,pending_video_verification
+vsl-e8b54b0cbd865ecaa261,võ thị sáu,1,D0203,false,pending_video_verification
+vsl-d72fffd3f4e3a6bdf80d,vùng vẫy (dành cho người),1,W03903,false,pending_video_verification
+vsl-14e1954d9316014e604f,văn bản,1,W03787,false,pending_video_verification
+vsl-f01419aeb75fb4f1f2de,văn miếu quốc tử giám,1,W03791,false,pending_video_verification
+vsl-4228988f535e2a248fa7,vĩ cầm,1,W03826,false,pending_video_verification
+vsl-f992e0e8aa7da31a9f3c,vĩ đại,1,W03827,false,pending_video_verification
+vsl-75aae06932dceb19367e,vĩnh long,1,W03846,false,pending_video_verification
+vsl-8af7ec1ccb144784b06f,vĩnh phúc,1,W03847,false,pending_video_verification
+vsl-9122bc466ed18cc379f4,vũ công,1,W03885,false,pending_video_verification
+vsl-4ddfed65bbf74f3d8811,vũ trụ,1,W03886,false,pending_video_verification
+vsl-105769d497f2dfec9552,vườn thú,1,W03917,false,pending_video_verification
+vsl-b726b130128d24db14e1,vượt trội,1,W03924,false,pending_video_verification
+vsl-f7820219b02801b803a5,vạch trần,1,W03765,false,pending_video_verification
+vsl-ef74b240464e7bfab63a,vạm vỡ,1,W03773,false,pending_video_verification
+vsl-ce32b6c79158380b9819,vạt áo,1,W03785,false,pending_video_verification
+vsl-7d207838c11604c32a4f,vầng trăng,2,W03805N | W03805T,false,pending_video_verification
+vsl-5409dba598f1f1e48036,vẫy vùng (cá),1,W03813,false,pending_video_verification
+vsl-07521f3f1c10b932a7a1,vận chuyển,1,W03800,false,pending_video_verification
+vsl-d084e0f3dfa4933921e8,vận động,1,W03801,false,pending_video_verification
+vsl-72ccad53df654d7781ac,vật,1,W03806,false,pending_video_verification
+vsl-49188b7b3815318dea10,vật nuôi,2,W03809B | W03809N,false,pending_video_verification
+vsl-53e653a3e4b4f20c513b,vắn tắt,1,W03794,false,pending_video_verification
+vsl-d145afe9854ee1c77f8f,vắng,2,W03795N | W03795T,false,pending_video_verification
+vsl-1f67c67e666c44a0c245,vắng lặng,1,W03796,false,pending_video_verification
+vsl-c2590347d2b6a473db28,vắt cam,1,W03797,false,pending_video_verification
+vsl-225659bc9fe952640f3c,vắt chanh,1,D0398,false,pending_video_verification
+vsl-35b61f273c2e6b4051c9,vết thương,1,W03821,false,pending_video_verification
+vsl-a092d8213f98a133117b,về (sài gòn),1,D0158N,false,pending_video_verification
+vsl-c045fbee94e37c6f2851,về 2 (miền bắc),2,D0159B | D0159T,false,pending_video_verification
+vsl-d5bec8428bc7cffe79f2,về 3 (đi về),1,D0160,false,pending_video_verification
+vsl-cc67d4e512af77b2ba4a,về 4 (từ nơi khác về),1,D0161,false,pending_video_verification
+vsl-3e82422eecccd3a4986d,về 5 (về nhà),1,D0162,false,pending_video_verification
+vsl-76cc75f683db27b4a8bc,vệ sinh cá nhân,1,W03819,false,pending_video_verification
+vsl-8935f53c39a0c1df8c0e,vị ngữ,1,W03829,false,pending_video_verification
+vsl-6e14ba2eec22b0f3b219,vịnh hạ long,1,W03849,false,pending_video_verification
+vsl-7d4bfcd0dbe1ecb348db,vịt quay,1,D0389,false,pending_video_verification
+vsl-1e6f2339b71917402553,vỏ,1,W03855,false,pending_video_verification
+vsl-32c719f4da6658de6395,vồ,1,W03873,false,pending_video_verification
+vsl-e7e54361d3134d812671,vỗ cánh,1,W03875,false,pending_video_verification
+vsl-e9db08cd70c30ed72c35,vỗ về,1,D0235,false,pending_video_verification
+vsl-adbf23c52a3c1d15bc95,vội vã,1,W03878,false,pending_video_verification
+vsl-657785051cd54448f003,vớt,1,W03884,false,pending_video_verification
+vsl-9f63bdb095c63d8f3b1c,vở chèo,1,W03881,false,pending_video_verification
+vsl-161d144b74e13e9f3bfe,vỡ,1,W03882,false,pending_video_verification
+vsl-20de28d03efb67ba457e,vỡ lòng,1,W03883,false,pending_video_verification
+vsl-a61a5cfe3e976c5b2463,vợt cầu lông,1,D0448,false,pending_video_verification
+vsl-3433b2193be7f43d68fd,vững chắc,1,W03912,false,pending_video_verification
+vsl-3a30e616271fa0be7492,vực sâu,1,W01852,false,pending_video_verification
+vsl-50e721e49c013f00c62c,w,1,D0523,false,pending_video_verification
+vsl-2d711642b726b0440162,x,2,D0517N | D0517T,false,pending_video_verification
+vsl-5eef0b14baee79d267f8,xa cách,1,W03925,false,pending_video_verification
+vsl-e1b9db7a93716e05fbf0,xa xôi,1,W03928,false,pending_video_verification
+vsl-29548e4a26c5485ae58b,xe ben,1,W03960,false,pending_video_verification
+vsl-b3caf08f548b6c530b6b,xe container,1,D0176,false,pending_video_verification
+vsl-f4269ee46a7f2b7d2155,xe cứu hỏa,2,W03964B | W03964N,false,pending_video_verification
+vsl-c40fca4005c061d58a04,xe lam,1,W03968,false,pending_video_verification
+vsl-d1ad7ee4ae9a0d43fdba,xe lu,1,W03969,false,pending_video_verification
+vsl-c46eaf54e6a68cf496bb,xem xét,1,W03974,false,pending_video_verification
+vsl-b5fdbf2007440f7bc140,xem đã,1,D0196,false,pending_video_verification
+vsl-f5199694a2f9853bdcbb,xen,1,W03975,false,pending_video_verification
+vsl-add350465f84fd73e8e5,xin lỗi,1,W03990,false,pending_video_verification
+vsl-f96cbebe56473ce2db07,xoa đầu,1,D0105,false,pending_video_verification
+vsl-86572b9bab5c8bdedbb8,xoá bỏ,1,W03995,false,pending_video_verification
+vsl-04f4798921c283f9c7b1,xoáy,1,W03996,false,pending_video_verification
+vsl-877dfe9a491852661420,xu (tiền),1,W04006,false,pending_video_verification
+vsl-e9e8b56eb042f7488a2e,xui xẻo,1,D0268N,false,pending_video_verification
+vsl-e645256b39dfec39eb48,xung phong,1,W04016,false,pending_video_verification
+vsl-86962499e42308af99a6,xung quanh nhà,1,W04017,false,pending_video_verification
+vsl-446e4db237e09e9c2cae,xung đột,1,W04014,false,pending_video_verification
+vsl-c025ebdb56b977bab5bc,xuyên việt,1,D0207,false,pending_video_verification
+vsl-6dc782bffbe13de00dd4,xuất khẩu,1,W04011,false,pending_video_verification
+vsl-197a034898e136b3c9e0,xuống,1,W04019,false,pending_video_verification
+vsl-2e71e47f3979a64f326e,xác chết,1,W03940,false,pending_video_verification
+vsl-5e96f0f6860d32481765,xác định,1,W03941,false,pending_video_verification
+vsl-c3ab319f025358913316,xách nặng,1,W03943,false,pending_video_verification
+vsl-0cc9cf3c15ce6ea54a97,xách túi,1,W03936,false,pending_video_verification
+vsl-3942967a1dffda787088,xâm hại tình dục,1,W02380,false,pending_video_verification
+vsl-ff984919cc227c775f18,xâm lược,1,W03953,false,pending_video_verification
+vsl-f5060462b5f52edafa4a,xé rách,1,W03973,false,pending_video_verification
+vsl-65d36e36592c67891e0d,xì hơi (đánh rắm),2,W00175 | W00175N,false,pending_video_verification
+vsl-31cd706d08d431605be5,xích đạo,1,W03986,false,pending_video_verification
+vsl-a8dc4a8ec205dc684374,xóa bảng,1,W03993,false,pending_video_verification
+vsl-3509776c15cc7e12b456,xóm làng,1,W03999,false,pending_video_verification
+vsl-a3313d46dbf056e2310c,xô,1,W04000,false,pending_video_verification
+vsl-6f3359936786241c012d,xôi gà,1,D0089,false,pending_video_verification
+vsl-a5122e7800a724abdf35,xôi gấc,1,D0088,false,pending_video_verification
+vsl-9612a230ed92eaa9735b,xông hơi,1,W04003,false,pending_video_verification
+vsl-42cbf4f9e0bde985da13,xúc xắc,1,W04013,false,pending_video_verification
+vsl-ae95aed2a32401f2f2e5,xăm,1,W03947,false,pending_video_verification
+vsl-6dfc4cdf7e0b19377b36,xăng,1,W03948,false,pending_video_verification
+vsl-58bb6f2139f308eaf2b8,xăng-ti-mét (cm),1,W03949,false,pending_video_verification
+vsl-2616df3fdb3582289e1d,xăng-ti-mét-khối (cm3),1,W03950,false,pending_video_verification
+vsl-0ac97e04b235e7af19f7,xăng-ti-mét-vuông (cm2),1,W03951,false,pending_video_verification
+vsl-5219b21d6e36feec6f9b,xương rồng,1,W04028,false,pending_video_verification
+vsl-288d5a0b63e603b59a23,xả rác,1,W03933,false,pending_video_verification
+vsl-0778dbbe5cd92bedfb57,xảy ra,1,D0258,false,pending_video_verification
+vsl-ef510a25857c85dc3c2c,xẻng,1,W03976,false,pending_video_verification
+vsl-d6a09aaba5566ed785ef,xếp,1,W03978,false,pending_video_verification
+vsl-44e274147a32701f99fb,xếp hàng ngang,1,W03981,false,pending_video_verification
+vsl-2a6996f539e5d11047be,xếp hàng ưu tiên,1,W03982,false,pending_video_verification
+vsl-2e70a742fa1ae53e9aa0,xếp hình,1,W03983,false,pending_video_verification
+vsl-d4ad0754e698007a5e2a,xịt côn trùng,1,W01043,false,pending_video_verification
+vsl-73cf692aeac36c2c9921,xứ nghệ,1,W04023,false,pending_video_verification
+vsl-4312e20baeacd506ccdc,xử lý,1,D0115,false,pending_video_verification
+vsl-a1fce4363854ff888cff,y,1,D0518N,false,pending_video_verification
+vsl-83392badb63387f2985b,y tế,1,W04034,false,pending_video_verification
+vsl-2c29e8963cbf91880ac5,y-éc-xanh,1,W04031,false,pending_video_verification
+vsl-ac24e31d50e2546f3221,yên bái,1,W04043,false,pending_video_verification
+vsl-a74bd78b62d4698023ff,yên bình,1,W04044,false,pending_video_verification
+vsl-59909210a707808f69ed,yên lòng,1,W04046,false,pending_video_verification
+vsl-d7a55fc1c5902492ee00,yên ngựa,1,W00942,false,pending_video_verification
+vsl-9aed1404e90d573fddf2,yên tâm,1,W04048,false,pending_video_verification
+vsl-6d0031f83e807df30522,yêu cầu,1,W04057B,false,pending_video_verification
+vsl-11950b7debb7f355f500,yếm,1,W04041,false,pending_video_verification
+vsl-99571e03e214aafd157f,yếu tố,1,W04060,false,pending_video_verification
+vsl-96281980d864b164de0c,ác,1,W00000,false,pending_video_verification
+vsl-936b4b7fcf06815dd22b,ác cảm,1,W00001,false,pending_video_verification
+vsl-36f70594c81b8638fd84,ác mộng,1,W00003,false,pending_video_verification
+vsl-65cfc58b98f01671f85d,áo cánh,1,W00030,false,pending_video_verification
+vsl-5f399f97eb131fa0b6a7,áo kẻ sọc,1,D0302,false,pending_video_verification
+vsl-14bcd3fab4b17780a563,áo phao,1,W00034,false,pending_video_verification
+vsl-d3931f0d2c4097a17a8c,áo ấm,1,W00029,false,pending_video_verification
+vsl-0a0baf91054174691ff6,áp phích,1,W00036,false,pending_video_verification
+vsl-6d812dec93249a66591e,âm thanh,1,W00045,false,pending_video_verification
+vsl-724940913fd3d508b0d1,âu cơ,1,W00062,false,pending_video_verification
+vsl-ed492ba6c74e33eb6bba,ê đê,1,W01357,false,pending_video_verification
+vsl-3d656d7d928885090d74,ê-ti-ô-pi-a (nước ê-ti-ô-pi-a),1,W01360,false,pending_video_verification
+vsl-bc8888d4d1b8e4455e92,ích lợi,1,W01727,false,pending_video_verification
+vsl-3d8063f963ede8fde82b,ít,1,W01730,false,pending_video_verification
+vsl-dccdb9b688e0c43f76f6,ít hơn,1,W01731,false,pending_video_verification
+vsl-d09707013546efdb74e7,ít nhất,1,W01732,false,pending_video_verification
+vsl-c1d186eb4d09a3f33db9,óc,1,W02557,false,pending_video_verification
+vsl-4330bab58d3dcfa49a20,ô nhiễm,1,W02559,false,pending_video_verification
+vsl-ef84a7b6cdff4637c7fd,ô ăn quan,1,W02558,false,pending_video_verification
+vsl-6897f66b7b0b6913d3ec,ô-lim-píc,1,D0215,false,pending_video_verification
+vsl-8d7921b900815ccb2eaf,ôn luyện,1,W02569,false,pending_video_verification
+vsl-2d8abe1d441ab3d80fa7,ông già,1,W02572,false,pending_video_verification
+vsl-fd8b9c9b0c857127b900,úp,1,W03749,false,pending_video_verification
+vsl-b084e433fc7433b5a6aa,ý chí,1,W04035,false,pending_video_verification
+vsl-f787abd8a5a59756d3fe,ý thức,1,W04039,false,pending_video_verification
+vsl-00d402d570608f94c345,ý tưởng,1,W04040,false,pending_video_verification
+vsl-77613c721a534dd982e2,ăn bám,1,D0338,false,pending_video_verification
+vsl-d32dc3584a7ef7d35abf,ăn cóc,1,D0600,false,pending_video_verification
+vsl-a439bf64b54a4661a19f,ăn diện,1,W00039,false,pending_video_verification
+vsl-bf5b7ce5cbf3660cdf78,ăn hối lộ,1,W00040,false,pending_video_verification
+vsl-5059c77db35412f1ef3e,ăn vú sữa,1,D0172,false,pending_video_verification
+vsl-fd58c66e84aa70bc60c4,ăn vú sữa (bằng thìa),1,D0171,false,pending_video_verification
+vsl-6b77407b0ffd692a1bc3,ăn vặt,1,W00043,false,pending_video_verification
+vsl-04d39b8c5e812a954cc1,ăn vụng,1,D0257,false,pending_video_verification
+vsl-c4b42ccb69e62e8f6951,ăn vừa,1,D0441,false,pending_video_verification
+vsl-d994d5a64fc32f21c2a0,ăn xin,1,W00044,false,pending_video_verification
+vsl-f0d9aeab6990db5fc032,ăn ít,1,D0442,false,pending_video_verification
+vsl-92617d3222949c056b15,ăn đủ,1,D0440,false,pending_video_verification
+vsl-4b315938a1c36a16bddb,đan,1,W01095,false,pending_video_verification
+vsl-dcaedcb677eacf5c50ca,đau chân,1,D0358,false,pending_video_verification
+vsl-feb07a8e98c1d25d92da,đau mắt,1,D0355,false,pending_video_verification
+vsl-07767d8f374312845ced,đau tay,1,D0357,false,pending_video_verification
+vsl-412952c6d3b2cf438f93,đeo kính,1,W01164,false,pending_video_verification
+vsl-50374b479990b301254a,"đi lạc (đường, rừng..)",1,D0251,false,pending_video_verification
+vsl-9d9d00217febf62f7a67,đi tuần,1,D0234,false,pending_video_verification
+vsl-e5f18a6c13a83187adea,đi vệ sinh,1,D0486,false,pending_video_verification
+vsl-a4a1400e775b6b878bca,đinh,1,W01219,false,pending_video_verification
+vsl-656614aff06709ca0be5,điêu khắc,1,W01210,false,pending_video_verification
+vsl-69b48d637a14cba03952,điều kiện,1,W01215,false,pending_video_verification
+vsl-269dacebd50c79663733,điều phối,2,W01212B | W01212N,false,pending_video_verification
+vsl-0262a36ec731cbe7ec20,điều tra,1,W01216,false,pending_video_verification
+vsl-32e60bf52f15bd193fbd,điều trị,1,W01217,false,pending_video_verification
+vsl-9ef3b4cae7c54035ec19,điểm ở giữa đoạn thẳng,1,W01203,false,pending_video_verification
+vsl-d6c8318e0881a9dd5ff2,điện biên phủ,1,W01207,false,pending_video_verification
+vsl-63aefe298f441f92dec9,đo,1,W01227,false,pending_video_verification
+vsl-78033c7b2a03b839fd22,đoàn cải lương,1,W01229,false,pending_video_verification
+vsl-e8ccf09be267ab04b43f,đoàn thanh niên,1,W01231,false,pending_video_verification
+vsl-9decd4a5a1c6fdb67b30,đoàn tụ,1,W01232,false,pending_video_verification
+vsl-d48132f102bca3e4ae60,đoán,1,W01234,false,pending_video_verification
+vsl-5adb789e4c6a1b86c893,đoạn thơ,1,W01236,false,pending_video_verification
+vsl-065160cc2fc946ff87db,đoạn văn,1,W01237,false,pending_video_verification
+vsl-94735afd4bd34855c0c2,đu bai (nước đu bai),1,D0011,false,pending_video_verification
+vsl-dbce11b4a4944ad136da,đua ngựa,1,W01315,false,pending_video_verification
+vsl-e405b6cfddc06f280652,đua thuyền,1,W01316,false,pending_video_verification
+vsl-c94456e57f3593cee16a,đua xe máy,1,W01317,false,pending_video_verification
+vsl-12d0879d9e9956aa472a,đua đòi,1,D0460,false,pending_video_verification
+vsl-d878a6a59a9865f1cb41,đun nấu,1,W01321,false,pending_video_verification
+vsl-7f13ca4537b2171580f8,đuôi,1,W01323,false,pending_video_verification
+vsl-1a63c750375c10bc797a,đuôi chuột,1,D0076,false,pending_video_verification
+vsl-1b24804e84aea1e450c8,đuôi cá,1,D0075,false,pending_video_verification
+vsl-b6cb8a6a2a6df900f9bd,đuốc,1,W01322,false,pending_video_verification
+vsl-4999d8a1cd2335b33a2d,đài sen,1,W01080,false,pending_video_verification
+vsl-593e0a1068adad28c837,đàn bầu,1,W01098,false,pending_video_verification
+vsl-91745df6fa0cf488b0ed,đàn ghi ta,1,W01100,false,pending_video_verification
+vsl-73f2cbbe8d72fd04fe2a,đàn kiến,1,W01101,false,pending_video_verification
+vsl-b0e8af05b5a1cc1522a1,đàn xê lô đại vĩ cầm,1,W01096,false,pending_video_verification
+vsl-e1da86403849e6dde82a,đàng hoàng,1,D0226,false,pending_video_verification
+vsl-c2cbf907c34074935ded,đàng ngoài,1,W01104,false,pending_video_verification
+vsl-8bb35740552a2a7772d9,đàng trong,1,W01105,false,pending_video_verification
+vsl-d9a21f8be0bd6764a415,đào tạo,1,W01115,false,pending_video_verification
+vsl-cf423a389282c7f4380f,đám ma,1,W01093,false,pending_video_verification
+vsl-f8c17052b87de7fc305e,đám mây,1,W01094,false,pending_video_verification
+vsl-9bc0ace8ca6247e50083,đáng quý,1,W01106,false,pending_video_verification
+vsl-a73054f1a91e577356fc,đánh,1,W01107,false,pending_video_verification
+vsl-1a37305f6c7e424d856a,đánh bắt,1,W01108,false,pending_video_verification
+vsl-b3178a088b7028872860,đánh cầu lông,1,D0343,false,pending_video_verification
+vsl-1db57fef481b8d45e863,đánh giá,1,W01110,false,pending_video_verification
+vsl-aea0edbfb5e14c319ea5,đèn lồng,1,W01158,false,pending_video_verification
+vsl-af6c3b15108ac2b91310,đèn pin,2,W01159B | W01159N,false,pending_video_verification
+vsl-cbfdf1e1dba0926e43a5,đèo,1,W01166,false,pending_video_verification
+vsl-d9b1f15393c03cd8d00a,đích,1,W01201,false,pending_video_verification
+vsl-7790b1a31dffca549921,đòi,1,D0462,false,pending_video_verification
+vsl-986786dd5316dcacb97c,đòi hỏi,1,D0463,false,pending_video_verification
+vsl-2472facb7cdf82c1b24c,đói không?,1,D0371,false,pending_video_verification
+vsl-dd97b8e410997f07e0a1,đón,1,W01241,false,pending_video_verification
+vsl-4d6363ebab2cddba3043,đón tiếp,1,W01242,false,pending_video_verification
+vsl-b43366d231af04858b81,đóng cửa,1,W01243,false,pending_video_verification
+vsl-5a304b0adb3611a10a4a,đóng dấu,1,W01244,false,pending_video_verification
+vsl-e3c16a6cc39a2be38fec,đóng góp,1,W01246,false,pending_video_verification
+vsl-266dc43886cc5d212538,đô thị,1,W01248,false,pending_video_verification
+vsl-4731a5d535df232f9a17,đôi chân,1,W01273,false,pending_video_verification
+vsl-ce5ee4c95351fda00eab,đôi dép,1,W01255,false,pending_video_verification
+vsl-d598abe7fd3cc7d7742c,đôi tay,1,W01274,false,pending_video_verification
+vsl-0fbf333426919444e9b3,đôi/cặp,1,D0424,false,pending_video_verification
+vsl-96565ed682e4b921dc3b,đông dương,1,W01286,false,pending_video_verification
+vsl-2316418a56d8e5fbdc0c,đông lạnh,1,W01287,false,pending_video_verification
+vsl-468bbfbe83657acaa198,đông nam,1,W01262,false,pending_video_verification
+vsl-4d7d47fd3b3010a72570,đông timor (nước đông timor),1,W01288,false,pending_video_verification
+vsl-3e0515761bf23b886f2b,đùm bọc,1,D0324,false,pending_video_verification
+vsl-593a0aed06783ec7c9a4,đăng ký,1,W01126,false,pending_video_verification
+vsl-42066cc76d4f1545929e,đăng nhập,1,W01127,false,pending_video_verification
+vsl-06f4508fb30d0284f888,đĩa dvd,1,W01193,false,pending_video_verification
+vsl-e388e17568da28f66c4a,đơn giản,1,W01305,false,pending_video_verification
+vsl-c4e2fac6030980f1ba32,đưa đón,1,W01325,false,pending_video_verification
+vsl-02d9f279bd9b10a59b3f,đường biên giới,1,W01329,false,pending_video_verification
+vsl-3b39aa90a3b7d43a0d50,đường chéo,1,W01332,false,pending_video_verification
+vsl-ff20b4a4a44aad274327,đường chỉ tay,1,W00569,false,pending_video_verification
+vsl-7eebc6fcc0ce0125cce5,đường hầm,1,W01336,false,pending_video_verification
+vsl-efe06cd1be789fcc1175,đường nguyễn huệ,1,W01341,false,pending_video_verification
+vsl-eacc573529c28aa3c32c,đường ray xe lửa,1,W03172,false,pending_video_verification
+vsl-64cde59abbccf7ddbdb9,đường thuỷ,1,W01345,false,pending_video_verification
+vsl-36fafc74b8d0fd3509b7,đường tròn,1,W01346,false,pending_video_verification
+vsl-56a43e629eaa3ae8ec0b,đại dương,1,W01083,false,pending_video_verification
+vsl-873f69bd0a9125ac0371,đại sứ,1,D0253,false,pending_video_verification
+vsl-daebaa1007233736e7a4,đại tá,1,W01086,false,pending_video_verification
+vsl-238399c7698eb665cad8,đại tướng,1,W01088,false,pending_video_verification
+vsl-598ecd4eed2ee416f5e8,đại úy,1,W01089,false,pending_video_verification
+vsl-7edae2b46166ffcce2e2,đạn,1,W01114,false,pending_video_verification
+vsl-a5982e5b1e161c1f9954,đảm nhiệm,1,W01092,false,pending_video_verification
+vsl-a633250c749a7847ff51,đảng,1,D0425,false,pending_video_verification
+vsl-be7dcd36c8ffb310cf99,đảo,1,W01116,false,pending_video_verification
+vsl-436012661248ed89f680,đảo hoàng sa,1,W03076,false,pending_video_verification
+vsl-f0181ecfdc10dc148603,đảo lý sơn,1,W01117,false,pending_video_verification
+vsl-d2d4b91818e47aa1f304,đảo phú quốc,1,W01118,false,pending_video_verification
+vsl-4d7e3ef7e366d7687df9,đảo trường sa,1,W03073,false,pending_video_verification
+vsl-f3f9eadfa827f17f0de6,đất màu mỡ,1,W01137,false,pending_video_verification
+vsl-ea74257201928081a92b,đất nước bị chia cắt (việt nam),1,D0303,false,pending_video_verification
+vsl-3fc4fdf4fb96e3394cf4,đất ruộng,1,D0116,false,pending_video_verification
+vsl-8dd98e94fc8a5d6c6ac5,đất trồng cây,1,W01140,false,pending_video_verification
+vsl-9c6a9d4ac89364f2dae0,đấu tranh,1,W01146,false,pending_video_verification
+vsl-90c77b84963761ba9fe1,đấu vật,1,W01148,false,pending_video_verification
+vsl-0d9d22ad56a74d6a3d37,đầu gối,1,W01141,false,pending_video_verification
+vsl-8e45b8b79ca96d1b3223,đầu hàng,1,W01142,false,pending_video_verification
+vsl-95962031f5c7b24ae38a,đầu tiên,1,W01144,false,pending_video_verification
+vsl-3850ea7dd9370531f379,đầu tàu,1,W01143,false,pending_video_verification
+vsl-b21cd13aece7277dd636,đầu tư,1,D0260,false,pending_video_verification
+vsl-0d17ddf27a29da4b0aba,đầu xuôi đuôi lọt,1,W01145,false,pending_video_verification
+vsl-72e012857ad660eb457f,đầy tớ,1,W01151,false,pending_video_verification
+vsl-85b10b7dd55cbf6bda86,đầy đủ,1,W01150,false,pending_video_verification
+vsl-071682bdc9ff95177acd,đẩy,1,W01152,false,pending_video_verification
+vsl-474dddd53c1803e02546,đập,1,W01134,false,pending_video_verification
+vsl-8cb9d0c6b9398a5b64a5,đắk lắk,1,W01125,false,pending_video_verification
+vsl-a7e4b735ec48cc4f3e6f,đắt đỏ,1,W01131,false,pending_video_verification
+vsl-37d61e5617596fec3c30,đằng sau,1,W01128,false,pending_video_verification
+vsl-ca724baf202ea9b4d56c,đằng trước,1,W01129,false,pending_video_verification
+vsl-25b5b0e083e587cc2d73,đặc điểm,1,W01124,false,pending_video_verification
+vsl-b629edfe5f3d13b63810,đặng văn ngữ,1,W01130,false,pending_video_verification
+vsl-525bbd05e9e95d7fe74e,đặt,1,W01132,false,pending_video_verification
+vsl-52715ee73bf1d32a8234,đẹp mê hồn,1,W01172,false,pending_video_verification
+vsl-e9810750cc85923d34db,đếm,1,W01184,false,pending_video_verification
+vsl-68f8b524ad96af1b5596,đề nghị,1,W01177B,false,pending_video_verification
+vsl-ecfdf5196e2810085b90,đề phòng,1,W02804,false,pending_video_verification
+vsl-809a59ab037e88899936,đề tài,1,W01179,false,pending_video_verification
+vsl-a37ce878a348704e91f7,đề-ca-mét (dam),1,W01175,false,pending_video_verification
+vsl-f604d4cb3fc2b13fe108,đề-ca-mét vuông (dam2),1,W01176,false,pending_video_verification
+vsl-d3eca55586c0d220b1a8,đề-xi-mét (dm),1,W01181,false,pending_video_verification
+vsl-b175fa506f2e309b3975,đề-xi-mét khối (dm3),1,W01182,false,pending_video_verification
+vsl-2b69bf9358f7d3a66cd4,đề-xi-mét vuông (dm2),1,W01183,false,pending_video_verification
+vsl-912721e31f59a438863f,đền,1,W01185N,false,pending_video_verification
+vsl-b41a59a9127d04b67b3b,đền hùng,1,W01186,false,pending_video_verification
+vsl-ede9ef289a38b46f6693,đều đặn,1,W01188,false,pending_video_verification
+vsl-d3ed5582dd01c3069f91,để (đặt),1,W01173,false,pending_video_verification
+vsl-8e95e269c433ecd8b643,đỉnh núi,1,W01225,false,pending_video_verification
+vsl-63614374d6ae0d0f17d6,địa cầu,1,W01194,false,pending_video_verification
+vsl-d54f4700e51cbf963d45,địa hình,1,D0478,false,pending_video_verification
+vsl-a686aea650671e0dccb9,địa lí,1,W01199,false,pending_video_verification
+vsl-aea91b0318212e9000c5,địa điểm,1,W01197,false,pending_video_verification
+vsl-54fe8ea6ef06282797e6,địa đạo củ chi,1,W01196,false,pending_video_verification
+vsl-bd70f1c27ecf582be8a4,định vị,1,W01226,false,pending_video_verification
+vsl-c33c22d1000a578ba6a0,đỏ thắm,1,W02922,false,pending_video_verification
+vsl-10e709e9bb3222f6324d,đối diện,1,W01257,false,pending_video_verification
+vsl-85fe5fc6d574584ecc7f,đối thoại,1,W01279,false,pending_video_verification
+vsl-777a084e70c4dea9c0cc,đối tượng,1,W01258,false,pending_video_verification
+vsl-6c9dc6f1bde662ccf5db,đối xứng,1,W01281,false,pending_video_verification
+vsl-a2a8079e30fe7a1dc150,đối xử,1,W01280,false,pending_video_verification
+vsl-5e374320ae95d612e758,đồ dùng dạy học,1,W01250,false,pending_video_verification
+vsl-099c09b845b579c667ec,đồ uống,1,D0443,false,pending_video_verification
+vsl-5ff609a61e9a4bace018,đồ ăn,1,D0444,false,pending_video_verification
+vsl-0b6114c9730fdc9eaadc,đồn công an,1,W01261,false,pending_video_verification
+vsl-6dadf5c8ab2de925d15d,đồng bào,1,W01289,false,pending_video_verification
+vsl-1b7ea2c99600b927889d,đồng bằng,1,W01264,false,pending_video_verification
+vsl-eea4ad58b882468850b9,đồng bằng duyên hải miền trung,1,D0063,false,pending_video_verification
+vsl-b8c5176d917a8684077e,đồng bằng sông cửu long,1,D0061,false,pending_video_verification
+vsl-35d5afbd1afacc003f6d,đồng bằng sông hồng,1,D0062,false,pending_video_verification
+vsl-0f63fb9ba3dd851e9d4a,đồng hồ,1,W01265,false,pending_video_verification
+vsl-98ebca7dc9ce6a4d2087,đồng lúa,1,W01293,false,pending_video_verification
+vsl-11e91641fb6c56e33d4d,đồng nai,1,W01266,false,pending_video_verification
+vsl-0c318b022c0a2c208d5f,đồng ruộng,1,W01295,false,pending_video_verification
+vsl-e6d4b2f7b6df1698a0d0,đồng tháp mười,1,W01267,false,pending_video_verification
+vsl-c855e3b169758a2df6be,đồng tiền,1,W01296,false,pending_video_verification
+vsl-f10770d8e5f789c126e8,đổ nước,1,W01268,false,pending_video_verification
+vsl-863c3e9c777367592921,đổi,1,W01256,false,pending_video_verification
+vsl-c0f5db5fa157b9ccf9ed,đổi mới,1,W01277,false,pending_video_verification
+vsl-24769d4e1e6bb7435c49,độc hại,1,W01254,false,pending_video_verification
+vsl-b04e9cdfcee7bf200c51,độc lập,1,W01272,false,pending_video_verification
+vsl-8d6428a670ade6b0046b,đội thiếu niên,1,W01283,false,pending_video_verification
+vsl-e58d01ac0535b3e29126,đội trưởng,1,W01260,false,pending_video_verification
+vsl-01b781f04917122ef9ee,động cơ,1,W01299,false,pending_video_verification
+vsl-c9315722252889454965,động viên,1,W01302,false,pending_video_verification
+vsl-c137d4f13b094514f292,đỡ,1,W01314,false,pending_video_verification
+vsl-3292305483d4451076fc,đứng nghiêm,1,W01326,false,pending_video_verification
+vsl-1c1766a2444ff3464085,đứng đầu (hàng đầu),1,D0028,false,pending_video_verification
+vsl-44bb3a419a07f311ad0e,đựng,1,W01328,false,pending_video_verification
+vsl-c3df9525312789a4c12c,ưu điểm,1,W03757,false,pending_video_verification
+vsl-40f5db5c2f6178579cea,ả rập (nước ả rập),1,D0008,false,pending_video_verification
+vsl-dae32a8d32f3a88733cb,ảo thuật,1,W00027,false,pending_video_verification
+vsl-93f7c31c706b35ce9597,ấm no,1,W00053,false,pending_video_verification
+vsl-e9c5eb41fc4c548d3fb0,ấn,1,W00059,false,pending_video_verification
+vsl-d97cd55d4cbe67ace601,ấn tượng,1,W00061,false,pending_video_verification
+vsl-9e500fbaaed507eff2ea,ầm ĩ,1,W00048,false,pending_video_verification
+vsl-2f050afa54b9cb2a0c1e,ẩm mốc,1,W00049,false,pending_video_verification
+vsl-940f4425a5b523491d35,ẩm ướt,1,W00050,false,pending_video_verification
+vsl-12df678f50566697cd82,ế ẩm,1,W01358,false,pending_video_verification
+vsl-84eaa8a7fa1c86cc8819,ốm đau,1,W02567,false,pending_video_verification
+vsl-b730417151ade1f24ccb,ống nghe,1,W02577,false,pending_video_verification
+vsl-d0a51924c1427b5fdb89,ống nước,1,W02579,false,pending_video_verification
+vsl-a9efebb5a200d09444d4,ổn định,1,W02571,false,pending_video_verification
+vsl-058464340360cac4675b,ở ngoài,1,W02580B,false,pending_video_verification
+vsl-e36a69ddf27985b9bf75,ở trong,1,W02581,false,pending_video_verification
+vsl-71531534f13aa1100406,ủng,1,W03741,false,pending_video_verification
+vsl-8733adfd8b7dde1b78f9,ủng hộ,1,W03742,false,pending_video_verification
+vsl-5fb9b9f5a793c5f0fc31,ủy ban,1,W03750,false,pending_video_verification
+vsl-3f23102084890f738f4c,ủy ban nhân dân,1,W037511,false,pending_video_verification
+vsl-07d38be5778553c50a1e,ức chế,1,W03752,false,pending_video_verification

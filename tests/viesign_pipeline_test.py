@@ -17,6 +17,8 @@ sys.path.insert(0, str(ROOT))
 from app.api.viesign_dataset import atomic_json, normalize_word, word_id
 from app.api.sign_lookup import SignDictionary
 from scripts import extract_viesign_landmarks as pipeline
+from scripts import extract_viesign_additional_landmarks as additional_pipeline
+from scripts import merge_viesign_landmarks as merger
 
 
 def clip(score, usable=True):
@@ -142,6 +144,105 @@ class VieSignPipelineTest(unittest.TestCase):
                     self.assertEqual(probe.connect_ex(("127.0.0.1", used)), 0)
             finally:
                 listener.close()
+
+    def additional_fixture(self):
+        (self.source / "video_raw" / "D.webm").write_bytes(b"additional-fixture")
+        manifest = self.root / "annotations.csv"
+        row = {"ID_video": "D", "Meaning": "tỉnh", "Source_dataset": "kaggle-fixture",
+               "Source_version": "5", "Source_url": "https://example.test/source",
+               "Source_video": "D.mp4", "Source_label": "tỉnh", "Match_method": "exact_video_id",
+               "Review_status": "pending_video_verification"}
+        with manifest.open("w", encoding="utf-8", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=list(row)); writer.writeheader(); writer.writerow(row)
+        return manifest
+
+    def test_additional_labels_are_isolated_and_preserve_unknown_signer(self):
+        manifest = self.additional_fixture()
+        groups, _, count = additional_pipeline.validate_annotations(self.source, manifest)
+        self.assertEqual(count, 1)
+        self.assertIsNone(groups["tỉnh"][0]["Signer"])
+        original_snapshot = (self.source / "ISLR_447_all_rows.csv").read_bytes()
+        self.args.manifest = manifest
+        self.args.output = self.root / "additional"
+        self.run_build(lambda *_: clip(.9))
+        catalog = json.loads((self.args.output / "catalog.json").read_text(encoding="utf-8"))
+        entry = catalog["entries"][word_id("tỉnh")]
+        self.assertIsNone(entry["signer"])
+        self.assertEqual(entry["annotation"]["Review_status"], "pending_video_verification")
+        self.assertEqual(original_snapshot, (self.source / "ISLR_447_all_rows.csv").read_bytes())
+        self.assertFalse((self.output / "catalog.json").exists())
+
+    def build_two_jobs(self):
+        self.run_build(lambda *_: clip(.7))
+        original_output = self.output
+        self.args.manifest = self.additional_fixture()
+        self.args.output = self.root / "additional"
+        self.run_build(lambda *_: clip(.9))
+        return [original_output, self.args.output]
+
+    def test_merge_waits_and_never_activates_incomplete_or_invalid_inputs(self):
+        inputs = self.build_two_jobs()
+        merged = self.root / "merged"
+        pointer = self.root / "active.json"
+        atomic_json(inputs[0] / "progress.json", {"status": "running"})
+        self.assertIsNone(merger.merge_once(inputs, merged, pointer))
+        self.assertFalse(pointer.exists())
+        atomic_json(inputs[0] / "progress.json", {"status": "complete"})
+        landmark = inputs[1] / "landmarks" / f"{word_id('tỉnh')}.json"
+        invalid = json.loads(landmark.read_text(encoding="utf-8"))
+        invalid["video_id"] = "wrong-id"
+        atomic_json(landmark, invalid)
+        with self.assertRaisesRegex(ValueError, "identity mismatch"):
+            merger.merge_once(inputs, merged, pointer)
+        self.assertFalse(pointer.exists())
+
+    def test_completed_merge_activates_atomically_and_reader_follows(self):
+        inputs = self.build_two_jobs()
+        merged = self.root / "merged"
+        pointer = self.root / "active.json"
+        source_snapshots = [(p / "catalog.json").read_bytes() for p in inputs]
+        from app.api import viesign_dataset
+        atomic_json(pointer, {"dataset": "viesign", "directory": inputs[0].relative_to(ROOT).as_posix()})
+        with patch.object(viesign_dataset, "ACTIVE_DATASET_PATH", pointer):
+            dictionary = SignDictionary(); dictionary.load()
+            self.assertEqual(len(dictionary.available_glosses), 2)
+            report = merger.merge_once(inputs, merged, pointer)
+            dictionary._last_checked = 0
+            dictionary.load()
+            self.assertEqual(len(dictionary.available_glosses), 3)
+            self.assertTrue(dictionary.lookup_vietnamese("tỉnh")["found"])
+        self.assertEqual(report["merged_words"], 3)
+        self.assertEqual(report["labels_pending_video_verification"], 1)
+        self.assertEqual(source_snapshots, [(p / "catalog.json").read_bytes() for p in inputs])
+        release = ROOT / json.loads(pointer.read_text())["directory"]
+        self.assertEqual(len(list((release / "landmarks").glob("*.json"))), 3)
+        second = merger.merge_once(inputs, merged, pointer)
+        self.assertEqual(second["input_digest"], report["input_digest"])
+        self.assertEqual(len(list(merged.glob("release-*"))), 1)
+
+    def test_merge_resolves_duplicate_words_to_one_better_clip(self):
+        inputs = self.build_two_jobs()
+        original_id = word_id("cảm ơn")
+        additional_id = word_id("tỉnh")
+        path = inputs[1] / "landmarks" / f"{additional_id}.json"
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data.update({"meaning": "cảm ơn", "gloss": original_id})
+        atomic_json(inputs[1] / "landmarks" / f"{original_id}.json", data)
+        catalog = json.loads((inputs[1] / "catalog.json").read_text(encoding="utf-8"))
+        catalog["entries"] = {original_id: pipeline.make_catalog_entry(data)}
+        atomic_json(inputs[1] / "catalog.json", catalog)
+        report = merger.merge_once(inputs, self.root / "merged", self.root / "active.json")
+        self.assertEqual(report["merged_words"], 2)
+        self.assertEqual(report["duplicate_meanings_resolved"], ["cảm ơn"])
+        entry = json.loads((ROOT / report["release_directory"] / "catalog.json").read_text(encoding="utf-8"))["entries"][original_id]
+        self.assertEqual(entry["video_id"], "D")
+
+    def test_additional_manifest_rejects_original_video_ids(self):
+        manifest = self.additional_fixture()
+        text = manifest.read_text(encoding="utf-8").replace("D,tỉnh", "A,tỉnh")
+        manifest.write_text(text, encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "overlaps"):
+            additional_pipeline.validate_annotations(self.source, manifest)
 
 
 if __name__ == "__main__":

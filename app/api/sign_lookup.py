@@ -9,17 +9,18 @@ import threading
 import time
 from pathlib import Path
 
-from .viesign_dataset import DATA_DIR, DATASET_ID, ROOT, normalize_word, word_id
+from .viesign_dataset import DATA_DIR, DATASET_ID, ROOT, active_data_dir, normalize_word, word_id
 
 
 class SignDictionary:
-    def __init__(self, data_dir: Path = DATA_DIR):
+    def __init__(self, data_dir: Path | None = None):
         self.vi_to_gloss: dict[str, str] = {}
         self.gloss_to_vi: dict[str, str] = {}
         self.available_glosses: set[str] = set()
-        self.data_dir = data_dir
-        self._landmarks_v2_dir = data_dir / "landmarks"
-        self._catalog_path = data_dir / "catalog.json"
+        self._follow_active = data_dir is None
+        self.data_dir = active_data_dir() if data_dir is None else data_dir
+        self._landmarks_v2_dir = self.data_dir / "landmarks"
+        self._catalog_path = self.data_dir / "catalog.json"
         self.entries: dict[str, dict] = {}
         self._vi_phrases: list[str] = []
         self._catalog_stamp = None
@@ -35,9 +36,13 @@ class SignDictionary:
             return
         with self._lock:
             self._last_checked = current
+            if self._follow_active:
+                self.data_dir = active_data_dir()
+                self._landmarks_v2_dir = self.data_dir / "landmarks"
+                self._catalog_path = self.data_dir / "catalog.json"
             try:
                 stat = self._catalog_path.stat()
-                stamp = (stat.st_mtime_ns, stat.st_size)
+                stamp = (str(self.data_dir), stat.st_mtime_ns, stat.st_size)
             except FileNotFoundError:
                 stamp = None
             if self._loaded and stamp == self._catalog_stamp:

@@ -86,3 +86,47 @@ Script giữ socket trống rồi chuyển trực tiếp cho Uvicorn; nếu 8000
 dịch vụ theo lịch riêng; script trích xuất không làm việc đó.
 
 Tham khảo model/API: https://developers.google.com/edge/mediapipe/solutions/vision/holistic_landmarker
+
+## Chạy song song phần bổ sung, sau đó tự gộp
+
+Giữ nguyên tác vụ 1.182 từ đang chạy và đầu vào của nó. Luồng thứ hai đọc
+`data_v2/annotations/viesign_missing_labels.csv`: 2.392 video / 2.334 nghĩa sau
+chuẩn hóa. Tra video theo ID trong bản dataset đầy đủ trên server, không dùng
+đường dẫn local trong CSV. Giữ nhãn nguồn, trạng thái chờ xác minh; không tự gán
+Signer hoặc vùng miền. Các nhãn này do người dùng chọn đưa vào xử lý, chưa phải
+nhãn đã được kiểm duyệt nội dung clip.
+
+```bash
+.venv-landmarks/bin/python scripts/extract_viesign_additional_landmarks.py --plan
+.venv-landmarks/bin/python scripts/run_viesign_background.py --job-name additional --script extract_viesign_additional_landmarks.py
+.venv-landmarks/bin/python scripts/run_viesign_background.py --job-name merge --script merge_viesign_landmarks.py --wait
+```
+
+- Luồng gốc: `data_v2/processed/`, job cũ vẫn ở `data_v2/runs/latest_job.json`.
+- Luồng mới: `data_v2/processed_additional/`, PID/log ở `data_v2/runs/jobs/additional.json`.
+- Tác vụ chờ gộp: `data_v2/processed_merged/progress.json`, PID/log ở `data_v2/runs/jobs/merge.json`.
+- Hai luồng trích xuất và tác vụ chờ đều chạy session riêng, không mở port.
+
+Chương trình gộp chỉ đọc nguồn khi cả hai có trạng thái `complete` hoặc
+`complete_with_failures`, và đã lấy được khóa thư mục của cả hai nguồn. Nếu một
+luồng bị gián đoạn, chương trình tiếp tục chờ; cần chạy tiếp luồng đó bằng lệnh
+cũ của nó. Không gộp bộ đang viết dở, không sửa hay xóa hai bộ nguồn.
+
+Kết quả được sao chép độc lập sang `data_v2/processed_merged/release-<digest>/`.
+Kiểm tra từng file: ID/nghĩa/video phải khớp catalog, landmark đúng kích thước,
+tọa độ hữu hạn, có frame cơ thể và tay. Nếu nghĩa bị trùng, chọn mẫu điểm cao
+hơn; một video bị gán hai nghĩa khác nhau sẽ làm bước gộp dừng để kiểm tra.
+Sau khi toàn bộ kết quả đã đạt kiểm tra, `data_v2/active_dataset.json` được thay
+nguyên tử để API mới chuyển sang bộ gộp. Giữ dấu vết nhãn chờ xác minh trong
+landmark/catalog và báo cáo, không tự đổi sang trạng thái đã kiểm duyệt.
+
+Tổng mục từ dự kiến là 3.516; số xuất bản có thể ít hơn nếu clip không đạt chất
+lượng trích xuất. Xem số thực và lỗi trong `merge_report.json` của release.
+Tác vụ gộp tự kết thúc sau khi xuất bản; chạy lại cùng đầu vào sẽ dùng lại release.
+Thêm luồng chỉ nhanh hơn nếu server còn đủ tài nguyên CPU/RAM.
+
+```bash
+cat data_v2/processed/progress.json
+cat data_v2/processed_additional/progress.json
+cat data_v2/processed_merged/progress.json
+```

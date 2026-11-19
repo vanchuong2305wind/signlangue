@@ -10,8 +10,24 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data_v2" / "processed"
+ACTIVE_DATASET_PATH = ROOT / "data_v2" / "active_dataset.json"
 DATASET_ID = "viesign"
 PIPELINE_VERSION = 1
+
+
+def active_data_dir() -> Path:
+    """An atomic pointer selects a completed merge; otherwise use original VieSign."""
+    if not ACTIVE_DATASET_PATH.is_file():
+        return DATA_DIR
+    pointer = json.loads(ACTIVE_DATASET_PATH.read_text(encoding="utf-8"))
+    if pointer.get("dataset") != DATASET_ID:
+        raise ValueError("Active dataset pointer must select VieSign")
+    selected = (ROOT / pointer["directory"]).resolve()
+    if not selected.is_relative_to((ROOT / "data_v2").resolve()):
+        raise ValueError("Active dataset must stay under data_v2")
+    if not (selected / "catalog.json").is_file():
+        raise ValueError("Active dataset catalog does not exist")
+    return selected
 
 
 def normalize_word(word: str) -> str:

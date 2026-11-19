@@ -86,7 +86,7 @@ def discover_source(explicit=None):
     return candidates[0][1]
 
 
-def read_groups(source):
+def read_groups(source, manifest=None):
     files = {}
     for path in sorted((source / "video_raw").iterdir()):
         if path.is_file() and path.suffix.lower() in VIDEO_EXTENSIONS:
@@ -96,9 +96,12 @@ def read_groups(source):
                 raise ValueError("Video path leaves project")
             files[path.stem] = path
     groups, seen_ids, missing = {}, {}, []
-    with (source / "ISLR_447_all_rows.csv").open(encoding="utf-8-sig", newline="") as handle:
+    manifest_path = manifest or (source / "ISLR_447_all_rows.csv")
+    with manifest_path.open(encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle)
-        required = {"ID_video", "Meaning", "Signer"}
+        required = {"ID_video", "Meaning"}
+        if manifest is None:
+            required.add("Signer")
         if not required.issubset(reader.fieldnames or []):
             raise ValueError(f"Missing required manifest columns: {required}")
         for row in reader:
@@ -114,7 +117,7 @@ def read_groups(source):
             if video_id not in files:
                 missing.append(video_id)
                 continue
-            groups.setdefault(meaning, []).append({**row, "path": files[video_id]})
+            groups.setdefault(meaning, []).append({"Signer": None, **row, "path": files[video_id]})
     if missing:
         raise ValueError(f"Source copy is incomplete: {len(missing)} labeled videos missing, e.g. {missing[:5]}")
     identifiers = [word_id(word) for word in groups]
@@ -233,8 +236,18 @@ def extract_clip(path, model_path, max_fps=25.0, max_width=960):
 
 def candidate_fingerprint(row):
     stat = row["path"].stat()
-    return {"id": row["ID_video"], "path": row["path"].relative_to(ROOT).as_posix(),
-            "size": stat.st_size, "mtime_ns": stat.st_mtime_ns}
+    result = {"id": row["ID_video"], "path": row["path"].relative_to(ROOT).as_posix(),
+              "size": stat.st_size, "mtime_ns": stat.st_mtime_ns}
+    if row.get("Source_dataset"):
+        result["annotation"] = annotation_provenance(row)
+    return result
+
+
+def annotation_provenance(row):
+    return {key: row[key] for key in (
+        "Source_dataset", "Source_version", "Source_url", "Source_video", "Source_label",
+        "Source_row_id", "Match_method", "Review_status",
+    ) if key in row}
 
 
 def build(args):
@@ -244,7 +257,8 @@ def build(args):
         raise ValueError("Source and output must stay within this project")
     if not args.model.resolve().is_relative_to(ROOT):
         raise ValueError("Model file must stay within this project")
-    groups, disk_videos, labeled_videos = read_groups(source)
+    manifest = getattr(args, "manifest", None)
+    groups, disk_videos, labeled_videos = read_groups(source, manifest)
     if args.word:
         requested = {normalize_word(w) for w in args.word}
         absent = requested - set(groups)
@@ -273,6 +287,9 @@ def build(args):
                 raise ValueError("Output catalog is not VieSign")
         catalog.update({"source_root": source.relative_to(ROOT).as_posix(),
                         "expected_words": len(groups), "labeled_videos": labeled_videos, "settings": settings})
+        if manifest is not None:
+            catalog["annotation_manifest"] = manifest.relative_to(ROOT).as_posix()
+            catalog["annotation_manifest_sha256"] = hashlib.sha256(manifest.read_bytes()).hexdigest()
         atomic_json(catalog_path, catalog)
         started = time.monotonic()
         successful = failed = resumed = 0
@@ -326,6 +343,8 @@ def build(args):
                                               "source_video": row["path"].relative_to(ROOT).as_posix(),
                                               "pipeline_signature": signature,
                                               "selection": "highest extraction coverage score among all labeled candidates"})
+                            if row.get("Source_dataset"):
+                                candidate["annotation"] = annotation_provenance(row)
                             processed = process_landmark_entry(candidate)
                             atomic_json(destination, processed)
                             best_rank = rank
@@ -367,9 +386,12 @@ def build(args):
 
 
 def make_catalog_entry(entry):
-    return {"gloss": entry["gloss"], "vi": entry["meaning"], "video_id": entry["video_id"],
-            "source_video": entry["source_video"], "signer": entry["signer"],
-            "score": entry["score"], "frame_count": len(entry["frames"]), "fps": entry["fps"]}
+    result = {"gloss": entry["gloss"], "vi": entry["meaning"], "video_id": entry["video_id"],
+              "source_video": entry["source_video"], "signer": entry["signer"],
+              "score": entry["score"], "frame_count": len(entry["frames"]), "fps": entry["fps"]}
+    if entry.get("annotation"):
+        result["annotation"] = entry["annotation"]
+    return result
 
 
 def main():

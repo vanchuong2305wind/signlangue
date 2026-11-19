@@ -1,0 +1,3 @@
+# Preserve exact annotation/source snapshot bytes and their recorded checksums.
+data_v2/annotations/*.csv -text whitespace=cr-at-eol
+data_v2/annotations/sources/*.csv -text -whitespace

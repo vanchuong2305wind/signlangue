@@ -1,0 +1,22 @@
+{
+  "created_at": "2026-11-20T02:18:17.679301+07:00",
+  "dataset_root": "data_v2/VieSign10K/VieSign10K",
+  "original_manifest": "data_v2/VieSign10K/VieSign10K/ISLR_447_all_rows.csv",
+  "original_manifest_sha256": "8fbabf52150729bcdca95cae5bec899915d9952c3dfef3ef111f4601a36f9a20",
+  "source_url": "https://www.kaggle.com/datasets/aresusayhi/vsl-vietnamese-sign-languages/data",
+  "source_version": 5,
+  "source_label_csv_sha256": "a256d9550658259960bc949640e85941c90907ac8a17b82d106711bd45d9e2ae",
+  "source_label_rows": 4362,
+  "original_labeled_videos": 7664,
+  "original_normalized_meanings": 1182,
+  "local_videos": 10553,
+  "previously_unlabeled_videos": 2889,
+  "new_annotation_rows": 2392,
+  "normalized_meanings_in_annotations": 2334,
+  "meanings_already_in_original_manifest": 0,
+  "meanings_not_in_original_manifest": 2334,
+  "videos_still_without_label": 497,
+  "review_status": "pending_video_verification",
+  "identity_check": "Matching filename stems only; clip contents not verified",
+  "automatic_extraction_import": false
+}

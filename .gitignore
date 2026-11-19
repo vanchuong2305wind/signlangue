@@ -46,6 +46,9 @@ data/processed/landmarks_v2/*.tmp
 
 data_v2/**/video_raw/
 data_v2/processed/
+data_v2/processed_additional/
+data_v2/processed_merged/
+data_v2/active_dataset.json
 data_v2/models/
 data_v2/runs/
 .server-update-backups/
