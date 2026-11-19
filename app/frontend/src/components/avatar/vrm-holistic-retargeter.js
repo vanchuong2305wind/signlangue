@@ -265,8 +265,8 @@ export class VrmHolisticRetargeter {
         const expressions = this.vrm.expressionManager;
         if (!expressions || !blendshapes) return;
         const mappings = {
-            blinkLeft: 'blinkLeft',
-            blinkRight: 'blinkRight',
+            eyeBlinkLeft: 'blinkLeft',
+            eyeBlinkRight: 'blinkRight',
             jawOpen: 'aa',
             mouthSmileLeft: 'happy',
             mouthSmileRight: 'happy',

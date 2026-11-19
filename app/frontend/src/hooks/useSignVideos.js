@@ -4,7 +4,8 @@ let _dataCache = null;
 
 async function loadData() {
     if (_dataCache) return _dataCache;
-    const resp = await fetch('/data/sign_videos.json');
+    const resp = await fetch('/api/dictionary/videos');
+    if (!resp.ok) throw new Error(`Không tải được từ điển ký hiệu Việt Nam (${resp.status})`);
     _dataCache = await resp.json();
     return _dataCache;
 }

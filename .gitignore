@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 *.pyo
 .venv/
+.venv-landmarks/
 venv/
 *.egg-info/
 
@@ -44,6 +45,10 @@ data/processed/landmarks_offsets.json
 data/processed/landmarks_v2/*.tmp
 
 data_v2/**/video_raw/
+data_v2/processed/
+data_v2/models/
+data_v2/runs/
+.server-update-backups/
 
 # Large model files
 app/models/*.glb

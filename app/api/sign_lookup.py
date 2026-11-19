@@ -1,57 +1,98 @@
 """
 sign_lookup.py
-Load vi_to_gloss.json and sign_dictionary_landmarks.json.
-Provide lookup: Vietnamese word → gloss → landmark frames.
+Vietnamese meanings and avatar clips from the generated VieSign catalog.
+The previous ASL dictionary is never loaded as a fallback.
 """
 
 import json
-import os
+import threading
+import time
 from pathlib import Path
 
-DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "processed"
+from .viesign_dataset import DATA_DIR, DATASET_ID, ROOT, normalize_word, word_id
 
 
 class SignDictionary:
-    def __init__(self):
+    def __init__(self, data_dir: Path = DATA_DIR):
         self.vi_to_gloss: dict[str, str] = {}
         self.gloss_to_vi: dict[str, str] = {}
         self.available_glosses: set[str] = set()
-        self._landmarks_path = DATA_DIR / "sign_dictionary_landmarks.json"
-        self._landmarks_v2_dir = DATA_DIR / "landmarks_v2"
-        self._landmarks_offsets_path = DATA_DIR / "landmarks_offsets.json"
+        self.data_dir = data_dir
+        self._landmarks_v2_dir = data_dir / "landmarks"
+        self._catalog_path = data_dir / "catalog.json"
+        self.entries: dict[str, dict] = {}
+        self._vi_phrases: list[str] = []
+        self._catalog_stamp = None
+        self._last_checked = 0.0
+        self._lock = threading.RLock()
         self._loaded = False
 
     def load(self):
-        if self._loaded:
+        # Extraction publishes catalog.json atomically. Refresh at most once a
+        # second so an already-running API can see newly available Vietnamese clips.
+        current = time.monotonic()
+        if self._loaded and current - self._last_checked < 1.0:
             return
+        with self._lock:
+            self._last_checked = current
+            try:
+                stat = self._catalog_path.stat()
+                stamp = (stat.st_mtime_ns, stat.st_size)
+            except FileNotFoundError:
+                stamp = None
+            if self._loaded and stamp == self._catalog_stamp:
+                return
+            catalog = {"dataset": DATASET_ID, "entries": {}}
+            if stamp is not None:
+                catalog = json.loads(self._catalog_path.read_text(encoding="utf-8"))
+                if catalog.get("dataset") != DATASET_ID:
+                    raise ValueError("Active catalog must contain Vietnamese VieSign data")
+            entries = {}
+            meanings = {}
+            for identifier, entry in catalog.get("entries", {}).items():
+                meaning = normalize_word(entry["vi"])
+                if identifier != word_id(meaning) or meaning in meanings:
+                    raise ValueError("Duplicate meaning or invalid VieSign identifier")
+                # Publish only words which have an actual avatar file.
+                if not (self._landmarks_v2_dir / f"{identifier}.json").is_file():
+                    continue
+                meanings[meaning] = identifier
+                entries[identifier] = entry
+            self.entries = entries
+            self.vi_to_gloss = meanings
+            self.gloss_to_vi = {identifier: entry["vi"] for identifier, entry in entries.items()}
+            self.available_glosses = set(entries)
+            self._vi_phrases = sorted(meanings, key=len, reverse=True)
+            self._catalog_stamp = stamp
+            self._loaded = True
+            print(f"[SignDictionary] VieSign: {len(entries)} Vietnamese avatar clips")
 
-        vi_path = DATA_DIR / "vi_to_gloss.json"
-        gloss_path = DATA_DIR / "gloss_to_vi.json"
+    def video_catalog(self) -> dict:
+        self.load()
+        items = []
+        for identifier, entry in self.entries.items():
+            source = entry["source_video"]
+            items.append({"gloss": identifier, "vi": entry["vi"], "language": "vsl",
+                          "categories": ["other"], "video_count": 1,
+                          "videos": [{"video_id": entry["video_id"], "source": "VieSign",
+                                      "type": "local", "url": f"/api/dataset/video/{entry['video_id']}",
+                                      "mime_type": "video/webm" if source.lower().endswith('.webm') else "video/mp4"}]})
+        items.sort(key=lambda entry: entry["vi"])
+        return {"dataset": DATASET_ID, "glosses": {entry["gloss"]: entry for entry in items},
+                "list": items, "stats": {"total": len(items), "with_vi": len(items),
+                                         "with_local": len(items), "categories": {"other": len(items)}}}
 
-        with open(vi_path, "r", encoding="utf-8") as f:
-            self.vi_to_gloss = json.load(f)
-
-        with open(gloss_path, "r", encoding="utf-8") as f:
-            self.gloss_to_vi = json.load(f)
-
-        self.available_glosses = set(self.gloss_to_vi.keys())
-
-        # Build multi-word Vietnamese phrases sorted by length (longest first)
-        self._vi_phrases = sorted(
-            self.vi_to_gloss.keys(),
-            key=lambda x: len(x),
-            reverse=True,
-        )
-
-        self._loaded = True
-        print(f"[SignDictionary] Loaded {len(self.vi_to_gloss)} VI->Gloss entries, "
-              f"{len(self.available_glosses)} glosses available")
+    def video_path(self, video_id: str) -> Path | None:
+        for entry in self.entries.values():
+            if entry["video_id"] == video_id:
+                path = (ROOT / entry["source_video"]).resolve()
+                if path.is_relative_to((ROOT / "data_v2").resolve()) and path.is_file():
+                    return path
+        return None
 
     def lookup_vietnamese(self, word: str) -> dict | None:
-        """Look up a Vietnamese word/phrase and return its gloss info.
-        Also tries matching as an English gloss if Vietnamese lookup fails.
-        """
-        word_lower = word.lower().strip()
+        """Look up a Vietnamese meaning or an internal VieSign identifier."""
+        word_lower = normalize_word(word)
         gloss = self.vi_to_gloss.get(word_lower)
         if gloss:
             return {
@@ -60,7 +101,7 @@ class SignDictionary:
                 "found": True,
             }
 
-        # Fallback: try matching as English gloss directly
+        # Internal ASCII VieSign IDs are supported; English ASL glosses are not.
         if word_lower in self.available_glosses:
             vi = self.gloss_to_vi.get(word_lower, word_lower)
             return {
@@ -82,11 +123,12 @@ class SignDictionary:
     def get_alphabet_glosses(self, word: str) -> list[dict]:
         """Fingerspell a word letter by letter."""
         letters = []
-        for char in word.lower():
-            if char.isalpha() and char in self.available_glosses:
+        for char in normalize_word(word):
+            identifier = self.vi_to_gloss.get(char)
+            if char.isalpha() and identifier:
                 letters.append({
                     "vi": char,
-                    "gloss": char,
+                    "gloss": identifier,
                     "found": True,
                     "fingerspell": True,
                 })
@@ -95,7 +137,7 @@ class SignDictionary:
             else:
                 letters.append({
                     "vi": char,
-                    "gloss": char,
+                    "gloss": None,
                     "found": False,
                     "fingerspell": True,
                 })
@@ -107,7 +149,7 @@ class SignDictionary:
         Tries to match the longest Vietnamese phrase in the dictionary first.
         Falls back to single words, then fingerspelling.
         """
-        text = text.lower().strip()
+        text = normalize_word(text)
         tokens = []
         i = 0
 

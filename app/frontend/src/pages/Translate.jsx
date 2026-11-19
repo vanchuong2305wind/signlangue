@@ -13,7 +13,7 @@ function getSignVideos(sign, signVideosData) {
     if (!sign?.found || !sign?.gloss || !signVideosData?.glosses) return [];
     const entry = signVideosData.glosses[sign.gloss.toLowerCase()];
     if (!entry?.videos?.length) return [];
-    return entry.videos.filter(v => v.url && v.url.startsWith('http') && v.type !== 'swf');
+    return entry.videos.filter(v => v.url && (v.url.startsWith('/api/dataset/video/') || v.url.startsWith('http')) && v.type !== 'swf');
 }
 
 export default function Translate() {
@@ -88,10 +88,10 @@ export default function Translate() {
     });
 
     useEffect(() => {
-        fetch('/data/sign_videos.json')
-            .then(r => r.json())
+        fetch('/api/dictionary/videos')
+            .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
             .then(setSignVideosData)
-            .catch(err => console.warn('Could not load sign_videos.json:', err));
+            .catch(err => console.warn('Could not load VieSign videos:', err));
     }, []);
 
     useEffect(() => {
@@ -417,7 +417,7 @@ export default function Translate() {
                                 <div className="sign-video-info">
                                     <div>
                                         <span className="sign-video-label">{activeSign?.vi}</span>
-                                        <span className="sign-video-gloss" style={{ marginLeft: '8px' }}>{activeSign?.gloss?.toUpperCase()}</span>
+                                        <span className="sign-video-gloss" style={{ marginLeft: '8px' }}>Ký hiệu Việt Nam</span>
                                     </div>
                                     <div className="sign-video-nav">
                                         <button className="sign-video-nav-btn" onClick={() => setActiveSignIdx(Math.max(0, activeSignIdx - 1))} disabled={activeSignIdx === 0}>

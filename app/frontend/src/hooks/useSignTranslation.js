@@ -1,7 +1,7 @@
 /**
  * useSignTranslation.js
  * Hook to convert text → sign sequence via backend API
- * and map results to sign videos from sign_videos.json
+ * and map results to Vietnamese sign videos from the active API catalog
  */
 
 import { useState, useCallback, useRef } from 'react';

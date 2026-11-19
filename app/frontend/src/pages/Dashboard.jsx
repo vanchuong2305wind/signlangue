@@ -9,7 +9,7 @@ import './Dashboard.css';
 const QUICK_ACTIONS = [
     {
         title: 'Học ký hiệu',
-        subtitle: '2000+ từ vựng video',
+        subtitle: 'Video ký hiệu Việt Nam',
         icon: 'fa-book-open',
         path: '/learn',
         gradient: 'linear-gradient(135deg, #78c4b6, #5faa9e)',

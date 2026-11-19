@@ -8,6 +8,7 @@ from copy import deepcopy
 
 TRACK_SIZES = {
     "pose": 33,
+    "pose_world": 33,
     "left_hand": 21,
     "right_hand": 21,
     "face": None,

@@ -30,8 +30,6 @@ from . import asr, local_nlp
 from .sentence_builder import build_sentence, build_sentence_local, gemini_configured
 from .sign_lookup import sign_dict
 from .text_parser import gemini_enabled, parse_text, warmup as warmup_text_parser
-from .landmark_index import load_or_build, read_entry
-from .landmark_processing import process_landmark_entry
 from .profile_store import profile_store
 from .video_subtitles import SubtitleError, fetch_subtitles
 
@@ -39,6 +37,13 @@ from .video_subtitles import SubtitleError, fetch_subtitles
 load_dotenv(Path(__file__).resolve().parent.parent.parent / ".env")
 
 app = FastAPI(title="Speech-to-Sign API", version="1.0.0")
+
+
+@app.middleware("http")
+async def refresh_viesign_catalog(request: Request, call_next):
+    if request.url.path.startswith("/api/"):
+        await run_in_threadpool(sign_dict.load)
+    return await call_next(request)
 
 # CORS for frontend
 app.add_middleware(
@@ -68,8 +73,7 @@ async def startup():
     cached = len(list(sign_dict._landmarks_v2_dir.glob("*.json")))         if sign_dict._landmarks_v2_dir.exists() else 0
     print(f"[Server] Landmark cache: {cached} glosses")
     if cached < len(sign_dict.available_glosses):
-        print("[Server] Some glosses are uncached — run "
-              "`python -m scripts.build_landmark_cache` to avoid slow first hits")
+        print("[Server] VieSign extraction is still producing avatar files")
 
     # Both are first-use costs that would otherwise land on a user request.
     await warmup_text_parser()
@@ -513,6 +517,7 @@ async def video_subtitles(req: VideoSubtitleRequest):
 async def dictionary_stats():
     """Get sign dictionary statistics."""
     return {
+        "dataset": "viesign",
         "total_vietnamese_words": len(sign_dict.vi_to_gloss),
         "total_glosses": len(sign_dict.available_glosses),
         "sample_words": list(sign_dict.vi_to_gloss.keys())[:50],
@@ -535,6 +540,20 @@ async def search_dictionary(q: str = ""):
                 break
 
     return {"query": q, "results": results}
+
+
+@app.get("/api/dictionary/videos")
+async def dictionary_videos():
+    return sign_dict.video_catalog()
+
+
+@app.get("/api/dataset/video/{video_id}")
+async def dataset_video(video_id: str):
+    path = sign_dict.video_path(video_id)
+    if path is None:
+        raise HTTPException(status_code=404, detail="No selected VieSign video with this ID")
+    mime = "video/webm" if path.suffix.lower() == ".webm" else "video/mp4"
+    return FileResponse(path, media_type=mime)
 
 
 def profile_total_words():
@@ -772,24 +791,18 @@ async def get_landmarks(gloss: str, request: Request):
     if not re.fullmatch(r"[a-z0-9_' -]+", gloss_lower):
         raise HTTPException(status_code=400, detail="Invalid gloss")
 
+    if gloss_lower not in sign_dict.available_glosses:
+        raise HTTPException(status_code=404, detail="No Vietnamese landmarks available for this word")
+
     cache_path = sign_dict._landmarks_v2_dir / f"{gloss_lower}.json"
     if cache_path.exists():
         try:
             return _cached_landmark_response(gloss_lower, cache_path, request)
         except OSError:
-            cache_path.unlink(missing_ok=True)
+            pass
 
-    # Cache miss. Read just this entry out of the big file using the byte-offset
-    # index — a seek plus a few hundred KB, instead of a 446 MB json.load that
-    # would block the event loop for 5-15 s and hold ~1.5 GB of RAM.
-    data = await run_in_threadpool(_build_landmark_cache_entry, gloss_lower, cache_path)
-    if data is None:
-        raise HTTPException(status_code=404, detail=f"No landmarks for '{gloss}'")
-
-    try:
-        return _cached_landmark_response(gloss_lower, cache_path, request)
-    except OSError:
-        return JSONResponse(content={"gloss": gloss_lower, "data": data})
+    # No ASL fallback and no expensive extraction inside a web request.
+    raise HTTPException(status_code=404, detail="Vietnamese landmark file is not ready")
 
 
 def _landmark_headers(stat_result) -> dict[str, str]:
@@ -805,49 +818,19 @@ def _landmark_headers(stat_result) -> dict[str, str]:
 
 def _cached_landmark_response(gloss: str, cache_path: Path, request: Request):
     """Serve a cached file, wrapping the raw bytes in the API envelope."""
-    stat_result = cache_path.stat()
-    headers = _landmark_headers(stat_result)
-
-    if request.headers.get("if-none-match") == headers["ETag"]:
-        return Response(status_code=304, headers=headers)
-
-    body = cache_path.read_bytes()
+    # Open before stat so an atomic best-candidate replacement cannot mix a new
+    # payload with the previous file's ETag.
+    with cache_path.open("rb") as handle:
+        headers = _landmark_headers(os.fstat(handle.fileno()))
+        if request.headers.get("if-none-match") == headers["ETag"]:
+            return Response(status_code=304, headers=headers)
+        body = handle.read()
     envelope = b'{"gloss":' + json.dumps(gloss).encode("utf-8") + b',"data":'
     return Response(
         content=envelope + body + b"}",
         media_type="application/json",
         headers=headers,
     )
-
-
-def _build_landmark_cache_entry(gloss: str, cache_path: Path):
-    """Extract one gloss from the source file and write its cache file.
-
-    Runs in a worker thread — everything here is blocking disk and CPU work.
-    """
-    landmarks_path = sign_dict._landmarks_path
-    if not landmarks_path.exists():
-        raise HTTPException(status_code=404, detail="Landmarks file not found")
-
-    try:
-        offsets = load_or_build(landmarks_path, sign_dict._landmarks_offsets_path)
-        span = offsets.get(gloss)
-        if span is None:
-            return None
-        entry = read_entry(landmarks_path, span)[gloss]
-        data = process_landmark_entry(entry)
-    except (OSError, ValueError, KeyError) as error:
-        raise HTTPException(
-            status_code=500,
-            detail="Error reading landmarks file",
-        ) from error
-
-    cache_path.parent.mkdir(parents=True, exist_ok=True)
-    temporary_path = cache_path.with_suffix(".tmp")
-    with temporary_path.open("w", encoding="utf-8") as destination:
-        json.dump(data, destination, ensure_ascii=False, separators=(",", ":"))
-    temporary_path.replace(cache_path)
-    return data
 
 
 if __name__ == "__main__":

@@ -96,6 +96,8 @@ def load() -> None:
 
         started = time.monotonic()
         sign_dict.load()
+        if not sign_dict.vi_to_gloss:
+            raise RuntimeError("Chưa có landmark VieSign; chạy trích xuất dữ liệu trước.")
         device = "cuda" if torch.cuda.is_available() else "cpu"
         try:
             model = SentenceTransformer(MODEL_NAME, device=device)
@@ -202,9 +204,12 @@ def parse(text: str) -> list[dict]:
             if not match:
                 continue
             matched_vi, score = match
+            identifier = sign_dict.vi_to_gloss.get(matched_vi)
+            if not identifier:
+                continue
             tokens[position] = {
                 "vi": word,
-                "gloss": sign_dict.vi_to_gloss[matched_vi],
+                "gloss": identifier,
                 "found": True,
                 "match": "semantic",
                 "matched_vi": matched_vi,

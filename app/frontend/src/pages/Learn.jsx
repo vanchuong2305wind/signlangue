@@ -123,7 +123,7 @@ export default function Learn() {
     };
 
     const playableVideos = selectedWord
-        ? selectedWord.videos.filter(v => v.type !== 'swf' && v.type !== 'local' && v.url?.startsWith('http'))
+        ? selectedWord.videos.filter(v => v.type !== 'swf' && (v.url?.startsWith('/api/dataset/video/') || v.url?.startsWith('http')))
         : [];
 
     const activeVideo = playableVideos[activeVideoIdx] || null;
@@ -167,7 +167,7 @@ export default function Learn() {
                     <i className="fa-solid fa-magnifying-glass learn__search-icon" />
                     <input
                         type="text"
-                        placeholder="Tìm từ vựng (VD: xin chào, hello)..."
+                        placeholder="Tìm ký hiệu Việt Nam (VD: tự tin, giúp đỡ)..."
                         value={search}
                         onChange={(e) => handleSearch(e.target.value)}
                         className="learn__search-input"
@@ -246,7 +246,7 @@ export default function Learn() {
                                     </div>
                                     <div className="learn__word-info">
                                         <div className="learn__word-vi">{word.vi || word.gloss}</div>
-                                        <div className="learn__word-gloss">{word.gloss.toUpperCase()}</div>
+                                        <div className="learn__word-gloss">Ký hiệu Việt Nam</div>
                                     </div>
                                     </>
                                 ) : (
@@ -255,7 +255,7 @@ export default function Learn() {
                                         <i className={`fa-solid ${visual.icon}`} style={{ fontSize: '11px' }} />
                                     </div>
                                     <div className="learn__word-list-vi">{word.vi || word.gloss}</div>
-                                    <div className="learn__word-list-gloss">{word.gloss.toUpperCase()}</div>
+                                    <div className="learn__word-list-gloss">Ký hiệu Việt Nam</div>
                                     <div className="learn__word-list-count">{word.video_count} video</div>
                                 </div>
                                 )}
@@ -320,7 +320,7 @@ export default function Learn() {
                                     className="learn__video-player"
                                     onError={handleVideoError}
                                 >
-                                    <source src={activeVideo.url} type="video/mp4" />
+                                    <source src={activeVideo.url} type={activeVideo.mime_type || 'video/mp4'} />
                                     Video khong ho tro
                                 </video>
                             ) : (
@@ -331,7 +331,7 @@ export default function Learn() {
                         {/* Word Info */}
                         <div className="learn__modal-info">
                             <h2 className="learn__modal-word">{selectedWord.vi || selectedWord.gloss}</h2>
-                            <div className="learn__modal-gloss">{selectedWord.gloss.toUpperCase()}</div>
+                            <div className="learn__modal-gloss">Ký hiệu Việt Nam</div>
 
                             {selectedWord.vi && (
                                 <div className="learn__modal-translation">
