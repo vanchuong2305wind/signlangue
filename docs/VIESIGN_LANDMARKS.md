@@ -44,6 +44,15 @@ python3 -m venv .venv-landmarks
 .venv-landmarks/bin/python scripts/run_viesign_background.py
 ```
 
+Nếu server báo thiếu `ensurepip`, dùng `virtualenv` có trong môi trường hiện tại
+thay cho lệnh tạo `venv` (không cần cài gói hệ thống hay thay `.venv`):
+
+```bash
+mkdir -p data_v2/runs
+.venv/bin/python -m virtualenv --no-download --app-data data_v2/runs/virtualenv-cache .venv-landmarks
+.venv-landmarks/bin/python -m pip install -r scripts/requirements-landmarks.txt
+```
+
 Launcher dùng session riêng, stdin đóng, stdout/stderr ghi log. Không mở port.
 `data_v2/runs/latest_job.json` ghi PID/log; `data_v2/processed/progress.json` ghi
 từ hiện tại, số từ đã xuất bản, lỗi, trạng thái hoàn thành. `state/*.json` ghi các
