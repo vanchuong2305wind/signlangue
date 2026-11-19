@@ -1,0 +1,4 @@
+﻿benchmark_split,videos,classes,signers,percent
+train,2344,447,25,55.13
+val,1021,447,13,24.01
+test,887,447,12,20.86

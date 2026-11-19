@@ -1,0 +1,67 @@
+{
+  "input_videos": 7664,
+  "classes": 1182,
+  "signers": 57,
+  "eligible_classes": 693,
+  "retained_classes": 447,
+  "retained_videos": 4252,
+  "excluded_videos": 3412,
+  "solver_message": "Deterministic multistart local search; global optimality not certified",
+  "seed": 20261009,
+  "restarts": 100,
+  "target_ranges": {
+    "train": [
+      0.55,
+      0.65
+    ],
+    "val": [
+      0.15,
+      0.25
+    ],
+    "test": [
+      0.15,
+      0.25
+    ]
+  },
+  "splits": {
+    "train": {
+      "videos": 2344,
+      "signers": 25,
+      "classes": 447,
+      "ratio": 0.5512699905926622
+    },
+    "val": {
+      "videos": 1021,
+      "signers": 13,
+      "classes": 447,
+      "ratio": 0.24012229539040453
+    },
+    "test": {
+      "videos": 887,
+      "signers": 12,
+      "classes": 447,
+      "ratio": 0.2086077140169332
+    }
+  },
+  "old_splits": {
+    "train": {
+      "videos": 4154,
+      "signers": 53
+    },
+    "test": {
+      "videos": 1755,
+      "signers": 53
+    },
+    "valid": {
+      "videos": 1755,
+      "signers": 51
+    }
+  },
+  "old_overlap": {
+    "train_valid": 48,
+    "train_test": 52,
+    "valid_test": 47
+  },
+  "old_test_seen_train_videos": 1754,
+  "protocol": "447-class signer-independent benchmark; near 60/20/20"
+}

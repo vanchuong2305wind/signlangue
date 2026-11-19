@@ -1,0 +1,20 @@
+﻿Kiểm tra,passed
+Manifest nguồn không trùng ID,True
+Manifest filtered không trùng ID,True
+Filtered và retained source có cùng ID,True
+Nhãn và signer khớp giữa hai manifest,True
+Split filtered khớp cách chia mới,True
+Mọi video nguồn đều có file,True
+Thời lượng nguồn hợp lệ,True
+Signer không rỗng,True
+Số video khớp split_summary,True
+Số lớp khớp split_summary,True
+Không giao signer train/val,True
+Không giao signer train/test,True
+Không giao signer val/test,True
+Đủ lớp trong train,True
+Số video train khớp summary,True
+Đủ lớp trong val,True
+Số video val khớp summary,True
+Đủ lớp trong test,True
+Số video test khớp summary,True

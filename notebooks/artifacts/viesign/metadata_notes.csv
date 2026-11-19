@@ -1,0 +1,6 @@
+﻿item,documentation,observed,action
+Số video corpus,10.515,"10,553",Giữ kiểm kê; chưa kết luận nguyên nhân chênh lệch.
+Cột chia tập trong filtered,README yêu cầu split_signer_independent,split,Đã đối chiếu ID với source; dùng benchmark_split chuẩn hóa.
+Signer retained,README còn chú thích mâu thuẫn 50/51,50,Dùng số đếm trực tiếp từ manifest và signer_assignment.
+Video chưa có nhãn trong CSV nguồn,Không có manifest cho toàn corpus trong gói,2889,Chờ bổ sung manifest; không tự gán nhãn từ tên file.
+Vùng miền / ngôn ngữ ký hiệu,Không có cột trong manifest,Chưa xác định theo video,Cần metadata và người am hiểu ký hiệu xác nhận.

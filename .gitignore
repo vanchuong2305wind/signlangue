@@ -43,6 +43,8 @@ data/processed/sign_dictionary_landmarks_vi.json
 data/processed/landmarks_offsets.json
 data/processed/landmarks_v2/*.tmp
 
+data_v2/**/video_raw/
+
 # Large model files
 app/models/*.glb
 app/models/*.gltf
