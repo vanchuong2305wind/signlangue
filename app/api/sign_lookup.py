@@ -5,11 +5,17 @@ The previous ASL dictionary is never loaded as a fallback.
 """
 
 import json
+import re
 import threading
 import time
 from pathlib import Path
 
 from .viesign_dataset import DATA_DIR, DATASET_ID, ROOT, active_data_dir, normalize_word, word_id
+from .viesign_categories import categories_for
+
+# Spoken greetings can have a longer form than the dataset label. Only enable
+# an alias when its target has a real clip; never synthesize a new landmark.
+VI_ALIASES = {"xin chào": "chào"}
 
 
 class SignDictionary:
@@ -23,6 +29,8 @@ class SignDictionary:
         self._catalog_path = self.data_dir / "catalog.json"
         self.entries: dict[str, dict] = {}
         self._vi_phrases: list[str] = []
+        self._aliases: dict[str, str] = {}
+        self._token_pattern = None
         self._catalog_stamp = None
         self._last_checked = 0.0
         self._lock = threading.RLock()
@@ -69,6 +77,11 @@ class SignDictionary:
             self.gloss_to_vi = {identifier: entry["vi"] for identifier, entry in entries.items()}
             self.available_glosses = set(entries)
             self._vi_phrases = sorted(meanings, key=len, reverse=True)
+            self._aliases = {alias: target for alias, target in VI_ALIASES.items()
+                             if alias not in meanings and target in meanings}
+            phrases = sorted(set(meanings) | set(self._aliases), key=len, reverse=True)
+            self._token_pattern = (re.compile(r"(?<!\w)(?:" + "|".join(map(re.escape, phrases)) + r")(?!\w)")
+                                   if phrases else None)
             self._catalog_stamp = stamp
             self._loaded = True
             print(f"[SignDictionary] VieSign: {len(entries)} Vietnamese avatar clips")
@@ -76,17 +89,21 @@ class SignDictionary:
     def video_catalog(self) -> dict:
         self.load()
         items = []
+        category_counts = {}
         for identifier, entry in self.entries.items():
             source = entry["source_video"]
+            categories = categories_for(entry["vi"])
+            for category in categories:
+                category_counts[category] = category_counts.get(category, 0) + 1
             items.append({"gloss": identifier, "vi": entry["vi"], "language": "vsl",
-                          "categories": ["other"], "video_count": 1,
+                          "categories": categories, "video_count": 1,
                           "videos": [{"video_id": entry["video_id"], "source": "VieSign",
                                       "type": "local", "url": f"/api/dataset/video/{entry['video_id']}",
                                       "mime_type": "video/webm" if source.lower().endswith('.webm') else "video/mp4"}]})
         items.sort(key=lambda entry: entry["vi"])
         return {"dataset": DATASET_ID, "glosses": {entry["gloss"]: entry for entry in items},
                 "list": items, "stats": {"total": len(items), "with_vi": len(items),
-                                         "with_local": len(items), "categories": {"other": len(items)}}}
+                                         "with_local": len(items), "categories": category_counts}}
 
     def video_path(self, video_id: str) -> Path | None:
         for entry in self.entries.values():
@@ -118,6 +135,11 @@ class SignDictionary:
                 "gloss": gloss,
                 "found": True,
             }
+
+        target = self._aliases.get(word_lower)
+        if target:
+            return {"vi": word_lower, "gloss": self.vi_to_gloss[target],
+                    "found": True, "match": "alias", "matched_vi": target}
 
         # Internal ASCII VieSign IDs are supported; English ASL glosses are not.
         if word_lower in self.available_glosses:
@@ -161,60 +183,31 @@ class SignDictionary:
                 })
         return letters
 
+    def phrase_matches(self, text: str) -> list[tuple[int, int, dict]]:
+        """Longest dictionary matches with offsets in normalized text.
+
+        Punctuation is a boundary, but phrases never cross it. These offsets
+        let parsers keep exact phrases intact before asking an AI to segment.
+        """
+        self.load()
+        text = normalize_word(text)
+        if self._token_pattern is None:
+            return []
+        return [(match.start(), match.end(), self.lookup_vietnamese(match.group()))
+                for match in self._token_pattern.finditer(text)]
+
     def longest_match_tokenize(self, text: str) -> list[dict]:
-        """
-        Greedy longest-match tokenizer.
-        Tries to match the longest Vietnamese phrase in the dictionary first.
-        Falls back to single words, then fingerspelling.
-        """
+        """Keep the longest known phrase, returning unknown words separately."""
         text = normalize_word(text)
         tokens = []
-        i = 0
-
-        while i < len(text):
-            # Skip whitespace
-            if text[i] == " ":
-                i += 1
-                continue
-
-            matched = False
-            # Try longest phrases first
-            for phrase in self._vi_phrases:
-                phrase_len = len(phrase)
-                candidate = text[i:i + phrase_len]
-                # Must match exactly and be at a word boundary
-                if candidate == phrase:
-                    next_pos = i + phrase_len
-                    at_boundary = (
-                        next_pos >= len(text) or text[next_pos] == " "
-                    )
-                    prev_boundary = (i == 0 or text[i - 1] == " ")
-                    if at_boundary and prev_boundary:
-                        result = self.lookup_vietnamese(phrase)
-                        if result:
-                            tokens.append(result)
-                            i = next_pos
-                            matched = True
-                            break
-
-            if not matched:
-                # Extract current word
-                end = text.find(" ", i)
-                if end == -1:
-                    end = len(text)
-                word = text[i:end]
-
-                result = self.lookup_vietnamese(word)
-                if result:
-                    tokens.append(result)
-                else:
-                    tokens.append({
-                        "vi": word,
-                        "gloss": None,
-                        "found": False,
-                    })
-                i = end
-
+        cursor = 0
+        for start, end, token in self.phrase_matches(text):
+            tokens.extend({"vi": word.group(), "gloss": None, "found": False}
+                          for word in re.finditer(r"\w+", text[cursor:start]))
+            tokens.append(token)
+            cursor = end
+        tokens.extend({"vi": word.group(), "gloss": None, "found": False}
+                      for word in re.finditer(r"\w+", text[cursor:]))
         return tokens
 
 

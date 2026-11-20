@@ -7,7 +7,7 @@ import json
 import os
 from pathlib import Path
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+DATA_DIR = Path(__file__).resolve().parents[3] / "data"
 WLASL_PATH = DATA_DIR / "archive" / "WLASL_v0.3.json"
 GLOSS_TO_VI_PATH = DATA_DIR / "processed" / "gloss_to_vi.json"
 VIDEOS_DIR = DATA_DIR / "archive" / "videos"

@@ -74,25 +74,24 @@ function getWordVisual(word) {
 export default function Learn() {
     useStudyTimer('Học ký hiệu');
     const [searchParams, setSearchParams] = useSearchParams();
-    const initialCategory = searchParams.get('category') || 'all';
-
-    const [category, setCategory] = useState(initialCategory);
+    const requestedCategory = searchParams.get('category') || 'all';
+    const category = Object.hasOwn(CATEGORIES, requestedCategory) ? requestedCategory : 'all';
     const [search, setSearch] = useState('');
     const [selectedWord, setSelectedWord] = useState(null);
     const [activeVideoIdx, setActiveVideoIdx] = useState(0);
     const [page, setPage] = useState(1);
     const [viewMode, setViewMode] = useState('grid');
 
-    const { videos, loading, stats } = useSignVideos(category, search);
+    const { videos, loading, error, stats } = useSignVideos(category, search);
 
     const totalPages = Math.ceil(videos.length / ITEMS_PER_PAGE);
+    const currentPage = Math.min(page, Math.max(1, totalPages));
     const paginatedVideos = useMemo(() => {
-        const start = (page - 1) * ITEMS_PER_PAGE;
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
         return videos.slice(start, start + ITEMS_PER_PAGE);
-    }, [videos, page]);
+    }, [videos, currentPage]);
 
     const handleCategoryChange = useCallback((cat) => {
-        setCategory(cat);
         setPage(1);
         setSearchParams(cat === 'all' ? {} : { category: cat });
     }, [setSearchParams]);
@@ -140,7 +139,9 @@ export default function Learn() {
             {/* Category Tabs */}
             <div className="learn__categories">
                 <div className="learn__categories-scroll">
-                    {Object.entries(CATEGORIES).map(([key, cat]) => (
+                    {Object.entries(CATEGORIES)
+                        .filter(([key]) => key === 'all' || stats.categories[key] > 0)
+                        .map(([key, cat]) => (
                         <button
                             key={key}
                             className={`learn__category-tab ${category === key ? 'learn__category-tab--active' : ''}`}
@@ -151,11 +152,9 @@ export default function Learn() {
                                 <i className={`fa-solid ${cat.icon}`} />
                             </span>
                             <span className="learn__category-tab-label">{cat.label}</span>
-                            {stats.categories[key] && (
-                                <span className="learn__category-tab-count">
-                                    {key === 'all' ? stats.total : stats.categories[key]}
-                                </span>
-                            )}
+                            <span className="learn__category-tab-count">
+                                {key === 'all' ? stats.total : stats.categories[key]}
+                            </span>
                         </button>
                     ))}
                 </div>
@@ -206,6 +205,10 @@ export default function Learn() {
                     <div className="learn__loading-spinner" />
                     <p>Đang tải từ vựng...</p>
                 </div>
+            ) : error ? (
+                <GlassCard padding="xl" hover={false} className="learn__empty">
+                    <p className="learn__empty-text">{error}</p>
+                </GlassCard>
             ) : paginatedVideos.length === 0 ? (
                 <GlassCard padding="xl" hover={false} className="learn__empty">
                     <i className="fa-solid fa-magnifying-glass learn__empty-icon" />
@@ -270,20 +273,20 @@ export default function Learn() {
                 <div className="learn__pagination">
                     <button
                         className="learn__page-btn"
-                        disabled={page <= 1}
-                        onClick={() => setPage(p => Math.max(1, p - 1))}
+                        disabled={currentPage <= 1}
+                        onClick={() => setPage(Math.max(1, currentPage - 1))}
                     >
                         <i className="fa-solid fa-chevron-left" style={{ fontSize: '12px' }} />
                     </button>
                     <div className="learn__page-info">
-                        <span className="learn__page-current">{page}</span>
+                        <span className="learn__page-current">{currentPage}</span>
                         <span className="learn__page-sep">/</span>
                         <span className="learn__page-total">{totalPages}</span>
                     </div>
                     <button
                         className="learn__page-btn"
-                        disabled={page >= totalPages}
-                        onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                        disabled={currentPage >= totalPages}
+                        onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
                     >
                         <i className="fa-solid fa-chevron-right" style={{ fontSize: '12px' }} />
                     </button>
@@ -308,7 +311,7 @@ export default function Learn() {
                                     className="learn__video-iframe"
                                     allow="autoplay; encrypted-media"
                                     allowFullScreen
-                                    title={selectedWord.gloss}
+                                    title={selectedWord.vi}
                                 />
                             ) : activeVideo ? (
                                 <video

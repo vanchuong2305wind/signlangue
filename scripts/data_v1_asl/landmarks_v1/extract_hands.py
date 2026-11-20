@@ -187,7 +187,7 @@ def process_wlasl_dataset(json_path, videos_dir, output_dir):
 
 if __name__ == "__main__":
     # Đường dẫn
-    BASE_DIR = Path(__file__).parent.parent
+    BASE_DIR = Path(__file__).resolve().parents[3]
     JSON_PATH = BASE_DIR / "data" / "archive" / "WLASL_v0.3.json"
     VIDEOS_DIR = BASE_DIR / "data" / "archive" / "videos"
     OUTPUT_DIR = BASE_DIR / "data" / "processed"

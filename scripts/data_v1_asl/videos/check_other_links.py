@@ -1,6 +1,8 @@
 import json
+from pathlib import Path
 
-d = json.load(open(r'app\frontend\public\data\sign_videos.json', 'r', encoding='utf-8'))
+ROOT = Path(__file__).resolve().parents[3]
+d = json.load(open(ROOT / 'app' / 'frontend' / 'public' / 'data' / 'sign_videos.json', 'r', encoding='utf-8'))
 
 # Check 'other' type videos
 others = []
@@ -17,7 +19,7 @@ for o in others[:15]:
 import os
 local_missing = 0
 local_total = 0
-public_dir = r'app\frontend\public'
+public_dir = ROOT / 'app' / 'frontend' / 'public'
 for gk, g in d['glosses'].items():
     for v in g['videos']:
         if v['type'] == 'local':

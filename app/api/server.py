@@ -111,7 +111,7 @@ class SignToken(BaseModel):
     gloss: str | None = None
     found: bool = False
     fingerspell: bool = False
-    # Set by the offline parser when the gloss came from meaning similarity.
+    # Set for semantic matches or a spoken alias of a dataset label.
     match: str | None = None
     matched_vi: str | None = None
     score: float | None = None
@@ -122,7 +122,7 @@ class TextToSignResponse(BaseModel):
     signs: list[SignToken]
     found_count: int
     total_count: int
-    method: str  # "gemini" | "local" | "rule_based"
+    method: str  # "dictionary" | "gemini" | "local" | "rule_based" | "mixed"
     fingerspell_fallback: list[SignToken] = []
 
 

@@ -309,7 +309,6 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
     const [status, setStatus] = useState('Đang tải mô hình...');
     const [isModelLoaded, setIsModelLoaded] = useState(false);
     const [loadError, setLoadError] = useState(null);
-    const [currentGloss, setCurrentGloss] = useState(null);
 
     const updateStatus = useCallback((text) => {
         setStatus(text);
@@ -611,7 +610,6 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
                 anim.currentFrameIdx = 0;
                 anim.frameTimer = 0;
                 resetPose(sd);
-                setCurrentGloss(null);
                 updateStatus('Mô hình tay sẵn sàng');
                 return;
             }
@@ -627,9 +625,8 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             anim.isTransitioning = true;
             anim.transitionProgress = 0;
 
-            const label = `Đang ký: ${current.vi} (${current.gloss.toUpperCase()})`;
+            const label = `Đang ký: ${current.vi}`;
             updateStatus(label);
-            setCurrentGloss(current.gloss);
             onPlayingSign?.(current);
         }
 
@@ -684,7 +681,9 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
 
             const nextIdx = Math.min(anim.currentFrameIdx + 1, anim.currentFrames.length - 1);
             const nextFrame = anim.currentFrames[nextIdx];
-            const t = anim.frameTimer / frameDuration;
+            // A delayed render can leave more than one source frame in the
+            // timer. Extrapolating past the next pose can drive hands into the torso.
+            const t = Math.min(anim.frameTimer / frameDuration, 1);
 
             if (sd.vrmRetargeter) {
                 sd.vrmRetargeter.apply({
@@ -880,7 +879,6 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             anim.frameTimer = 0;
             anim.isTransitioning = false;
             resetPose(sceneDataRef.current);
-            setCurrentGloss(null);
             updateStatus('Mô hình tay sẵn sàng');
         },
 
@@ -942,20 +940,6 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
                 <span style={{ color: '#e2e8f0', fontSize: '12px', fontWeight: 600 }}>
                     {status}
                 </span>
-                {currentGloss && (
-                    <span style={{
-                        padding: '2px 8px',
-                        background: 'rgba(45, 212, 191, 0.2)',
-                        borderRadius: '6px',
-                        color: '#2dd4bf',
-                        fontSize: '11px',
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px',
-                    }}>
-                        {currentGloss}
-                    </span>
-                )}
             </div>
         </div>
     );

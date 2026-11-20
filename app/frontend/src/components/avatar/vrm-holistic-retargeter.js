@@ -41,6 +41,87 @@ const _palmAcross = new THREE.Vector3();
 const _palmForward = new THREE.Vector3();
 const _palmNormal = new THREE.Vector3();
 
+// A single shoulder rotation moves the whole arm clear of the abdomen.
+// Work in a body-aligned frame so scale and scene rotation do not affect it.
+class AbdomenGuard {
+    constructor(humanoid) {
+        const bone = name => humanoid?.getNormalizedBoneNode(name);
+        this.hips = bone('hips');
+        this.chest = bone('chest') || bone('upperChest');
+        this.shoulders = [bone('leftUpperArm'), bone('rightUpperArm')];
+        this.arms = [];
+        if (!this.hips || !this.chest || this.shoulders.some(node => !node)) return;
+        for (const [i, side] of ['left', 'right'].entries()) {
+            const elbow = bone(side + 'LowerArm'), hand = bone(side + 'Hand');
+            if (!elbow || !hand) continue;
+            this.arms.push({shoulder: this.shoulders[i], elbow, hand,
+                fingers: ['Thumb', 'Index', 'Middle', 'Ring', 'Little']
+                    .map(finger => bone(side + finger + 'Distal')).filter(Boolean),
+                raw: new THREE.Quaternion(), corrected: false});
+        }
+    }
+
+    restore() {
+        for (const arm of this.arms) {
+            if (arm.corrected) arm.shoulder.quaternion.copy(arm.raw);
+            arm.corrected = false;
+        }
+    }
+
+    apply() {
+        if (!this.arms.length) return;
+        const position = bone => bone.getWorldPosition(new THREE.Vector3());
+        const hips = position(this.hips), chest = position(this.chest);
+        const up = chest.clone().sub(hips).normalize();
+        const right = position(this.shoulders[0]).sub(position(this.shoulders[1]));
+        const width = right.length(), height = hips.distanceTo(chest);
+        if (width < 1e-5 || height < 1e-5) return;
+        const front = right.clone().cross(up).normalize();
+        right.crossVectors(up, front).normalize();
+        const centre = hips.clone().lerp(chest, .52);
+        const extent = new THREE.Vector3(.49 * width, .66 * height, .40 * width);
+        const offset = new THREE.Vector3();
+        const segment = new THREE.Vector3();
+        const nearest = new THREE.Vector3();
+        const rotation = new THREE.Quaternion();
+        for (const arm of this.arms) {
+            const pivot = position(arm.shoulder), elbow = position(arm.elbow), wrist = position(arm.hand);
+            const joints = [pivot, elbow, wrist, ...arm.fingers.map(position)];
+            const points = joints.map(() => new THREE.Vector3());
+            const intersects = angle => {
+                rotation.setFromAxisAngle(right, -angle);
+                for (let i = 0; i < joints.length; i++) {
+                    offset.copy(joints[i]).sub(pivot).applyQuaternion(rotation).add(pivot).sub(centre);
+                    points[i].set(offset.dot(right), offset.dot(up), offset.dot(front)).divide(extent);
+                }
+                // In this coordinate system the abdomen is a unit sphere. Test
+                // whole segments so the middle of a forearm or palm is covered.
+                for (let i = 1; i < points.length; i++) {
+                    const start = points[Math.min(i - 1, 2)];
+                    segment.subVectors(points[i], start);
+                    const t = THREE.MathUtils.clamp(-start.dot(segment) / (segment.lengthSq() || 1), 0, 1);
+                    if (nearest.copy(start).addScaledVector(segment, t).lengthSq() < 1) return true;
+                }
+                return false;
+            };
+            if (!intersects(0)) continue;
+            // For a lowered arm, pitching forward clears the belly without
+            // changing the elbow bend or finger articulation. Bound the change.
+            let low = 0, high = .42;
+            for (let i = 0; i < 9; i++) {
+                const mid = (low + high) / 2;
+                if (intersects(mid)) low = mid;
+                else high = mid;
+            }
+            arm.raw.copy(arm.shoulder.quaternion);
+            const parent = arm.shoulder.parent.getWorldQuaternion(new THREE.Quaternion());
+            const axis = right.clone().applyQuaternion(parent.invert());
+            arm.shoulder.quaternion.premultiply(new THREE.Quaternion().setFromAxisAngle(axis, -high));
+            arm.corrected = true;
+        }
+    }
+}
+
 function pointToWorld(point, target) {
     target.set(
         Number(point?.x) || 0,
@@ -63,6 +144,7 @@ export class VrmHolisticRetargeter {
         this.vrm = vrm;
         this.rest = new Map();
         this.lastFrame = null;
+        this.abdomen = new AbdomenGuard(vrm.humanoid);
 
         for (const [boneName] of POSE_BONES) {
             this.captureRestBone(boneName);
@@ -146,6 +228,7 @@ export class VrmHolisticRetargeter {
 
     apply(frame, delta) {
         if (!frame) return;
+        this.abdomen.restore();
         const smoothing = 1 - Math.exp(-Math.max(delta, 0) * 18);
         const pose = isValidTrack(frame.pose_world, 25)
             ? frame.pose_world
@@ -167,6 +250,7 @@ export class VrmHolisticRetargeter {
         this.applyHand('left', frame.left_hand, smoothing);
         this.applyHand('right', frame.right_hand, smoothing);
         this.applyFace(frame.face_blendshapes, smoothing);
+        this.abdomen.apply();
         this.vrm.update(delta);
         this.lastFrame = frame;
     }
@@ -280,6 +364,7 @@ export class VrmHolisticRetargeter {
     }
 
     reset() {
+        this.abdomen.restore();
         for (const [boneName, rest] of this.rest) {
             const bone = this.vrm.humanoid?.getNormalizedBoneNode(boneName);
             if (bone) bone.quaternion.copy(rest.localQuaternion);

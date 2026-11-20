@@ -7,7 +7,7 @@ from pathlib import Path
 
 from tqdm import tqdm
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
 from app.api.landmark_processing import process_landmark_entry

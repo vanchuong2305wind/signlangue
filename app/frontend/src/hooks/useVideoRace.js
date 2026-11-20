@@ -15,10 +15,10 @@ export function useVideoRace(videos = []) {
     const prevVideosRef = useRef(videos);
     const failedIndexesRef = useRef(new Set());
 
-    // Filter to only http links (skip local, swf, etc.)
+    // VieSign clips are served from the API on the same origin.
     const candidates = useMemo(
         () => videos.filter(v =>
-            v.url && v.url.startsWith('http') && v.type !== 'swf'
+            v.url && (v.url.startsWith('/api/dataset/video/') || /^https?:\/\//i.test(v.url)) && v.type !== 'swf'
         ),
         [videos]
     );
@@ -62,7 +62,7 @@ export function useVideoRace(videos = []) {
                 video.muted = true;
 
                 const cleanup = () => {
-                    video.onloadeddata = null;
+                    video.onloadedmetadata = null;
                     video.onerror = null;
                     video.removeAttribute('src');
                     video.load();
@@ -74,7 +74,7 @@ export function useVideoRace(videos = []) {
                     resolve(null);
                 }, 8000);
 
-                video.onloadeddata = () => {
+                video.onloadedmetadata = () => {
                     clearTimeout(timeout);
                     if (!raceState.abort) {
                         cleanup();

@@ -4,7 +4,7 @@ Web app hỗ trợ học ngôn ngữ ký hiệu với giao diện **Liquid Glass
 
 ## Tính năng
 
-- 📚 **Học ký hiệu qua Video** - 2000+ từ vựng ASL với video
+- 📚 **Học ký hiệu qua Video** - Dữ liệu ký hiệu Việt Nam VieSign
 - 🎤 **Giọng nói → Ký hiệu** - Dịch giọng nói thành ký hiệu (Phase 2)
 - 📷 **Camera → Nhận diện** - Nhận diện ký hiệu bằng camera (Phase 4)
 - 🎮 **Gamification** - Theo dõi tiến độ học (Phase 3)
@@ -14,7 +14,7 @@ Web app hỗ trợ học ngôn ngữ ký hiệu với giao diện **Liquid Glass
 - **Frontend**: Vite + React
 - **Backend**: Python FastAPI
 - **AI**: MediaPipe, Gemini API
-- **Data**: WLASL v0.3 (2000 glosses, 11,980 videos)
+- **Data**: VieSign, bộ landmark Việt Nam đã gộp 3.393 mục từ; WLASL/ASL cũ lưu riêng
 
 ## Cài đặt
 
@@ -38,8 +38,14 @@ app/
 data/
 ├── archive/      # WLASL dataset + videos
 ├── processed/    # Processed dictionaries
-scripts/          # Data processing scripts
+scripts/
+├── data_v2_viesign/ # Pipeline ký hiệu Việt Nam đang dùng
+├── data_v1_asl/     # Công cụ WLASL/ASL cũ, chia theo phiên bản landmark
+├── runtime/        # Chạy API
+└── run.py          # Liệt kê/chạy tác vụ
 ```
+
+Xem [hướng dẫn các script](scripts/README.md) hoặc chạy `python scripts/run.py --help`.
 
 ## License
 

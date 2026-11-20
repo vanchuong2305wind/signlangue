@@ -36,7 +36,7 @@ vì nguồn nhãn này không cung cấp các trường đó. Không coi các t�
 CSV dùng UTF-8 BOM để mở được tiếng Việt trong Excel. Tạo lại từ gốc dự án:
 
 ```powershell
-.\.venv\Scripts\python.exe scripts/build_viesign_additional_labels.py
+.\.venv\Scripts\python.exe scripts/run.py viesign-labels
 ```
 
 Nguồn: https://www.kaggle.com/datasets/aresusayhi/vsl-vietnamese-sign-languages/data

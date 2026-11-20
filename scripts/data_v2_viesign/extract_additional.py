@@ -7,10 +7,10 @@ import csv
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from app.api.viesign_dataset import DATA_DIR, normalize_word
-from scripts import extract_viesign_landmarks as pipeline
+from scripts.data_v2_viesign import extract_original as pipeline
 
 MANIFEST = ROOT / "data_v2" / "annotations" / "viesign_missing_labels.csv"
 OUTPUT = ROOT / "data_v2" / "processed_additional"

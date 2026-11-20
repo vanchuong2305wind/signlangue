@@ -17,8 +17,9 @@ import os
 from pathlib import Path
 
 # --- Config ---
-JSON_PATH = Path(__file__).parent.parent / "app" / "frontend" / "public" / "data" / "sign_videos.json"
-PUBLIC_DIR = Path(__file__).parent.parent / "app" / "frontend" / "public"
+ROOT = Path(__file__).resolve().parents[3]
+JSON_PATH = ROOT / "app" / "frontend" / "public" / "data" / "sign_videos.json"
+PUBLIC_DIR = ROOT / "app" / "frontend" / "public"
 CONCURRENCY = 50
 TIMEOUT = 15
 MAX_RETRIES = 2

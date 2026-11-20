@@ -10,27 +10,38 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from scripts._commands import resolve_command
+
+JOB_SCRIPTS = {
+    "original": "viesign-original",
+    "additional": "viesign-additional",
+    "merge": "viesign-merge",
+    # Keep --script values from earlier commands/job records usable.
+    "extract_viesign_landmarks.py": "viesign-original",
+    "extract_viesign_additional_landmarks.py": "viesign-additional",
+    "merge_viesign_landmarks.py": "viesign-merge",
+}
 
 
 def main():
-    if os.name != "posix":
-        raise SystemExit("Run this launcher on the Linux server, using .venv-landmarks/bin/python")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--job-name", default="original")
-    parser.add_argument("--script", default="extract_viesign_landmarks.py", choices=[
-        "extract_viesign_landmarks.py", "extract_viesign_additional_landmarks.py", "merge_viesign_landmarks.py",
-    ])
+    parser.add_argument("--script", default="original", choices=JOB_SCRIPTS)
     args, forwarded = parser.parse_known_args()
+    if os.name != "posix":
+        raise SystemExit("Run this launcher on the Linux server, using .venv-landmarks/bin/python")
     if not re.fullmatch(r"[a-z0-9][a-z0-9_-]*", args.job_name):
         parser.error("--job-name must contain only lowercase letters, digits, hyphens or underscores")
-    if args.script != "extract_viesign_landmarks.py" and args.job_name == "original":
+    if JOB_SCRIPTS[args.script] != "viesign-original" and args.job_name == "original":
         parser.error("Use a separate --job-name for additional extraction or merge")
     runs = ROOT / "data_v2" / "runs"
     runs.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     log_path = runs / f"{args.job_name}-{stamp}.log"
-    command = [sys.executable, "-u", str(ROOT / "scripts" / args.script), *forwarded]
+    script_path, _ = resolve_command(JOB_SCRIPTS[args.script])
+    command = [sys.executable, "-u", str(ROOT / script_path), *forwarded]
     env = {**os.environ, "OMP_NUM_THREADS": "2", "OPENBLAS_NUM_THREADS": "1",
            "TF_NUM_INTRAOP_THREADS": "2", "TF_NUM_INTEROP_THREADS": "1", "GLOG_minloglevel": "2"}
     with log_path.open("ab", buffering=0) as log:

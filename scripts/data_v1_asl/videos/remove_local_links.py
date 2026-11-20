@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 
-JSON_PATH = Path(__file__).parent.parent / "app" / "frontend" / "public" / "data" / "sign_videos.json"
+JSON_PATH = Path(__file__).resolve().parents[3] / "app" / "frontend" / "public" / "data" / "sign_videos.json"
 
 with open(JSON_PATH, 'r', encoding='utf-8') as f:
     data = json.load(f)

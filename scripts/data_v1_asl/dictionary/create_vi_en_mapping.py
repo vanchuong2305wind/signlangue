@@ -83,7 +83,7 @@ def create_mapping(landmarks_json_path, output_dir):
 
 
 if __name__ == "__main__":
-    BASE_DIR = Path(__file__).parent.parent
+    BASE_DIR = Path(__file__).resolve().parents[3]
     LANDMARKS_JSON = BASE_DIR / "data" / "processed" / "sign_dictionary_landmarks.json"
     OUTPUT_DIR = BASE_DIR / "data" / "processed"
 

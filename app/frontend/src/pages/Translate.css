@@ -665,6 +665,12 @@
     transform: scale(1.05);
 }
 
+.sign-chip.not-found.active {
+    border-color: var(--wc-rose) !important;
+    background: var(--wash-rose) !important;
+    box-shadow: 0 0 0 2px rgba(204, 120, 110, 0.15), var(--card-shadow);
+}
+
 .sign-chip-vi {
     font-weight: 600;
     color: var(--ink-dark);

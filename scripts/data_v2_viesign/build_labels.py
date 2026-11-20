@@ -16,10 +16,10 @@ from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from app.api.viesign_dataset import normalize_word, word_id
-from scripts.extract_viesign_landmarks import discover_source
+from scripts.data_v2_viesign.extract_original import discover_source
 
 OUTPUT = ROOT / "data_v2" / "annotations"
 SOURCE_URL = "https://www.kaggle.com/datasets/aresusayhi/vsl-vietnamese-sign-languages/data"

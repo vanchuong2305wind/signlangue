@@ -743,11 +743,6 @@ export default function VideoTranslate() {
                                 <span className="vt-sign-current-text">
                                     {displayResult.signs[activeSignIdx]?.vi || '—'}
                                 </span>
-                                {displayResult.signs[activeSignIdx]?.gloss && (
-                                    <span className="vt-sign-current-gloss">
-                                        {displayResult.signs[activeSignIdx].gloss.toUpperCase()}
-                                    </span>
-                                )}
                                 <span className="vt-sign-current-counter">
                                     {activeSignIdx + 1}/{displayResult.signs.length}
                                 </span>

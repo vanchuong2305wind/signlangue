@@ -207,7 +207,7 @@ def translate_dictionary(
 
 
 if __name__ == '__main__':
-    BASE = Path('data/processed')
+    BASE = Path(__file__).resolve().parents[3] / 'data' / 'processed'
 
     translate_dictionary(
         input_path  = str(BASE / 'sign_dictionary_landmarks.json'),

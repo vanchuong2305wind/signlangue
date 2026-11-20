@@ -142,7 +142,7 @@ export default function Translate() {
     const { activeVideo, isLoading: videoLoading, tryNext } = useVideoRace(signVideoList);
 
     useEffect(() => {
-        if (!isAutoPlaying || !result?.signs?.length || mode !== 'video') return;
+        if (!isAutoPlaying || !result?.signs?.length || mode !== 'video' || !signVideosData) return;
 
         const currentSign = result.signs[activeSignIdx];
         if (!currentSign?.found) {
@@ -168,6 +168,7 @@ export default function Translate() {
         mode,
         videoLoading,
         activeVideo,
+        signVideosData,
         advanceToNextSign,
     ]);
 
@@ -400,7 +401,7 @@ export default function Translate() {
                                         src={activeVideo.embedUrl}
                                         allow="autoplay; encrypted-media; picture-in-picture"
                                         allowFullScreen
-                                        title={activeSign?.gloss || ''}
+                                        title={activeSign?.vi || ''}
                                     />
                                 ) : (
                                     <video
@@ -432,7 +433,9 @@ export default function Translate() {
                             </div>
                         ) : (
                             <div className="sign-video-empty">
-                                {result?.signs?.length ? (
+                                {result && !result.signs.length ? (
+                                    <span>Chưa tìm thấy ký hiệu phù hợp với câu này.</span>
+                                ) : result?.signs?.length ? (
                                     <span>Không có video cho từ này. Chọn từ khác.</span>
                                 ) : (
                                     <>
@@ -479,13 +482,6 @@ export default function Translate() {
                                         onClick={() => handleSignChipClick(idx)}
                                     >
                                         <span className="sign-chip-vi">{sign.vi}</span>
-                                        {sign.found && sign.gloss ? (
-                                            <span className="sign-chip-gloss">{sign.gloss}</span>
-                                        ) : (
-                                            <span className="sign-chip-miss">
-                                                <i className="fa-solid fa-xmark" style={{ fontSize: '9px', marginRight: '2px' }} /> không có
-                                            </span>
-                                        )}
                                     </div>
                                     {idx < result.signs.length - 1 && <span className="sign-arrow">→</span>}
                                 </div>
@@ -494,22 +490,6 @@ export default function Translate() {
                     </div>
                 )}
 
-                {/* Fingerspell */}
-                {result?.fingerspell_fallback?.length > 0 && (
-                    <div className="fingerspell-section">
-                        <p className="fingerspell-label">
-                            <i className="fa-solid fa-hand-point-up" style={{ marginRight: '6px' }} />
-                            Đánh vần cho từ không tìm thấy:
-                        </p>
-                        <div className="fingerspell-chips">
-                            {result.fingerspell_fallback.map((letter, i) => (
-                                <span key={i} className={`fingerspell-chip ${letter.found ? 'found' : 'not-found'}`}>
-                                    {letter.gloss?.toUpperCase() || letter.vi}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                )}
             </GlassCard>
 
             {/* Bottom stats */}

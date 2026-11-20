@@ -24,9 +24,9 @@ Các file ASL vẫn giữ trên ổ đĩa để tránh xóa dữ liệu ngoài p
 
 ```powershell
 python -m venv .venv-landmarks
-.\.venv-landmarks\Scripts\python.exe -m pip install -r scripts/requirements-landmarks.txt
-.\.venv-landmarks\Scripts\python.exe scripts/extract_viesign_landmarks.py --plan
-.\.venv-landmarks\Scripts\python.exe scripts/extract_viesign_landmarks.py --word 12 --output data_v2/runs/local-smoke
+.\.venv-landmarks\Scripts\python.exe -m pip install -r scripts/data_v2_viesign/requirements.txt
+.\.venv-landmarks\Scripts\python.exe scripts/run.py viesign-original --plan
+.\.venv-landmarks\Scripts\python.exe scripts/run.py viesign-original --word 12 --output data_v2/runs/local-smoke
 ```
 
 Model Holistic được tải từ kho model chính thức của Google vào `data_v2/models/`.
@@ -39,9 +39,9 @@ Chỉ thực hiện trong `~/Documents/sign-lang/signlangue`:
 
 ```bash
 python3 -m venv .venv-landmarks
-.venv-landmarks/bin/python -m pip install -r scripts/requirements-landmarks.txt
-.venv-landmarks/bin/python scripts/extract_viesign_landmarks.py --plan
-.venv-landmarks/bin/python scripts/run_viesign_background.py
+.venv-landmarks/bin/python -m pip install -r scripts/data_v2_viesign/requirements.txt
+.venv-landmarks/bin/python scripts/run.py viesign-original --plan
+.venv-landmarks/bin/python scripts/run.py viesign-background
 ```
 
 Nếu server báo thiếu `ensurepip`, dùng `virtualenv` có trong môi trường hiện tại
@@ -50,7 +50,7 @@ thay cho lệnh tạo `venv` (không cần cài gói hệ thống hay thay `.ven
 ```bash
 mkdir -p data_v2/runs
 .venv/bin/python -m virtualenv --no-download --app-data data_v2/runs/virtualenv-cache .venv-landmarks
-.venv-landmarks/bin/python -m pip install -r scripts/requirements-landmarks.txt
+.venv-landmarks/bin/python -m pip install -r scripts/data_v2_viesign/requirements.txt
 ```
 
 Launcher dùng session riêng, stdin đóng, stdout/stderr ghi log. Không mở port.
@@ -77,7 +77,7 @@ Mô hình camera WLASL là phần riêng, chưa được huấn luyện lại tr
 Không dừng dịch vụ đang chiếm port. Để chạy **thêm** API mới, dùng:
 
 ```bash
-LOCAL_AI_PRELOAD=0 .venv/bin/python scripts/serve_viesign.py --port 8000
+LOCAL_AI_PRELOAD=0 .venv/bin/python scripts/run.py serve-api --port 8000
 ```
 
 Script giữ socket trống rồi chuyển trực tiếp cho Uvicorn; nếu 8000 bận sẽ chọn
@@ -97,9 +97,9 @@ Signer hoặc vùng miền. Các nhãn này do người dùng chọn đưa vào 
 nhãn đã được kiểm duyệt nội dung clip.
 
 ```bash
-.venv-landmarks/bin/python scripts/extract_viesign_additional_landmarks.py --plan
-.venv-landmarks/bin/python scripts/run_viesign_background.py --job-name additional --script extract_viesign_additional_landmarks.py
-.venv-landmarks/bin/python scripts/run_viesign_background.py --job-name merge --script merge_viesign_landmarks.py --wait
+.venv-landmarks/bin/python scripts/run.py viesign-additional --plan
+.venv-landmarks/bin/python scripts/run.py viesign-background --job-name additional --script additional
+.venv-landmarks/bin/python scripts/run.py viesign-background --job-name merge --script merge --wait
 ```
 
 - Luồng gốc: `data_v2/processed/`, job cũ vẫn ở `data_v2/runs/latest_job.json`.

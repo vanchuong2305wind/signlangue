@@ -1,3 +1,4 @@
+# Isolated environment for the current Vietnamese landmark pipeline.
 mediapipe==1.0.0
 numpy>=1.26,<3
 # MediaPipe includes opencv-contrib-python; do not install a second cv2 wheel.

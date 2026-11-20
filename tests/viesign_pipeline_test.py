@@ -8,6 +8,7 @@ import json
 import socket
 import sys
 import tempfile
+from types import SimpleNamespace
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -16,9 +17,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from app.api.viesign_dataset import atomic_json, normalize_word, word_id
 from app.api.sign_lookup import SignDictionary
-from scripts import extract_viesign_landmarks as pipeline
-from scripts import extract_viesign_additional_landmarks as additional_pipeline
-from scripts import merge_viesign_landmarks as merger
+from scripts.data_v2_viesign import extract_original as pipeline
+from scripts.data_v2_viesign import extract_additional as additional_pipeline
+from scripts.data_v2_viesign import merge as merger
 
 
 def clip(score, usable=True):
@@ -129,10 +130,14 @@ class VieSignPipelineTest(unittest.TestCase):
             self.assertEqual(client.get(f"/api/landmarks/{identifier}", headers={"If-None-Match": etag}).status_code, 304)
             self.assertEqual(client.get("/api/landmarks/book").status_code, 404)
             self.assertEqual(client.get("/api/dataset/video/B").content, b"fixture")
+            partial = client.get("/api/dataset/video/B", headers={"Range": "bytes=0-2"})
+            self.assertEqual(partial.status_code, 206)
+            self.assertEqual(partial.content, b"fix")
+            self.assertEqual(partial.headers["content-range"], "bytes 0-2/7")
             self.assertEqual(client.get("/api/dataset/video/not-selected").status_code, 404)
 
     def test_port_reservation_skips_existing_listener(self):
-        from scripts.serve_viesign import reserve_socket
+        from scripts.runtime.serve_api import reserve_socket
         with socket.socket() as occupied:
             occupied.bind(("127.0.0.1", 0)); occupied.listen(1)
             used = occupied.getsockname()[1]
@@ -255,6 +260,30 @@ class VieSignPipelineTest(unittest.TestCase):
         with patch.object(sign_lookup, "ROOT", self.root):
             self.assertEqual(dictionary.video_path("D0002"), nested / "D0002.webm")
             self.assertIsNone(dictionary.video_path("unknown"))
+
+    def test_background_launcher_uses_new_path_and_preserves_original_job(self):
+        from scripts.data_v2_viesign import run_background
+        runs = self.root / "data_v2" / "runs"
+        runs.mkdir(parents=True)
+        original_record = b'{"pid":42,"job_name":"original"}'
+        (runs / "latest_job.json").write_bytes(original_record)
+        child = SimpleNamespace(pid=12345, poll=lambda: None)
+        argv = ["run_background.py", "--job-name", "additional", "--script",
+                "extract_viesign_additional_landmarks.py", "--plan"]
+        with patch.object(run_background, "ROOT", self.root), \
+             patch.object(run_background, "os", SimpleNamespace(name="posix", environ={})), \
+             patch.object(run_background.subprocess, "Popen", return_value=child) as spawn, \
+             patch.object(run_background.time, "sleep"), patch.object(sys, "argv", argv), \
+             contextlib.redirect_stdout(io.StringIO()):
+            run_background.main()
+        command = spawn.call_args.args[0]
+        self.assertEqual(command[2], str(self.root / "scripts/data_v2_viesign/extract_additional.py"))
+        self.assertEqual(command[-1], "--plan")
+        self.assertTrue(spawn.call_args.kwargs["start_new_session"])
+        self.assertEqual((runs / "latest_job.json").read_bytes(), original_record)
+        record = json.loads((runs / "jobs/additional.json").read_text())
+        self.assertEqual(record["pid"], 12345)
+        self.assertEqual(record["ports"], [])
 
 
 if __name__ == "__main__":

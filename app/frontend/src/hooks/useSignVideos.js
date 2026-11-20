@@ -2,6 +2,11 @@ import { useState, useEffect, useMemo } from 'react';
 
 let _dataCache = null;
 
+function searchKey(value) {
+    return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase().replaceAll('đ', 'd').replaceAll('_', ' ').trim();
+}
+
 async function loadData() {
     if (_dataCache) return _dataCache;
     const resp = await fetch('/api/dictionary/videos');
@@ -36,10 +41,9 @@ export function useSignVideos(category = 'all', searchQuery = '') {
         }
 
         if (searchQuery) {
-            const q = searchQuery.toLowerCase().trim();
+            const q = searchKey(searchQuery);
             result = result.filter(v =>
-                v.gloss.includes(q) ||
-                (v.vi && v.vi.includes(q))
+                v.vi && searchKey(v.vi).includes(q)
             );
         }
 

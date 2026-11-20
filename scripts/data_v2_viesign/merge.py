@@ -17,10 +17,10 @@ import uuid
 from contextlib import ExitStack
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from app.api.viesign_dataset import ACTIVE_DATASET_PATH, DATA_DIR, DATASET_ID, atomic_json, normalize_word, word_id
-from scripts.extract_viesign_landmarks import exclusive_lock, make_catalog_entry, now
+from scripts.data_v2_viesign.extract_original import exclusive_lock, make_catalog_entry, now
 
 ADDITIONAL = ROOT / "data_v2" / "processed_additional"
 MERGED = ROOT / "data_v2" / "processed_merged"

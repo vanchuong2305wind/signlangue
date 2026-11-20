@@ -1,6 +1,7 @@
 """
 text_parser.py
 Parse Vietnamese text into meaningful chunks using:
+  0. Longest matching compound signs from the active dictionary
   1. Google Gemini API (primary)
   2. PhoBERT local NLP (offline fallback, see local_nlp.py)
   3. Rule-based longest-match (last resort)
@@ -16,6 +17,7 @@ from collections import OrderedDict
 
 from . import local_nlp
 from .sign_lookup import sign_dict
+from .viesign_dataset import normalize_word
 
 # Splitting a sentence into dictionary words is a light task, so it runs on a
 # lite model. The reasoning models are far too slow here: `gemini-3.6-flash`
@@ -244,15 +246,8 @@ def _lookup_words(words: list[str]) -> list[dict]:
     return results
 
 
-async def parse_text(text: str, use_llm: bool = True) -> tuple[list[dict], str]:
-    """
-    Main entry: parse Vietnamese text into sign-ready chunks.
-
-    Returns (tokens, method), where a token is {vi, gloss, found, fingerspell?}
-    and method is the path actually taken — "gemini" or "rule_based". The caller
-    used to infer this from whether an API key was set, which reported "gemini"
-    even for requests the fallback had answered.
-    """
+async def _parse_remaining(text: str, use_llm: bool) -> tuple[list[dict], str]:
+    """Parse an unmatched span via Gemini, local NLP, then dictionary rules."""
     if not text or not text.strip():
         return [], "rule_based"
 
@@ -278,3 +273,37 @@ async def parse_text(text: str, use_llm: bool = True) -> tuple[list[dict], str]:
 
     # Last resort: rule-based parsing
     return _lookup_words(parse_rule_based(text)), "rule_based"
+
+
+async def parse_text(text: str, use_llm: bool = True) -> tuple[list[dict], str]:
+    """Protect known compound signs before Gemini or local word segmentation.
+
+    Only unmatched spans go through the existing AI/fallback chain. Keeping
+    original offsets also prevents joining words across punctuation or words
+    that an AI decides to omit.
+    """
+    text = normalize_word(text)
+    matches = [(start, end, token) for start, end, token in sign_dict.phrase_matches(text)
+               if " " in token["vi"]]
+    if not matches:
+        return await _parse_remaining(text, use_llm)
+
+    tokens = []
+    methods = []
+    cursor = 0
+    for start, end, token in matches:
+        gap = text[cursor:start]
+        if any(char.isalnum() for char in gap):
+            remaining, method = await _parse_remaining(gap, use_llm)
+            tokens.extend(remaining)
+            methods.append(method)
+        tokens.append(token)
+        cursor = end
+    tail = text[cursor:]
+    if any(char.isalnum() for char in tail):
+        remaining, method = await _parse_remaining(tail, use_llm)
+        tokens.extend(remaining)
+        methods.append(method)
+    if not methods:
+        return tokens, "dictionary"
+    return tokens, methods[0] if len(set(methods)) == 1 else "mixed"

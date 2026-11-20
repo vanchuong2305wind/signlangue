@@ -8,14 +8,17 @@ Tạo 2 file:
 import json
 import sys
 import time
+from pathlib import Path
 from googletrans import Translator
+
+ROOT = Path(__file__).resolve().parents[3]
 
 # Fix encoding
 sys.stdout.reconfigure(encoding='utf-8')
 
 # Đọc danh sách từ
 print("Đang đọc sign_dictionary_landmarks.json...")
-with open('d:/CLB_AI/Duan/data/processed/sign_dictionary_landmarks.json', 'r', encoding='utf-8') as f:
+with open(ROOT / 'data' / 'processed' / 'sign_dictionary_landmarks.json', 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 glosses = sorted(data.keys())
@@ -51,10 +54,10 @@ for eng, vie in gloss_to_vi.items():
 
 # Lưu file
 print("\nĐang lưu file...")
-with open('d:/CLB_AI/Duan/data/processed/gloss_to_vi.json', 'w', encoding='utf-8') as f:
+with open(ROOT / 'data' / 'processed' / 'gloss_to_vi.json', 'w', encoding='utf-8') as f:
     json.dump(gloss_to_vi, f, ensure_ascii=False, indent=2)
 
-with open('d:/CLB_AI/Duan/data/processed/vi_to_gloss.json', 'w', encoding='utf-8') as f:
+with open(ROOT / 'data' / 'processed' / 'vi_to_gloss.json', 'w', encoding='utf-8') as f:
     json.dump(vi_to_gloss, f, ensure_ascii=False, indent=2)
 
 print("\n✓ Hoàn thành!")

@@ -15,9 +15,9 @@ Two jobs, both aimed at the same latency problem:
             blendshape data they were originally built with.
 
 Usage:
-    python -m scripts.build_landmark_cache              # fill + reencode
-    python -m scripts.build_landmark_cache --fill-only
-    python -m scripts.build_landmark_cache --reencode-only
+    python scripts/run.py asl-v2-cache              # fill + reencode
+    python scripts/run.py asl-v2-cache --fill-only
+    python scripts/run.py asl-v2-cache --reencode-only
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ import sys
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
 from app.api.landmark_index import load_or_build, read_entry  # noqa: E402

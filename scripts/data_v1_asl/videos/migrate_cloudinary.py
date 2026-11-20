@@ -1,6 +1,7 @@
 import os
 import json
 import time
+from pathlib import Path
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
@@ -15,8 +16,9 @@ cloudinary.config(
     api_secret=os.getenv('CLOUDINARY_API_SECRET')
 )
 
-DATA_FILE = 'app/frontend/public/data/sign_videos.json'
-OUTPUT_FILE = 'app/frontend/public/data/sign_videos.json' # overwrite the same file, but we will create a backup first
+ROOT = Path(__file__).resolve().parents[3]
+DATA_FILE = ROOT / 'app' / 'frontend' / 'public' / 'data' / 'sign_videos.json'
+OUTPUT_FILE = DATA_FILE # overwrite the same file, but we will create a backup first
 
 def migrate_videos(limit=2000):
     with open(DATA_FILE, 'r', encoding='utf-8') as f:
