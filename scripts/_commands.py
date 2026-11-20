@@ -1,6 +1,7 @@
 """Command names and old filename aliases; importing this never runs a job."""
 
 COMMANDS = {
+    "viesign-supplement-asl": ("scripts/data_v2_viesign/supplement_asl.py", "Bổ sung ASL cho các nhãn VieSign thiếu"),
     "viesign-labels": ("scripts/data_v2_viesign/build_labels.py", "Tạo nhãn bổ sung từ CSV Kaggle"),
     "viesign-original": ("scripts/data_v2_viesign/extract_original.py", "Landmark bộ gốc 1.182 mục từ"),
     "viesign-additional": ("scripts/data_v2_viesign/extract_additional.py", "Landmark bộ bổ sung 2.334 mục từ"),

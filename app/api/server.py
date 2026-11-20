@@ -111,6 +111,8 @@ class SignToken(BaseModel):
     gloss: str | None = None
     found: bool = False
     fingerspell: bool = False
+    language: str = "vsl"
+    source: str | None = None
     # Set for semantic matches or a spoken alias of a dataset label.
     match: str | None = None
     matched_vi: str | None = None
@@ -794,14 +796,14 @@ async def get_landmarks(gloss: str, request: Request):
     if gloss_lower not in sign_dict.available_glosses:
         raise HTTPException(status_code=404, detail="No Vietnamese landmarks available for this word")
 
-    cache_path = sign_dict._landmarks_v2_dir / f"{gloss_lower}.json"
+    cache_path = sign_dict.landmark_path(gloss_lower)
     if cache_path.exists():
         try:
             return _cached_landmark_response(gloss_lower, cache_path, request)
         except OSError:
             pass
 
-    # No ASL fallback and no expensive extraction inside a web request.
+    # Only explicitly selected, preprocessed files are served.
     raise HTTPException(status_code=404, detail="Vietnamese landmark file is not ready")
 
 

@@ -6809,6 +6809,274 @@
         "section": "Dịch ký hiệu"
       },
       "created_at": "2026-11-21T01:54:05.472526+07:00"
+    },
+    {
+      "id": "1795201025430-666",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-11-21T01:57:05.430149+07:00"
+    },
+    {
+      "id": "1795201476197-667",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-11-21T02:04:36.197530+07:00"
+    },
+    {
+      "id": "1795201481178-668",
+      "type": "translation",
+      "label": "cái trống",
+      "value": 1,
+      "metadata": {
+        "found_count": 1,
+        "total_count": 2
+      },
+      "created_at": "2026-11-21T02:04:41.178641+07:00"
+    },
+    {
+      "id": "1795201505419-669",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-11-21T02:05:05.419887+07:00"
+    },
+    {
+      "id": "1795201508530-670",
+      "type": "translation",
+      "label": "ví",
+      "value": 1,
+      "metadata": {
+        "found_count": 0,
+        "total_count": 1
+      },
+      "created_at": "2026-11-21T02:05:08.530434+07:00"
+    },
+    {
+      "id": "1795201514886-671",
+      "type": "translation",
+      "label": "cái ví",
+      "value": 1,
+      "metadata": {
+        "found_count": 0,
+        "total_count": 1
+      },
+      "created_at": "2026-11-21T02:05:14.886411+07:00"
+    },
+    {
+      "id": "1795201756017-672",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-11-21T02:09:16.017711+07:00"
+    },
+    {
+      "id": "1795201760396-673",
+      "type": "translation",
+      "label": "vui",
+      "value": 1,
+      "metadata": {
+        "found_count": 0,
+        "total_count": 1
+      },
+      "created_at": "2026-11-21T02:09:20.396987+07:00"
+    },
+    {
+      "id": "1795202384654-674",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-11-21T02:19:44.654179+07:00"
+    },
+    {
+      "id": "1795202393015-675",
+      "type": "video_view",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "gloss": "vsl-8aaecd06d85c7f743d35"
+      },
+      "created_at": "2026-11-21T02:19:53.015475+07:00"
+    },
+    {
+      "id": "1795202393073-676",
+      "type": "learned_word",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "gloss": "vsl-8aaecd06d85c7f743d35"
+      },
+      "created_at": "2026-11-21T02:19:53.073382+07:00"
+    },
+    {
+      "id": "1795202401403-677",
+      "type": "video_view",
+      "label": "chào",
+      "value": 1,
+      "metadata": {
+        "gloss": "vsl-63212601c9d62167abf4"
+      },
+      "created_at": "2026-11-21T02:20:01.403180+07:00"
+    },
+    {
+      "id": "1795202401466-678",
+      "type": "learned_word",
+      "label": "chào",
+      "value": 1,
+      "metadata": {
+        "gloss": "vsl-63212601c9d62167abf4"
+      },
+      "created_at": "2026-11-21T02:20:01.466355+07:00"
+    },
+    {
+      "id": "1795202404248-679",
+      "type": "learned_word",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "gloss": "vsl-8aaecd06d85c7f743d35"
+      },
+      "created_at": "2026-11-21T02:20:04.248740+07:00"
+    },
+    {
+      "id": "1795202404329-680",
+      "type": "video_view",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "gloss": "vsl-8aaecd06d85c7f743d35"
+      },
+      "created_at": "2026-11-21T02:20:04.329132+07:00"
+    },
+    {
+      "id": "1795202413776-681",
+      "type": "video_view",
+      "label": "xin lỗi",
+      "value": 1,
+      "metadata": {
+        "gloss": "vsl-add350465f84fd73e8e5"
+      },
+      "created_at": "2026-11-21T02:20:13.776624+07:00"
+    },
+    {
+      "id": "1795202413844-682",
+      "type": "learned_word",
+      "label": "xin lỗi",
+      "value": 1,
+      "metadata": {
+        "gloss": "vsl-add350465f84fd73e8e5"
+      },
+      "created_at": "2026-11-21T02:20:13.844760+07:00"
+    },
+    {
+      "id": "1795202416570-683",
+      "type": "video_view",
+      "label": "chào",
+      "value": 1,
+      "metadata": {
+        "gloss": "vsl-63212601c9d62167abf4"
+      },
+      "created_at": "2026-11-21T02:20:16.570759+07:00"
+    },
+    {
+      "id": "1795202416632-684",
+      "type": "learned_word",
+      "label": "chào",
+      "value": 1,
+      "metadata": {
+        "gloss": "vsl-63212601c9d62167abf4"
+      },
+      "created_at": "2026-11-21T02:20:16.632498+07:00"
+    },
+    {
+      "id": "1795202419945-685",
+      "type": "learned_word",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "gloss": "vsl-8aaecd06d85c7f743d35"
+      },
+      "created_at": "2026-11-21T02:20:19.945077+07:00"
+    },
+    {
+      "id": "1795202420011-686",
+      "type": "video_view",
+      "label": "xin chào",
+      "value": 1,
+      "metadata": {
+        "gloss": "vsl-8aaecd06d85c7f743d35"
+      },
+      "created_at": "2026-11-21T02:20:20.011378+07:00"
+    },
+    {
+      "id": "1795202437204-687",
+      "type": "translation",
+      "label": "xin chào rất vui được gặp bạn",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 5
+      },
+      "created_at": "2026-11-21T02:20:37.204254+07:00"
+    },
+    {
+      "id": "1795202478779-688",
+      "type": "translation",
+      "label": "anh trai tôi rất giỏi",
+      "value": 1,
+      "metadata": {
+        "found_count": 2,
+        "total_count": 3
+      },
+      "created_at": "2026-11-21T02:21:18.779343+07:00"
+    },
+    {
+      "id": "1795202489190-689",
+      "type": "study_time",
+      "label": "Dịch ký hiệu",
+      "value": 1,
+      "metadata": {
+        "section": "Dịch ký hiệu"
+      },
+      "created_at": "2026-11-21T02:21:29.190768+07:00"
+    },
+    {
+      "id": "1795202493783-690",
+      "type": "translation",
+      "label": "anh trai tôi là bác sĩ",
+      "value": 1,
+      "metadata": {
+        "found_count": 3,
+        "total_count": 3
+      },
+      "created_at": "2026-11-21T02:21:33.783138+07:00"
+    },
+    {
+      "id": "1795202505339-691",
+      "type": "translation",
+      "label": "xin chào rất vui được gặp bạn",
+      "value": 1,
+      "metadata": {
+        "found_count": 4,
+        "total_count": 5
+      },
+      "created_at": "2026-11-21T02:21:45.339613+07:00"
     }
   ]
 }

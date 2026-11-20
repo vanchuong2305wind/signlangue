@@ -418,7 +418,7 @@ export default function Translate() {
                                 <div className="sign-video-info">
                                     <div>
                                         <span className="sign-video-label">{activeSign?.vi}</span>
-                                        <span className="sign-video-gloss" style={{ marginLeft: '8px' }}>Ký hiệu Việt Nam</span>
+                                        <span className="sign-video-gloss" style={{ marginLeft: '8px' }}>{activeSign?.language === 'asl' ? 'Ký hiệu ASL' : 'Ký hiệu Việt Nam'}</span>
                                     </div>
                                     <div className="sign-video-nav">
                                         <button className="sign-video-nav-btn" onClick={() => setActiveSignIdx(Math.max(0, activeSignIdx - 1))} disabled={activeSignIdx === 0}>

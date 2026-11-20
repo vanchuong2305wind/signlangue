@@ -249,7 +249,7 @@ export default function Learn() {
                                     </div>
                                     <div className="learn__word-info">
                                         <div className="learn__word-vi">{word.vi || word.gloss}</div>
-                                        <div className="learn__word-gloss">Ký hiệu Việt Nam</div>
+                                        <div className="learn__word-gloss">{word.language === 'asl' ? 'Ký hiệu ASL' : 'Ký hiệu Việt Nam'}</div>
                                     </div>
                                     </>
                                 ) : (
@@ -258,7 +258,7 @@ export default function Learn() {
                                         <i className={`fa-solid ${visual.icon}`} style={{ fontSize: '11px' }} />
                                     </div>
                                     <div className="learn__word-list-vi">{word.vi || word.gloss}</div>
-                                    <div className="learn__word-list-gloss">Ký hiệu Việt Nam</div>
+                                    <div className="learn__word-list-gloss">{word.language === 'asl' ? 'Ký hiệu ASL' : 'Ký hiệu Việt Nam'}</div>
                                     <div className="learn__word-list-count">{word.video_count} video</div>
                                 </div>
                                 )}
@@ -334,7 +334,7 @@ export default function Learn() {
                         {/* Word Info */}
                         <div className="learn__modal-info">
                             <h2 className="learn__modal-word">{selectedWord.vi || selectedWord.gloss}</h2>
-                            <div className="learn__modal-gloss">Ký hiệu Việt Nam</div>
+                            <div className="learn__modal-gloss">{selectedWord.language === 'asl' ? 'Ký hiệu ASL' : 'Ký hiệu Việt Nam'}</div>
 
                             {selectedWord.vi && (
                                 <div className="learn__modal-translation">
