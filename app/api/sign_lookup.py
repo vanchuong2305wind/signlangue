@@ -26,6 +26,7 @@ class SignDictionary:
         self._catalog_stamp = None
         self._last_checked = 0.0
         self._lock = threading.RLock()
+        self._video_roots = None
         self._loaded = False
 
     def load(self):
@@ -93,6 +94,18 @@ class SignDictionary:
                 path = (ROOT / entry["source_video"]).resolve()
                 if path.is_relative_to((ROOT / "data_v2").resolve()) and path.is_file():
                     return path
+                # Server extraction uses VieSign10K/video_raw; the downloaded
+                # archive may be nested as VieSign10K/VieSign10K/video_raw locally.
+                filename = Path(entry["source_video"]).name
+                if Path(filename).stem != video_id or Path(filename).suffix.lower() not in {".mp4", ".webm"}:
+                    return None
+                if self._video_roots is None:
+                    source_root = ROOT / "data_v2" / "VieSign10K"
+                    self._video_roots = tuple(source_root.rglob("video_raw")) if source_root.is_dir() else ()
+                for video_root in self._video_roots:
+                    candidate = (video_root / filename).resolve()
+                    if candidate.is_relative_to((ROOT / "data_v2").resolve()) and candidate.is_file():
+                        return candidate
         return None
 
     def lookup_vietnamese(self, word: str) -> dict | None:

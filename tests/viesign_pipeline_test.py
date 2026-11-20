@@ -244,6 +244,18 @@ class VieSignPipelineTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "overlaps"):
             additional_pipeline.validate_annotations(self.source, manifest)
 
+    def test_video_lookup_handles_nested_local_archive_after_pull(self):
+        nested = self.root / "data_v2" / "VieSign10K" / "VieSign10K" / "video_raw"
+        nested.mkdir(parents=True)
+        (nested / "D0002.webm").write_bytes(b"local-video-fixture")
+        dictionary = SignDictionary(self.output)
+        dictionary.entries = {word_id("tỉnh"): {"video_id": "D0002",
+            "source_video": "data_v2/VieSign10K/video_raw/D0002.webm"}}
+        from app.api import sign_lookup
+        with patch.object(sign_lookup, "ROOT", self.root):
+            self.assertEqual(dictionary.video_path("D0002"), nested / "D0002.webm")
+            self.assertIsNone(dictionary.video_path("unknown"))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -45,13 +45,31 @@ data/processed/landmarks_offsets.json
 data/processed/landmarks_v2/*.tmp
 
 data_v2/**/video_raw/
+# Raw media stays local even when stored outside video_raw.
+data_v2/**/*.mp4
+data_v2/**/*.webm
+data_v2/**/*.mov
+data_v2/**/*.avi
+data_v2/**/*.mkv
+data_v2/**/*.m4v
 data_v2/processed/
 data_v2/processed_additional/
-data_v2/processed_merged/
-data_v2/active_dataset.json
+# Publish only this completed release, never temporary builds or runtime state.
+data_v2/processed_merged/*
+!data_v2/processed_merged/release-1609a71658735fe81ca0/
+data_v2/processed_merged/release-1609a71658735fe81ca0/*
+!data_v2/processed_merged/release-1609a71658735fe81ca0/catalog.json
+!data_v2/processed_merged/release-1609a71658735fe81ca0/merge_report.json
+!data_v2/processed_merged/release-1609a71658735fe81ca0/landmarks/
+data_v2/processed_merged/release-1609a71658735fe81ca0/landmarks/*
+!data_v2/processed_merged/release-1609a71658735fe81ca0/landmarks/*.json
 data_v2/models/
 data_v2/runs/
 .server-update-backups/
+data/processed/semantic_index.npz
+data/profile.json.server-bak*
+app/frontend/vite.config.js.bak
+deploy_ports.txt
 
 # Large model files
 app/models/*.glb
