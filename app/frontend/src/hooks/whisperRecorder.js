@@ -37,8 +37,8 @@ export function isWhisperRecordingSupported() {
  * Starts listening. Returns a controller whose stop() flushes the utterance in
  * progress, then releases the microphone.
  */
-export async function startWhisperSession({ lang = 'vi-VN', onListening, onFinal, onError }) {
-    const stream = await navigator.mediaDevices.getUserMedia({
+export async function startWhisperSession({ lang = 'vi-VN', onListening, onFinal, onError, audioStream }) {
+    const stream = audioStream ?? await navigator.mediaDevices.getUserMedia({
         audio: { echoCancellation: true, noiseSuppression: true, channelCount: 1 },
     });
 
@@ -59,20 +59,44 @@ export async function startWhisperSession({ lang = 'vi-VN', onListening, onFinal
     let stopped = false;
     let pollTimer = null;
 
-    const send = async (blob) => {
+    let sequence = 0;
+    let lastDelivered = 0;
+    let inFlight = false;
+    let latestChunk = null;
+    const abort = new AbortController();
+    const send = async (blob, id) => {
+        if (audioStream && stopped) return;
+        // A slow recognizer must not accumulate a growing queue of old speech.
+        if (audioStream && inFlight) {
+            latestChunk = { blob, id };
+            return;
+        }
+        inFlight = true;
         try {
             const response = await fetch(`/api/speech/transcribe?lang=${encodeURIComponent(lang)}`, {
                 method: 'POST',
                 headers: { 'Content-Type': blob.type || 'application/octet-stream' },
                 body: blob,
+                signal: abort.signal,
             });
             const data = await response.json().catch(() => ({}));
             if (!response.ok) throw new Error(data.detail || `HTTP ${response.status}`);
             const text = (data.text || '').trim();
-            if (text.length >= 2) onFinal?.({ text, confidence: 1, lang });
+            if (text.length >= 2 && id > lastDelivered) {
+                lastDelivered = id;
+                onFinal?.({ text, confidence: 1, lang });
+            }
         } catch (error) {
+            if (abort.signal.aborted) return;
             console.warn('[speech] offline transcription failed:', error);
             onError?.(error);
+        } finally {
+            inFlight = false;
+            if (latestChunk && !stopped) {
+                const next = latestChunk;
+                latestChunk = null;
+                send(next.blob, next.id);
+            }
         }
     };
 
@@ -96,9 +120,10 @@ export async function startWhisperSession({ lang = 'vi-VN', onListening, onFinal
         if (!current || current.state === 'inactive') return;
         const hadSpeech = speechStartedAt > 0 && lastVoiceAt - speechStartedAt >= MIN_SPEECH_MS;
         const ownChunks = current.chunks;
+        const id = ++sequence;
         current.onstop = () => {
             if (hadSpeech && ownChunks.length) {
-                send(new Blob(ownChunks, { type: current.mimeType || mimeType || 'audio/webm' }));
+                send(new Blob(ownChunks, { type: current.mimeType || mimeType || 'audio/webm' }), id);
             }
         };
         current.stop();
@@ -123,10 +148,10 @@ export async function startWhisperSession({ lang = 'vi-VN', onListening, onFinal
         }
 
         if (speechStartedAt) {
-            if (now - lastVoiceAt > END_SILENCE_MS || now - speechStartedAt > MAX_UTTERANCE_MS) {
+            if (now - lastVoiceAt > (audioStream ? 450 : END_SILENCE_MS) || now - speechStartedAt > (audioStream ? 4000 : MAX_UTTERANCE_MS)) {
                 cutRecorder(true);
             }
-        } else if (now - recorderStartedAt > IDLE_RECYCLE_MS) {
+        } else if (now - recorderStartedAt > (audioStream ? 1000 : IDLE_RECYCLE_MS)) {
             cutRecorder(true);
         }
     };
@@ -139,6 +164,7 @@ export async function startWhisperSession({ lang = 'vi-VN', onListening, onFinal
         stop() {
             if (stopped) return;
             stopped = true;
+            if (audioStream) abort.abort();
             clearInterval(pollTimer);
             cutRecorder(false);
             stream.getTracks().forEach(track => track.stop());

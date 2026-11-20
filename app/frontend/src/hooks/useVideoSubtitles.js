@@ -78,15 +78,15 @@ export default function useVideoSubtitles() {
 
     /** Convert every cue to signs, in order, without blocking the caller. */
     const translateAll = useCallback(async (cueList, runId) => {
-        for (let i = 0; i < cueList.length; i += CHUNK_SIZE) {
+        for (let i = 0; i < cueList.length;) {
             if (runRef.current !== runId) return;
-            const chunk = cueList.slice(i, i + CHUNK_SIZE);
+            const chunk = cueList.slice(i, i + (i === 0 ? 2 : CHUNK_SIZE));
 
             try {
                 const response = await fetch('/api/text-to-signs/batch', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ texts: chunk.map(c => c.text), use_llm: true }),
+                    body: JSON.stringify({ texts: chunk.map(c => c.text), use_llm: i !== 0 }),
                 });
                 if (runRef.current !== runId) return;
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -107,6 +107,7 @@ export default function useVideoSubtitles() {
                 // One bad chunk should not stop the rest of the transcript;
                 // those lines stay null and get an on-demand parse if reached.
             }
+            i += chunk.length;
         }
     }, [commitSigns]);
 
@@ -126,7 +127,7 @@ export default function useVideoSubtitles() {
             const response = await fetch('/api/text-to-signs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: cue.text, use_llm: true }),
+                body: JSON.stringify({ text: cue.text, use_llm: false }),
             });
             if (!response.ok || runRef.current !== runId) return null;
             const data = await response.json();
@@ -162,7 +163,7 @@ export default function useVideoSubtitles() {
     }, [commitSigns, translateAll]);
 
     /** Ask the backend for the platform's own caption track. */
-    const loadFromUrl = useCallback(async (url, lang) => {
+    const loadFromUrl = useCallback(async (url, lang, allowFullTranscription = true) => {
         const runId = startRun();
         setStatus('loading');
         setCues([]);
@@ -172,7 +173,7 @@ export default function useVideoSubtitles() {
             const response = await fetch('/api/video/subtitles', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url, lang: lang || null }),
+                body: JSON.stringify({ url, lang: lang || null, allow_full_transcription: allowFullTranscription }),
             });
             const data = await response.json().catch(() => ({}));
             if (runRef.current !== runId) return null;
@@ -263,9 +264,5 @@ export function findCueIndex(cues, time) {
     }
 
     if (candidate < 0) return -1;
-    // A caption stays on screen until the next one starts, so a viewer pausing
-    // mid-gap still sees the line that was being spoken.
-    const next = cues[candidate + 1];
-    const until = next ? Math.max(cues[candidate].end, next.start) : cues[candidate].end + 2;
-    return time <= until ? candidate : -1;
+    return time < cues[candidate].end ? candidate : -1;
 }

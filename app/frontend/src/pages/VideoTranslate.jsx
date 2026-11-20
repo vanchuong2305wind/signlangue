@@ -1,6 +1,7 @@
 import { lazy, Suspense, useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import GlassCard from '../components/ui/GlassCard';
 import useSpeechRecognition from '../hooks/useSpeechRecognition';
+import { startWhisperSession } from '../hooks/whisperRecorder';
 import useSignTranslation from '../hooks/useSignTranslation';
 import useStudyTimer from '../hooks/useStudyTimer';
 import useYouTubePlayer from '../hooks/useYouTubePlayer';
@@ -142,12 +143,8 @@ function useDraggable(enabled) {
 
 /* ── Page ── */
 
-// How often the playhead is sampled. Captions do not need frame accuracy, and
-// a tighter loop would just burn battery polling an iframe across origins.
-const TICK_MS = 120;
-// The avatar has to fetch landmark data before it moves, so signing starts a
-// beat before the line is spoken rather than a beat after.
-const DEFAULT_LEAD = 0.35;
+const TICK_MS = 50;
+const DEFAULT_LEAD = 0;
 
 export default function VideoTranslate() {
     useStudyTimer('Video dịch ký hiệu');
@@ -194,6 +191,7 @@ export default function VideoTranslate() {
     const subtitles = useVideoSubtitles();
     const { isLoading: manualLoading, translate } = useSignTranslation();
 
+    const canCaptureTab = Boolean(navigator.mediaDevices?.getDisplayMedia && typeof MediaRecorder !== 'undefined');
     const platform = loadedVideo?.platform;
     // TikTok's embed exposes no playhead, so nothing can be synced to it.
     const canSyncTime = platform === 'youtube' || platform === 'direct';
@@ -203,16 +201,16 @@ export default function VideoTranslate() {
     const pendingSignsRef = useRef(null);
     const modelPollRef = useRef(null);
 
-    const playOnAvatar = useCallback((signList) => {
-        if (!signList?.length) return;
+    const playOnAvatar = useCallback((signList, timing) => {
+        if (!signList?.length && !timing) return;
         const avatar = avatarRef.current;
         if (avatar?.isModelLoaded) {
-            avatar.playSignSequence(signList);
+            avatar.playSignSequence(signList, timing);
             return;
         }
         // The model is still streaming in; hold the newest request and start it
         // the moment it is ready, so the first line of a video is not lost.
-        pendingSignsRef.current = signList;
+        pendingSignsRef.current = { signList, timing };
         if (modelPollRef.current) return;
         let attempts = 0;
         modelPollRef.current = setInterval(() => {
@@ -223,7 +221,7 @@ export default function VideoTranslate() {
                 modelPollRef.current = null;
                 const queued = pendingSignsRef.current;
                 pendingSignsRef.current = null;
-                if (queued) ready.playSignSequence(queued);
+                if (queued) ready.playSignSequence(queued.signList, queued.timing);
             } else if (attempts >= 150) {
                 clearInterval(modelPollRef.current);
                 modelPollRef.current = null;
@@ -280,14 +278,25 @@ export default function VideoTranslate() {
 
     useEffect(() => {
         lastPlayedCueRef.current = -1;
-    }, [loadedVideo, autoSign]);
+        if (!autoSign) {
+            pendingSignsRef.current = null;
+            avatarRef.current?.stopAnimation();
+        }
+    }, [loadedVideo, autoSign, lead, subtitles.cues]);
 
     // Depends on the two fields it reads, not the whole hook result — that
     // object is rebuilt every render, which would re-run this on every tick.
     const { signs: cueSigns, ensureTranslated } = subtitles;
 
     useEffect(() => {
-        if (!autoSign || activeCueIdx < 0) return;
+        if (!autoSign || activeCueIdx < 0) {
+            if (lastPlayedCueRef.current >= 0) {
+                pendingSignsRef.current = null;
+                avatarRef.current?.stopAnimation();
+                lastPlayedCueRef.current = -1;
+            }
+            return;
+        }
         if (lastPlayedCueRef.current === activeCueIdx) return;
 
         const data = cueSigns[activeCueIdx];
@@ -298,17 +307,37 @@ export default function VideoTranslate() {
         }
 
         lastPlayedCueRef.current = activeCueIdx;
-        playOnAvatar(data.signs);
-    }, [activeCueIdx, autoSign, cueSigns, ensureTranslated, playOnAvatar]);
+        const cue = subtitles.cues[activeCueIdx];
+        const end = Math.min(cue.end, subtitles.cues[activeCueIdx + 1]?.start ?? Infinity);
+        playOnAvatar(data.signs, {
+            getElapsed: () => getCurrentTime() + lead - cue.start,
+            duration: end - cue.start,
+        });
+    }, [activeCueIdx, autoSign, cueSigns, ensureTranslated, playOnAvatar, subtitles.cues, getCurrentTime, lead]);
+
+    useEffect(() => {
+        if (!autoSign || !canSyncTime) return;
+        // Warm the next two lines in order, sharing requests with playback.
+        let cancelled = false;
+        async function preload() {
+            const first = Math.max(0, activeCueIdx + 1);
+            for (const line of cueSigns.slice(first, first + 2)) {
+                if (cancelled) break;
+                if (line) await avatarRef.current?.preloadSigns(line.signs);
+            }
+        }
+        preload();
+        return () => { cancelled = true; };
+    }, [activeCueIdx, autoSign, canSyncTime, cueSigns]);
 
     /* ── Speech recognition (for sources with no caption track) ── */
     const activeCueIdxRef = useRef(-1);
     useEffect(() => { activeCueIdxRef.current = activeCueIdx; }, [activeCueIdx]);
 
-    const runManualTranslation = useCallback(async (text) => {
-        const data = await translate(text);
-        if (data) {
-            manualSeqRef.current += 1;
+    const runManualTranslation = useCallback(async (text, useLlm = true) => {
+        const seq = ++manualSeqRef.current;
+        const data = await translate(text, { useLlm });
+        if (data && seq === manualSeqRef.current) {
             // Read at completion, not at submit: a line that scrolled by while
             // the parse was in flight should hand the avatar straight back.
             setManualResult({ ...data, atCue: activeCueIdxRef.current, seq: manualSeqRef.current });
@@ -320,7 +349,7 @@ export default function VideoTranslate() {
     const handleFinal = useCallback(({ text }) => {
         setInterimText('');
         setTextInput(text);
-        runManualTranslation(text);
+        runManualTranslation(text, false);
     }, [runManualTranslation]);
 
     const handleInterim = useCallback(({ text }) => setInterimText(text), []);
@@ -337,15 +366,72 @@ export default function VideoTranslate() {
         onError: handleSpeechError,
     });
 
+    const tabCaptureRef = useRef(null);
+    const [capturingTab, setCapturingTab] = useState(false);
+    const [tabError, setTabError] = useState('');
+    const stopTabCapture = useCallback(() => {
+        const capture = tabCaptureRef.current;
+        tabCaptureRef.current = null;
+        if (capture) {
+            manualSeqRef.current += 1;
+            capture.recorder?.stop();
+            capture.stream?.getTracks().forEach(track => track.stop());
+        }
+        setCapturingTab(false);
+    }, []);
+    useEffect(() => stopTabCapture, [stopTabCapture]);
+
+    async function toggleTabCapture() {
+        if (tabCaptureRef.current) {
+            stopTabCapture();
+            return;
+        }
+        const capture = {};
+        tabCaptureRef.current = capture;
+        setCapturingTab(true);
+        setTabError('');
+        try {
+            const stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+            if (tabCaptureRef.current !== capture) {
+                stream.getTracks().forEach(track => track.stop());
+                return;
+            }
+            capture.stream = stream;
+            const tracks = stream.getAudioTracks();
+            if (!tracks.length) throw new Error('Chọn tab phát video và bật chia sẻ âm thanh của tab.');
+            stream.getTracks().forEach(track => track.addEventListener('ended', () => {
+                if (tabCaptureRef.current === capture) stopTabCapture();
+            }, { once: true }));
+            capture.recorder = await startWhisperSession({
+                audioStream: new MediaStream(tracks),
+                onFinal: ({ text }) => {
+                    if (tabCaptureRef.current === capture) handleFinal({ text });
+                },
+                onError: () => {
+                    if (tabCaptureRef.current === capture) setTabError('Không nhận dạng được đoạn âm thanh. Kiểm tra dịch vụ nhận dạng giọng nói.');
+                },
+            });
+            if (tabCaptureRef.current !== capture) capture.recorder.stop();
+        } catch (err) {
+            if (tabCaptureRef.current !== capture) return;
+            if (err.name !== 'NotAllowedError') setTabError(err.message);
+            stopTabCapture();
+        }
+    }
+
     /* ── Video loading ── */
     const resetPlayback = useCallback(() => {
+        stopTabCapture();
+        setTabError('');
+        pendingSignsRef.current = null;
         setActiveCueIdx(-1);
         setCurrentTime(0);
+        manualSeqRef.current += 1;
         setManualResult(null);
         setHighlight({ key: '', idx: 0 });
         lastPlayedCueRef.current = -1;
         avatarRef.current?.stopAnimation?.();
-    }, []);
+    }, [stopTabCapture]);
 
     function handleLoadVideo(e) {
         e?.preventDefault();
@@ -380,7 +466,7 @@ export default function VideoTranslate() {
         resetPlayback();
         subtitles.reset();
         setLoadedVideo({ url, platform: detected, videoId, embedSrc });
-        subtitles.loadFromUrl(url);
+        subtitles.loadFromUrl(url, null, !canCaptureTab);
     }
 
     function handleCloseVideo() {
@@ -401,7 +487,7 @@ export default function VideoTranslate() {
         const lang = e.target.value;
         if (!loadedVideo) return;
         resetPlayback();
-        subtitles.loadFromUrl(loadedVideo.url, lang);
+        subtitles.loadFromUrl(loadedVideo.url, lang, !canCaptureTab);
     }
 
     async function handleSubtitleFile(e) {
@@ -832,11 +918,17 @@ export default function VideoTranslate() {
                             <i className="fa-solid fa-circle-exclamation" />
                             <span>{subtitles.error}</span>
                             <button type="button" className="vt-quick-action-btn" onClick={handleRetrySubtitles}>
-                                <i className="fa-solid fa-rotate-right" style={{ fontSize: '9px' }} /> Thử lại
+                                <i className="fa-solid fa-rotate-right" style={{ fontSize: '9px' }} /> Thử lại và tạo phụ đề nếu cần
                             </button>
                             <button type="button" className="vt-quick-action-btn" onClick={() => fileInputRef.current?.click()}>
                                 <i className="fa-solid fa-file-arrow-up" style={{ fontSize: '9px' }} /> Tải file phụ đề
                             </button>
+                            {canCaptureTab && (
+                                <button type="button" className="vt-quick-action-btn" onClick={toggleTabCapture}>
+                                    {capturingTab ? 'Dừng dịch âm thanh tab' : 'Dịch tiếng Việt từ tab'}
+                                </button>
+                            )}
+                            {tabError && <span role="status">{tabError}</span>}
                             {isSupported && (
                                 <button type="button" className="vt-quick-action-btn" onClick={() => { setShowManual(true); toggleSpeech(); }}>
                                     <i className="fa-solid fa-microphone" style={{ fontSize: '9px' }} /> Dùng micro

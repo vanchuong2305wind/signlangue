@@ -14,7 +14,7 @@ export default function useSignTranslation() {
     const queueRef = useRef([]);
     const processingRef = useRef(false);
 
-    const translate = useCallback(async (text) => {
+    const translate = useCallback(async (text, { useLlm = true } = {}) => {
         if (!text?.trim()) return null;
 
         setIsLoading(true);
@@ -24,7 +24,7 @@ export default function useSignTranslation() {
             const response = await fetch('/api/text-to-signs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: text.trim(), use_llm: true }),
+                body: JSON.stringify({ text: text.trim(), use_llm: useLlm }),
             });
 
             if (!response.ok) {

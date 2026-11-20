@@ -138,6 +138,7 @@ class BatchTextToSignResponse(BaseModel):
 
 
 class VideoSubtitleRequest(BaseModel):
+    allow_full_transcription: bool = True
     url: str
     lang: str | None = None
 
@@ -510,7 +511,7 @@ async def video_subtitles(req: VideoSubtitleRequest):
     try:
         # yt-dlp is blocking and talks to the network, so it must not run on
         # the event loop or it stalls every other request for seconds.
-        return await run_in_threadpool(fetch_subtitles, url, req.lang)
+        return await run_in_threadpool(fetch_subtitles, url, req.lang, req.allow_full_transcription)
     except SubtitleError as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
 

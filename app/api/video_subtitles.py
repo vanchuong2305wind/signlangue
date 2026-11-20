@@ -454,7 +454,7 @@ def _transcribe_audio(url: str, info: dict) -> dict | None:
     return result
 
 
-def fetch_subtitles(url: str, lang: str | None = None) -> dict:
+def fetch_subtitles(url: str, lang: str | None = None, allow_full_transcription: bool = True) -> dict:
     """Fetch and segment a video's caption track.
 
     Raises SubtitleError with a message meant for the user on every failure
@@ -504,7 +504,7 @@ def fetch_subtitles(url: str, lang: str | None = None) -> dict:
     if not cues:
         # No caption track, or none of them would download: transcribe the
         # audio itself. Only reached where the old code gave up with an error.
-        transcript = _transcribe_audio(url, info)
+        transcript = _transcribe_audio(url, info) if allow_full_transcription else None
         if transcript is None:
             if not candidates:
                 raise SubtitleError(

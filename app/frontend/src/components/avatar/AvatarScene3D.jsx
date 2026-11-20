@@ -1,3 +1,4 @@
+import { buildCueTimeline, sampleCue } from './cue-timeline';
 /**
  * AvatarScene3D.jsx — Fixed & Optimized
  *
@@ -635,7 +636,24 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
         function updateAnimation(delta) {
             const anim = animDataRef.current;
             const sd = sceneDataRef.current;
-            if (!anim.isPlaying || !anim.currentFrames || !sd) return;
+            if (!sd) return;
+            if (anim.timing) {
+                const { timeline, getElapsed, duration } = anim.timing;
+                const sample = sampleCue(timeline, getElapsed(), duration);
+                if (!sample) {
+                    if (anim.currentSign) resetPose(sd);
+                    anim.currentSign = null;
+                    return;
+                }
+                if (anim.currentSign !== sample.sign) {
+                    anim.currentSign = sample.sign;
+                    updateStatus(`Đang ký: ${sample.sign.vi}`);
+                    onPlayingSign?.(sample.sign);
+                }
+                renderPose(sd, sample.sign.data.frames, sample.index, sample.fraction, delta);
+                return;
+            }
+            if (!anim.isPlaying || !anim.currentFrames) return;
 
             if (anim.isTransitioning) {
                 anim.transitionProgress += delta / TRANSITION_DURATION;
@@ -664,8 +682,9 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             const frameDuration = 1 / anim.currentFps;
 
             if (anim.frameTimer >= frameDuration) {
-                anim.frameTimer -= frameDuration;
-                anim.currentFrameIdx++;
+                const steps = Math.floor(anim.frameTimer / frameDuration);
+                anim.frameTimer -= steps * frameDuration;
+                anim.currentFrameIdx += steps;
 
                 if (anim.currentFrameIdx >= anim.currentFrames.length) {
                     const lastFrame = anim.currentFrames[anim.currentFrames.length - 1];
@@ -676,15 +695,12 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
                 }
             }
 
-            const frame = anim.currentFrames[anim.currentFrameIdx];
-            if (!frame) return;
+            renderPose(sd, anim.currentFrames, anim.currentFrameIdx, anim.frameTimer / frameDuration, delta);
+        }
 
-            const nextIdx = Math.min(anim.currentFrameIdx + 1, anim.currentFrames.length - 1);
-            const nextFrame = anim.currentFrames[nextIdx];
-            // A delayed render can leave more than one source frame in the
-            // timer. Extrapolating past the next pose can drive hands into the torso.
-            const t = Math.min(anim.frameTimer / frameDuration, 1);
-
+        function renderPose(sd, frames, index, t, delta) {
+            const frame = frames[index];
+            const nextFrame = frames[index + 1] || frame;
             if (sd.vrmRetargeter) {
                 sd.vrmRetargeter.apply({
                     ...frame,
@@ -805,20 +821,38 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
 
     /* ---------- Imperative API ---------- */
     useImperativeHandle(ref, () => ({
-        async playSignSequence(signs) {
+        preloadSigns(signs) {
+            return Promise.allSettled(signs.filter(s => s.found && s.gloss).map(loadLandmarks));
+        },
+
+        async playSignSequence(signs, timing) {
             const sd = sceneDataRef.current;
             if (!sd) return;
 
             const foundSigns = signs.filter(s => s.found && s.gloss);
-            if (foundSigns.length === 0) {
+            const anim = animDataRef.current;
+            const runId = ++anim.runId;
+            anim.queue = [];
+            anim.timing = null;
+            anim.currentFrames = null;
+            anim.currentSign = null;
+            anim.isPlaying = false;
+            if (!foundSigns.length) {
+                resetPose(sd);
                 updateStatus('Không tìm thấy ký hiệu nào có dữ liệu 3D');
                 return;
             }
-
-            const anim = animDataRef.current;
-            const runId = anim.runId + 1;
-            anim.runId = runId;
-            anim.queue = [];
+            if (timing) {
+                const results = await Promise.allSettled(foundSigns.map(loadLandmarks));
+                if (anim.runId !== runId) return;
+                const loaded = results.flatMap(r => r.status === 'fulfilled' && r.value ? [r.value] : []);
+                anim.timing = { ...timing, timeline: buildCueTimeline(loaded) };
+                if (!loaded.length) {
+                    resetPose(sd);
+                    updateStatus('Không có dữ liệu landmark cho các từ này');
+                }
+                return;
+            }
             anim.pendingCount = foundSigns.length;
             anim.awaitingData = false;
 
@@ -869,6 +903,7 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             const anim = animDataRef.current;
             // Bumping the run id makes any in-flight fetch drop its result.
             anim.runId += 1;
+            anim.timing = null;
             anim.isPlaying = false;
             anim.pendingCount = 0;
             anim.awaitingData = false;
@@ -883,7 +918,7 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
         },
 
         get isModelLoaded() { return isModelLoaded; },
-    }), [isModelLoaded, updateStatus, onPlayingSign, loadLandmarks]);
+    }), [isModelLoaded, updateStatus, loadLandmarks]);
 
     /* ---------- Render ---------- */
     if (loadError) {
