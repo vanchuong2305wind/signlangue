@@ -1,0 +1,10 @@
+__pycache__/
+/.cache/
+/cache/
+/tmp/
+/pose/
+/ckpt.pt
+*.log
+*.sock
+*.lock
+/results/*.tmp
