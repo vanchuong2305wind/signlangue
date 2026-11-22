@@ -8,6 +8,10 @@ import { getProfile } from '../api/profile';
 import useStudyTimer from '../hooks/useStudyTimer';
 
 const AvatarScene3D = lazy(() => import('../components/avatar/AvatarScene3D'));
+const AvatarSceneVietnam3D = lazy(() => import('../components/avatar/AvatarSceneVietnam3D'));
+
+// Both 3D tabs play the same VieSign result; only the avatar's look differs.
+const AVATAR_MODES = new Set(['3d', '3d-vn']);
 
 function getSignVideos(sign, signVideosData) {
     if (!sign?.found || !sign?.gloss || !signVideosData?.glosses) return [];
@@ -33,6 +37,7 @@ export default function Translate() {
     const autoPlayTimerRef = useRef(null);
     const videoRef = useRef(null);
     const avatarRef = useRef(null);
+    const isAvatarMode = AVATAR_MODES.has(mode);
     const transcriptIdRef = useRef(0);
 
     const { isLoading, result, error, translate, clear } = useSignTranslation();
@@ -102,7 +107,7 @@ export default function Translate() {
 
     useEffect(() => {
         const signs = resultRef.current?.signs;
-        if (mode !== '3d' || !signs?.length) return;
+        if (!isAvatarMode || !signs?.length) return;
 
         // The usual case is a model that is already loaded, so try it straight
         // away — going through the interval first cost 100 ms on every play.
@@ -122,7 +127,7 @@ export default function Translate() {
             }
         }, 100);
         return () => clearInterval(timer);
-    }, [playToken, mode]);
+    }, [playToken, mode, isAvatarMode]);
 
     const advanceToNextSign = useCallback(() => {
         if (!result?.signs?.length) return;
@@ -212,7 +217,7 @@ export default function Translate() {
     function handleSignChipClick(idx) {
         setActiveSignIdx(idx);
         setIsAutoPlaying(false);
-        if (mode === '3d') {
+        if (isAvatarMode) {
             const sign = result?.signs?.[idx];
             if (sign?.found && avatarRef.current?.isModelLoaded) {
                 avatarRef.current.playSignSequence([sign]);
@@ -221,6 +226,13 @@ export default function Translate() {
         }
         // Re-keys the <video>, so picking the sign already showing replays it.
         setPlayToken(token => token + 1);
+    }
+
+    // The Vietnam avatar reports null once a sentence finishes.
+    function handleAvatarPlayingSign(sign) {
+        if (!sign || !result?.signs) return;
+        const idx = result.signs.findIndex(s => s.gloss === sign.gloss);
+        if (idx >= 0) setActiveSignIdx(idx);
     }
 
     const foundCount = result?.found_count || 0;
@@ -246,6 +258,9 @@ export default function Translate() {
                     </button>
                     <button className={`mode-btn ${mode === '3d' ? 'active' : ''}`} onClick={() => setMode('3d')}>
                         <i className="fa-solid fa-hand" style={{ fontSize: '12px' }} /> 3D Avatar
+                    </button>
+                    <button className={`mode-btn ${mode === '3d-vn' ? 'active' : ''}`} onClick={() => setMode('3d-vn')}>
+                        <i className="fa-solid fa-star" style={{ fontSize: '12px' }} /> 3D Việt Nam
                     </button>
                 </div>
             </div>
@@ -366,12 +381,23 @@ export default function Translate() {
                         <AvatarScene3D
                             ref={avatarRef}
                             className="avatar-container"
-                            onPlayingSign={(sign) => {
-                                if (result?.signs) {
-                                    const idx = result.signs.findIndex(s => s.gloss === sign.gloss);
-                                    if (idx >= 0) setActiveSignIdx(idx);
-                                }
-                            }}
+                            onPlayingSign={handleAvatarPlayingSign}
+                        />
+                    </Suspense>
+                )}
+
+                {/* 3D Việt Nam — avatar from the Chrome extension, VieSign data */}
+                {mode === '3d-vn' && (
+                    <Suspense fallback={(
+                        <div className="translate-loading avatar-container">
+                            <div className="loading-spinner" />
+                            <span className="loading-text">Đang tải bộ dựng 3D...</span>
+                        </div>
+                    )}>
+                        <AvatarSceneVietnam3D
+                            ref={avatarRef}
+                            className="avatar-container"
+                            onPlayingSign={handleAvatarPlayingSign}
                         />
                     </Suspense>
                 )}
@@ -458,7 +484,7 @@ export default function Translate() {
                                     <button
                                         onClick={handleReplay}
                                         className="auto-play-btn"
-                                        title={mode === '3d' ? 'Chạy lại câu vừa dịch trên avatar 3D' : 'Chạy lại video câu vừa dịch'}
+                                        title={isAvatarMode ? 'Chạy lại câu vừa dịch trên avatar 3D' : 'Chạy lại video câu vừa dịch'}
                                     >
                                         <i className="fa-solid fa-rotate-right" style={{ fontSize: '10px' }} /> Chạy lại
                                     </button>
