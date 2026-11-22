@@ -568,6 +568,11 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             scene.add(vrm.scene);
             vrm.scene.updateMatrixWorld(true);
 
+            // Frame the signing space from the waist to above the head.
+            camera.position.set(0, 1.0, 1.65);
+            controls.target.set(0, 1.0, 0);
+            controls.update();
+
             sceneDataRef.current = {
                 vrm,
                 vrmRetargeter: new VrmHolisticRetargeter(vrm),
