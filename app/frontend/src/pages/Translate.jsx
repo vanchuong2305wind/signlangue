@@ -18,7 +18,7 @@ function getSignVideos(sign, signVideosData) {
 
 export default function Translate() {
     useStudyTimer('Dịch ký hiệu');
-    const [mode, setMode] = useState('video');
+    const [mode, setMode] = useState('3d');
     // Entries are { id, text, kind } so a past line can be replayed on click.
     const [transcripts, setTranscripts] = useState([]);
     const [activeTranscriptId, setActiveTranscriptId] = useState(null);
@@ -33,6 +33,7 @@ export default function Translate() {
     const autoPlayTimerRef = useRef(null);
     const videoRef = useRef(null);
     const avatarRef = useRef(null);
+    const isAvatarMode = mode === '3d';
     const transcriptIdRef = useRef(0);
 
     const { isLoading, result, error, translate, clear } = useSignTranslation();
@@ -102,7 +103,7 @@ export default function Translate() {
 
     useEffect(() => {
         const signs = resultRef.current?.signs;
-        if (mode !== '3d' || !signs?.length) return;
+        if (!isAvatarMode || !signs?.length) return;
 
         // The usual case is a model that is already loaded, so try it straight
         // away — going through the interval first cost 100 ms on every play.
@@ -122,7 +123,7 @@ export default function Translate() {
             }
         }, 100);
         return () => clearInterval(timer);
-    }, [playToken, mode]);
+    }, [playToken, mode, isAvatarMode]);
 
     const advanceToNextSign = useCallback(() => {
         if (!result?.signs?.length) return;
@@ -212,7 +213,7 @@ export default function Translate() {
     function handleSignChipClick(idx) {
         setActiveSignIdx(idx);
         setIsAutoPlaying(false);
-        if (mode === '3d') {
+        if (isAvatarMode) {
             const sign = result?.signs?.[idx];
             if (sign?.found && avatarRef.current?.isModelLoaded) {
                 avatarRef.current.playSignSequence([sign]);
@@ -221,6 +222,12 @@ export default function Translate() {
         }
         // Re-keys the <video>, so picking the sign already showing replays it.
         setPlayToken(token => token + 1);
+    }
+
+    function handleAvatarPlayingSign(sign) {
+        if (!sign || !result?.signs) return;
+        const idx = result.signs.findIndex(s => s.gloss === sign.gloss);
+        if (idx >= 0) setActiveSignIdx(idx);
     }
 
     const foundCount = result?.found_count || 0;
@@ -241,11 +248,11 @@ export default function Translate() {
                     </div>
                 </div>
                 <div className="translate-mode-toggle">
-                    <button className={`mode-btn ${mode === 'video' ? 'active' : ''}`} onClick={() => setMode('video')}>
-                        <i className="fa-solid fa-video" style={{ fontSize: '12px' }} /> Video
-                    </button>
                     <button className={`mode-btn ${mode === '3d' ? 'active' : ''}`} onClick={() => setMode('3d')}>
                         <i className="fa-solid fa-hand" style={{ fontSize: '12px' }} /> 3D Avatar
+                    </button>
+                    <button className={`mode-btn ${mode === 'video' ? 'active' : ''}`} onClick={() => setMode('video')}>
+                        <i className="fa-solid fa-video" style={{ fontSize: '12px' }} /> Video
                     </button>
                 </div>
             </div>
@@ -366,12 +373,8 @@ export default function Translate() {
                         <AvatarScene3D
                             ref={avatarRef}
                             className="avatar-container"
-                            onPlayingSign={(sign) => {
-                                if (result?.signs) {
-                                    const idx = result.signs.findIndex(s => s.gloss === sign.gloss);
-                                    if (idx >= 0) setActiveSignIdx(idx);
-                                }
-                            }}
+                            onPlayingSign={handleAvatarPlayingSign}
+                            playbackSpeed={1.25}
                         />
                     </Suspense>
                 )}
@@ -418,7 +421,6 @@ export default function Translate() {
                                 <div className="sign-video-info">
                                     <div>
                                         <span className="sign-video-label">{activeSign?.vi}</span>
-                                        <span className="sign-video-gloss" style={{ marginLeft: '8px' }}>{activeSign?.language === 'asl' ? 'Ký hiệu ASL' : 'Ký hiệu Việt Nam'}</span>
                                     </div>
                                     <div className="sign-video-nav">
                                         <button className="sign-video-nav-btn" onClick={() => setActiveSignIdx(Math.max(0, activeSignIdx - 1))} disabled={activeSignIdx === 0}>
@@ -458,7 +460,7 @@ export default function Translate() {
                                     <button
                                         onClick={handleReplay}
                                         className="auto-play-btn"
-                                        title={mode === '3d' ? 'Chạy lại câu vừa dịch trên avatar 3D' : 'Chạy lại video câu vừa dịch'}
+                                        title={isAvatarMode ? 'Chạy lại câu vừa dịch trên avatar 3D' : 'Chạy lại video câu vừa dịch'}
                                     >
                                         <i className="fa-solid fa-rotate-right" style={{ fontSize: '10px' }} /> Chạy lại
                                     </button>

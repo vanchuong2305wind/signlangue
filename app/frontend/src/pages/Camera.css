@@ -227,6 +227,13 @@
     line-height: 1.35;
 }
 
+.camera__sentence-heading small {
+    margin-top: 6px;
+    color: var(--ink-faint);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
 .camera__sentence-actions {
     display: flex;
     flex: 0 0 auto;
@@ -249,6 +256,16 @@
 .camera__sentence-actions button:disabled {
     cursor: default;
     opacity: .35;
+}
+
+.camera__sentence-actions .camera__undo-btn {
+    display: inline-flex;
+    width: auto;
+    gap: 6px;
+    padding: 0 12px;
+    align-items: center;
+    font: inherit;
+    font-size: 12px;
 }
 
 .camera__tokens {
@@ -275,11 +292,100 @@
     font-size: 10px;
 }
 
-.camera__gemini {
+.camera__review-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+}
+
+.camera__review-original {
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: var(--card-bg);
+}
+
+.camera__review-original h3,
+.camera__gemini-result label {
+    margin: 0 0 8px;
+    color: var(--ink-light);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.camera__review-original p {
+    margin: 0 0 10px;
+    color: var(--ink-dark);
+    font-size: 17px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.camera__review-controls {
     display: flex;
-    align-items: stretch;
+    flex-wrap: wrap;
     gap: 10px;
     margin-top: 14px;
+}
+
+.camera__review-btn,
+.camera__review-confirm {
+    padding: 9px 12px;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    background: var(--card-bg);
+    color: var(--ink-dark);
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.camera__review-confirm {
+    background: var(--wc-teal-dark);
+    color: white;
+}
+
+.camera__review-btn:disabled,
+.camera__review-confirm:disabled {
+    opacity: .45;
+    cursor: default;
+}
+
+.camera__review-original > button {
+    margin-top: 12px;
+}
+
+.camera__gemini-result textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    resize: vertical;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--ink-dark);
+    font: inherit;
+    line-height: 1.5;
+}
+
+.camera__gemini-result textarea:focus-visible {
+    outline: 2px solid var(--wc-teal-dark);
+    outline-offset: 2px;
+}
+
+.camera__gemini-result small,
+.camera__review-status {
+    margin: 8px 0 0;
+    color: var(--ink-light);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.camera__review-error {
+    color: #9f3939;
+    font-size: 13px;
 }
 
 .camera__gemini-btn {
@@ -415,8 +521,8 @@
         flex-direction: column;
     }
 
-    .camera__gemini {
-        flex-direction: column;
+    .camera__review-grid {
+        grid-template-columns: 1fr;
     }
 
     .camera__result-main strong,

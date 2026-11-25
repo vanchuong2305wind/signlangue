@@ -1,0 +1,20 @@
+[Unit]
+Description=SignLang production frontend and VSL224 API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/nguyenhuynh/Documents/sign-lang/signlangue
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+Environment=LOCAL_AI_PRELOAD=0
+Environment=OMP_NUM_THREADS=4
+ExecStart=/home/nguyenhuynh/Documents/sign-lang/signlangue/.venv/bin/python -m uvicorn scripts.runtime.production:app --host 127.0.0.1 --port 8010 --workers 1 --timeout-keep-alive 10
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+UMask=0077
+
+[Install]
+WantedBy=default.target

@@ -25,7 +25,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse, Response, StreamingResponse
 from pydantic import BaseModel, Field
 
-from .camera_recognition import is_available, recognize
+from .camera_recognition import model_status, recognize
 from . import asr, local_nlp
 from .sentence_builder import build_sentence, build_sentence_local, gemini_configured
 from .sign_lookup import sign_dict
@@ -605,12 +605,7 @@ async def reset_profile_activity():
 
 @app.get("/api/camera/model-status")
 async def camera_model_status():
-    return {
-        "available": is_available(),
-        "model": "WLASL100-I3D-Transformer",
-        "classes": 100,
-        "gemini_configured": gemini_configured(),
-    }
+    return {**model_status(), "gemini_configured": gemini_configured()}
 
 
 @app.post("/api/camera/recognize")

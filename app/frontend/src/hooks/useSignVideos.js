@@ -21,7 +21,6 @@ export function useSignVideos(category = 'all', searchQuery = '') {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        setLoading(true);
         loadData()
             .then(d => {
                 setData(d);

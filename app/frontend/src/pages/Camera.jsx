@@ -1,7 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import GlassCard from '../components/ui/GlassCard';
 import useStudyTimer from '../hooks/useStudyTimer';
 import './Camera.css';
+import {
+    cameraSentenceReducer, confirmedCameraSentence, createSignEventTracker, initialCameraSentence,
+} from './camera-sentence';
 
 const CAPTURE_INTERVAL_MS = 125;
 const PRE_ROLL_FRAMES = 4;
@@ -29,6 +32,7 @@ const COOLDOWN_TICKS_AFTER_SEGMENT = 2;
 // the model itself is unsure about doesn't get written into the sentence.
 const WORD_CONFIDENCE_THRESHOLD = 0.45;
 const WORD_MARGIN_THRESHOLD = 0.12;
+// Preserved from the old camera pipeline; not yet calibrated for VSL224.
 
 function apiError(data, fallback) {
     return typeof data?.detail === 'string' ? data.detail : fallback;
@@ -49,16 +53,18 @@ export default function CameraPage() {
     const recognitionSessionRef = useRef(0);
     const processRecognitionQueueRef = useRef(null);
     const inferenceBusyRef = useRef(false);
-    const lastPredictionRef = useRef({ label: '', time: 0 });
+    const signEventsRef = useRef(createSignEventTracker(QUIET_TICKS_TO_CLOSE));
+    const segmentEventIdRef = useRef(null);
+    const buildRequestIdRef = useRef(0);
     const [cameraOn, setCameraOn] = useState(false);
     const [facingMode, setFacingMode] = useState('user');
     const [phase, setPhase] = useState('idle');
     const [progress, setProgress] = useState(0);
     const [error, setError] = useState('');
     const [result, setResult] = useState(null);
-    const [sentence, setSentence] = useState([]);
-    const [aiSentence, setAiSentence] = useState('');
-    const [buildingSentence, setBuildingSentence] = useState(false);
+    const [review, dispatchReview] = useReducer(cameraSentenceReducer, initialCameraSentence);
+    const sentence = review.tokens;
+    const buildingSentence = review.pendingRequest !== null;
     const [liveTranslation, setLiveTranslation] = useState(false);
     const [modelReady, setModelReady] = useState(true);
 
@@ -66,6 +72,8 @@ export default function CameraPage() {
         captureAbortRef.current = true;
         recognitionSessionRef.current += 1;
         recognitionQueueRef.current = [];
+        signEventsRef.current.finish();
+        segmentEventIdRef.current = null;
         segmentFramesRef.current = [];
         preRollRef.current = [];
         segmentActiveRef.current = false;
@@ -112,7 +120,10 @@ export default function CameraPage() {
     useEffect(() => {
         fetch('/api/camera/model-status')
             .then(response => response.json())
-            .then(data => setModelReady(Boolean(data.available)))
+            .then(data => {
+                setModelReady(Boolean(data.available));
+                if (!data.available && data.error) setError(data.error);
+            })
             .catch(() => setModelReady(false));
         const startTimer = window.setTimeout(() => startCamera(), 0);
         return () => {
@@ -148,26 +159,20 @@ export default function CameraPage() {
             if (!response.ok) throw new Error(apiError(data, 'Model không thể nhận diện clip này.'));
             if (job.session !== recognitionSessionRef.current) return;
             setResult(data);
-            const now = Date.now();
-            const isDuplicate = (
-                lastPredictionRef.current.label === data.prediction.label
-                && now - lastPredictionRef.current.time < 6500
-            );
             const runnerUpConfidence = data.alternatives?.[0]?.confidence ?? 0;
             const isConfident = (
                 data.prediction.confidence >= WORD_CONFIDENCE_THRESHOLD
                 && data.prediction.confidence - runnerUpConfidence >= WORD_MARGIN_THRESHOLD
             );
-            if (!isDuplicate && isConfident) {
+            if (isConfident) {
                 const rawWord = data.prediction.vietnamese || data.prediction.label;
-                const word = rawWord.split('/')[0].trim();
-                setSentence(current => [...current, {
+                const word = rawWord.replaceAll('_', ' ').trim();
+                dispatchReview({ type: 'append', token: {
+                    eventId: job.eventId,
                     word,
                     label: data.prediction.label,
                     confidence: data.prediction.confidence,
-                }]);
-                setAiSentence('');
-                lastPredictionRef.current = { label: data.prediction.label, time: now };
+                } });
             }
             fetch('/api/profile/activities', {
                 method: 'POST',
@@ -199,13 +204,14 @@ export default function CameraPage() {
         };
     }, [processRecognitionQueue]);
 
-    const enqueueRecognition = useCallback((frames) => {
+    const enqueueRecognition = useCallback((frames, eventId) => {
         if (frames.length < MIN_SEGMENT_FRAMES) return;
 
         // Thu hình và nhận diện chạy độc lập. Giữ FIFO để mọi clip đã thu
         // đều tiếp tục được xử lý, kể cả sau khi người dùng bấm Dừng dịch.
         recognitionQueueRef.current.push({
             frames,
+            eventId,
             session: recognitionSessionRef.current,
         });
         processRecognitionQueueRef.current?.();
@@ -239,7 +245,8 @@ export default function CameraPage() {
             // cutoff means the hand is still actively moving, so resume capture right away.
             cooldownTicksRef.current = naturalPause ? COOLDOWN_TICKS_AFTER_SEGMENT : 0;
             setProgress(0);
-            enqueueRecognition(frames);
+            enqueueRecognition(frames, segmentEventIdRef.current);
+            segmentEventIdRef.current = null;
         };
 
         const captureTimer = window.setInterval(() => {
@@ -271,6 +278,7 @@ export default function CameraPage() {
                 }
             }
             prevMotionFrameRef.current = pixels;
+            signEventsRef.current.observeMotion(motionScore < MOTION_STOP_THRESHOLD);
 
             if (!segmentActiveRef.current) {
                 if (cooldownTicksRef.current > 0) {
@@ -284,6 +292,7 @@ export default function CameraPage() {
                 }
                 if (motionScore > MOTION_START_THRESHOLD) {
                     segmentActiveRef.current = true;
+                    segmentEventIdRef.current = signEventsRef.current.begin();
                     quietStreakRef.current = 0;
                     segmentFramesRef.current = [...preRollRef.current];
                     preRollRef.current = [];
@@ -318,7 +327,8 @@ export default function CameraPage() {
     const toggleLiveTranslation = () => {
         if (!liveTranslation) {
             setError('');
-            lastPredictionRef.current = { label: '', time: 0 };
+            signEventsRef.current.finish();
+            segmentEventIdRef.current = null;
             segmentFramesRef.current = [];
             preRollRef.current = [];
             segmentActiveRef.current = false;
@@ -332,10 +342,18 @@ export default function CameraPage() {
     const prediction = result?.prediction;
     const confidence = prediction ? Math.round(prediction.confidence * 100) : 0;
     const sentenceText = sentence.map(item => item.word).join(' ');
+    const approvedText = confirmedCameraSentence(review);
+    const reviewLocked = liveTranslation || phase !== 'idle';
+    const canUseSentence = Boolean(approvedText) && !reviewLocked;
+
+    // Edits, undo, recognition and new proposals revoke any ongoing reading.
+    useEffect(() => {
+        window.speechSynthesis?.cancel();
+    }, [review.revision, review.pendingRequest, liveTranslation]);
 
     const speakSentence = () => {
-        const text = aiSentence || sentenceText;
-        if (!text || !window.speechSynthesis) return;
+        if (!canUseSentence || !window.speechSynthesis) return;
+        const text = approvedText;
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'vi-VN';
@@ -343,14 +361,18 @@ export default function CameraPage() {
     };
 
     const copySentence = async () => {
-        const text = aiSentence || sentenceText;
-        if (!text) return;
-        await navigator.clipboard.writeText(text);
+        if (!canUseSentence) return;
+        try {
+            await navigator.clipboard.writeText(approvedText);
+        } catch {
+            setError('Không sao chép được câu. Kiểm tra quyền truy cập bộ nhớ tạm.');
+        }
     };
 
     const buildMeaningfulSentence = async () => {
-        if (!sentence.length || buildingSentence) return;
-        setBuildingSentence(true);
+        if (!sentence.length || buildingSentence || reviewLocked) return;
+        const id = ++buildRequestIdRef.current;
+        dispatchReview({ type: 'proposal_requested', id });
         setError('');
         try {
             const response = await fetch('/api/camera/build-sentence', {
@@ -360,11 +382,10 @@ export default function CameraPage() {
             });
             const data = await response.json();
             if (!response.ok) throw new Error(apiError(data, 'Không thể tạo câu.'));
-            setAiSentence(data.sentence);
+            dispatchReview({ type: 'proposal_received', id, text: data.sentence, method: data.method });
         } catch (buildError) {
-            setError(buildError.message || 'Không kết nối được với máy chủ.');
-        } finally {
-            setBuildingSentence(false);
+            dispatchReview({ type: 'proposal_failed', id,
+                error: buildError.message || 'Không kết nối được với máy chủ.' });
         }
     };
 
@@ -426,7 +447,7 @@ export default function CameraPage() {
             {(error || !modelReady) && (
                 <div className="camera__message camera__message--error" role="alert">
                     <i className="fa-solid fa-triangle-exclamation" />
-                    {error || 'Không tìm thấy model WLASL100. Kiểm tra lại thư mục train.'}
+                    {error || 'Không tìm thấy model VSL224. Kiểm tra models/camera/vsl224.'}
                 </div>
             )}
 
@@ -434,71 +455,84 @@ export default function CameraPage() {
                 <div className="camera__sentence">
                     <div className="camera__sentence-heading">
                         <div>
-                            <span>Câu đang dịch</span>
-                            <strong>{sentenceText || 'Thực hiện ký hiệu đầu tiên để bắt đầu câu'}</strong>
+                            <span>Duyệt câu trước khi sử dụng</span>
+                            <small>Đối chiếu từ lặp, chủ thể và phủ định; xác nhận trước khi đọc hoặc sao chép.</small>
                         </div>
                         <div className="camera__sentence-actions">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setSentence(current => current.slice(0, -1));
-                                    setAiSentence('');
-                                }}
-                                disabled={!sentence.length || liveTranslation}
-                                title="Bỏ từ cuối"
-                            >
-                                <i className="fa-solid fa-rotate-left" />
+                            <button type="button" onClick={() => dispatchReview({ type: 'undo' })}
+                                className="camera__undo-btn" disabled={!review.history.length || reviewLocked} title="Hoàn tác" aria-label="Hoàn tác">
+                                <i className="fa-solid fa-rotate-left" /> Hoàn tác
                             </button>
-                            <button type="button" onClick={copySentence} disabled={!sentence.length} title="Sao chép câu">
+                            <button type="button" onClick={copySentence} disabled={!canUseSentence} title="Sao chép câu đã xác nhận" aria-label="Sao chép câu đã xác nhận">
                                 <i className="fa-solid fa-copy" />
                             </button>
-                            <button type="button" onClick={speakSentence} disabled={!sentence.length} title="Đọc câu">
+                            <button type="button" onClick={speakSentence} disabled={!canUseSentence} title="Đọc câu đã xác nhận" aria-label="Đọc câu đã xác nhận">
                                 <i className="fa-solid fa-volume-high" />
                             </button>
-                            <button type="button" onClick={() => {
-                                setSentence([]);
-                                setAiSentence('');
-                            }} disabled={!sentence.length || liveTranslation} title="Xóa câu">
+                            <button type="button" onClick={() => dispatchReview({ type: 'clear' })}
+                                disabled={!sentence.length || reviewLocked} title="Xóa câu" aria-label="Xóa câu">
                                 <i className="fa-solid fa-trash" />
                             </button>
                         </div>
                     </div>
-                    {sentence.length > 0 && (
-                        <div className="camera__tokens">
-                            {sentence.map((item, index) => (
-                                <span className="camera__token" key={`${item.label}-${index}`}>
-                                    {item.word}
-                                    <small>{Math.round(item.confidence * 100)}%</small>
-                                </span>
-                            ))}
-                        </div>
-                    )}
-                    {sentence.length > 0 && (
-                        <div className="camera__gemini">
-                            <button
-                                type="button"
-                                className="camera__gemini-btn"
-                                onClick={buildMeaningfulSentence}
-                                disabled={buildingSentence || liveTranslation}
-                            >
-                                <i className={`fa-solid ${buildingSentence ? 'fa-spinner fa-spin' : 'fa-wand-magic-sparkles'}`} />
-                                {buildingSentence ? 'Đang viết câu...' : 'Tạo câu có nghĩa'}
-                            </button>
-                            {aiSentence && (
-                                <div className="camera__gemini-result">
-                                    <span><i className="fa-solid fa-wand-magic-sparkles" /> Câu đề xuất</span>
-                                    <strong>{aiSentence}</strong>
+                    <div className="camera__review-grid">
+                        <div className="camera__review-original">
+                            <h3>Chuỗi nhận diện gốc</h3>
+                            <p>{sentenceText || 'Thực hiện ký hiệu đầu tiên để bắt đầu câu'}</p>
+                            {sentence.length > 0 && (
+                                <div className="camera__tokens">
+                                    {sentence.map(item => (
+                                        <span className="camera__token" key={item.eventId}>
+                                            {item.word}
+                                            <small>{Math.round(item.confidence * 100)}%</small>
+                                        </span>
+                                    ))}
                                 </div>
                             )}
+                            <button type="button" className="camera__review-btn"
+                                onClick={() => dispatchReview({ type: 'remove_last' })}
+                                disabled={!sentence.length || reviewLocked}>Bỏ từ cuối</button>
+                        </div>
+                        <div className="camera__gemini-result">
+                            <label htmlFor="camera-sentence-draft">Câu đề xuất / chỉnh sửa</label>
+                            <textarea id="camera-sentence-draft" value={review.draft}
+                                onChange={event => dispatchReview({ type: 'edit', text: event.target.value })}
+                                disabled={!sentence.length || reviewLocked}
+                                placeholder="Tạo câu đề xuất hoặc dùng chuỗi gốc, rồi sửa tại đây."
+                                rows={3} aria-describedby="camera-review-status" />
+                            <small>Chỉ dùng nội dung bạn đã kiểm tra và xác nhận.</small>
+                            {review.method === 'local' && <small>Đang dùng bản ghép từ tại máy chủ.</small>}
+                        </div>
+                    </div>
+                    {sentence.length > 0 && (
+                        <div className="camera__review-controls">
+                            <button type="button" className="camera__gemini-btn"
+                                onClick={buildMeaningfulSentence} disabled={buildingSentence || reviewLocked}>
+                                <i className={`fa-solid ${buildingSentence ? 'fa-spinner fa-spin' : 'fa-wand-magic-sparkles'}`} />
+                                {buildingSentence ? 'Đang tạo đề xuất...' : 'Tạo câu đề xuất'}
+                            </button>
+                            <button type="button" className="camera__review-btn"
+                                onClick={() => dispatchReview({ type: 'use_original' })}
+                                disabled={reviewLocked}>Dùng chuỗi gốc</button>
+                            <button type="button" className="camera__review-confirm"
+                                onClick={() => dispatchReview({ type: 'confirm' })}
+                                disabled={reviewLocked || buildingSentence || !review.draft.trim() || Boolean(approvedText)}>
+                                Xác nhận câu
+                            </button>
                         </div>
                     )}
+                    <p id="camera-review-status" className="camera__review-status" role="status">
+                        {reviewLocked ? 'Dừng dịch và chờ nhận diện xong để duyệt câu.'
+                            : approvedText ? 'Đã xác nhận. Bạn có thể đọc hoặc sao chép câu.'
+                                : 'Chưa xác nhận. Đọc và sao chép đang khóa.'}
+                    </p>
+                    {review.error && <p className="camera__review-error" role="alert">{review.error}</p>}
                 </div>
                 <div className="camera__result">
                     <div className="camera__result-icon"><i className="fa-solid fa-hands-asl-interpreting" /></div>
                     <div className="camera__result-main">
                         <span>Kết quả nhận diện</span>
                         <strong>{prediction?.vietnamese || prediction?.label || 'Chưa có kết quả'}</strong>
-                        {prediction?.vietnamese && <small>Nhãn ASL: {prediction.label}</small>}
                     </div>
                     {prediction && (
                         <div className="camera__confidence">

@@ -72,6 +72,7 @@ app/frontend/vite.config.js.bak
 deploy_ports.txt
 
 # Large model files
+models/camera/**/*.pt
 app/models/*.glb
 app/models/*.gltf
 
@@ -79,6 +80,7 @@ app/models/*.gltf
 dev-notes/
 
 # Logs
+deploy/runtime/
 *.log
 npm-debug.log*
 #docs
