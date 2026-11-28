@@ -72,7 +72,7 @@ API mới đọc catalog đang được bổ sung, tối đa mỗi giây làm m�
 Trang học/dịch lấy video qua `/api/dictionary/videos`, không dùng JSON ASL tĩnh.
 Mẫu video và landmark của cùng một từ luôn lấy từ cùng video được chọn.
 Nếu chưa có landmark Việt Nam, từ điển rỗng thay vì dùng ASL.
-Mô hình camera WLASL là phần riêng, chưa được huấn luyện lại trong thay đổi này.
+Camera là phần riêng: hiện dùng model RGB VSL224 đã train; xem [CAMERA_VSL.md](CAMERA_VSL.md) về checkpoint và luồng nhận diện từng từ/cụm từ.
 
 Không dừng dịch vụ đang chiếm port. Để chạy **thêm** API mới, dùng:
 

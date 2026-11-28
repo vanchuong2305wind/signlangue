@@ -8,10 +8,6 @@ import { getProfile } from '../api/profile';
 import useStudyTimer from '../hooks/useStudyTimer';
 
 const AvatarScene3D = lazy(() => import('../components/avatar/AvatarScene3D'));
-const AvatarSceneVietnam3D = lazy(() => import('../components/avatar/AvatarSceneVietnam3D'));
-
-// Both 3D tabs play the same VieSign result; only the avatar's look differs.
-const AVATAR_MODES = new Set(['3d', '3d-vn']);
 
 function getSignVideos(sign, signVideosData) {
     if (!sign?.found || !sign?.gloss || !signVideosData?.glosses) return [];
@@ -22,7 +18,7 @@ function getSignVideos(sign, signVideosData) {
 
 export default function Translate() {
     useStudyTimer('Dịch ký hiệu');
-    const [mode, setMode] = useState('video');
+    const [mode, setMode] = useState('3d');
     // Entries are { id, text, kind } so a past line can be replayed on click.
     const [transcripts, setTranscripts] = useState([]);
     const [activeTranscriptId, setActiveTranscriptId] = useState(null);
@@ -37,7 +33,7 @@ export default function Translate() {
     const autoPlayTimerRef = useRef(null);
     const videoRef = useRef(null);
     const avatarRef = useRef(null);
-    const isAvatarMode = AVATAR_MODES.has(mode);
+    const isAvatarMode = mode === '3d';
     const transcriptIdRef = useRef(0);
 
     const { isLoading, result, error, translate, clear } = useSignTranslation();
@@ -228,7 +224,6 @@ export default function Translate() {
         setPlayToken(token => token + 1);
     }
 
-    // The Vietnam avatar reports null once a sentence finishes.
     function handleAvatarPlayingSign(sign) {
         if (!sign || !result?.signs) return;
         const idx = result.signs.findIndex(s => s.gloss === sign.gloss);
@@ -253,14 +248,11 @@ export default function Translate() {
                     </div>
                 </div>
                 <div className="translate-mode-toggle">
-                    <button className={`mode-btn ${mode === 'video' ? 'active' : ''}`} onClick={() => setMode('video')}>
-                        <i className="fa-solid fa-video" style={{ fontSize: '12px' }} /> Video
-                    </button>
                     <button className={`mode-btn ${mode === '3d' ? 'active' : ''}`} onClick={() => setMode('3d')}>
                         <i className="fa-solid fa-hand" style={{ fontSize: '12px' }} /> 3D Avatar
                     </button>
-                    <button className={`mode-btn ${mode === '3d-vn' ? 'active' : ''}`} onClick={() => setMode('3d-vn')}>
-                        <i className="fa-solid fa-star" style={{ fontSize: '12px' }} /> 3D Việt Nam
+                    <button className={`mode-btn ${mode === 'video' ? 'active' : ''}`} onClick={() => setMode('video')}>
+                        <i className="fa-solid fa-video" style={{ fontSize: '12px' }} /> Video
                     </button>
                 </div>
             </div>
@@ -382,22 +374,7 @@ export default function Translate() {
                             ref={avatarRef}
                             className="avatar-container"
                             onPlayingSign={handleAvatarPlayingSign}
-                        />
-                    </Suspense>
-                )}
-
-                {/* 3D Việt Nam — avatar from the Chrome extension, VieSign data */}
-                {mode === '3d-vn' && (
-                    <Suspense fallback={(
-                        <div className="translate-loading avatar-container">
-                            <div className="loading-spinner" />
-                            <span className="loading-text">Đang tải bộ dựng 3D...</span>
-                        </div>
-                    )}>
-                        <AvatarSceneVietnam3D
-                            ref={avatarRef}
-                            className="avatar-container"
-                            onPlayingSign={handleAvatarPlayingSign}
+                            playbackSpeed={1.25}
                         />
                     </Suspense>
                 )}
@@ -444,7 +421,6 @@ export default function Translate() {
                                 <div className="sign-video-info">
                                     <div>
                                         <span className="sign-video-label">{activeSign?.vi}</span>
-                                        <span className="sign-video-gloss" style={{ marginLeft: '8px' }}>{activeSign?.language === 'asl' ? 'Ký hiệu ASL' : 'Ký hiệu Việt Nam'}</span>
                                     </div>
                                     <div className="sign-video-nav">
                                         <button className="sign-video-nav-btn" onClick={() => setActiveSignIdx(Math.max(0, activeSignIdx - 1))} disabled={activeSignIdx === 0}>

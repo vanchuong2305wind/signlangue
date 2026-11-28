@@ -454,12 +454,17 @@ def _transcribe_audio(url: str, info: dict) -> dict | None:
     return result
 
 
+from .privacy import is_offline_only
+
+
 def fetch_subtitles(url: str, lang: str | None = None, allow_full_transcription: bool = True) -> dict:
     """Fetch and segment a video's caption track.
 
     Raises SubtitleError with a message meant for the user on every failure
     path, so the route can hand it straight to the UI.
     """
+    if is_offline_only():
+        raise SubtitleError("Chế độ ngoại tuyến (OFFLINE_ONLY) đang bật: không gửi URL ra dịch vụ video ngoài.")
     cache_key = (url.strip(), (lang or "").strip())
     cached = _cache_get(cache_key)
     if cached is not None:

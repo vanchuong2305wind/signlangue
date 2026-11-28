@@ -279,60 +279,27 @@
 
 /* Overlay layout */
 .vt-main.overlay {
-    display: grid;
-    grid-template-areas: "picture" "controls";
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-    flex: none;
+    flex-direction: column;
+    position: relative;
 }
 
-.vt-main.overlay .vt-video-section,
-.vt-main.overlay .vt-video-card {
-    display: contents;
-}
-
-.vt-main.overlay .vt-video-card::before {
-    display: none;
-}
-
-.vt-main.overlay .vt-video-player-container {
-    grid-area: picture;
-    aspect-ratio: 16 / 9;
-    min-height: 0;
-}
-
-.vt-main.overlay .vt-video-empty {
-    min-height: 0;
-}
-
-.vt-main.overlay .vt-video-controls {
-    grid-area: controls;
-}
-
-.vt-main.overlay .vt-avatar-area,
-.vt-main.overlay .avatar-container {
-    min-height: 0;
+.vt-main.overlay .vt-video-section {
+    flex: 1;
 }
 
 .vt-main.overlay .vt-sign-section {
-    grid-area: picture;
-    position: relative;
-    align-self: end;
-    justify-self: end;
-    margin: var(--space-sm);
-    margin-bottom: 48px;
-    width: clamp(112px, 24%, 280px);
-    aspect-ratio: 1;
-    max-height: calc(100% - 56px);
+    position: absolute;
+    bottom: var(--space-md);
+    right: var(--space-md);
+    width: 300px;
+    height: 280px;
     z-index: 10;
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(44, 24, 16, 0.18), 0 2px 8px rgba(44, 24, 16, 0.1);
     transition: box-shadow var(--transition-normal), transform var(--transition-normal);
-}
-
-.vt-main.overlay.vt-corner-left .vt-sign-section {
-    justify-self: start;
+    cursor: grab;
+    touch-action: none;
 }
 
 .vt-main.overlay .vt-sign-section:hover {
@@ -342,31 +309,6 @@
 .vt-main.overlay .vt-sign-section .vt-sign-card {
     height: 100%;
     border-radius: 0;
-}
-
-.vt-main.overlay .vt-sign-header {
-    justify-content: flex-end;
-    padding: 4px 8px;
-    cursor: grab;
-    touch-action: none;
-    user-select: none;
-}
-
-.vt-main.overlay .vt-sign-section.is-dragging {
-    transition: none;
-}
-
-.vt-main.overlay .vt-sign-section.is-dragging .vt-sign-header {
-    cursor: grabbing;
-}
-
-.vt-overlay-drag-handle {
-    margin-right: auto;
-    color: var(--ink-faint);
-}
-
-.vt-main.overlay .vt-sign-header-title {
-    display: none;
 }
 
 /* ── Video Section ── */
@@ -1132,6 +1074,25 @@
     flex-shrink: 0;
 }
 
+/* ── Overlay badge (shows in overlay mode on the floating panel) ── */
+.vt-overlay-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    background: rgba(44, 24, 16, 0.6);
+    color: #faf6ef;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    z-index: 5;
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+}
+
 /* ── Bottom Stats Bar ── */
 .vt-bottom-bar {
     display: flex;
@@ -1477,6 +1438,11 @@
         max-height: 350px;
     }
 
+    .vt-main.overlay .vt-sign-section {
+        width: 240px;
+        height: 230px;
+    }
+
     .vt-input-panel {
         flex-direction: column;
     }
@@ -1536,6 +1502,13 @@
         width: 100%;
         min-width: unset;
         max-height: 300px;
+    }
+
+    .vt-main.overlay .vt-sign-section {
+        width: 180px;
+        height: 180px;
+        bottom: var(--space-sm);
+        right: var(--space-sm);
     }
 
     .vt-video-player-container {
@@ -1599,6 +1572,11 @@
 @media (max-width: 400px) {
     .vt-title {
         font-size: 15px;
+    }
+
+    .vt-main.overlay .vt-sign-section {
+        width: 150px;
+        height: 150px;
     }
 
     .vt-video-empty-icon {

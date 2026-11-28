@@ -25,8 +25,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse, Response, StreamingResponse
 from pydantic import BaseModel, Field
 
-from .camera_recognition import is_available, recognize
+from .camera_recognition import model_status, recognize
 from . import asr, local_nlp
+from .privacy import get_allowed_origins, privacy_status
 from .sentence_builder import build_sentence, build_sentence_local, gemini_configured
 from .sign_lookup import sign_dict
 from .text_parser import gemini_enabled, parse_text, warmup as warmup_text_parser
@@ -45,23 +46,24 @@ async def refresh_viesign_catalog(request: Request, call_next):
         await run_in_threadpool(sign_dict.load)
     return await call_next(request)
 
-# CORS for frontend
+# CORS for frontend (restricted to configured local/allowed origins)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=get_allowed_origins(),
+    allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 # Landmark payloads are float-dense JSON and compress ~4x, which is the single
 # biggest win on the wire for the avatar. 1 KB floor keeps small replies raw.
 app.add_middleware(GZipMiddleware, minimum_size=1024, compresslevel=5)
 
-# Serve static frontend files
+# Serve static frontend files (legacy paths mounted only when present)
 FRONTEND_DIR = Path(__file__).resolve().parent.parent
-app.mount("/js", StaticFiles(directory=FRONTEND_DIR / "js"), name="js")
-app.mount("/styles", StaticFiles(directory=FRONTEND_DIR / "styles"), name="styles")
-app.mount("/models", StaticFiles(directory=FRONTEND_DIR / "models"), name="models")
+for _mount_path, _dir_name in (("/js", "js"), ("/styles", "styles"), ("/models", "models")):
+    _static_dir = FRONTEND_DIR / _dir_name
+    if _static_dir.is_dir():
+        app.mount(_mount_path, StaticFiles(directory=_static_dir), name=_dir_name)
 
 
 @app.on_event("startup")
@@ -599,18 +601,29 @@ async def add_profile_activity(req: ActivityRequest):
 
 
 @app.delete("/api/profile/activities")
-async def reset_profile_activity():
-    return profile_store.reset(profile_total_words())
+async def reset_profile_activity(activity_type: str | None = None):
+    try:
+        return profile_store.reset(profile_total_words(), activity_type=activity_type)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error)) from error
+
+
+@app.delete("/api/profile")
+async def delete_profile_all():
+    return profile_store.delete_all(profile_total_words())
+
+
+@app.get("/api/privacy/status")
+async def get_privacy_status():
+    return privacy_status(
+        profile_path=str(profile_store.path),
+        profile_exists=profile_store.path.exists(),
+    )
 
 
 @app.get("/api/camera/model-status")
 async def camera_model_status():
-    return {
-        "available": is_available(),
-        "model": "WLASL100-I3D-Transformer",
-        "classes": 100,
-        "gemini_configured": gemini_configured(),
-    }
+    return {**model_status(), "gemini_configured": gemini_configured()}
 
 
 @app.post("/api/camera/recognize")

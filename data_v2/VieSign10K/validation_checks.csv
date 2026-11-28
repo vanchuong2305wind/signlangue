@@ -1,0 +1,6 @@
+﻿check,value
+train_val_signer_overlap,0
+train_test_signer_overlap,0
+val_test_signer_overlap,0
+duplicate_video_ids,0
+classes_present_in_all_three_splits,447

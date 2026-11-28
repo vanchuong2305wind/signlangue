@@ -109,12 +109,26 @@ class ProfileStore:
             self._save(data)
             return self._summary(data, total_words)
 
-    def reset(self, total_words: int) -> dict[str, Any]:
+    def reset(self, total_words: int, activity_type: str | None = None) -> dict[str, Any]:
+        if activity_type is not None and activity_type not in ACTIVITY_TYPES:
+            raise ValueError("Unsupported activity type")
         with self._lock:
             data = self._load()
-            data["activities"] = []
+            if activity_type is None:
+                data["activities"] = []
+            else:
+                data["activities"] = [
+                    item for item in data["activities"]
+                    if item.get("type") != activity_type
+                ]
             self._save(data)
             return self._summary(data, total_words)
+
+    def delete_all(self, total_words: int) -> dict[str, Any]:
+        with self._lock:
+            self.path.unlink(missing_ok=True)
+            self.path.with_suffix(".tmp").unlink(missing_ok=True)
+            return self._summary(deepcopy(DEFAULT_DATA), total_words)
 
     @staticmethod
     def _summary(data: dict[str, Any], total_words: int) -> dict[str, Any]:

@@ -166,7 +166,7 @@ export default function Learn() {
                     <i className="fa-solid fa-magnifying-glass learn__search-icon" />
                     <input
                         type="text"
-                        placeholder="Tìm ký hiệu Việt Nam (VD: tự tin, giúp đỡ)..."
+                        placeholder="Tìm ký hiệu (VD: tự tin, giúp đỡ)..."
                         value={search}
                         onChange={(e) => handleSearch(e.target.value)}
                         className="learn__search-input"
@@ -249,7 +249,6 @@ export default function Learn() {
                                     </div>
                                     <div className="learn__word-info">
                                         <div className="learn__word-vi">{word.vi || word.gloss}</div>
-                                        <div className="learn__word-gloss">{word.language === 'asl' ? 'Ký hiệu ASL' : 'Ký hiệu Việt Nam'}</div>
                                     </div>
                                     </>
                                 ) : (
@@ -258,7 +257,6 @@ export default function Learn() {
                                         <i className={`fa-solid ${visual.icon}`} style={{ fontSize: '11px' }} />
                                     </div>
                                     <div className="learn__word-list-vi">{word.vi || word.gloss}</div>
-                                    <div className="learn__word-list-gloss">{word.language === 'asl' ? 'Ký hiệu ASL' : 'Ký hiệu Việt Nam'}</div>
                                     <div className="learn__word-list-count">{word.video_count} video</div>
                                 </div>
                                 )}
@@ -334,7 +332,6 @@ export default function Learn() {
                         {/* Word Info */}
                         <div className="learn__modal-info">
                             <h2 className="learn__modal-word">{selectedWord.vi || selectedWord.gloss}</h2>
-                            <div className="learn__modal-gloss">{selectedWord.language === 'asl' ? 'Ký hiệu ASL' : 'Ký hiệu Việt Nam'}</div>
 
                             {selectedWord.vi && (
                                 <div className="learn__modal-translation">
@@ -365,7 +362,7 @@ export default function Learn() {
                                                 <i className={`fa-solid ${typeInfo.icon}`} />
                                             </span>
                                             <div className="learn__video-item-info">
-                                                <span className="learn__video-item-source">{v.source}</span>
+                                                <span className="learn__video-item-source">Video {idx + 1}</span>
                                                 <span className="learn__video-item-type" style={{ color: typeInfo.color }}>
                                                     {typeInfo.label}
                                                 </span>

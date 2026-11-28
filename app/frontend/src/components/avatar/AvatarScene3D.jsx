@@ -271,10 +271,382 @@ function removeNonHumanAccessories(root) {
     return removed;
 }
 
+function createDutFloorDisc() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024;
+    canvas.height = 1024;
+    const ctx = canvas.getContext('2d');
+
+    const cx = 512;
+    const cy = 512;
+
+    // Nền tròn kem ấm bên trong vòng xanh
+    const grad = ctx.createRadialGradient(cx, cy, 40, cx, cy, 500);
+    grad.addColorStop(0, '#F5F1DF');
+    grad.addColorStop(0.78, '#EAE4CE');
+    grad.addColorStop(1, '#DFD8BE');
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, 504, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Vòng chỉ mảnh màu xanh rêu bên trong
+    ctx.beginPath();
+    ctx.arc(cx, cy, 468, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(50, 88, 37, 0.35)';
+    ctx.lineWidth = 6;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, 448, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(50, 88, 37, 0.18)';
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([12, 10]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Chữ "DUT" viết hoa sắc nét đặt dưới chân mô hình bên trong vòng tròn xanh
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '900 148px "Libre Baskerville", "Georgia", "Arial Black", serif';
+
+    // Bóng đổ nhẹ dưới chữ DUT
+    ctx.fillStyle = 'rgba(50, 88, 37, 0.16)';
+    ctx.fillText('DUT', cx, 736);
+
+    // Viền kem sáng nổi bật
+    ctx.lineWidth = 10;
+    ctx.strokeStyle = '#FFFCED';
+    ctx.strokeText('DUT', cx, 730);
+
+    // Màu chữ xanh rêu đậm đồng bộ với vòng tròn xanh
+    ctx.fillStyle = '#325825';
+    ctx.fillText('DUT', cx, 730);
+    ctx.restore();
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.anisotropy = 4;
+    texture.needsUpdate = true;
+
+    const discGeo = new THREE.CircleGeometry(0.675, 64);
+    const discMat = new THREE.MeshStandardMaterial({
+        map: texture,
+        roughness: 0.68,
+        metalness: 0.05,
+    });
+    const disc = new THREE.Mesh(discGeo, discMat);
+    disc.rotation.x = -Math.PI / 2;
+    disc.position.y = 0.003;
+    disc.receiveShadow = true;
+    return disc;
+}
+
+/**
+  * Tạo texture lá cọ và các vòng tre đồng tâm cho chiếc Nón lá Việt Nam
+  */
+function createNonLaTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+
+    // Nền màu lá nón tự nhiên
+    const grad = ctx.createLinearGradient(0, 0, 0, 512);
+    grad.addColorStop(0, '#DFC48C');
+    grad.addColorStop(0.5, '#EAD4A4');
+    grad.addColorStop(1, '#D3B57A');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 512, 512);
+
+    // Các đường gân lá dọc theo thân nón
+    ctx.strokeStyle = 'rgba(138, 102, 48, 0.16)';
+    ctx.lineWidth = 1.5;
+    for (let x = 0; x < 512; x += 6) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, 512);
+        ctx.stroke();
+    }
+
+    // Các vòng vành tre khâu đồng tâm trên nón lá
+    for (let y = 28; y < 500; y += 30) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(512, y);
+        ctx.strokeStyle = 'rgba(120, 82, 32, 0.36)';
+        ctx.lineWidth = 2.2;
+        ctx.stroke();
+
+        // Đường mũi khâu nhỏ trên mỗi vành nón
+        ctx.beginPath();
+        ctx.setLineDash([4, 6]);
+        ctx.moveTo(0, y + 2);
+        ctx.lineTo(512, y + 2);
+        ctx.strokeStyle = 'rgba(255, 248, 225, 0.45)';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    return tex;
+}
+
+/**
+  * Tạo hình ngôi sao vàng 5 cánh 3D chuẩn Quốc kỳ Việt Nam
+  */
+function createGoldenStarMesh(outerRadius = 0.056, innerRadius = 0.022, depth = 0.008) {
+    const shape = new THREE.Shape();
+    const points = 5;
+    for (let i = 0; i < points * 2; i++) {
+        const r = i % 2 === 0 ? outerRadius : innerRadius;
+        const angle = (i * Math.PI) / points + Math.PI / 2;
+        const x = Math.cos(angle) * r;
+        const y = Math.sin(angle) * r;
+        if (i === 0) shape.moveTo(x, y);
+        else shape.lineTo(x, y);
+    }
+    shape.closePath();
+
+    const geo = new THREE.ExtrudeGeometry(shape, {
+        depth,
+        bevelEnabled: true,
+        bevelThickness: 0.0025,
+        bevelSize: 0.002,
+        bevelSegments: 2,
+    });
+    geo.center();
+
+    const mat = new THREE.MeshStandardMaterial({
+        color: 0xffd700,
+        emissive: 0xffb300,
+        emissiveIntensity: 0.35,
+        roughness: 0.25,
+        metalness: 0.35,
+    });
+
+    const star = new THREE.Mesh(geo, mat);
+    star.castShadow = true;
+    return star;
+}
+
+/**
+  * Nhuộm texture bộ đồ gốc (wear.png) sang màu đỏ cờ Việt Nam (#D81E1E),
+  * giữ nguyên toàn bộ nếp gấp vải của bộ đồ gốc và vẽ thêm ngôi sao vàng 5 cánh ở chính giữa ngực.
+  */
+function createRedOriginalOutfitTexture(originalTex) {
+    const img = originalTex?.image || originalTex?.source?.data;
+    const width = img?.width || 1024;
+    const height = img?.height || 1024;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+
+    if (img) {
+        ctx.drawImage(img, 0, 0, width, height);
+        const imgData = ctx.getImageData(0, 0, width, height);
+        const data = imgData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+
+            // Độ sáng giữ lại chi tiết nếp gấp vải gốc của bộ quần áo
+            const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            const shade = Math.min(1, Math.max(0.78, lum * 1.05));
+
+            // Nhuộm toàn bộ áo và quần gốc sang màu đỏ cờ Việt Nam (#E01B1B) đồng nhất
+            data[i] = Math.min(255, Math.round(shade * 232 + 12));
+            data[i + 1] = Math.min(255, Math.round(shade * 22));
+            data[i + 2] = Math.min(255, Math.round(shade * 22));
+        }
+        ctx.putImageData(imgData, 0, 0);
+    } else {
+        ctx.fillStyle = '#E01B1B';
+        ctx.fillRect(0, 0, width, height);
+    }
+
+    // Vùng ngực trái nơi mesh anim_logo lấp vào 4 lỗ lục giác của áo:
+    // Tô đồng nhất một màu đỏ chuẩn (#E81E1E) để 4 hình lục giác tiệp hoàn toàn vào nền áo đỏ, không còn dấu vết
+    ctx.fillStyle = '#E81E1E';
+    ctx.fillRect(Math.round(width * 0.32), Math.round(height * 0.15), Math.round(width * 0.18), Math.round(height * 0.25));
+
+    const redTex = new THREE.CanvasTexture(canvas);
+    redTex.colorSpace = THREE.SRGBColorSpace;
+    redTex.flipY = originalTex ? originalTex.flipY : false;
+    redTex.needsUpdate = true;
+    return redTex;
+}
+
+/**
+  * Giữ nguyên bộ quần áo gốc của nhân vật, đổi sang màu đỏ có ngôi sao vàng ở chính giữa ngực + đội Nón lá
+  */
+function applyVietnameseAoDaiAndNonLa(vrm) {
+    let sharedRedTex = null;
+    let baseRedMToonMat = null;
+
+    // Bước 1: Tìm chất liệu MToon gốc của áo (huku_bake) để dùng chung cho cả phần vá lỗ logo (anim_logo)
+    vrm.scene.traverse((node) => {
+        if (!node.isMesh && !node.isSkinnedMesh) return;
+        const mats = Array.isArray(node.material) ? node.material : [node.material];
+        for (const mat of mats) {
+            if (!mat) continue;
+            const rawName = (mat.name || '').toLowerCase();
+            const mName = rawName.replace(/\s*\(outline\)\s*$/i, '').trim();
+            if (mName === 'huku_bake' && !rawName.includes('(outline)') && !baseRedMToonMat) {
+                const origTex = mat.map || mat.uniforms?.map?.value || null;
+                sharedRedTex = createRedOriginalOutfitTexture(origTex);
+                baseRedMToonMat = mat;
+            }
+        }
+    });
+
+    // Bước 2: Cập nhật màu đỏ cho toàn bộ quần áo gốc + lấp kín 4 lỗ lục giác (anim_logo) cùng màu đỏ áo
+    vrm.scene.traverse((node) => {
+        if (!node.isMesh && !node.isSkinnedMesh) return;
+        if (!node.material) return;
+
+        const updateMat = (mat) => {
+            if (!mat) return mat;
+            const rawName = (mat.name || '').toLowerCase();
+            const isOutline = rawName.includes('(outline)');
+            const mName = rawName.replace(/\s*\(outline\)\s*$/i, '').trim();
+
+            // Ẩn lớp viền (Outline) trên áo để không vẽ viền nâu/đen bên trong 4 lỗ lục giác trên ngực
+            if (isOutline && (mName === 'huku_bake' || mName === 'armgear_plastic' || mName === 'wear_metal')) {
+                mat.visible = false;
+                if ('outlineWidthFactor' in mat) mat.outlineWidthFactor = 0;
+                if (mat.uniforms?.outlineWidthFactor) mat.uniforms.outlineWidthFactor.value = 0;
+                mat.needsUpdate = true;
+                return mat;
+            }
+
+            // Gán chất liệu MToon đỏ của áo vào mesh anim_logo để bít kín 4 lỗ lục giác trên ngực trái
+            if (mName === 'anim_logo' && baseRedMToonMat) {
+                const patchMat = baseRedMToonMat.clone();
+                patchMat.map = sharedRedTex;
+                patchMat.shadeMultiplyTexture = sharedRedTex;
+                if (patchMat.shadeColorFactor?.setRGB) {
+                    patchMat.shadeColorFactor.setRGB(0.82, 0.82, 0.82);
+                }
+                patchMat.needsUpdate = true;
+                return patchMat;
+            }
+
+            if (mName === 'huku_bake' || mName === 'armgear_plastic' || mName === 'wear_metal' || mName === 'anim_logo') {
+                if (!sharedRedTex) {
+                    const origTex = mat.map || mat.uniforms?.map?.value || null;
+                    sharedRedTex = createRedOriginalOutfitTexture(origTex);
+                }
+                if ('map' in mat) mat.map = sharedRedTex;
+                if ('shadeMultiplyTexture' in mat) mat.shadeMultiplyTexture = sharedRedTex;
+                if (mat.uniforms?.map) mat.uniforms.map.value = sharedRedTex;
+                if (mat.uniforms?.shadeMultiplyTexture) {
+                    mat.uniforms.shadeMultiplyTexture.value = sharedRedTex;
+                }
+                if (mat.shadeColorFactor?.setRGB) {
+                    mat.shadeColorFactor.setRGB(0.82, 0.82, 0.82);
+                } else if (mat.uniforms?.shadeColorFactor?.value?.setRGB) {
+                    mat.uniforms.shadeColorFactor.value.setRGB(0.82, 0.82, 0.82);
+                }
+                mat.needsUpdate = true;
+                return mat;
+            }
+            return mat;
+        };
+
+        if (Array.isArray(node.material)) {
+            node.material = node.material.map(updateMat);
+        } else {
+            node.material = updateMat(node.material);
+        }
+    });
+
+    const outfitGroup = new THREE.Group();
+    outfitGroup.name = 'vietnam_star_and_nonla';
+
+    // 2. Ngôi sao vàng 5 cánh 3D đặt ngay chính giữa ngực bộ đồ gốc
+    const frontStar = createGoldenStarMesh(0.052, 0.021, 0.007);
+    frontStar.position.set(0, 1.072, 0.097);
+    frontStar.rotation.x = -0.05;
+    outfitGroup.add(frontStar);
+
+    // 3. Đầu đội Nón lá Việt Nam
+    const nonLaGroup = new THREE.Group();
+    nonLaGroup.name = 'vietnam_non_la';
+
+    const nonLaTex = createNonLaTexture();
+    const nonLaMat = new THREE.MeshStandardMaterial({
+        map: nonLaTex,
+        roughness: 0.65,
+        metalness: 0.04,
+        side: THREE.DoubleSide,
+    });
+
+    // Thân nón hình chóp
+    const coneGeo = new THREE.ConeGeometry(0.245, 0.145, 64, 1, true);
+    const coneMesh = new THREE.Mesh(coneGeo, nonLaMat);
+    coneMesh.castShadow = true;
+    coneMesh.receiveShadow = true;
+    nonLaGroup.add(coneMesh);
+
+    // Vành tre ngoài cùng của nón lá
+    const brimMat = new THREE.MeshStandardMaterial({
+        color: 0xc8a464,
+        roughness: 0.55,
+        metalness: 0.05,
+    });
+    const brimRingGeo = new THREE.TorusGeometry(0.245, 0.0045, 12, 64);
+    const brimRing = new THREE.Mesh(brimRingGeo, brimMat);
+    brimRing.rotation.x = Math.PI / 2;
+    brimRing.position.y = -0.0725;
+    nonLaGroup.add(brimRing);
+
+    // Chóp nón nhỏ trên đỉnh
+    const tipGeo = new THREE.ConeGeometry(0.014, 0.018, 24);
+    const tipMesh = new THREE.Mesh(tipGeo, brimMat);
+    tipMesh.position.y = 0.076;
+    nonLaGroup.add(tipMesh);
+
+    // Quai nón lụa đỏ mềm mại dưới cằm
+    const strapMat = new THREE.MeshStandardMaterial({
+        color: 0xd81e1e,
+        roughness: 0.45,
+        metalness: 0.05,
+    });
+    const strapCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-0.095, -0.055, 0.02),
+        new THREE.Vector3(-0.075, -0.16, 0.045),
+        new THREE.Vector3(0, -0.225, 0.062),
+        new THREE.Vector3(0.075, -0.16, 0.045),
+        new THREE.Vector3(0.095, -0.055, 0.02),
+    ]);
+    const strapGeo = new THREE.TubeGeometry(strapCurve, 32, 0.0032, 8, false);
+    const strapMesh = new THREE.Mesh(strapGeo, strapMat);
+    nonLaGroup.add(strapMesh);
+
+    // Đặt nón lá ngay ngắn trên đầu nhân vật (hơi nghiêng nhẹ ra sau để lộ rõ gương mặt)
+    nonLaGroup.position.set(0, 1.565, -0.018);
+    nonLaGroup.rotation.x = -0.15;
+    outfitGroup.add(nonLaGroup);
+
+    vrm.scene.add(outfitGroup);
+}
+
+
 /* ==================== COMPONENT ==================== */
 
 const AvatarScene3D = forwardRef(function AvatarScene3D(
-    { className, style, onStatusChange, onPlayingSign },
+    { className, style, onStatusChange, onPlayingSign, playbackSpeed = 1 },
     ref,
 ) {
     const containerRef = useRef(null);
@@ -306,6 +678,10 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
     // then costs nothing at all.
     const landmarkCacheRef = useRef(new Map());
     const playNextRef = useRef(null);
+    const playbackSpeedRef = useRef(playbackSpeed);
+    useEffect(() => {
+        playbackSpeedRef.current = playbackSpeed;
+    }, [playbackSpeed]);
 
     const [status, setStatus] = useState('Đang tải mô hình...');
     const [isModelLoaded, setIsModelLoaded] = useState(false);
@@ -370,13 +746,13 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
         // Camera
         const aspect = Math.max(container.clientWidth, 1) / Math.max(container.clientHeight, 1);
         const camera = new THREE.PerspectiveCamera(38, aspect, 0.05, 50);
-        camera.position.set(0, 0.50, 1.4);
-        camera.lookAt(0, 0.35, 0);
+        camera.position.set(0, 0.9, 2.6);
+        camera.lookAt(0, 0.76, 0);
 
         // Lights
-        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+        scene.add(new THREE.AmbientLight(0xffffff, 0.55));
 
-        const hemi = new THREE.HemisphereLight(0xe8f4ff, 0x8eaacc, 0.7);
+        const hemi = new THREE.HemisphereLight(0xe8f4ff, 0x8eaacc, 0.75);
         hemi.position.set(0, 2, 0);
         scene.add(hemi);
 
@@ -401,10 +777,6 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
         rim.position.set(0, 1.5, -3);
         scene.add(rim);
 
-        const bottom = new THREE.PointLight(0x44ccff, 0.4, 3);
-        bottom.position.set(0, -0.2, 0.5);
-        scene.add(bottom);
-
         // Environment
         const pmrem = new THREE.PMREMGenerator(renderer);
         const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
@@ -413,42 +785,71 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
 
         // Controls
         const controls = new OrbitControls(camera, renderer.domElement);
-        controls.target.set(0, 0.35, 0);
+        controls.target.set(0, 0.76, 0);
         controls.enableDamping = true;
         controls.dampingFactor = 0.08;
         controls.minDistance = 0.5;
-        controls.maxDistance = 4;
+        controls.maxDistance = 3.5;
         controls.maxPolarAngle = Math.PI * 0.65;
         controls.minPolarAngle = Math.PI * 0.15;
         controls.update();
 
         // Background & floor
-        scene.background = new THREE.Color(0x1a2030);
+        scene.background = new THREE.Color(0xefece0);
 
         const floorGeo = new THREE.CircleGeometry(2, 48);
-        const floorMat = new THREE.MeshStandardMaterial({ color: 0x2a3648, roughness: 0.3, metalness: 0.6 });
+        const floorMat = new THREE.MeshStandardMaterial({
+            color: 0xe2dec9,
+            roughness: 0.75,
+            metalness: 0.08,
+        });
         const floor = new THREE.Mesh(floorGeo, floorMat);
         floor.rotation.x = -Math.PI / 2;
         floor.receiveShadow = true;
         scene.add(floor);
 
-        const ringGeo = new THREE.TorusGeometry(0.7, 0.008, 8, 48);
+        // Mặt sàn bên trong vòng tròn màu xanh có chữ "DUT" viết hoa dưới chân mô hình
+        const dutFloorDisc = createDutFloorDisc();
+        scene.add(dutFloorDisc);
+
+        const ringGeo = new THREE.TorusGeometry(0.68, 0.014, 12, 64);
         const ringMat = new THREE.MeshStandardMaterial({
-            color: 0x55ddff, emissive: 0x33aacc,
-            emissiveIntensity: 0.6, roughness: 0.3, metalness: 0.2,
+            color: 0x325825,
+            emissive: 0x307436,
+            emissiveIntensity: 0.28,
+            roughness: 0.45,
+            metalness: 0.1,
         });
         const ring = new THREE.Mesh(ringGeo, ringMat);
         ring.rotation.x = Math.PI / 2;
-        ring.position.y = 0.005;
+        ring.position.y = 0.006;
         scene.add(ring);
 
-        const grid = new THREE.GridHelper(3, 20, 0x334466, 0x253344);
+        const grid = new THREE.GridHelper(3, 18, 0xc7bfa8, 0xdad4c0);
         grid.position.y = 0.001;
         grid.material.transparent = true;
-        grid.material.opacity = 0.3;
+        grid.material.opacity = 0.45;
         scene.add(grid);
 
+        // Keep the hat and feet inside the visible area above the status bar,
+        // including the shorter viewport in the video overlay layout.
+        function resizeScene() {
+            const w = Math.max(container.clientWidth, 1);
+            const h = Math.max(container.clientHeight, 1);
+            const bottomInset = sceneDataRef.current?.vrm ? Math.min(56, h * 0.25) : 0;
+            const viewportHeight = h - bottomInset;
+            camera.aspect = w / viewportHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+            renderer.setViewport(0, bottomInset, w, viewportHeight);
+        }
+
         async function loadFallbackHands() {
+            // Preserve the original close-up framing of the fallback hands.
+            camera.position.set(0, 0.50, 1.4);
+            controls.target.set(0, 0.35, 0);
+            controls.maxDistance = 4;
+            controls.update();
             const loader = new GLTFLoader();
             const gltf = await loader.loadAsync('/models/rigged_hand.glb');
             if (disposed) return;
@@ -548,7 +949,20 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             // Seed-san carries a backpack with a mechanical arm mounted on it.
             // None of it belongs to the humanoid rig used for signing and it
             // clutters the silhouette, so strip it before framing the avatar.
+            // Keep the logo's original skinned geometry to fill the shirt's
+            // cutouts. The accessory remover still handles every other part.
+            const shirtPatches = [];
+            vrm.scene.traverse(node => {
+                if (node.isMesh && isAccessoryMaterial(node.material)) {
+                    const mats = Array.isArray(node.material) ? node.material : [node.material];
+                    if (mats.every(mat => /^anim_logo(?:\s*\(outline\))?$/i.test(mat.name || ''))) {
+                        shirtPatches.push({ node, parent: node.parent });
+                    }
+                }
+            });
+            for (const { node } of shirtPatches) node.removeFromParent();
             const removedAccessories = removeNonHumanAccessories(vrm.scene);
+            for (const { node, parent } of shirtPatches) parent.add(node);
             if (removedAccessories.length > 0) {
                 console.info(
                     `[AvatarScene3D] Removed non-human accessories: ${removedAccessories.join(', ')}`,
@@ -559,6 +973,7 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             const size = box.getSize(new THREE.Vector3());
             vrm.scene.scale.setScalar(1.35 / Math.max(size.y, 0.01));
             vrm.scene.position.set(0, 0, 0);
+            applyVietnameseAoDaiAndNonLa(vrm);
             vrm.scene.traverse(node => {
                 if (!node.isMesh) return;
                 node.castShadow = true;
@@ -568,15 +983,11 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             scene.add(vrm.scene);
             vrm.scene.updateMatrixWorld(true);
 
-            // Frame the signing space from the waist to above the head.
-            camera.position.set(0, 1.0, 1.65);
-            controls.target.set(0, 1.0, 0);
-            controls.update();
-
             sceneDataRef.current = {
                 vrm,
                 vrmRetargeter: new VrmHolisticRetargeter(vrm),
             };
+            resizeScene();
             setIsModelLoaded(true);
             updateStatus('Avatar VRM toàn thân sẵn sàng');
             return true;
@@ -625,7 +1036,7 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             const current = anim.queue.shift();
             anim.currentSign = current;
             anim.currentFrames = current.data.frames;
-            anim.currentFps = current.data.fps || 25;
+            anim.currentFps = (current.data.fps || 25) * playbackSpeedRef.current;
             anim.currentFrameIdx = 0;
             anim.frameTimer = 0;
             anim.isTransitioning = true;
@@ -761,9 +1172,7 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
                 if (w === lastW && h === lastH) return;
                 lastW = w;
                 lastH = h;
-                camera.aspect = w / h;
-                camera.updateProjectionMatrix();
-                renderer.setSize(w, h);
+                resizeScene();
             });
         });
         resizeObserver.observe(container);
@@ -931,9 +1340,9 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             <div className={className} style={{
                 ...style,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                background: '#0a0e17', borderRadius: 'var(--radius-md)',
+                background: '#EFECE0', borderRadius: 'var(--radius-md)',
             }}>
-                <p style={{ color: '#f87171', fontSize: '14px', textAlign: 'center', padding: '16px' }}>
+                <p style={{ color: '#5F2A1A', fontSize: '14px', textAlign: 'center', padding: '16px' }}>
                     ❌ {loadError}
                 </p>
             </div>
@@ -956,11 +1365,11 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
                     position: 'absolute', inset: 0,
                     display: 'flex', flexDirection: 'column',
                     alignItems: 'center', justifyContent: 'center',
-                    background: 'rgba(26, 32, 48, 0.9)', zIndex: 2,
+                    background: 'rgba(255, 252, 237, 0.94)', zIndex: 2,
                     borderRadius: 'var(--radius-md)',
                 }}>
                     <div className="avatar-loader" />
-                    <p style={{ color: '#94a3b8', fontSize: '13px', marginTop: '12px' }}>
+                    <p style={{ color: '#325825', fontSize: '13px', marginTop: '12px' }}>
                         Đang tải mô hình 3D...
                     </p>
                 </div>
@@ -970,14 +1379,15 @@ const AvatarScene3D = forwardRef(function AvatarScene3D(
             <div style={{
                 position: 'absolute', bottom: '8px', left: '8px', right: '8px',
                 padding: '8px 14px',
-                background: 'rgba(0, 0, 0, 0.55)',
+                background: 'rgba(232, 230, 218, 0.92)',
+                border: '1px solid rgba(75, 45, 21, 0.14)',
                 backdropFilter: 'blur(8px)',
                 WebkitBackdropFilter: 'blur(8px)',
                 borderRadius: '10px',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 zIndex: 1, pointerEvents: 'none',
             }}>
-                <span style={{ color: '#e2e8f0', fontSize: '12px', fontWeight: 600 }}>
+                <span style={{ color: '#4B2D15', fontSize: '12px', fontWeight: 600 }}>
                     {status}
                 </span>
             </div>

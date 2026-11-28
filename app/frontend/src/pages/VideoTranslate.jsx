@@ -67,59 +67,76 @@ function describeLang(code) {
     return LANG_NAMES[base] || code;
 }
 
-function useDraggable(enabled, corner) {
+/* ── Draggable Hook ── */
+function useDraggable(enabled) {
     const ref = useRef(null);
+    const dragState = useRef({ dragging: false, startX: 0, startY: 0, origX: 0, origY: 0 });
 
     useEffect(() => {
-        const panel = ref.current;
-        if (!enabled || !panel) return;
-        const picture = panel.closest('.vt-main').querySelector('.vt-video-player-container');
-        let drag = null;
-        let x = 0;
-        let y = 0;
-        const reset = () => {
-            drag = null;
-            x = y = 0;
-            panel.style.transform = '';
-            panel.classList.remove('is-dragging');
-        };
-        const down = event => {
-            if (event.button !== 0 || !event.target.closest('.vt-sign-header') || event.target.closest('button')) return;
-            drag = { clientX: event.clientX, clientY: event.clientY, rect: panel.getBoundingClientRect(), x, y };
-            panel.setPointerCapture(event.pointerId);
-            panel.classList.add('is-dragging');
-            event.preventDefault();
-        };
-        const move = event => {
-            if (!drag) return;
-            const bounds = picture.getBoundingClientRect();
-            const dx = Math.max(bounds.left - drag.rect.left, Math.min(event.clientX - drag.clientX, bounds.right - drag.rect.right));
-            const dy = Math.max(bounds.top - drag.rect.top, Math.min(event.clientY - drag.clientY, bounds.bottom - drag.rect.bottom));
-            x = drag.x + dx;
-            y = drag.y + dy;
-            panel.style.transform = `translate(${x}px, ${y}px)`;
-        };
-        const up = () => {
-            drag = null;
-            panel.classList.remove('is-dragging');
-        };
-        const observer = new ResizeObserver(reset);
-        observer.observe(picture);
-        panel.addEventListener('pointerdown', down);
-        panel.addEventListener('pointermove', move);
-        panel.addEventListener('pointerup', up);
-        panel.addEventListener('pointercancel', up);
-        panel.addEventListener('lostpointercapture', up);
+        if (!enabled || !ref.current) return undefined;
+        const el = ref.current;
+
+        function onPointerDown(e) {
+            if (e.target.closest('button, input, a, select, .vt-sign-resize-btn')) return;
+            dragState.current = {
+                dragging: true,
+                startX: e.clientX,
+                startY: e.clientY,
+                origX: el.offsetLeft,
+                origY: el.offsetTop,
+            };
+            el.style.cursor = 'grabbing';
+            el.style.transition = 'none';
+            el.setPointerCapture(e.pointerId);
+            e.preventDefault();
+        }
+
+        function onPointerMove(e) {
+            if (!dragState.current.dragging) return;
+            const dx = e.clientX - dragState.current.startX;
+            const dy = e.clientY - dragState.current.startY;
+            const newX = dragState.current.origX + dx;
+            const newY = dragState.current.origY + dy;
+
+            const parent = el.parentElement;
+            if (parent) {
+                const maxX = parent.clientWidth - el.offsetWidth;
+                const maxY = parent.clientHeight - el.offsetHeight;
+                el.style.left = `${Math.max(0, Math.min(newX, maxX))}px`;
+                el.style.top = `${Math.max(0, Math.min(newY, maxY))}px`;
+            } else {
+                el.style.left = `${newX}px`;
+                el.style.top = `${newY}px`;
+            }
+            el.style.right = 'auto';
+            el.style.bottom = 'auto';
+        }
+
+        function onPointerUp() {
+            dragState.current.dragging = false;
+            el.style.cursor = 'grab';
+            el.style.transition = '';
+        }
+
+        el.addEventListener('pointerdown', onPointerDown);
+        el.addEventListener('pointermove', onPointerMove);
+        el.addEventListener('pointerup', onPointerUp);
+
         return () => {
-            observer.disconnect();
-            panel.removeEventListener('pointerdown', down);
-            panel.removeEventListener('pointermove', move);
-            panel.removeEventListener('pointerup', up);
-            panel.removeEventListener('pointercancel', up);
-            panel.removeEventListener('lostpointercapture', up);
-            reset();
+            el.removeEventListener('pointerdown', onPointerDown);
+            el.removeEventListener('pointermove', onPointerMove);
+            el.removeEventListener('pointerup', onPointerUp);
         };
-    }, [enabled, corner]);
+    }, [enabled]);
+
+    useEffect(() => {
+        if (!enabled && ref.current) {
+            ref.current.style.left = '';
+            ref.current.style.top = '';
+            ref.current.style.right = '';
+            ref.current.style.bottom = '';
+        }
+    }, [enabled]);
 
     return ref;
 }
@@ -133,8 +150,6 @@ export default function VideoTranslate() {
     useStudyTimer('Video dịch ký hiệu');
 
     const [layout, setLayout] = useState('side-by-side');
-    const [overlayCorner, setOverlayCorner] = useState('right');
-    const overlayRef = useDraggable(layout === 'overlay', overlayCorner);
 
     // Video
     const [videoUrl, setVideoUrl] = useState('');
@@ -167,6 +182,7 @@ export default function VideoTranslate() {
     const fileInputRef = useRef(null);
     const transcriptListRef = useRef(null);
     const activeCueElRef = useRef(null);
+    const overlayRef = useDraggable(layout === 'overlay');
 
     const youtube = useYouTubePlayer(
         loadedVideo?.platform === 'youtube' ? loadedVideo.videoId : null,
@@ -681,7 +697,7 @@ export default function VideoTranslate() {
             </GlassCard>
 
             {/* ── Main: Video + Avatar ── */}
-            <div className={`vt-main ${layout} vt-corner-${overlayCorner}`}>
+            <div className={`vt-main ${layout}`}>
                 <div className="vt-video-section">
                     <GlassCard variant="strong" padding="none" hover={false} className="vt-video-card">
                         <div className="vt-video-player-container">
@@ -763,25 +779,19 @@ export default function VideoTranslate() {
                     </GlassCard>
                 </div>
 
-                <div className="vt-sign-section" ref={overlayRef} aria-label="Mô hình phiên dịch ký hiệu">
+                <div className="vt-sign-section" ref={overlayRef}>
                     <GlassCard variant="strong" padding="none" hover={false} className="vt-sign-card">
+                        {layout === 'overlay' && (
+                            <span className="vt-overlay-badge">
+                                <i className="fa-solid fa-hand" style={{ marginRight: '3px', fontSize: '8px' }} /> Ký hiệu
+                            </span>
+                        )}
                         <div className="vt-sign-header">
-                            {layout === 'overlay' && <i className="fa-solid fa-grip-vertical vt-overlay-drag-handle" title="Kéo để di chuyển khung" aria-hidden="true" />}
                             <span className="vt-sign-header-title">
                                 <span className={`sign-dot ${hasResult ? '' : 'idle'}`} />
                                 {layout === 'overlay' ? '3D' : 'Mô hình 3D dịch ký hiệu'}
                             </span>
                             <div style={{ display: 'flex', gap: '4px' }}>
-                                {layout === 'overlay' && (
-                                    <button
-                                        className="vt-sign-resize-btn"
-                                        onClick={() => setOverlayCorner(overlayCorner === 'right' ? 'left' : 'right')}
-                                        title={overlayCorner === 'right' ? 'Chuyển xuống góc trái' : 'Chuyển xuống góc phải'}
-                                        aria-label={overlayCorner === 'right' ? 'Chuyển xuống góc trái' : 'Chuyển xuống góc phải'}
-                                    >
-                                        <i className={`fa-solid fa-arrow-${overlayCorner === 'right' ? 'left' : 'right'}`} aria-hidden="true" />
-                                    </button>
-                                )}
                                 {hasResult && (
                                     <button className="vt-sign-resize-btn" onClick={handleReplayCurrent} title="Phát lại">
                                         <i className="fa-solid fa-rotate-right" />

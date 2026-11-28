@@ -1,0 +1,15 @@
+[Unit]
+Description=SignLang temporary public HTTPS tunnel
+Requires=signlangue-vsl.service
+After=signlangue-vsl.service network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/nguyenhuynh/Documents/sign-lang/signlangue
+ExecStart=/usr/local/bin/cloudflared --no-autoupdate tunnel --url http://127.0.0.1:8010 --protocol http2 --metrics 127.0.0.1:20245
+Restart=on-failure
+RestartSec=10
+UMask=0077
+
+[Install]
+WantedBy=default.target
