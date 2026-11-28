@@ -1,4 +1,15 @@
-# Speech-to-Text Web App
+# SignLang App (`app/frontend` + `app/api`)
+
+> **Lưu ý đồng bộ:** Kiến trúc hiện tại sử dụng **Vite + React** (`app/frontend/src/`) kết hợp **FastAPI** (`app/api/server.py`), thay thế hoàn toàn bản tĩnh `app/js/*` trước đây.
+
+## Nhận diện giọng nói (Hybrid Online + Offline)
+
+- **Khi có mạng:** Trình duyệt ưu tiên dùng Web Speech API (`SpeechRecognition` / `webkitSpeechRecognition` trong `app/frontend/src/hooks/useSpeechRecognition.js`).
+- **Khi mất mạng hoặc trình duyệt không hỗ trợ:** Frontend tự động chuyển sang ghi âm và gửi tới `POST /api/speech/transcribe` để chạy **Whisper offline** (`faster-whisper`, cấu hình `large-v3-turbo` trên GPU hoặc `small` trên CPU trong `app/api/asr.py`).
+- **Kiểm soát dữ liệu ngoài:** Đặt `OFFLINE_ONLY=1` trong `.env` để vô hiệu hóa toàn bộ lời gọi ra Gemini API và tải phụ đề từ URL ngoài. Xem chi tiết tại [../PRIVACY_AND_SYNC_AUDIT.md](../PRIVACY_AND_SYNC_AUDIT.md).
+
+---
+*(Phần tài liệu tham khảo API sự kiện Web Speech bên dưới được giữ lại cho mục đích đối chiếu lịch sử)*
 
 **Bước 2 / 5** trong pipeline chuyển giọng nói thành ngôn ngữ ký hiệu.
 
@@ -141,7 +152,7 @@ A: Đây là behavior mặc định. App tự động restart recognition khi b�
 A: Deploy lên HTTPS server (GitHub Pages, Vercel, Netlify) rồi mở trên Chrome mobile.
 
 **Q: Có thể dùng offline không?**  
-A: Không. Web Speech API cần kết nối Google servers để nhận diện.
+A: Có. Khi mất mạng hoặc không dùng Chrome/Edge, frontend tự chuyển sang gửi âm thanh tới backend `/api/speech/transcribe` (dùng `faster-whisper` cục bộ). Đặt `OFFLINE_ONLY=1` trong `.env` để tắt toàn bộ dịch vụ ngoài.
 
 ## Bước tiếp theo
 

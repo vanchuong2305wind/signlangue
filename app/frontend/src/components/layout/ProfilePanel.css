@@ -340,6 +340,45 @@
     font-size: 14px;
 }
 
+/* Privacy view */
+.profile-panel__privacy-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 12px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    margin: 12px 0;
+}
+
+.profile-panel__privacy-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--ink-medium);
+}
+
+.profile-panel__privacy-row strong {
+    color: var(--ink-dark);
+    font-weight: 600;
+}
+
+.profile-panel__privacy-note {
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-bottom: 12px;
+}
+
+.profile-panel__privacy-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
     .profile-panel {

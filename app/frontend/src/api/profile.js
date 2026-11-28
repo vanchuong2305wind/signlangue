@@ -28,9 +28,25 @@ export async function recordActivity(type, label, metadata = {}, value = 1) {
     return response.json();
 }
 
-export async function resetActivities() {
-    const response = await fetch('/api/profile/activities', { method: 'DELETE' });
-    if (!response.ok) throw new Error('Không xóa được tiến độ');
+export async function getPrivacyStatus() {
+    const response = await fetch('/api/privacy/status');
+    if (!response.ok) throw new Error('Không tải được trạng thái quyền riêng tư');
+    return response.json();
+}
+
+export async function resetActivities(activityType = null) {
+    const query = activityType
+        ? `?activity_type=${encodeURIComponent(activityType)}`
+        : '';
+    const response = await fetch(`/api/profile/activities${query}`, { method: 'DELETE' });
+    if (!response.ok) throw new Error('Không xóa được lịch sử');
+    window.dispatchEvent(new CustomEvent('profile:updated'));
+    return response.json();
+}
+
+export async function deleteProfileAll() {
+    const response = await fetch('/api/profile', { method: 'DELETE' });
+    if (!response.ok) throw new Error('Không xóa được hồ sơ');
     window.dispatchEvent(new CustomEvent('profile:updated'));
     return response.json();
 }

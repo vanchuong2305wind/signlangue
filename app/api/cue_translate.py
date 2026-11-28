@@ -36,7 +36,12 @@ _cooldown_until = 0.0
 _model = None
 
 
+from .privacy import create_gemini_client, is_offline_only
+
+
 def _gemini_enabled() -> bool:
+    if is_offline_only():
+        return False
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
     return bool(api_key and api_key != "your_gemini_api_key_here")
 
@@ -64,9 +69,7 @@ def _get_model():
     global _model
     if _model is not None:
         return _model
-    import google.generativeai as genai
-    genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-    _model = genai.GenerativeModel(GEMINI_MODEL)
+    _model = create_gemini_client()
     return _model
 
 
@@ -115,8 +118,8 @@ def translate_lines(lines: list[str], source_lang: str) -> list[str] | None:
         return None
 
     try:
-        import google.generativeai as genai
-        model = _get_model()
+        from google.genai import types
+        client = _get_model()
     except Exception as error:  # noqa: BLE001 - SDK import/config can fail
         print(f"[CueTranslate] Gemini unavailable: {error}")
         _note_failure()
@@ -126,13 +129,16 @@ def translate_lines(lines: list[str], source_lang: str) -> list[str] | None:
     for start in range(0, len(lines), BATCH_SIZE):
         batch = lines[start:start + BATCH_SIZE]
         try:
-            response = model.generate_content(
-                _build_prompt(batch, source_lang),
-                generation_config=genai.GenerationConfig(
+            response = client.models.generate_content(
+                model=GEMINI_MODEL,
+                contents=_build_prompt(batch, source_lang),
+                config=types.GenerateContentConfig(
                     temperature=0.2,
                     max_output_tokens=4096,
+                    http_options=types.HttpOptions(
+                        timeout=int(GEMINI_TIMEOUT_SECONDS * 1000)
+                    ),
                 ),
-                request_options={"timeout": GEMINI_TIMEOUT_SECONDS},
             )
             values = _parse_reply(response.text or "", len(batch))
         except Exception as error:  # noqa: BLE001 - network, quota, safety

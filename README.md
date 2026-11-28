@@ -13,8 +13,14 @@ Web app hỗ trợ học ngôn ngữ ký hiệu với giao diện **Liquid Glass
 
 - **Frontend**: Vite + React
 - **Backend**: Python FastAPI
-- **AI**: MediaPipe, Gemini API
+- **AI**: `VSL224-Hiera-RGB` (camera 224 lớp, Git LFS), `faster-whisper` (ASR offline fallback), `underthesea` + PhoBERT (`local_nlp.py`), Gemini API (tùy chọn)
 - **Data**: VieSign, bộ landmark Việt Nam đã gộp 3.393 mục từ; WLASL/ASL cũ lưu riêng
+
+## Quyền riêng tư & Chế độ Offline
+
+- Chi tiết đối chiếu mã–tài liệu, luồng dữ liệu gửi dịch vụ ngoài và chính sách lưu/xóa dữ liệu xem tại [PRIVACY_AND_SYNC_AUDIT.md](PRIVACY_AND_SYNC_AUDIT.md).
+- Đặt `OFFLINE_ONLY=1` trong `.env` để chặn toàn bộ lời gọi ra dịch vụ ngoài (Gemini API, tải phụ đề YouTube/video).
+- Kiểm tra cấu hình quyền riêng tư runtime qua `GET /api/privacy/status`; xóa lịch sử theo loại qua `DELETE /api/profile/activities?activity_type=recognition|translation` hoặc xóa toàn bộ hồ sơ trên đĩa qua `DELETE /api/profile`.
 
 ## Cài đặt
 

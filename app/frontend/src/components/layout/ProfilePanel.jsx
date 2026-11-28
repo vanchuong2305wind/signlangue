@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { getProfile, resetActivities, updateProfile } from '../../api/profile';
+import {
+    deleteProfileAll,
+    getPrivacyStatus,
+    getProfile,
+    resetActivities,
+    updateProfile,
+} from '../../api/profile';
 import './ProfilePanel.css';
 
 const ACTIVITY_META = {
@@ -27,6 +33,7 @@ function formatTime(value) {
 
 export default function ProfilePanel({ isOpen, onClose }) {
     const [data, setData] = useState(null);
+    const [privacy, setPrivacy] = useState(null);
     const [view, setView] = useState('summary');
     const [form, setForm] = useState({});
     const [loading, setLoading] = useState(false);
@@ -36,8 +43,12 @@ export default function ProfilePanel({ isOpen, onClose }) {
         setLoading(true);
         setMessage('');
         try {
-            const result = await getProfile();
+            const [result, privacyResult] = await Promise.all([
+                getProfile(),
+                getPrivacyStatus().catch(() => null),
+            ]);
             setData(result);
+            setPrivacy(privacyResult);
             setForm({
                 ...result.profile,
                 ...result.settings,
@@ -94,13 +105,37 @@ export default function ProfilePanel({ isOpen, onClose }) {
         }
     }
 
-    async function handleReset() {
-        if (!window.confirm('Xóa toàn bộ tiến độ và lịch sử hoạt động?')) return;
+    async function handleDeleteHistory(activityType, confirmText, doneText) {
+        if (!window.confirm(confirmText)) return;
         setLoading(true);
         try {
-            const result = await resetActivities();
+            const result = await resetActivities(activityType);
             setData(result);
-            setMessage('Đã đặt lại tiến độ.');
+            setMessage(doneText);
+        } catch (error) {
+            setMessage(error.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function handleDeleteAllProfile() {
+        if (!window.confirm('Xóa sạch file hồ sơ và toàn bộ lịch sử khỏi máy chủ?')) return;
+        setLoading(true);
+        try {
+            const result = await deleteProfileAll();
+            setData(result);
+            setPrivacy(prev => (prev ? {
+                ...prev,
+                storage_policy: {
+                    ...prev.storage_policy,
+                    activity_history: {
+                        ...prev.storage_policy?.activity_history,
+                        exists: false,
+                    },
+                },
+            } : prev));
+            setMessage('Đã xóa toàn bộ hồ sơ khỏi đĩa.');
         } catch (error) {
             setMessage(error.message);
         } finally {
@@ -206,6 +241,59 @@ export default function ProfilePanel({ isOpen, onClose }) {
                             </button>
                         </div>
                     </form>
+                ) : view === 'privacy' ? (
+                    <div className="profile-panel__help profile-panel__privacy">
+                        <h3>Quyền riêng tư & Dữ liệu</h3>
+                        <div className="profile-panel__privacy-card">
+                            <div className="profile-panel__privacy-row">
+                                <span>Chế độ ngoại tuyến (OFFLINE_ONLY)</span>
+                                <strong>{privacy?.offline_only ? 'Đang bật' : 'Tắt'}</strong>
+                            </div>
+                            <div className="profile-panel__privacy-row">
+                                <span>Google Gemini API</span>
+                                <strong>{privacy?.external_services?.gemini?.enabled ? 'Bật' : 'Tắt / Chặn'}</strong>
+                            </div>
+                            <div className="profile-panel__privacy-row">
+                                <span>Tải phụ đề video ngoài</span>
+                                <strong>{privacy?.external_services?.video_subtitles_network?.enabled ? 'Bật' : 'Tắt / Chặn'}</strong>
+                            </div>
+                            <div className="profile-panel__privacy-row">
+                                <span>Khung hình camera</span>
+                                <strong>Chỉ RAM (không lưu đĩa)</strong>
+                            </div>
+                            <div className="profile-panel__privacy-row">
+                                <span>Âm thanh micro</span>
+                                <strong>Chỉ RAM (không lưu đĩa)</strong>
+                            </div>
+                        </div>
+                        <p className="profile-panel__privacy-note">
+                            Khi OFFLINE_ONLY bật, giọng nói dùng Whisper cục bộ thay cho Web Speech API trình duyệt.
+                        </p>
+                        {message && <div className="profile-panel__message">{message}</div>}
+                        <div className="profile-panel__privacy-actions">
+                            <button
+                                className="profile-panel__action-btn profile-panel__action-btn--danger"
+                                onClick={() => handleDeleteHistory('recognition', 'Xóa lịch sử nhận diện camera?', 'Đã xóa lịch sử camera.')}
+                            >
+                                <i className="fa-solid fa-camera profile-panel__action-icon" /> Xóa lịch sử camera
+                            </button>
+                            <button
+                                className="profile-panel__action-btn profile-panel__action-btn--danger"
+                                onClick={() => handleDeleteHistory('translation', 'Xóa lịch sử dịch văn bản / giọng nói?', 'Đã xóa lịch sử dịch.')}
+                            >
+                                <i className="fa-solid fa-language profile-panel__action-icon" /> Xóa lịch sử dịch / giọng nói
+                            </button>
+                            <button
+                                className="profile-panel__action-btn profile-panel__action-btn--danger"
+                                onClick={handleDeleteAllProfile}
+                            >
+                                <i className="fa-solid fa-trash-can profile-panel__action-icon" /> Xóa sạch hồ sơ trên đĩa
+                            </button>
+                        </div>
+                        <button className="profile-panel__primary-btn" onClick={() => setView('summary')}>
+                            Quay lại
+                        </button>
+                    </div>
                 ) : view === 'help' ? (
                     <div className="profile-panel__help">
                         <h3>Cách tính tiến độ</h3>
@@ -298,12 +386,15 @@ export default function ProfilePanel({ isOpen, onClose }) {
                             <button className="profile-panel__action-btn" onClick={() => setView('edit')}>
                                 <i className="fa-solid fa-gear profile-panel__action-icon" /> Cài đặt
                             </button>
+                            <button className="profile-panel__action-btn" onClick={() => setView('privacy')}>
+                                <i className="fa-solid fa-shield-halved profile-panel__action-icon" /> Quyền riêng tư & Dữ liệu
+                            </button>
                             <button className="profile-panel__action-btn" onClick={() => setView('help')}>
                                 <i className="fa-solid fa-circle-question profile-panel__action-icon" /> Trợ giúp
                             </button>
                             <button
                                 className="profile-panel__action-btn profile-panel__action-btn--danger"
-                                onClick={handleReset}
+                                onClick={() => handleDeleteHistory(null, 'Xóa toàn bộ tiến độ và lịch sử hoạt động?', 'Đã đặt lại tiến độ.')}
                             >
                                 <i className="fa-solid fa-trash-can profile-panel__action-icon" /> Đặt lại tiến độ
                             </button>

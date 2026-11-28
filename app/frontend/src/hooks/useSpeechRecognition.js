@@ -96,6 +96,19 @@ export default function useSpeechRecognition({ lang = 'vi-VN', onFinal, onInteri
         langRef.current = lang;
     }, [lang]);
 
+    useEffect(() => {
+        let cancelled = false;
+        fetch('/api/privacy/status')
+            .then(resp => (resp.ok ? resp.json() : null))
+            .then(payload => {
+                if (!cancelled && payload?.offline_only && isWhisperRecordingSupported()) {
+                    modeRef.current = 'whisper';
+                }
+            })
+            .catch(() => {});
+        return () => { cancelled = true; };
+    }, []);
+
     const applyState = useCallback((next) => {
         stateRef.current = next;
         setState(next);

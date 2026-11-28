@@ -8,7 +8,12 @@ import asyncio
 import json
 
 
+from .privacy import is_offline_only
+
+
 def gemini_configured() -> bool:
+    if is_offline_only():
+        return False
     key = os.getenv("GEMINI_API_KEY", "").strip()
     return bool(key and key != "your_gemini_api_key_here")
 

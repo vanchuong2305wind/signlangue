@@ -87,13 +87,17 @@ def _cache_put(text: str, words: list[str]) -> None:
         _parse_cache.popitem(last=False)
 
 
+from .privacy import create_gemini_client, is_offline_only
+
 def gemini_enabled() -> bool:
+    if is_offline_only():
+        return False
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
     return bool(api_key and api_key != "your_gemini_api_key_here")
 
 
 def _get_model():
-    """Build the Gemini model once.
+    """Build the Gemini client once.
 
     The first call also pays for importing the SDK and the TLS handshake, which
     measured ~4 s. `warmup()` moves that off the first user request.
@@ -102,9 +106,7 @@ def _get_model():
     if _gemini_model is not None:
         return _gemini_model
 
-    import google.generativeai as genai
-    genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-    _gemini_model = genai.GenerativeModel(GEMINI_MODEL)
+    _gemini_model = create_gemini_client()
     return _gemini_model
 
 
@@ -147,16 +149,17 @@ async def parse_with_gemini(text: str) -> list[str] | None:
         return None
 
     try:
-        import google.generativeai as genai
+        from google.genai import types
 
-        model = _get_model()
+        client = _get_model()
         sample_words = list(sign_dict.vi_to_gloss.keys())[:200]
         prompt = _build_llm_prompt(text, sample_words)
 
         response = await asyncio.wait_for(
-            model.generate_content_async(
-                prompt,
-                generation_config=genai.GenerationConfig(
+            client.aio.models.generate_content(
+                model=GEMINI_MODEL,
+                contents=prompt,
+                config=types.GenerateContentConfig(
                     temperature=0.1,
                     max_output_tokens=500,
                 ),
